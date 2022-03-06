@@ -37,7 +37,13 @@ export const UserList = (props) => {
                 <TextField source="id" />
                 <TextField source="username" />
                 <EmailField source="email" />
-                <TextField  label="JWT" source="jwt secret" />
+                <ReferenceManyField label="Orgs" reference="organization membership" target="user">
+                    <SingleFieldList>
+                        <ReferenceField source="is member of-organization" reference="organization">
+                            <ChipField source="name" />
+                        </ReferenceField>
+                    </SingleFieldList>
+                </ReferenceManyField>
                 <ReferenceManyField label="Roles" reference="user-has-role" target="user">
                     <SingleFieldList>
                         <ReferenceField source="role" reference="role">

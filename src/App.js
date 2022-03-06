@@ -3,6 +3,7 @@ import { Admin, Resource, ListGuesser } from 'react-admin';
 import postgrestRestProvider from '@raphiniert/ra-data-postgrest';
 import openbalenaAuthProvider from './auth/openbalenaAuthProvider';
 import user from './components/user';
+import organization from './components/organization';
 
 const dataProvider = postgrestRestProvider(process.env.REACT_APP_POSTGREST_URL);
 
@@ -37,21 +38,21 @@ const App = () => (
   <Resource name="migration" options={{ label: 'Migrations' }} list={ListGuesser} />
   <Resource name="migration lock" options={{ label: 'Migration Locks' }} list={ListGuesser} />
   <Resource name="model" options={{ label: 'Models' }} list={ListGuesser} />
-  <Resource name="organization" options={{ label: 'Orgs' }} list={ListGuesser} />
-  <Resource name="organization membership" options={{ label: 'Org Memberships' }} list={ListGuesser} />
-  <Resource name="permission" options={{ label: 'Permissions' }} list={ListGuesser} />
+  <Resource name="organization" options={{ label: 'Orgs' }} {...organization} />
+  <Resource name="organization membership" options={{ label: 'Org Memberships' }} />
+  <Resource name="permission" options={{ label: 'Permissions' }} />
   <Resource name="release" options={{ label: 'Releases' }} list={ListGuesser} />
   <Resource name="release tag" options={{ label: 'Release Tags' }} list={ListGuesser} />
-  <Resource name="role" options={{ label: 'Roles' }} list={ListGuesser} />
+  <Resource name="role" options={{ label: 'Roles' }} />
   <Resource name="role-has-permission" options={{ label: 'Role Permissions' }} list={ListGuesser} />
   <Resource name="service" options={{ label: 'Services' }} list={ListGuesser} />
   <Resource name="service environment variable" options={{ label: 'Service Env Vars' }} list={ListGuesser} />
   <Resource name="service install" options={{ label: 'Service Installs' }} list={ListGuesser} />
   <Resource name="service instance" options={{ label: 'Service Instances' }} list={ListGuesser} />
   <Resource name="service label" options={{ label: 'Service Labels' }} list={ListGuesser} />
-  <Resource name="user-has-permission" options={{ label: 'User Permissions' }} list={ListGuesser} />
+  <Resource name="user-has-permission" options={{ label: 'User Permissions' }} />
   <Resource name="user-has-public key" options={{ label: 'User Keys' }} list={ListGuesser} />
-  <Resource name="user-has-role" options={{ label: 'User Roles' }} list={ListGuesser} />
+  <Resource name="user-has-role" options={{ label: 'User Roles' }} />
   <Resource name="user"  options={{ label: 'Users' }} {...user} />
 </Admin>
 );
