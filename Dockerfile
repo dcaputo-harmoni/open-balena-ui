@@ -1,0 +1,25 @@
+FROM debian:bullseye
+
+ARG DEBIAN_FRONTEND=noninteractive
+
+# Update nodejs version to 17.x
+RUN apt-get update && apt-get install -y curl && \
+    curl -sL https://deb.nodesource.com/setup_17.x | bash -
+
+RUN apt-get update && apt-get install -y \
+    nodejs \
+    node-typescript \
+    jq \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /usr/src/app
+
+COPY . ./
+
+RUN npm install --no-fund --no-update-notifier --global && \
+    tsc \
+    yarn
+
+COPY start.sh ./
+
+CMD ["bash", "start.sh"]

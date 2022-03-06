@@ -1,2 +1,1 @@
-# open-balena-admin
-Administration interface for open-balena
+Open Balena Admin
