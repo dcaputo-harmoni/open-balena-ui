@@ -6,9 +6,15 @@ import {
     TextField,
     Datagrid,
     EmailField,
+    ReferenceField,
+    ReferenceManyField,
+    SingleFieldList,
+    ChipField,
     List,
     SimpleForm,
-    TextInput
+    TextInput,
+    ReferenceArrayInput,
+    SelectArrayInput
 } from 'react-admin';
 
 const UserTitle = ({ record }) => {
@@ -32,6 +38,20 @@ export const UserList = (props) => {
                 <TextField source="username" />
                 <EmailField source="email" />
                 <TextField  label="JWT" source="jwt secret" />
+                <ReferenceManyField label="Roles" reference="user-has-role" target="user">
+                    <SingleFieldList>
+                        <ReferenceField source="role" reference="role">
+                            <ChipField source="name" />
+                        </ReferenceField>
+                    </SingleFieldList>
+                </ReferenceManyField>
+                <ReferenceManyField label="Permissions" reference="user-has-permission" target="user">
+                    <SingleFieldList>
+                        <ReferenceField source="permission" reference="permission">
+                            <ChipField source="name" />
+                        </ReferenceField>
+                    </SingleFieldList>
+                </ReferenceManyField>
             </Datagrid>
         </List>
     )
