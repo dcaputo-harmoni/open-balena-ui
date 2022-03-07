@@ -13,21 +13,20 @@ import {
     TextInput,
 } from 'react-admin';
 
-const OrganizationTitle = ({ record }) => {
-    return <span>Organization {record ? `"${record.name}"` : ''}</span>;
+const RoleTitle = ({ record }) => {
+    return <span>Role {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const OrganizationList = (props) => {
+export const RoleList = (props) => {
     return (
         <List {...props}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <TextField source="name" />
-                <TextField source="handle" />
-                <ReferenceManyField label="Users" reference="organization membership" target="is member of-organization">
+                <ReferenceManyField label="Permissions" reference="role-has-permission" target="role">
                     <SingleFieldList>
-                        <ReferenceField source="user" reference="user">
-                            <ChipField source="username" />
+                        <ReferenceField source="permission" reference="permission">
+                            <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
@@ -36,27 +35,25 @@ export const OrganizationList = (props) => {
     )
 };
 
-export const OrganizationCreate = props => (
+export const RoleCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="name" />
-            <TextInput source="handle" />
         </SimpleForm>
     </Create>
 );
 
-export const OrganizationEdit = props => (
-    <Edit title={<OrganizationTitle />} {...props}>
+export const RoleEdit = props => (
+    <Edit title={<RoleTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="name" />
-            <TextInput source="handle" />
         </SimpleForm>
     </Edit>
 );
 
 export default {
-    list: OrganizationList,
-    create: OrganizationCreate,
-    edit: OrganizationEdit
+    list: RoleList,
+    create: RoleCreate,
+    edit: RoleEdit
 }

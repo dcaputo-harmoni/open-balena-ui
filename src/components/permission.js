@@ -13,21 +13,20 @@ import {
     TextInput,
 } from 'react-admin';
 
-const OrganizationTitle = ({ record }) => {
-    return <span>Organization {record ? `"${record.name}"` : ''}</span>;
+const RoleTitle = ({ record }) => {
+    return <span>Permission {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const OrganizationList = (props) => {
+export const PermissionList = (props) => {
     return (
         <List {...props}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <TextField source="name" />
-                <TextField source="handle" />
-                <ReferenceManyField label="Users" reference="organization membership" target="is member of-organization">
+                <ReferenceManyField label="Roles" reference="role-has-permission" target="permission">
                     <SingleFieldList>
-                        <ReferenceField source="user" reference="user">
-                            <ChipField source="username" />
+                        <ReferenceField source="role" reference="role">
+                            <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
@@ -36,27 +35,25 @@ export const OrganizationList = (props) => {
     )
 };
 
-export const OrganizationCreate = props => (
+export const PermissionCreate = props => (
     <Create {...props}>
         <SimpleForm>
             <TextInput source="name" />
-            <TextInput source="handle" />
         </SimpleForm>
     </Create>
 );
 
-export const OrganizationEdit = props => (
-    <Edit title={<OrganizationTitle />} {...props}>
+export const PermissionEdit = props => (
+    <Edit title={<RoleTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput source="name" />
-            <TextInput source="handle" />
         </SimpleForm>
     </Edit>
 );
 
 export default {
-    list: OrganizationList,
-    create: OrganizationCreate,
-    edit: OrganizationEdit
+    list: PermissionList,
+    create: PermissionCreate,
+    edit: PermissionEdit
 }

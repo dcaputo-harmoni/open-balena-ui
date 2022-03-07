@@ -13,8 +13,6 @@ import {
     List,
     SimpleForm,
     TextInput,
-    ReferenceArrayInput,
-    SelectArrayInput
 } from 'react-admin';
 
 const UserTitle = ({ record }) => {
@@ -37,11 +35,16 @@ export const UserList = (props) => {
                 <TextField source="id" />
                 <TextField source="username" />
                 <EmailField source="email" />
-                <ReferenceManyField label="Orgs" reference="organization membership" target="user">
+                <ReferenceManyField label="Organizations" reference="organization membership" target="user">
                     <SingleFieldList>
                         <ReferenceField source="is member of-organization" reference="organization">
                             <ChipField source="name" />
                         </ReferenceField>
+                    </SingleFieldList>
+                </ReferenceManyField>
+                <ReferenceManyField label="API Keys" source="actor" reference="api key" target="is of-actor">
+                    <SingleFieldList>
+                        <ChipField source="key" />
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ReferenceManyField label="Roles" reference="user-has-role" target="user">
