@@ -13,6 +13,10 @@ import {
     List,
     SimpleForm,
     TextInput,
+    PasswordInput,
+    ReferenceArrayInput,
+    SelectArrayInput,
+    useDataProvider
 } from 'react-admin';
 
 const UserTitle = ({ record }) => {
@@ -71,22 +75,64 @@ export const UserCreate = props => (
         <SimpleForm>
             <TextInput source="username" />
             <TextInput source="email" />
-            <TextInput source="password" parse={hashPassword} />
+            <PasswordInput source="password" parse={hashPassword} />
         </SimpleForm>
     </Create>
 );
 
-export const UserEdit = props => (
-    <Edit title={<UserTitle />} {...props}>
-        <SimpleForm>
+export const UserEdit = props => {
+
+    const dataProvider = useDataProvider();
+    
+    const modifyMappings = async (data) => {
+        let mappingTable = 'user-has-role';
+        let mappingSource = 'user';
+        let mappingDest = 'role';
+
+        let existingMappings = await dataProvider.getList(mappingTable, {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { [mappingSource]: data.id }
+        });
+        let existingData = existingMappings.data.map(x => x[mappingDest]);
+        let createRoles = data.selectedValues.filter(value => !existingData.includes(value));
+        let deleteIds = existingMappings.data.filter(value => !data.selectedValues.includes(value[mappingDest])).map(x => x.id);
+        await Promise.all(createRoles.map(insertData => dataProvider.create(mappingTable, {data: { [mappingSource]: data.id, [mappingDest]: insertData }})));
+        await Promise.all(deleteIds.map(deleteId => dataProvider.delete(mappingTable, { id: deleteId })));
+        delete data.selectedValues;
+        return data;
+    }
+
+    const getMappings = async () => {
+        let mappingTable = 'user-has-role';
+        let mappingSource = 'user';
+        let mappingDest = 'role';
+        let existingMappings = await dataProvider.getList(mappingTable, {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { [mappingSource]: props.id }
+        });
+        return { selectedValues: existingMappings.data.map(x => x[mappingDest]) };
+    }
+
+    const UserTransform = (data) => modifyMappings(data).then((newData) => {
+        return ({ ...newData })
+    });
+
+    return (
+    <Edit title={<UserTitle />} transform={UserTransform} {...props}>
+        <SimpleForm initialValues={getMappings}>
             <TextInput disabled source="id" />
             <TextInput source="username" />
             <TextInput source="email" />
-            <TextInput source="password" parse={hashPassword} format={clearPassword} />
+            <PasswordInput source="password" parse={hashPassword} format={clearPassword} />
+            <ReferenceArrayInput source="selectedValues" reference="role" >
+                <SelectArrayInput optionText="name" optionValue="id"/>
+            </ReferenceArrayInput>
             <TextInput disabled source="jwt secret" />
         </SimpleForm>
     </Edit>
-);
+)};
 
 export default {
     list: UserList,

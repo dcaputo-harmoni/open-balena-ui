@@ -23,9 +23,23 @@ export const DeviceList = (props) => {
                 <TextField source="id" />
                 <TextField label="UUID" source="uuid" />
                 <TextField label="Name" source="device name" />
+                <ReferenceManyField label="Fleet" source="belongs to-application" reference="application" target="id">
+                    <SingleFieldList>
+                        <ChipField source="app name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
                 <ReferenceManyField label="Device Type" source="is of-device type" reference="device type" target="id">
                     <SingleFieldList>
                         <ChipField source="slug" />
+                    </SingleFieldList>
+                </ReferenceManyField>
+                <ReferenceManyField label="Installed Services" source="id" reference="service install" target="device">
+                    <SingleFieldList>
+                        <ReferenceManyField source="installs-service" reference="service" target="id">
+                        <SingleFieldList>
+                            <ChipField source="service name" />
+                        </SingleFieldList>
+                        </ReferenceManyField>
                     </SingleFieldList>
                 </ReferenceManyField>
             </Datagrid>

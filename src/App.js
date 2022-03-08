@@ -1,65 +1,86 @@
 import * as React from "react";
 import { Admin, Resource, ListGuesser } from 'react-admin';
+import TreeMenu from '@bb-tech/ra-treemenu';
 import postgrestRestProvider from '@raphiniert/ra-data-postgrest';
 import openbalenaAuthProvider from './auth/openbalenaAuthProvider';
 import user from './components/user';
+import userKey from './components/userKey';
 import organization from './components/organization';
 import role from './components/role';
 import permission from './components/permission';
 import apiKey from './components/apiKey';
 import fleet from './components/fleet';
+import fleetEnvVar from './components/fleetEnvVar';
+import fleetTag from './components/fleetTag';
 import device from './components/device';
+import deviceEnvVar from './components/deviceEnvVar';
+import deviceServiceVar from './components/deviceServiceVar';
 import deviceType from './components/deviceType';
+import deviceTag from './components/deviceTag';
+import image from './components/image';
+import release from './components/release';
+import releaseTag from './components/releaseTag';
+import imageEnvVar from './components/imageEnvVar';
+import imageLabel from './components/imageLabel';
+import service from './components/service';
+import serviceEnvVar from './components/serviceEnvVar';
+import serviceInstance from './components/serviceInstance';
 
 const dataProvider = postgrestRestProvider(process.env.REACT_APP_POSTGREST_URL);
 
 const App = () => (
-<Admin dataProvider={dataProvider} authProvider={openbalenaAuthProvider} > 
+<Admin dataProvider={dataProvider} authProvider={openbalenaAuthProvider} menu={TreeMenu} > 
+  <Resource name="menu-access" options={{ label: "Access", "isMenuParent": true }} />
+  <Resource name="menu-fleet" options={{ label: "Fleets", "isMenuParent": true }} />
+  <Resource name="menu-device" options={{ label: "Devices", "isMenuParent": true }} />
+  <Resource name="menu-deployment" options={{ label: "Deployments", "isMenuParent": true }} />
+  <Resource name="menu-service" options={{ label: "Services", "isMenuParent": true }} />
+  <Resource name="menu-static" options={{ label: "Static Data", "isMenuParent": true }} />
   <Resource name="actor" options={{ label: 'Actors' }} />
-  <Resource name="api key" options={{ label: 'API Keys' }} {...apiKey} />
+  <Resource name="api key" options={{ label: 'API Keys', "menuParent": "menu-access" }} {...apiKey} />
   <Resource name="api key-has-permission" options={{ label: 'API Key Permissions' }} />
   <Resource name="api key-has-role" options={{ label: 'API Key Roles' }} />
-  <Resource name="application" options={{ label: 'Fleets' }} {...fleet} />
-  <Resource name="application config variable" options={{ label: 'Application Cfg Vars' }} list={ListGuesser} />
-  <Resource name="application environment variable" options={{ label: 'Application Env Vars' }} list={ListGuesser} />
-  <Resource name="application tag" options={{ label: 'Application Tags' }} list={ListGuesser} />
-  <Resource name="application type" options={{ label: 'Application Types' }} list={ListGuesser} />
-  <Resource name="config" options={{ label: 'Configs' }} list={ListGuesser} />
-  <Resource name="cpu architecture" options={{ label: 'CPU Architectures' }} list={ListGuesser} />
-  <Resource name="device" options={{ label: 'Devices' }} {...device} />
-  <Resource name="device config variable" options={{ label: 'Device Cfg Vars' }} list={ListGuesser} />
-  <Resource name="device environment variable" options={{ label: 'Device Env Vars' }} list={ListGuesser} />
-  <Resource name="device family" options={{ label: 'Device Families' }} list={ListGuesser} />
-  <Resource name="device manufacturer" options={{ label: 'Device Mfgs' }} list={ListGuesser} />
-  <Resource name="device service environment variable" options={{ label: 'Device Svc Vars' }} list={ListGuesser} />
-  <Resource name="device tag" options={{ label: 'Device Tags' }} list={ListGuesser} />
-  <Resource name="device type" options={{ label: 'Device Types' }} {...deviceType} />
-  <Resource name="device type alias" options={{ label: 'Device Type Aliases' }}/>
-  <Resource name="gateway download" options={{ label: 'Gateway Downloads' }} list={ListGuesser} />
-  <Resource name="image" options={{ label: 'Images' }} list={ListGuesser} />
-  <Resource name="image environment variable" options={{ label: 'Image Env Vars' }} list={ListGuesser} />
-  <Resource name="image install" options={{ label: 'Image Installs' }} list={ListGuesser} />
-  <Resource name="image label" options={{ label: 'Image Labels' }} list={ListGuesser} />
-  <Resource name="image-is part of-release" options={{ label: 'Image Releases' }} list={ListGuesser} />
+  <Resource name="application" options={{ label: 'Fleets', "menuParent": "menu-fleet" }} {...fleet} />
+  <Resource name="application config variable" options={{ label: 'Config Vars', "menuParent": "menu-fleet" }} list={ListGuesser} />
+  <Resource name="application environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-fleet" }} {...fleetEnvVar} />
+  <Resource name="application tag" options={{ label: 'Tags', "menuParent": "menu-fleet" }} {...fleetTag} />
+  <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="config" options={{ label: 'Configs', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="cpu architecture" options={{ label: 'CPU Architectures', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="device" options={{ label: 'Devices', "menuParent": "menu-device" }} {...device} />
+  <Resource name="device config variable" options={{ label: 'Config Vars', "menuParent": "menu-device" }} list={ListGuesser} />
+  <Resource name="device environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-device" }} {...deviceEnvVar} />
+  <Resource name="device family" options={{ label: 'Device Families', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="device service environment variable" options={{ label: 'Service Vars', "menuParent": "menu-device" }} {...deviceServiceVar} />
+  <Resource name="device tag" options={{ label: 'Tags', "menuParent": "menu-device" }} {...deviceTag} />
+  <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType} />
+  <Resource name="device type alias" options={{ label: 'Device Type Aliases', "menuParent": "menu-static" }}/>
+  <Resource name="gateway download" options={{ label: 'Gateway D/Ls', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="image" options={{ label: 'Images', "menuParent": "menu-deployment" }} {...image} />
+  <Resource name="image environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-deployment" }} {...imageEnvVar} />
+  <Resource name="image install" options={{ label: 'Installs', "menuParent": "menu-deployment" }} list={ListGuesser} />
+  <Resource name="image label" options={{ label: 'Labels', "menuParent": "menu-deployment" }} {...imageLabel} />
+  <Resource name="image-is part of-release" options={{ label: 'Releases', "menuParent": "menu-deployment" }} />
   <Resource name="migration" options={{ label: 'Migrations' }} />
   <Resource name="migration lock" options={{ label: 'Migration Locks' }} />
   <Resource name="model" options={{ label: 'Models' }} />
-  <Resource name="organization" options={{ label: 'Organizations' }} {...organization} />
+  <Resource name="organization" options={{ label: 'Organizations', "menuParent": "menu-access" }} {...organization} />
   <Resource name="organization membership" options={{ label: 'Org Memberships' }} />
-  <Resource name="permission" options={{ label: 'Permissions' }} {...permission} />
-  <Resource name="release" options={{ label: 'Releases' }} list={ListGuesser} />
-  <Resource name="release tag" options={{ label: 'Release Tags' }} list={ListGuesser} />
-  <Resource name="role" options={{ label: 'Roles' }} {...role} />
+  <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission} />
+  <Resource name="release" options={{ label: 'Releases', "menuParent": "menu-deployment" }} {...release} />
+  <Resource name="release tag" options={{ label: 'Release Tags', "menuParent": "menu-deployment" }} {...releaseTag} />
+  <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role} />
   <Resource name="role-has-permission" options={{ label: 'Role Permissions' }} />
-  <Resource name="service" options={{ label: 'Services' }} list={ListGuesser} />
-  <Resource name="service environment variable" options={{ label: 'Service Env Vars' }} list={ListGuesser} />
-  <Resource name="service install" options={{ label: 'Service Installs' }} list={ListGuesser} />
-  <Resource name="service instance" options={{ label: 'Service Instances' }} list={ListGuesser} />
-  <Resource name="service label" options={{ label: 'Service Labels' }} list={ListGuesser} />
+  <Resource name="service" options={{ label: 'Services', "menuParent": "menu-service" }} {...service} />
+  <Resource name="service environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-service" }} {...serviceEnvVar} />
+  <Resource name="service install" options={{ label: 'Installs', "menuParent": "menu-service" }} />
+  <Resource name="service instance" options={{ label: 'Instances', "menuParent": "menu-service" }} {...serviceInstance} />
+  <Resource name="service label" options={{ label: 'Labels', "menuParent": "menu-service" }} list={ListGuesser} />
+  <Resource name="user"  options={{ label: 'Users', "menuParent": "menu-access" }} {...user} />
   <Resource name="user-has-permission" options={{ label: 'User Permissions' }} />
-  <Resource name="user-has-public key" options={{ label: 'User Keys' }} list={ListGuesser} />
+  <Resource name="user-has-public key" options={{ label: 'User SSH Keys', "menuParent": "menu-access" }} {...userKey} />
   <Resource name="user-has-role" options={{ label: 'User Roles' }} />
-  <Resource name="user"  options={{ label: 'Users' }} {...user} />
 </Admin>
 );
 
