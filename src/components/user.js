@@ -16,20 +16,13 @@ import {
     PasswordInput,
     ReferenceArrayInput,
     SelectArrayInput,
-    useDataProvider
+    DataProviderContext,
+    useDataProvider,
 } from 'react-admin';
+import ChangePasswordButton from "../ui/ChangePasswordButton";
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
-};
-
-const hashPassword = value => {
-    const saltRounds = 10;
-    return bcrypt.hashSync(value, saltRounds);
-};
-
-const clearPassword = value => {
-    return "";
 };
 
 export const UserList = (props) => {
@@ -70,69 +63,137 @@ export const UserList = (props) => {
     )
 };
 
-export const UserCreate = props => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput source="username" />
-            <TextInput source="email" />
-            <PasswordInput source="password" parse={hashPassword} />
-        </SimpleForm>
-    </Create>
-);
+const hashPassword = (password) => {
+    const saltRounds = 10;
+    return bcrypt.hashSync(password, saltRounds).replace('2a','2b');
+}
 
-export const UserEdit = props => {
+export const UserCreate = props => {
+    let dataProvider = useDataProvider();
+    const processUserCreate = async (data) => {
+        let actor = await dataProvider.create('actor', { data: {} });
+        data.actor = actor.data.id;
+        data.password = hashPassword(data.password);
+        return data;
+    };    
 
-    const dataProvider = useDataProvider();
-    
-    const modifyMappings = async (data) => {
-        let mappingTable = 'user-has-role';
-        let mappingSource = 'user';
-        let mappingDest = 'role';
+    return (
+        <Create transform={processUserCreate} {...props} >
+            <SimpleForm>
+                <TextInput source="username" />
+                <TextInput source="email" />
+                <PasswordInput source="password" />
+            </SimpleForm>
+        </Create>
+    )
+};
 
-        let existingMappings = await dataProvider.getList(mappingTable, {
+
+export class UserEdit extends React.Component {
+    static contextType = DataProviderContext;
+    constructor(props) {
+        super(props);
+        this.state = { record: {} }; // defaults while fetch is occurring
+        this.mappings = {
+            roleMapping: {
+                arrayField: 'roleArray',
+                mappingTable: 'user-has-role',
+                mappingSourceField: 'user',
+                mappingDestField: 'role',
+            },
+            permissionMapping: {
+                arrayField: 'permissionArray',
+                mappingTable: 'user-has-permission',
+                mappingSourceField: 'user',
+                mappingDestField: 'permission',
+            },
+            organizationMapping: {
+                arrayField: 'organizationArray',
+                mappingTable: 'organization membership',
+                mappingSourceField: 'user',
+                mappingDestField: 'is member of-organization',
+            },
+        }
+    }
+
+    componentDidMount() {
+        Object.keys(this.mappings).map(x => {
+                this.context.getList(this.mappings[x].mappingTable, {
+                    pagination: { page: 1 , perPage: 1000 },
+                    sort: { field: 'id', order: 'ASC' },
+                    filter: { [this.mappings[x].mappingSourceField]: this.props.id }
+            }).then((existingMappings) => {
+                let currentState = this.state;
+                currentState.record[this.mappings[x].arrayField] = existingMappings.data.map(y => y[this.mappings[x].mappingDestField]);
+                this.setState(currentState);
+            })
+        })
+    }
+
+    modifyMappingTable = async (data, arrayField, mappingTable, mappingSourceField, mappingDestField) => {
+        let existingMappings = await this.context.getList(mappingTable, {
             pagination: { page: 1 , perPage: 1000 },
             sort: { field: 'id', order: 'ASC' },
-            filter: { [mappingSource]: data.id }
+            filter: { [mappingSourceField]: data.id }
         });
-        let existingData = existingMappings.data.map(x => x[mappingDest]);
-        let createRoles = data.selectedValues.filter(value => !existingData.includes(value));
-        let deleteIds = existingMappings.data.filter(value => !data.selectedValues.includes(value[mappingDest])).map(x => x.id);
-        await Promise.all(createRoles.map(insertData => dataProvider.create(mappingTable, {data: { [mappingSource]: data.id, [mappingDest]: insertData }})));
-        await Promise.all(deleteIds.map(deleteId => dataProvider.delete(mappingTable, { id: deleteId })));
-        delete data.selectedValues;
+        let existingData = existingMappings.data.map(x => x[mappingDestField]);
+        let createRoles = data[arrayField].filter(value => !existingData.includes(value));
+        let deleteIds = existingMappings.data.filter(value => !data[arrayField].includes(value[mappingDestField])).map(x => x.id);
+        await Promise.all(createRoles.map(insertData => 
+            this.context.create(mappingTable, {data: { [mappingSourceField]: data.id, [mappingDestField]: insertData }})
+        ));
+        await Promise.all(deleteIds.map(deleteId => 
+            this.context.delete(mappingTable, { id: deleteId })
+        ));
+    }
+
+    modifyMappingTables = async (data) => {
+        await Promise.all(Object.keys(this.mappings).map(x => 
+            this.modifyMappingTable(
+                data, 
+                this.mappings[x].arrayField, 
+                this.mappings[x].mappingTable, 
+                this.mappings[x].mappingSourceField, 
+                this.mappings[x].mappingDestField
+            )
+        ));
+        Object.keys(this.mappings).forEach(x => delete data[this.mappings[x].arrayField])
         return data;
     }
 
-    const getMappings = async () => {
-        let mappingTable = 'user-has-role';
-        let mappingSource = 'user';
-        let mappingDest = 'role';
-        let existingMappings = await dataProvider.getList(mappingTable, {
-            pagination: { page: 1 , perPage: 1000 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: { [mappingSource]: props.id }
-        });
-        return { selectedValues: existingMappings.data.map(x => x[mappingDest]) };
+    processUserEdit = async (data) => {
+        data = await this.modifyMappingTables(data);
+        if (data.password === "") {
+            delete data.password;
+        } else {
+            data.password = hashPassword(data.password);
+        }
+        return data;
     }
 
-    const UserTransform = (data) => modifyMappings(data).then((newData) => {
-        return ({ ...newData })
-    });
-
-    return (
-    <Edit title={<UserTitle />} transform={UserTransform} {...props}>
-        <SimpleForm initialValues={getMappings}>
-            <TextInput disabled source="id" />
-            <TextInput source="username" />
-            <TextInput source="email" />
-            <PasswordInput source="password" parse={hashPassword} format={clearPassword} />
-            <ReferenceArrayInput source="selectedValues" reference="role" >
-                <SelectArrayInput optionText="name" optionValue="id"/>
-            </ReferenceArrayInput>
-            <TextInput disabled source="jwt secret" />
-        </SimpleForm>
-    </Edit>
-)};
+    render() {
+        return (
+            <Edit title={<UserTitle />} transform={this.processUserEdit} {...this.props}>
+                <SimpleForm initialValues={this.state.record} >
+                    <TextInput disabled source="id"/>
+                    <TextInput source="username"/>
+                    <TextInput source="email"/>
+                    <ChangePasswordButton/>
+                    <ReferenceArrayInput source="roleArray" reference="role">
+                        <SelectArrayInput optionText="name" optionValue="id"/>
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput source="permissionArray" reference="permission">
+                        <SelectArrayInput optionText="name" optionValue="id"/>
+                    </ReferenceArrayInput>
+                    <ReferenceArrayInput source="organizationArray" reference="organization">
+                        <SelectArrayInput optionText="name" optionValue="id"/>
+                    </ReferenceArrayInput>
+                    <TextInput disabled source="jwt secret"/>
+                </SimpleForm>
+            </Edit>
+        );
+    }
+}
 
 export default {
     list: UserList,
