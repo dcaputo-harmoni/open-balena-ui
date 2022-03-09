@@ -55,8 +55,10 @@ export const ReleaseTagEdit = props => (
     </Edit>
 );
 
-export default {
+const releaseTag = {
     list: ReleaseTagList,
     create: ReleaseTagCreate,
     edit: ReleaseTagEdit
 }
+
+export default releaseTag;

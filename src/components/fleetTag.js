@@ -46,8 +46,10 @@ export const FleetTagEdit = props => (
     </Edit>
 );
 
-export default {
+const fleetTag = {
     list: FleetTagList,
     create: FleetTagCreate,
     edit: FleetTagEdit
 }
+
+export default fleetTag;

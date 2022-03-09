@@ -76,8 +76,10 @@ export const ImageEdit = props => (
     </Edit>
 );
 
-export default {
+const image = {
     list: ImageList,
     create: ImageCreate,
     edit: ImageEdit
 }
+
+export default image;

@@ -77,8 +77,10 @@ export const ImageLabelEdit = props => (
     </Edit>
 );
 
-export default {
+const imageLabel = {
     list: ImageLabelList,
     create: ImageLabelCreate,
     edit: ImageLabelEdit
 }
+
+export default imageLabel;

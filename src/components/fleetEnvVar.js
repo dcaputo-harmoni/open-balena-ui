@@ -46,8 +46,10 @@ export const FleetEnvVarEdit = props => (
     </Edit>
 );
 
-export default {
+const fleetEnvVar = {
     list: FleetEnvVarList,
     create: FleetEnvVarCreate,
     edit: FleetEnvVarEdit
 }
+
+export default fleetEnvVar;

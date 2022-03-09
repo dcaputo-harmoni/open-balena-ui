@@ -55,8 +55,10 @@ export const DeviceTagEdit = props => (
     </Edit>
 );
 
-export default {
+const deviceTag = {
     list: DeviceTagList,
     create: DeviceTagCreate,
     edit: DeviceTagEdit
 }
+
+export default deviceTag;

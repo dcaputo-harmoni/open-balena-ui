@@ -46,8 +46,10 @@ export const ServiceEnvVarEdit = props => (
     </Edit>
 );
 
-export default {
+const serviceEnvVar = {
     list: ServiceEnvVarList,
     create: ServiceEnvVarCreate,
     edit: ServiceEnvVarEdit
 }
+
+export default serviceEnvVar;

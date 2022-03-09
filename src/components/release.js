@@ -58,8 +58,10 @@ export const ReleaseEdit = props => (
     </Edit>
 );
 
-export default {
+const release = {
     list: ReleaseList,
     create: ReleaseCreate,
     edit: ReleaseEdit
 }
+
+export default release;

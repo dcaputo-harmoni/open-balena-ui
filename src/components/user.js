@@ -21,7 +21,6 @@ import {
     DataProviderContext,
     useDataProvider,
     Toolbar,
-    useStyles,
     SaveButton,
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
@@ -132,7 +131,7 @@ export class UserEdit extends React.Component {
 
     componentDidMount() {
         Object.keys(this.mappings).map(x => {
-                this.context.getList(this.mappings[x].mappingTable, {
+                return this.context.getList(this.mappings[x].mappingTable, {
                     pagination: { page: 1 , perPage: 1000 },
                     sort: { field: 'id', order: 'ASC' },
                     filter: { [this.mappings[x].mappingSourceField]: this.props.id }
@@ -204,8 +203,10 @@ export class UserEdit extends React.Component {
     }
 }
 
-export default {
+const user = {
     list: UserList,
     create: UserCreate,
     edit: UserEdit
 }
+
+export default user;

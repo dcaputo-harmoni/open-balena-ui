@@ -66,8 +66,10 @@ export const DeviceEdit = props => (
     </Edit>
 );
 
-export default {
+const device = {
     list: DeviceList,
     create: DeviceCreate,
     edit: DeviceEdit
 }
+
+export default device;

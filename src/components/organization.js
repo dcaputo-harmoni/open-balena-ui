@@ -55,8 +55,10 @@ export const OrganizationEdit = props => (
     </Edit>
 );
 
-export default {
+const organization = {
     list: OrganizationList,
     create: OrganizationCreate,
     edit: OrganizationEdit
 }
+
+export default organization;

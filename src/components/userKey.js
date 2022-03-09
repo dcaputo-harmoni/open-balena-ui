@@ -1,11 +1,9 @@
 import * as React from "react";
-import * as bcrypt from "bcryptjs";
 import {
     Create,
     Edit,
     TextField,
     Datagrid,
-    ReferenceField,
     ReferenceManyField,
     SingleFieldList,
     ChipField,
@@ -48,8 +46,10 @@ export const UserKeysEdit = props => (
     </Edit>
 );
 
-export default {
+const userKey ={
     list: UserKeysList,
     create: UserKeysCreate,
     edit: UserKeysEdit
 }
+
+export default userKey;

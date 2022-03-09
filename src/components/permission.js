@@ -52,8 +52,10 @@ export const PermissionEdit = props => (
     </Edit>
 );
 
-export default {
+const permission = {
     list: PermissionList,
     create: PermissionCreate,
     edit: PermissionEdit
 }
+
+export default permission;

@@ -72,8 +72,10 @@ export const DeviceServiceVarEdit = props => (
     </Edit>
 );
 
-export default {
+const deviceServiceVar = {
     list: DeviceServiceVarList,
     create: DeviceServiceVarCreate,
     edit: DeviceServiceVarEdit
 }
+
+export default deviceServiceVar;

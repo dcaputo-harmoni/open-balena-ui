@@ -16,9 +16,8 @@ WORKDIR /usr/src/app
 
 COPY . ./
 
-RUN npm install --no-fund --no-update-notifier --global && \
-    tsc \
-    yarn
+RUN npm install --global yarn && \
+    npm install --no-fund --no-update-notifier
 
 COPY start.sh ./
 

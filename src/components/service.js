@@ -45,8 +45,10 @@ export const ServiceEdit = props => (
     </Edit>
 );
 
-export default {
+const service = {
     list: ServiceList,
     create: ServiceCreate,
     edit: ServiceEdit
 }
+
+export default service;

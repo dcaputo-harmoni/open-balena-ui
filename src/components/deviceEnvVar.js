@@ -55,8 +55,10 @@ export const DeviceEnvVarEdit = props => (
     </Edit>
 );
 
-export default {
+const deviceEnvVar = {
     list: DeviceEnvVarList,
     create: DeviceEnvVarCreate,
     edit: DeviceEnvVarEdit
 }
+
+export default deviceEnvVar;

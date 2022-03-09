@@ -78,8 +78,10 @@ export const FleetEdit = props => (
     </Edit>
 );
 
-export default {
+const fleet = {
     list: FleetList,
     create: FleetCreate,
     edit: FleetEdit
 }
+
+export default fleet;

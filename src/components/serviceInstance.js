@@ -18,6 +18,8 @@ export const ServiceInstanceList = (props) => {
     )
 };
 
-export default {
+const serviceInstnace = {
     list: ServiceInstanceList,
 }
+
+export default serviceInstnace;

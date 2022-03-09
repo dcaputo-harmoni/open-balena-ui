@@ -70,8 +70,10 @@ export const ApiKeyEdit = props => (
     </Edit>
 );
 
-export default {
+const apiKey = {
     list: ApiKeyList,
     create: ApiKeyCreate,
     edit: ApiKeyEdit
 }
+
+export default apiKey;

@@ -81,8 +81,10 @@ export const ImageEnvVarEdit = props => (
     </Edit>
 );
 
-export default {
+const imageEnvVar = {
     list: ImageEnvVarList,
     create: ImageEnvVarCreate,
     edit: ImageEnvVarEdit
 }
+
+export default imageEnvVar;

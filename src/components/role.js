@@ -52,8 +52,10 @@ export const RoleEdit = props => (
     </Edit>
 );
 
-export default {
+const role = {
     list: RoleList,
     create: RoleCreate,
     edit: RoleEdit
 }
+
+export default role;
