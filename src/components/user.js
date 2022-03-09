@@ -20,8 +20,12 @@ import {
     SelectArrayInput,
     DataProviderContext,
     useDataProvider,
+    Toolbar,
+    useStyles,
+    SaveButton,
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
+import DeleteUserButton from "../ui/DeleteUserButton";
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
@@ -92,6 +96,12 @@ export const UserCreate = props => {
     )
 };
 
+export const CustomToolbar = props => (
+    <Toolbar {...props}>
+        <SaveButton/>
+        <DeleteUserButton/>
+    </Toolbar>
+);
 
 export class UserEdit extends React.Component {
     static contextType = DataProviderContext;
@@ -173,7 +183,7 @@ export class UserEdit extends React.Component {
     render() {
         return (
             <Edit title={<UserTitle />} transform={this.processUserEdit} {...this.props}>
-                <SimpleForm initialValues={this.state.record} >
+                <SimpleForm initialValues={this.state.record} toolbar={<CustomToolbar />}>
                     <TextInput disabled source="id"/>
                     <TextInput source="username"/>
                     <TextInput source="email"/>

@@ -29,7 +29,6 @@ export const ChangePasswordButton = (props) => {
     const form = useForm();
     const handleSubmit = async values => {
         const hashedPassword = hashPassword(values.password);
-        console.log(`Updating user id ${props.record.id} password (${values.password}) to hash ${hashedPassword}`)
         dataProvider.update( 'user',
             {
                 id: props.record.id,
