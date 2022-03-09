@@ -1,5 +1,5 @@
 import React from "react";
-import { useNotify, useDataProvider, useRedirect, useRefresh } from 'react-admin';
+import { useNotify, useDataProvider, useRedirect } from 'react-admin';
 import { withStyles } from '@material-ui/core' 
 import MuiButton from '@material-ui/core/Button'; 
 import LockIcon from '@material-ui/icons/Lock'; 
@@ -20,7 +20,6 @@ export const DeleteUserButton = (props) => {
     const dataProvider = useDataProvider();
     const notify = useNotify();
     const redirect = useRedirect();
-    const refresh = useRefresh();
     const handleSubmit = async values => {
         let relatedLookups = [
             { resource: "user-has-permission", field: "user" },

@@ -14,7 +14,12 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /usr/src/app
 
-COPY . ./
+COPY ./src ./src
+COPY ./public ./public
+COPY ./patches ./patches
+COPY ./package.json ./
+COPY ./package-lock.json ./
+COPY ./yarn.lock ./
 
 RUN npm install --global yarn && \
     npm install --no-fund --no-update-notifier
