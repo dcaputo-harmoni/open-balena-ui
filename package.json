@@ -6,16 +6,21 @@
     "@bb-tech/ra-treemenu": "^1.0.7",
     "@material-ui/core": "^4.12.3",
     "@raphiniert/ra-data-postgrest": "^1.1.8",
+    "base32-encode": "^2.0.0",
     "bcryptjs": "^2.4.3",
+    "crypto": "^1.0.1",
+    "patch-package": "^6.4.7",
     "prop-types": "^15.8.1",
     "react": "^17.0.2",
     "react-admin": "^3.19.10",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
-    "redux-form": "^8.3.8"
+    "redux-form": "^8.3.8",
+    "util": "^0.12.4"
   },
   "scripts": {
-    "start": "react-scripts start"
+    "start": "react-scripts start",
+    "postinstall": "patch-package"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +39,10 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
+  },
+  "devDependencies": {
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "stream-browserify": "^3.0.0"
   }
 }

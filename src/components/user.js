@@ -1,5 +1,7 @@
 import * as React from "react";
+import { pseudoRandomBytes } from 'crypto-browserify';
 import * as bcrypt from "bcryptjs";
+import base32Encode from 'base32-encode'
 import {
     Create,
     Edit,
@@ -74,6 +76,8 @@ export const UserCreate = props => {
         let actor = await dataProvider.create('actor', { data: {} });
         data.actor = actor.data.id;
         data.password = hashPassword(data.password);
+        const key = pseudoRandomBytes(20);
+    	data['jwt secret'] = base32Encode(key, 'RFC3548').toString();
         return data;
     };    
 
@@ -163,11 +167,6 @@ export class UserEdit extends React.Component {
 
     processUserEdit = async (data) => {
         data = await this.modifyMappingTables(data);
-        if (data.password === "") {
-            delete data.password;
-        } else {
-            data.password = hashPassword(data.password);
-        }
         return data;
     }
 
