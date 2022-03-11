@@ -21,6 +21,7 @@ import {
     DataProviderContext,
     useDataProvider,
     Toolbar,
+    EditButton,
     SaveButton,
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
@@ -32,8 +33,8 @@ const UserTitle = ({ record }) => {
 
 export const UserList = (props) => {
     return (
-        <List {...props}>
-            <Datagrid rowClick="edit">
+        <List {...props} bulkActionButtons={false}>
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="username" />
                 <EmailField source="email" />
@@ -63,6 +64,8 @@ export const UserList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
+                <EditButton label="" color="default"/>
+                <DeleteUserButton variant="standard" size="small" color="default"/>
             </Datagrid>
         </List>
     )
@@ -98,7 +101,7 @@ export const UserCreate = props => {
 export const CustomToolbar = props => (
     <Toolbar {...props}>
         <SaveButton/>
-        <DeleteUserButton/>
+        <DeleteUserButton> Delete </DeleteUserButton>
     </Toolbar>
 );
 

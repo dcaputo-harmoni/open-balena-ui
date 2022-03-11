@@ -1,6 +1,5 @@
 const authProvider = {
     login: ({ username, password }) =>  {
-        console.log(JSON.stringify({ "username": username, "password": password }));
         const request = new Request(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/login_`, {
             method: 'POST',
             body: JSON.stringify({ "username": username, "password": password }),
@@ -12,11 +11,10 @@ const authProvider = {
                 if (response.status < 200 || response.status >= 300) {
                     throw new Error(response.statusText);
                 }
-                console.log(response);
-                return response;
-            })
-            .then(auth => {
-                localStorage.setItem('auth', auth);
+                response.body.getReader().read().then((streamData) => {
+                    let token = (new TextDecoder()).decode(streamData.value);
+                    localStorage.setItem('auth', token)
+                })
             })
             .catch(() => {
                 throw new Error('Network error')
@@ -37,6 +35,30 @@ const authProvider = {
         localStorage.removeItem('auth');
         return Promise.resolve();
     },
+    getCurrentUser: () => {
+        console.dir(localStorage.getItem('auth'))
+        const request = new Request(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/user/v1/whoami`, {
+            method: 'GET',
+            headers: new Headers({
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${localStorage.getItem('auth')}`,
+            }),
+            strictSSL: false
+        });
+        return fetch(request)
+            .then(response => {
+                if (response.status < 200 || response.status >= 300) {
+                    throw new Error(response.statusText);
+                }
+                return response.body.getReader().read().then((streamData) => {
+                    let data = (new TextDecoder()).decode(streamData.value);
+                    return data;
+                })
+            })
+            .catch(() => {
+                throw new Error('Network error')
+            });
+    }
 };
 
 export default authProvider;

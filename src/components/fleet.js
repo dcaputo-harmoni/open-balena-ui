@@ -20,11 +20,11 @@ const FleetTitle = ({ record }) => {
 
 const BooleanBinaryField = (props) => {
     return (
-      <FunctionField {...props} render={(record, source) =>
-        <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 1) }} />}
-      />
+        <FunctionField {...props} render={(record, source) =>
+            <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 1) }} />}
+        />
     );
-  };
+};
 
 export const FleetList = (props) => {
     return (

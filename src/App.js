@@ -36,10 +36,10 @@ const App = () => (
   <Resource name="menu-deployment" options={{ label: "Deployments", "isMenuParent": true }} />
   <Resource name="menu-service" options={{ label: "Services", "isMenuParent": true }} />
   <Resource name="menu-static" options={{ label: "Static Data", "isMenuParent": true }} />
-  <Resource name="actor" options={{ label: 'Actors' }} />
+  <Resource name="actor" />
   <Resource name="api key" options={{ label: 'API Keys', "menuParent": "menu-access" }} {...apiKey} />
-  <Resource name="api key-has-permission" options={{ label: 'API Key Permissions' }} />
-  <Resource name="api key-has-role" options={{ label: 'API Key Roles' }} />
+  <Resource name="api key-has-permission" />
+  <Resource name="api key-has-role" />
   <Resource name="application" options={{ label: 'Fleets', "menuParent": "menu-fleet" }} {...fleet} />
   <Resource name="application config variable" options={{ label: 'Config Vars', "menuParent": "menu-fleet" }} list={ListGuesser} />
   <Resource name="application environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-fleet" }} {...fleetEnvVar} />
@@ -55,32 +55,32 @@ const App = () => (
   <Resource name="device service environment variable" options={{ label: 'Service Vars', "menuParent": "menu-device" }} {...deviceServiceVar} />
   <Resource name="device tag" options={{ label: 'Tags', "menuParent": "menu-device" }} {...deviceTag} />
   <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType} />
-  <Resource name="device type alias" options={{ label: 'Device Type Aliases', "menuParent": "menu-static" }}/>
+  <Resource name="device type alias" />
   <Resource name="gateway download" options={{ label: 'Gateway D/Ls', "menuParent": "menu-static" }} list={ListGuesser} />
   <Resource name="image" options={{ label: 'Images', "menuParent": "menu-deployment" }} {...image} />
   <Resource name="image environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-deployment" }} {...imageEnvVar} />
   <Resource name="image install" options={{ label: 'Installs', "menuParent": "menu-deployment" }} list={ListGuesser} />
   <Resource name="image label" options={{ label: 'Labels', "menuParent": "menu-deployment" }} {...imageLabel} />
-  <Resource name="image-is part of-release" options={{ label: 'Releases', "menuParent": "menu-deployment" }} />
-  <Resource name="migration" options={{ label: 'Migrations' }} />
-  <Resource name="migration lock" options={{ label: 'Migration Locks' }} />
-  <Resource name="model" options={{ label: 'Models' }} />
+  <Resource name="image-is part of-release" />
+  <Resource name="migration" />
+  <Resource name="migration lock" />
+  <Resource name="model" />
   <Resource name="organization" options={{ label: 'Organizations', "menuParent": "menu-access" }} {...organization} />
-  <Resource name="organization membership" options={{ label: 'Org Memberships' }} />
+  <Resource name="organization membership" />
   <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission} />
   <Resource name="release" options={{ label: 'Releases', "menuParent": "menu-deployment" }} {...release} />
   <Resource name="release tag" options={{ label: 'Release Tags', "menuParent": "menu-deployment" }} {...releaseTag} />
   <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role} />
-  <Resource name="role-has-permission" options={{ label: 'Role Permissions' }} />
+  <Resource name="role-has-permission" />
   <Resource name="service" options={{ label: 'Services', "menuParent": "menu-service" }} {...service} />
   <Resource name="service environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-service" }} {...serviceEnvVar} />
-  <Resource name="service install" options={{ label: 'Installs', "menuParent": "menu-service" }} />
+  <Resource name="service install" />
   <Resource name="service instance" options={{ label: 'Instances', "menuParent": "menu-service" }} {...serviceInstance} />
   <Resource name="service label" options={{ label: 'Labels', "menuParent": "menu-service" }} list={ListGuesser} />
-  <Resource name="user"  options={{ label: 'Users', "menuParent": "menu-access" }} {...user} />
-  <Resource name="user-has-permission" options={{ label: 'User Permissions' }} />
+  <Resource name="user" options={{ label: 'Users', "menuParent": "menu-access" }} {...user} />
+  <Resource name="user-has-permission" />
   <Resource name="user-has-public key" options={{ label: 'User SSH Keys', "menuParent": "menu-access" }} {...userKey} />
-  <Resource name="user-has-role" options={{ label: 'User Roles' }} />
+  <Resource name="user-has-role" />
 </Admin>
 );
 

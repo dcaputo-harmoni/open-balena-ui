@@ -1,9 +1,11 @@
-import * as React from "react";
+import * as React from 'react';
 import {
     Create,
     Edit,
-    TextField,
     Datagrid,
+    TextField,
+    FunctionField,
+    BooleanField,
     ReferenceManyField,
     SingleFieldList,
     ChipField,
@@ -11,21 +13,39 @@ import {
     SimpleForm,
     TextInput,
 } from 'react-admin';
+import DeviceServicesButton from '../ui/DeviceServicesButton';
+import DeviceConnectButton from '../ui/DeviceConnectButton';
 
 const DeviceTitle = ({ record }) => {
     return <span>Device {record ? `"${record.name}"` : ''}</span>;
 };
 
+const OnlineField = (props) => {
+    return (
+        <FunctionField {...props} render={(record, source) =>
+            <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 'online') }} />}
+        />
+    );
+};
+
 export const DeviceList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <TextField label="UUID" source="uuid" />
+                <FunctionField label="UUID" render={record => record['uuid'].substring(0,7)}/>
                 <TextField label="Name" source="device name" />
+                <OnlineField label="Online" source="api heartbeat state" />
+                <TextField label="Status" source="status" />
+                <FunctionField label="OS" render={record => `${record['os version']}-${record['os variant']}`}/>
                 <ReferenceManyField label="Fleet" source="belongs to-application" reference="application" target="id">
                     <SingleFieldList>
                         <ChipField source="app name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
+                <ReferenceManyField label="Release Rev." source="is running-release" reference="release" target="id">
+                    <SingleFieldList>
+                        <ChipField source="revision" />
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ReferenceManyField label="Device Type" source="is of-device type" reference="device type" target="id">
@@ -33,15 +53,8 @@ export const DeviceList = (props) => {
                         <ChipField source="slug" />
                     </SingleFieldList>
                 </ReferenceManyField>
-                <ReferenceManyField label="Installed Services" source="id" reference="service install" target="device">
-                    <SingleFieldList>
-                        <ReferenceManyField source="installs-service" reference="service" target="id">
-                        <SingleFieldList>
-                            <ChipField source="service name" />
-                        </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <DeviceServicesButton/>
+                <DeviceConnectButton/>
             </Datagrid>
         </List>
     )

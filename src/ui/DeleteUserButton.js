@@ -2,16 +2,15 @@ import React from "react";
 import { useNotify, useDataProvider, useRedirect } from 'react-admin';
 import { withStyles } from '@material-ui/core' 
 import MuiButton from '@material-ui/core/Button'; 
-import LockIcon from '@material-ui/icons/Lock'; 
+import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@material-ui/core/Dialog'; 
 import DialogTitle from '@material-ui/core/DialogTitle'; 
 import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
-import Save from '@material-ui/icons/Save';
 
 const Button = withStyles({ 
    root: { 
-      margin: '16px 0px'
+      margin: '16px'
    }
 })(MuiButton); 
 
@@ -46,8 +45,8 @@ export const DeleteUserButton = (props) => {
     
     return (
     <> 
-        <Button variant="outlined" color="primary" aria-label="delete" onClick={() => setOpen(true)}>
-            <LockIcon style={{ marginRight: '4px' }} /> Delete User 
+        <Button variant="contained" aria-label="delete" onClick={() => setOpen(true)} { ...props }>
+            <DeleteIcon style={{ marginRight: '4px' }} {...props}/> { props.children }
         </Button> 
         <Dialog
             open={open}
@@ -61,7 +60,7 @@ export const DeleteUserButton = (props) => {
                 render={({handleSubmit, form, submitting, pristine, values }) => (
                     <form onSubmit={handleSubmit}>
                         <Button variant="contained" color="primary" type="submit" disabled={submitting}>
-                            <Save style={{ marginRight: '8px' }}/> Confirm Delete
+                            Confirm Delete
                         </Button>
                     </form>
                 )}
