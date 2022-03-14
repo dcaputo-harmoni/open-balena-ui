@@ -1,5 +1,5 @@
 import React from "react";
-import { useDataProvider, useRedirect } from 'react-admin';
+import { useRedirect } from 'react-admin';
 import Button from '@material-ui/core/Button'; 
 import ListIcon from '@mui/icons-material/List';
 import Dialog from '@material-ui/core/Dialog'; 
@@ -9,7 +9,6 @@ import { Form } from 'react-final-form';
 
 export const DeleteUserButton = (props) => {
     const [open, setOpen] = React.useState(false);
-    const dataProvider = useDataProvider();
     const redirect = useRedirect();
     const handleSubmit = async values => {
         console.dir(props.record.id);

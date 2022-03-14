@@ -23,9 +23,6 @@ const useStyles = makeStyles({
 });
 
 export class Iframe extends React.Component {
-    constructor(props) {
-        super(props);
-    }
     render () {
         return(
             <div>

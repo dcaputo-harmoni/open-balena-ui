@@ -143,7 +143,7 @@ const getOrderBy = (field, order, primaryKey) => {
 
 const defaultPrimaryKeys = new Map();
 
-export default (apiUrl, httpClient = fetchUtils.fetchJson, defaultListOp = 'eq', 
+export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson, defaultListOp = 'eq', 
                 primaryKeys = defaultPrimaryKeys) => ({
   getList: async (resource, params) => {
     const primaryKey = getPrimaryKey(resource, primaryKeys);
@@ -396,3 +396,5 @@ export default (apiUrl, httpClient = fetchUtils.fetchJson, defaultListOp = 'eq',
     }).then(({ json }) => ({ data: json.map(data => encodeId(data, primaryKey)) }));
   },
 });
+
+export default postgrestDataProvider;
