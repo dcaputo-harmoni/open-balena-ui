@@ -24,12 +24,6 @@ COPY ./yarn.lock ./
 RUN npm install --global yarn && \
     npm install --no-fund --no-update-notifier
 
-COPY ./postgrest-proxy ./postgrest-proxy
-WORKDIR /usr/src/app/postgrest-proxy
-RUN npm install --no-fund --no-update-notifier
-
-WORKDIR /usr/src/app
-
 COPY start.sh ./
 
 CMD ["bash", "start.sh"]

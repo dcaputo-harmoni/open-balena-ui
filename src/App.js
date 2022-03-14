@@ -34,7 +34,7 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = postgrestRestProvider(process.env.REACT_APP_POSTGREST_PROXY_URL, httpClient);
+const dataProvider = postgrestRestProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
 const App = () => (
 <Admin dataProvider={dataProvider} authProvider={openbalenaAuthProvider} menu={TreeMenu} > 
