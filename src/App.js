@@ -1,8 +1,8 @@
 import * as React from "react";
 import { Admin, Resource, ListGuesser, fetchUtils } from 'react-admin';
 import TreeMenu from '@bb-tech/ra-treemenu';
-import postgrestRestProvider from '@raphiniert/ra-data-postgrest';
-import openbalenaAuthProvider from './auth/openbalenaAuthProvider';
+import postgrestDataProvider from './dataProvider/postgrestDataProvider';
+import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import user from './components/user';
 import userKey from './components/userKey';
 import organization from './components/organization';
@@ -34,7 +34,7 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = postgrestRestProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
+const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
 const App = () => (
 <Admin dataProvider={dataProvider} authProvider={openbalenaAuthProvider} menu={TreeMenu} > 

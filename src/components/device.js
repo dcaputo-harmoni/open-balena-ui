@@ -12,6 +12,7 @@ import {
     List,
     SimpleForm,
     TextInput,
+    SearchInput,
 } from 'react-admin';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
@@ -28,9 +29,13 @@ const OnlineField = (props) => {
     );
 };
 
+const deviceFilters = [
+    <SearchInput source="#uuid,device name,status@ilike" alwaysOn />,
+];
+
 export const DeviceList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} filters={deviceFilters}>
             <Datagrid>
                 <TextField source="id" />
                 <FunctionField label="UUID" render={record => record['uuid'].substring(0,7)}/>

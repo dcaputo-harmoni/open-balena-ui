@@ -18,6 +18,7 @@
     "jwt-decode": "^3.1.2",
     "patch-package": "^6.4.7",
     "prop-types": "^15.8.1",
+    "query-string": "^7.1.1",
     "react": "^17.0.2",
     "react-admin": "^3.19.10",
     "react-dom": "^17.0.2",

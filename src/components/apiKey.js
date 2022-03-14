@@ -14,7 +14,9 @@ import {
     ReferenceArrayInput,
     SelectInput,
     FormDataConsumer,
-    DataProviderContext
+    DataProviderContext,
+    EditButton,
+    SearchInput
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
 
@@ -39,7 +41,11 @@ class ActorField extends React.Component {
             }).then((result) => {
                 if (result.data.length > 0) {
                     let currentState = this.state;
-                    currentState.record.actor = result.data[0].username || result.data[0]['app name'] || result.data[0]['device name'];
+                    currentState.record.actorName = result.data[0].username || result.data[0]['app name'] || result.data[0]['device name'];
+                    currentState.record.actorType = result.data[0].username ? "User" : (result.data[0]['app name'] ? "Fleet" : "Device");
+                    let actorRecordType = result.data[0].username ? "user" : (result.data[0]['app name'] ? "application" : "device");
+                    let actorRecordId = result.data[0].id;
+                    currentState.record.actorLink = `/#/${actorRecordType}/${actorRecordId}`;
                     this.setState(currentState);
                 }
             });    
@@ -48,15 +54,19 @@ class ActorField extends React.Component {
 
     render() {
         return (
-            <Chip label={this.state.record.actor}/>
+            <Chip label={`${this.state.record.actorType}: ${this.state.record.actorName}`} href={this.state.record.actorLink} component="a" clickable />
         );
     }
 }
 
+const apiKeyFilters = [
+    <SearchInput source="#key,name,description@ilike" alwaysOn />,
+];
+
 export const ApiKeyList = (props) => {
     return (
-        <List {...props}>
-            <Datagrid rowClick="edit">
+        <List {...props} filters={apiKeyFilters}>
+            <Datagrid>
                 <TextField source="id" />
                 <TextField label="API Key" source="key" />
                 <TextField label="Name" source="name" />
@@ -76,6 +86,7 @@ export const ApiKeyList = (props) => {
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ActorField label="Assigned To"/>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )
