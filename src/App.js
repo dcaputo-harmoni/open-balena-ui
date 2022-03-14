@@ -1,5 +1,5 @@
 import * as React from "react";
-import { Admin, Resource, ListGuesser } from 'react-admin';
+import { Admin, Resource, ListGuesser, fetchUtils } from 'react-admin';
 import TreeMenu from '@bb-tech/ra-treemenu';
 import postgrestRestProvider from '@raphiniert/ra-data-postgrest';
 import openbalenaAuthProvider from './auth/openbalenaAuthProvider';
@@ -26,14 +26,23 @@ import service from './components/service';
 import serviceEnvVar from './components/serviceEnvVar';
 import serviceInstance from './components/serviceInstance';
 
-const dataProvider = postgrestRestProvider(process.env.REACT_APP_POSTGREST_URL);
+const httpClient = (url, options = {}) => {
+  if (!options.headers) {
+    options.headers = new Headers({ Accept: 'application/json' });
+  }
+  options.headers.set('Authorization', `Bearer ${localStorage.getItem('auth')}`);
+  return fetchUtils.fetchJson(url, options);
+};
+
+const dataProvider = postgrestRestProvider(process.env.REACT_APP_POSTGREST_PROXY_URL, httpClient);
 
 const App = () => (
 <Admin dataProvider={dataProvider} authProvider={openbalenaAuthProvider} menu={TreeMenu} > 
   <Resource name="menu-access" options={{ label: "Access", "isMenuParent": true }} />
   <Resource name="menu-fleet" options={{ label: "Fleets", "isMenuParent": true }} />
   <Resource name="menu-device" options={{ label: "Devices", "isMenuParent": true }} />
-  <Resource name="menu-deployment" options={{ label: "Deployments", "isMenuParent": true }} />
+  <Resource name="menu-image" options={{ label: "Images", "isMenuParent": true }} />
+  <Resource name="menu-release" options={{ label: "Releases", "isMenuParent": true }} />
   <Resource name="menu-service" options={{ label: "Services", "isMenuParent": true }} />
   <Resource name="menu-static" options={{ label: "Static Data", "isMenuParent": true }} />
   <Resource name="actor" />
@@ -57,10 +66,10 @@ const App = () => (
   <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType} />
   <Resource name="device type alias" />
   <Resource name="gateway download" options={{ label: 'Gateway D/Ls', "menuParent": "menu-static" }} list={ListGuesser} />
-  <Resource name="image" options={{ label: 'Images', "menuParent": "menu-deployment" }} {...image} />
-  <Resource name="image environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-deployment" }} {...imageEnvVar} />
-  <Resource name="image install" options={{ label: 'Installs', "menuParent": "menu-deployment" }} list={ListGuesser} />
-  <Resource name="image label" options={{ label: 'Labels', "menuParent": "menu-deployment" }} {...imageLabel} />
+  <Resource name="image" options={{ label: 'Images', "menuParent": "menu-image" }} {...image} />
+  <Resource name="image environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-image" }} {...imageEnvVar} />
+  <Resource name="image install" />
+  <Resource name="image label" options={{ label: 'Labels', "menuParent": "menu-image" }} {...imageLabel} />
   <Resource name="image-is part of-release" />
   <Resource name="migration" />
   <Resource name="migration lock" />
@@ -68,8 +77,8 @@ const App = () => (
   <Resource name="organization" options={{ label: 'Organizations', "menuParent": "menu-access" }} {...organization} />
   <Resource name="organization membership" />
   <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission} />
-  <Resource name="release" options={{ label: 'Releases', "menuParent": "menu-deployment" }} {...release} />
-  <Resource name="release tag" options={{ label: 'Release Tags', "menuParent": "menu-deployment" }} {...releaseTag} />
+  <Resource name="release" options={{ label: 'Releases', "menuParent": "menu-release" }} {...release} />
+  <Resource name="release tag" options={{ label: 'Tags', "menuParent": "menu-release" }} {...releaseTag} />
   <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role} />
   <Resource name="role-has-permission" />
   <Resource name="service" options={{ label: 'Services', "menuParent": "menu-service" }} {...service} />

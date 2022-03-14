@@ -57,7 +57,7 @@ export const DeviceConnectButton = (props) => {
     }
 
     const loadDialog = (props) => {
-        let REMOTE_HOST = process.env.REACT_APP_OPEN_BALENA_REMOTE_HOST;
+        let REMOTE_HOST = process.env.REACT_APP_OPEN_BALENA_REMOTE_URL;
         let uuid = props.record.uuid;
         authProvider.getCurrentUser().then((summaryUser) => 
             dataProvider.getOne('user', { id: JSON.parse(summaryUser).id }).then((user) =>
@@ -70,7 +70,7 @@ export const DeviceConnectButton = (props) => {
                     let apiKey = apiKeys.data[0].key;
                     let containerChoices = [{id: 0, name: 'host'}];
                     let containerServices = [[{id: 0, name: 'SSH'}]];
-                    let containerLinks = [[`http://${REMOTE_HOST}?service=ssh&uuid=${uuid}&apiKey=${apiKey}`]];
+                    let containerLinks = [[`${REMOTE_HOST}?service=ssh&uuid=${uuid}&apiKey=${apiKey}`]];
                     dataProvider.getList('image install', {
                         pagination: { page: 1 , perPage: 1000 },
                         sort: { field: 'id', order: 'ASC' },
@@ -110,26 +110,26 @@ export const DeviceConnectButton = (props) => {
                             console.dir(image);
                             let containerName = image.service.data[0]['service name'];
                             let services = [{id: 0, name: 'SSH'}];
-                            let links = [`http://${REMOTE_HOST}?service=ssh&container=${containerName}&uuid=${uuid}&apiKey=${apiKey}`];
+                            let links = [`${REMOTE_HOST}?service=ssh&container=${containerName}&uuid=${uuid}&apiKey=${apiKey}`];
                             if (image.labels.data.find(x => x['label name'] === 'openbalena.remote.http')) {
                                 let name = image.labels.data.find(x => x['label name'] === 'openbalena.remote.http.label');
                                 services.push({id: services.length, name: name ? name.value : 'HTTP'});
                                 let port = image.labels.data.find(x => x['label name'] === 'openbalena.remote.http.port');
                                 let path = image.labels.data.find(x => x['label name'] === 'openbalena.remote.http.path');
-                                links.push(`http://${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '80'}&protocol=http&uuid=${uuid}&apiKey=${apiKey}`);
+                                links.push(`${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '80'}&protocol=http&uuid=${uuid}&apiKey=${apiKey}`);
                             };
                             if (image.labels.data.find(x => x['label name'] === 'openbalena.remote.https')) {
                                 let name = image.labels.data.find(x => x['label name'] === 'openbalena.remote.https.label');
                                 services.push({id: services.length, name: name ? name.value : 'HTTPS'});
                                 let port = image.labels.data.find(x => x['label name'] === 'openbalena.remote.https.port');
                                 let path = image.labels.data.find(x => x['label name'] === 'openbalena.remote.https.path');
-                                links.push(`http://${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '443'}&protocol=https&uuid=${uuid}&apiKey=${apiKey}`);
+                                links.push(`${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '443'}&protocol=https&uuid=${uuid}&apiKey=${apiKey}`);
                             };
                             if (image.labels.data.find(x => x['label name'] === 'openbalena.remote.vnc')) {
                                 let name = image.labels.data.find(x => x['label name'] === 'openbalena.remote.vnc.label');
                                 services.push({id: services.length, name: name ? name.value : 'VNC'});
                                 let port = image.labels.data.find(x => x['label name'] === 'openbalena.remote.vnc.port');
-                                links.push(`http://${REMOTE_HOST}?service=vnc&port=${port ? port.value : '5900'}&uuid=${uuid}&apiKey=${apiKey}`);
+                                links.push(`${REMOTE_HOST}?service=vnc&port=${port ? port.value : '5900'}&uuid=${uuid}&apiKey=${apiKey}`);
                             };
                             containerChoices.push({id: containerChoices.length, name: containerName});
                             containerServices.push(services);

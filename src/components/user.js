@@ -1,4 +1,5 @@
 import * as React from "react";
+import { Fragment } from 'react';
 import { pseudoRandomBytes } from 'crypto-browserify';
 import * as bcrypt from "bcryptjs";
 import base32Encode from 'base32-encode'
@@ -26,14 +27,21 @@ import {
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
+import UserPermissionsButton from "../ui/UserPermissionsButton";
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
 };
 
+const UserBulkActionButtons = props => (
+    <Fragment>
+        <DeleteUserButton variant="standard" fontSize="small" color="default" {...props}> Delete </DeleteUserButton>
+    </Fragment>
+);
+
 export const UserList = (props) => {
     return (
-        <List {...props} bulkActionButtons={false}>
+        <List {...props} bulkActionButtons={<UserBulkActionButtons />}>
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="username" />
@@ -57,15 +65,9 @@ export const UserList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
-                <ReferenceManyField label="Permissions" reference="user-has-permission" target="user">
-                    <SingleFieldList>
-                        <ReferenceField source="permission" reference="permission">
-                            <ChipField source="name" />
-                        </ReferenceField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <UserPermissionsButton> Permissions </UserPermissionsButton>
                 <EditButton label="" color="default"/>
-                <DeleteUserButton variant="standard" size="small" color="default"/>
+                <DeleteUserButton variant="standard" fontSize="small" color="default"/>
             </Datagrid>
         </List>
     )
@@ -98,9 +100,9 @@ export const UserCreate = props => {
     )
 };
 
-export const CustomToolbar = props => (
+const CustomToolbar = props => (
     <Toolbar {...props}>
-        <SaveButton/>
+        <SaveButton style={{marginRight: "32px"}}/>
         <DeleteUserButton> Delete </DeleteUserButton>
     </Toolbar>
 );

@@ -1,3 +1,5 @@
+import jwt_decode from 'jwt-decode';
+
 const authProvider = {
     login: ({ username, password }) =>  {
         const request = new Request(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/login_`, {
@@ -13,6 +15,7 @@ const authProvider = {
                 }
                 response.body.getReader().read().then((streamData) => {
                     let token = (new TextDecoder()).decode(streamData.value);
+                    console.log(jwt_decode(token));
                     localStorage.setItem('auth', token)
                 })
             })

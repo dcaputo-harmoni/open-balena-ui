@@ -1,7 +1,5 @@
 import * as React from "react";
 import {
-    Create,
-    Edit,
     TextField,
     Datagrid,
     FunctionField,
@@ -10,17 +8,12 @@ import {
     SingleFieldList,
     ChipField,
     List,
-    SimpleForm,
-    TextInput,
 } from 'react-admin';
-
-const ImageTitle = ({ record }) => {
-    return <span>Image {record ? `"${record.name}"` : ''}</span>;
-};
+import dateFormat from 'dateformat';
 
 export const ImageList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} bulkActionButtons={false}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <ReferenceManyField label="Fleet" reference="image-is part of-release" target="image">
@@ -47,39 +40,15 @@ export const ImageList = (props) => {
                     </SingleFieldList>
                 </ReferenceManyField>
                 <FunctionField label="Size" render={record => `${Math.round((record['image size']/1000000)*10)/10}mb`} />;
-                <TextField label="Push Date" source="push timestamp" />
+                <FunctionField label="Push Date" render={record => `${dateFormat((new Date(record['push timestamp'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
                 <TextField label="Status" source="status" />
             </Datagrid>
         </List>
     )
 };
 
-export const ImageCreate = props => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput label="Start Date" source="start timestamp" />
-            <TextInput label="End Date" source="end timestamp" />
-            <TextInput label="Push Date" source="push timestamp" />
-            <TextInput label="Status" source="status" />
-        </SimpleForm>
-    </Create>
-);
-
-export const ImageEdit = props => (
-    <Edit title={<ImageTitle />} {...props}>
-        <SimpleForm>
-            <TextInput label="Start Date" source="start timestamp" />
-            <TextInput label="End Date" source="end timestamp" />
-            <TextInput label="Push Date" source="push timestamp" />
-            <TextInput label="Status" source="status" />
-        </SimpleForm>
-    </Edit>
-);
-
 const image = {
-    list: ImageList,
-    create: ImageCreate,
-    edit: ImageEdit
+    list: ImageList
 }
 
 export default image;

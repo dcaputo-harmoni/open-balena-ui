@@ -1,23 +1,16 @@
 import * as React from "react";
 import {
-    Create,
-    Edit,
     TextField,
     Datagrid,
     ReferenceManyField,
     SingleFieldList,
     ChipField,
     List,
-    SimpleForm,
 } from 'react-admin';
-
-const ServiceTitle = ({ record }) => {
-    return <span>Service {record ? `"${record.name}"` : ''}</span>;
-};
 
 export const ServiceList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} bulkActionButtons={false}>
             <Datagrid rowClick="edit">
                 <TextField source="id" />
                 <TextField label="Name" source="service name" />
@@ -31,24 +24,8 @@ export const ServiceList = (props) => {
     )
 };
 
-export const ServiceCreate = props => (
-    <Create {...props}>
-        <SimpleForm>
-        </SimpleForm>
-    </Create>
-);
-
-export const ServiceEdit = props => (
-    <Edit title={<ServiceTitle />} {...props}>
-        <SimpleForm>
-        </SimpleForm>
-    </Edit>
-);
-
 const service = {
-    list: ServiceList,
-    create: ServiceCreate,
-    edit: ServiceEdit
+    list: ServiceList
 }
 
 export default service;
