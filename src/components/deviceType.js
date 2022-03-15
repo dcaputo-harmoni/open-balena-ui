@@ -5,8 +5,6 @@ import {
     TextField,
     Datagrid,
     ReferenceField,
-    ReferenceManyField,
-    SingleFieldList,
     ChipField,
     List,
     SimpleForm,
@@ -24,16 +22,12 @@ export const DeviceTypeList = (props) => {
                 <TextField source="id" />
                 <TextField label="Slug" source="slug" />
                 <TextField label="Name" source="name" />
-                <ReferenceManyField label="Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
-                    <SingleFieldList>
-                        <ChipField source="slug" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Aliases" source="id" reference="device type alias" target="device type">
-                    <SingleFieldList>
-                        <ChipField source="is referenced by-alias" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
+                    <ChipField source="slug" />
+                </ReferenceField>
+                <ReferenceField label="Aliases" source="id" reference="device type alias" target="device type">
+                    <ChipField source="is referenced by-alias" />
+                </ReferenceField>
                 <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
                     <ChipField source="slug" />
                 </ReferenceField>

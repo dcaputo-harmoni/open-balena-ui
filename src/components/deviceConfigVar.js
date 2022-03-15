@@ -14,11 +14,11 @@ import {
     TextInput,
 } from 'react-admin';
 
-const DeviceTagTitle = ({ record }) => {
-    return <span>Device Tag {record ? `"${record.name}"` : ''}</span>;
+const DeviceConfigVarTitle = ({ record }) => {
+    return <span>Device Config Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceTagList = (props) => {
+export const DeviceConfigVarList = (props) => {
     return (
         <List {...props}>
             <Datagrid>
@@ -26,7 +26,7 @@ export const DeviceTagList = (props) => {
                 <ReferenceField label="Device" source="device" reference="device" target="id">
                     <ChipField source="uuid" />
                 </ReferenceField>
-                <TextField label="Name" source="tag key" />
+                <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
                 <ReferenceField label="Fleet" source="device" reference="device" target="id">
                     <ReferenceField source="belongs to-application" reference="application" target="id">
@@ -39,34 +39,34 @@ export const DeviceTagList = (props) => {
     )
 };
 
-export const DeviceTagCreate = props => (
+export const DeviceConfigVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <ReferenceInput source="device" reference="device" target="id">
                 <SelectInput optionText="device name" optionValue="id" />
             </ReferenceInput>
-            <TextInput label="Name" source="tag key" />
+            <TextInput label="Name" source="name" />
             <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
 
-export const DeviceTagEdit = props => (
-    <Edit title={<DeviceTagTitle />} {...props}>
+export const DeviceConfigVarEdit = props => (
+    <Edit title={<DeviceConfigVarTitle />} {...props}>
         <SimpleForm>
             <ReferenceInput source="device" reference="device" target="id">
                 <SelectInput optionText="device name" optionValue="id" />
             </ReferenceInput>
-            <TextInput label="Name" source="tag key" />
+            <TextInput label="Name" source="name" />
             <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );
 
-const deviceTag = {
-    list: DeviceTagList,
-    create: DeviceTagCreate,
-    edit: DeviceTagEdit
+const deviceConfigVar = {
+    list: DeviceConfigVarList,
+    create: DeviceConfigVarCreate,
+    edit: DeviceConfigVarEdit
 }
 
-export default deviceTag;
+export default deviceConfigVar;

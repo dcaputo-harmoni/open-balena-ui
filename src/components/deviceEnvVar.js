@@ -4,11 +4,14 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
+    EditButton,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
 } from 'react-admin';
 
 const DeviceEnvVarTitle = ({ record }) => {
@@ -18,24 +21,19 @@ const DeviceEnvVarTitle = ({ record }) => {
 export const DeviceEnvVarList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Device" source="device" reference="device" target="id">
-                    <SingleFieldList>
-                        <ChipField source="uuid" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Device" source="device" reference="device" target="id">
+                    <ChipField source="uuid" />
+                </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
-                <ReferenceManyField label="Fleet" source="device" reference="device" target="id">
-                    <SingleFieldList>
-                        <ReferenceManyField source="belongs to-application" reference="application" target="id">
-                            <SingleFieldList>
-                                <ChipField source="app name" />
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="device" reference="device" target="id">
+                    <ReferenceField source="belongs to-application" reference="application" target="id">
+                        <ChipField source="app name" />
+                    </ReferenceField>
+                </ReferenceField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )
@@ -43,7 +41,12 @@ export const DeviceEnvVarList = (props) => {
 
 export const DeviceEnvVarCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput source="device" reference="device" target="id">
+                <SelectInput optionText="device name" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
@@ -51,6 +54,11 @@ export const DeviceEnvVarCreate = props => (
 export const DeviceEnvVarEdit = props => (
     <Edit title={<DeviceEnvVarTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput source="device" reference="device" target="id">
+                <SelectInput optionText="device name" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );

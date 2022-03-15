@@ -23,6 +23,7 @@
     "react-admin": "^3.19.10",
     "react-dom": "^17.0.2",
     "react-scripts": "5.0.0",
+    "recharts": "^2.1.9",
     "redux-form": "^8.3.8",
     "util": "^0.12.4"
   },

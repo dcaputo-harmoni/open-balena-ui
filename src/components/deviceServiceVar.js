@@ -4,11 +4,11 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
     ChipField,
     List,
     SimpleForm,
+    EditButton,
+    ReferenceField,
 } from 'react-admin';
 
 const DeviceServiceVarTitle = ({ record }) => {
@@ -18,41 +18,28 @@ const DeviceServiceVarTitle = ({ record }) => {
 export const DeviceServiceVarList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Device" source="service install" reference="service install" target="id">
-                    <SingleFieldList>
-                        <ReferenceManyField source="device" reference="device" target="id">
-                            <SingleFieldList>
-                                <ChipField source="uuid" />
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Service" source="service install" reference="service install" target="id">
-                    <SingleFieldList>
-                        <ReferenceManyField source="installs-service" reference="service" target="id">
-                            <SingleFieldList>
-                                <ChipField source="service name" />
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Device" source="service install" reference="service install" target="id">
+                    <ReferenceField source="device" reference="device" target="id">
+                        <ChipField source="uuid" />
+                    </ReferenceField>
+                </ReferenceField>
+                <ReferenceField label="Service" source="service install" reference="service install" target="id">
+                    <ReferenceField source="installs-service" reference="service" target="id">
+                        <ChipField source="service name" />
+                    </ReferenceField>
+                </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
-                <ReferenceManyField label="Fleet" source="service install" reference="service install" target="id">
-                    <SingleFieldList>
-                        <ReferenceManyField source="device" reference="device" target="id">
-                            <SingleFieldList>
-                                <ReferenceManyField source="belongs to-application" reference="application" target="id">
-                                    <SingleFieldList>
-                                        <ChipField source="app name" />
-                                    </SingleFieldList>
-                                </ReferenceManyField>
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="service install" reference="service install" target="id">
+                    <ReferenceField source="device" reference="device" target="id">
+                        <ReferenceField source="belongs to-application" reference="application" target="id">
+                            <ChipField source="app name" />
+                        </ReferenceField>
+                    </ReferenceField>
+                </ReferenceField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )
