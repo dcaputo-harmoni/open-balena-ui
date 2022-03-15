@@ -6,12 +6,14 @@ import {
     Datagrid,
     FunctionField,
     BooleanField,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
     TextInput,
+    ReferenceInput,
+    SelectInput,
+    EditButton,
 } from 'react-admin';
 
 const FleetTitle = ({ record }) => {
@@ -29,31 +31,26 @@ const BooleanBinaryField = (props) => {
 export const FleetList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField label="Name" source="app name" />
                 <TextField label="Slug" source="slug" />
-                <ReferenceManyField label="Device Type" source="is for-device type" reference="device type" target="id">
-                    <SingleFieldList>
-                        <ChipField source="slug" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Device Type" source="is for-device type" reference="device type" target="id">
+                    <ChipField source="slug" />
+                </ReferenceField>
                 <BooleanBinaryField label="Track Latest Rel." source="should track latest release" />
                 <TextField label="Target Rel." source="should be running-release" />
                 <TextField label="Depends On" source="depends on-application" />
                 <BooleanBinaryField label="Host" source="is host" />
                 <BooleanBinaryField label="Archived" source="is archived" />
                 <BooleanBinaryField label="Public" source="is public" />
-                <ReferenceManyField label="Organizations" source="organization" reference="organization" target="id">
-                    <SingleFieldList>
-                        <ChipField source="name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Fleet Type" source="application type" reference="application type" target="id">
-                    <SingleFieldList>
-                        <ChipField source="name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Organization" source="organization" reference="organization" target="id">
+                    <ChipField source="name" />
+                </ReferenceField>
+                <ReferenceField label="Fleet Type" source="application type" reference="application type" target="id">
+                    <ChipField source="name" />
+                </ReferenceField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )
@@ -61,9 +58,18 @@ export const FleetList = (props) => {
 
 export const FleetCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
             <TextInput source="app name" />
             <TextInput source="slug" />
+            <ReferenceInput label="Device Type" source="is for-device type" reference="device type">
+                <SelectInput optionText="slug" />
+            </ReferenceInput>
+            <ReferenceInput label="Organization" source="organization" reference="organization" target="id">
+                <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id">
+                <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
         </SimpleForm>
     </Create>
 );
@@ -74,6 +80,15 @@ export const FleetEdit = props => (
             <TextInput disabled source="id" />
             <TextInput source="app name" />
             <TextInput source="slug" />
+            <ReferenceInput label="Device Type" source="is for-device type" reference="device type" target="id">
+                <SelectInput optionText="slug" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Organization" source="organization" reference="organization" target="id">
+                <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id">
+                <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
         </SimpleForm>
     </Edit>
 );

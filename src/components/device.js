@@ -6,8 +6,7 @@ import {
     TextField,
     FunctionField,
     BooleanField,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
@@ -43,21 +42,15 @@ export const DeviceList = (props) => {
                 <OnlineField label="Online" source="api heartbeat state" />
                 <TextField label="Status" source="status" />
                 <FunctionField label="OS" render={record => `${record['os version']}-${record['os variant']}`}/>
-                <ReferenceManyField label="Fleet" source="belongs to-application" reference="application" target="id">
-                    <SingleFieldList>
-                        <ChipField source="app name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Release Rev." source="is running-release" reference="release" target="id">
-                    <SingleFieldList>
-                        <ChipField source="revision" />
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Device Type" source="is of-device type" reference="device type" target="id">
-                    <SingleFieldList>
-                        <ChipField source="slug" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
+                    <ChipField source="app name" />
+                </ReferenceField>
+                <ReferenceField label="Release Rev." source="is running-release" reference="release" target="id" >
+                    <ChipField source="revision" />
+                </ReferenceField>
+                <ReferenceField label="Device Type" source="is of-device type" reference="device type" target="id">
+                    <ChipField source="slug" />
+                </ReferenceField>
                 <DeviceServicesButton/>
                 <DeviceConnectButton/>
             </Datagrid>
@@ -68,8 +61,8 @@ export const DeviceList = (props) => {
 export const DeviceCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="uuid" />
-            <TextInput source="device name" />
+            <TextInput label="UUID" source="uuid" />
+            <TextInput label="Name" source="device name" />
         </SimpleForm>
     </Create>
 );

@@ -4,11 +4,14 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
+    TextInput,
+    ReferenceInput,
+    SelectInput,
+    EditButton,
 } from 'react-admin';
 
 const FleetEnvVarTitle = ({ record }) => {
@@ -18,15 +21,14 @@ const FleetEnvVarTitle = ({ record }) => {
 export const FleetEnvVarList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Fleet" source="application" reference="application" target="id">
-                    <SingleFieldList>
-                        <ChipField source="app name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="application" reference="application" target="id">
+                    <ChipField source="app name" />
+                </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )
@@ -34,7 +36,12 @@ export const FleetEnvVarList = (props) => {
 
 export const FleetEnvVarCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput source="application" reference="application" target="id">
+                <SelectInput optionText="app name" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
@@ -42,6 +49,11 @@ export const FleetEnvVarCreate = props => (
 export const FleetEnvVarEdit = props => (
     <Edit title={<FleetEnvVarTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput source="application" reference="application" target="id">
+                <SelectInput optionText="app name" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );
