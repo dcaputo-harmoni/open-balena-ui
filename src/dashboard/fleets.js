@@ -20,18 +20,12 @@ const truncate = (str, n) => {
 
 const Fleets = (props) => {
     let { value } = props;
-    if (value[0]) {
-        value.push(value[0]);
-        value.push(value[0]);    
-    }
-    //console.dir(props);
     return (
         <Card>
         <CardHeader title="Fleets" sx={{height: '20px', color: 'white', backgroundColor: '#2196f3'}}/>
         <CardContent sx={{ minHeight: 225, maxHeight: 225, overflow: 'auto' }}>
         <Grid container spacing={3}>
             {value.map((record, index) => {
-                //console.dir(app);
                 return (
                     <Grid item xs="auto">
                         <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225  }}>
