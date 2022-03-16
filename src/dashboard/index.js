@@ -22,7 +22,23 @@ const Dashboard = () => {
     const dataProvider = useDataProvider();
 
     const fetchFleets = useCallback(async () => {
-        const { data: fleets } = await dataProvider.getList(
+        let { data: deviceTypes } = await dataProvider.getList(
+            'device type',
+            {
+                filter: { },
+                sort: { field: 'id', order: 'ASC' },
+                pagination: { page: 1, perPage: 50 },
+            }
+        );
+        let { data: organizations } = await dataProvider.getList(
+            'organization',
+            {
+                filter: { },
+                sort: { field: 'id', order: 'ASC' },
+                pagination: { page: 1, perPage: 50 },
+            }
+        );
+        let { data: fleets } = await dataProvider.getList(
             'application',
             {
                 filter: { },
@@ -30,11 +46,7 @@ const Dashboard = () => {
                 pagination: { page: 1, perPage: 50 },
             }
         );
-        setState(state => ({
-            ...state,
-            fleets: fleets,
-        }));
-        const { data: devices } = await dataProvider.getList(
+        let { data: devices } = await dataProvider.getList(
             'device',
             {
                 filter: { },
@@ -42,6 +54,24 @@ const Dashboard = () => {
                 pagination: { page: 1, perPage: 50 },
             }
         );
+        if (fleets.length > 0) {
+            fleets = await Promise.all(fleets.map( async fleet => {
+                fleet.organizationName = organizations.find(organization => organization.id === fleet['organization'])['name'];
+                fleet.deviceTypeName = deviceTypes.find(deviceType => deviceType.id === fleet['is for-device type'])['slug'];
+                fleet.numDevices = devices.filter(device => device['belongs to-application'] === fleet.id).length;
+                fleet.numOnlineDevices = devices.filter(device => device['belongs to-application'] === fleet.id && device['api heartbeat state'] === "online").length;
+                return fleet;
+                }));
+        }
+        setState(state => ({
+            ...state,
+            fleets: fleets,
+        }));
+        devices = devices.map(device => {
+            device.applicationName = fleets.find(fleet => fleet.id === device['belongs to-application'])['app name'];
+            device.deviceTypeName = deviceTypes.find(deviceType => deviceType.id === device['is of-device type'])['slug'];
+            return device; 
+        });
         setState(state => ({
             ...state,
             devices: devices,

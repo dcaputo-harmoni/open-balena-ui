@@ -143,8 +143,8 @@ export const DeviceConnectButton = (props) => {
     }
     return (
     <> 
-        <Button variant="outlined" color="primary" aria-label="connect" onClick={() => loadDialog(props)}>
-            <ConnectIcon style={{ marginRight: '4px' }} /> Connect 
+        <Button variant="outlined" color="primary" aria-label="connect" onClick={() => loadDialog(props)} {...props}>
+            <ConnectIcon style={{ marginRight: '4px' }} {...props}/> Connect 
         </Button> 
         <Dialog
             open={open}
