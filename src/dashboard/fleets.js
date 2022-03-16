@@ -44,7 +44,12 @@ const Fleets = (props) => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                                            <TableCell align="right">{app['is of-device type']}</TableCell>
+                                            <TableCell align="right">{app['is for-device type']}</TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell colSpan={2} align="center">
+                                                <Button size="small" href="/#/application">Add Device</Button>
+                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>

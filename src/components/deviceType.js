@@ -10,12 +10,14 @@ import {
     SimpleForm,
     TextInput
 } from 'react-admin';
+import versions from '../versions'
 
 const DeviceTypeTitle = ({ record }) => {
     return <span>Device Type {record ? `"${record.name}"` : ''}</span>;
 };
 
 export const DeviceTypeList = (props) => {
+    const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
     return (
         <List {...props}>
             <Datagrid rowClick="edit">
@@ -25,9 +27,12 @@ export const DeviceTypeList = (props) => {
                 <ReferenceField label="Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
                     <ChipField source="slug" />
                 </ReferenceField>
-                <ReferenceField label="Aliases" source="id" reference="device type alias" target="device type">
+                {deviceTypeAlias ? 
+                <ReferenceField label="Aliases" source="id" reference={deviceTypeAlias} target="device type">
                     <ChipField source="is referenced by-alias" />
                 </ReferenceField>
+                : <></>
+                }
                 <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
                     <ChipField source="slug" />
                 </ReferenceField>

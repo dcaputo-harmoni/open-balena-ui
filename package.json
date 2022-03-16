@@ -25,6 +25,7 @@
     "react-scripts": "5.0.0",
     "recharts": "^2.1.9",
     "redux-form": "^8.3.8",
+    "semver": "^7.3.5",
     "util": "^0.12.4"
   },
   "scripts": {
