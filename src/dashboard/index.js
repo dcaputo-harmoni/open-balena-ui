@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { useVersion, useDataProvider, Title } from 'react-admin';
+import { useDataProvider, Title } from 'react-admin';
 
 import Banner from './banner';
 import Fleets from './fleets';
@@ -13,15 +13,11 @@ const styles = {
     singleCol: { marginTop: '1em', marginBottom: '1em' },
 };
 
-const Spacer = () => <span style={{ width: '1em' }} />;
-const VerticalSpacer = () => <span style={{ height: '1em' }} />;
-
 const Dashboard = () => {
     const [state, setState] = useState({});
-    const version = useVersion();
     const dataProvider = useDataProvider();
 
-    const fetchFleets = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         let { data: deviceTypes } = await dataProvider.getList(
             'device type',
             {
@@ -79,8 +75,8 @@ const Dashboard = () => {
     }, [dataProvider]);
 
     useEffect(() => {
-        fetchFleets();
-    }, [version]);
+        fetchData();
+    }, [fetchData]);
 
     const {
         fleets,

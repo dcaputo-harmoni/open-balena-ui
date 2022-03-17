@@ -101,9 +101,9 @@ export const UserCreate = props => {
 };
 
 const CustomToolbar = props => (
-    <Toolbar {...props}>
-        <SaveButton style={{marginRight: "32px"}}/>
-        <DeleteUserButton> Delete </DeleteUserButton>
+    <Toolbar {...props} style={{ justifyContent: "space-between" }}>
+        <SaveButton/>
+        <DeleteUserButton variant="standard" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteUserButton>
     </Toolbar>
 );
 

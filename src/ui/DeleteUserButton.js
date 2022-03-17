@@ -46,7 +46,7 @@ export const DeleteUserButton = (props) => {
     return (
         <> 
         <Button variant="contained" aria-label="delete" onClick={() => setOpen(true)} { ...props }>
-            <DeleteIcon style={{ marginRight: '4px' }} {...props}/> { props.children }
+            <DeleteIcon style={{ marginRight: '4px' }} size={props.size}/> { props.children }
         </Button> 
         <Dialog
             open={open}

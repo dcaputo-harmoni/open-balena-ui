@@ -82,4 +82,6 @@ const field = (field, version) => {
     return versions[targetVer].fields[field];
 }
 
-export default { resource, field };
+const versionsExport = { resource, field };
+
+export default versionsExport;
