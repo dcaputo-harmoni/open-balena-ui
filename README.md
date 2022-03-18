@@ -20,6 +20,36 @@ There are a number of environment variables used to configure the ui:
 
 - `REACT_APP_OPEN_BALENA_API_VERSION` The version of `open-balena-api` that the above instance is running, i.e. `v0.139.0`
 
+## Exposing Device Connection Endpoints
+
+Each device has a "Connect" button which uses balena image labels to discover available services on that device.  To make use of this auto-discovery, you will need to add tags to each container within your balena application's `docker-compose` file where you would like to expose services.  Examples of the three types of services available to expose are provided below (http, https and vnc); note that ssh services are enabled by default and do not need labels.  When a device is running an application that exposes container services using the label constructs below, you will see the service appear in the list of available connections for that container when clicking the "Connect" button for that device in the admin ui.
+
+HTTP Services:
+```sh
+    labels:
+      openbalena.remote.http: '1'
+      openbalena.remote.http.port: '5003'
+      openbalena.remote.http.path: '/'
+```
+
+HTTPS Services:
+```sh
+    labels:
+      openbalena.remote.https: '1'
+      openbalena.remote.https.port: '1880'
+      openbalena.remote.https.path: '/nr-admin'
+```
+
+VNC Services:
+```sh
+    labels:
+      openbalena.remote.vnc: '1'
+      openbalena.remote.vnc.port: '5900'
+```
+
+**Note**: The port specified above is a host container port, so the service needs to be mapped to a host port matching the port specified in the label in your `docker-compose` file.
+
+
 ## Compatibility
 
 This project is compatible with `open-balena-api` v0.139.0 or newer, all the way up to the current builds (v0.190.0).  See [this project](https://github.com/dcaputo-harmoni/open-balena-helm) for a fork of bartversluijs' open-balena-helm project which has helm scripts to build a current version of `open-balena`.
