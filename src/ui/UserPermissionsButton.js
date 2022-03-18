@@ -7,13 +7,13 @@ import DialogTitle from '@material-ui/core/DialogTitle';
 import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
 
-export const DeleteUserButton = (props) => {
+export const UserPermissionsButton = ({basePath, ...props}) => {
     const [open, setOpen] = React.useState(false);
     const redirect = useRedirect();
     const handleSubmit = async values => {
         console.dir(props.record.id);
         setOpen(false);
-        redirect(props.redirect, props.basePath);    
+        redirect(props.redirect, basePath);    
     };
     
     return (
@@ -44,4 +44,4 @@ export const DeleteUserButton = (props) => {
     );
 }
 
-export default DeleteUserButton;
+export default UserPermissionsButton;

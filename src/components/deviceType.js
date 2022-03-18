@@ -8,7 +8,8 @@ import {
     ChipField,
     List,
     SimpleForm,
-    TextInput
+    TextInput,
+    EditButton,
 } from 'react-admin';
 import versions from '../versions'
 
@@ -20,7 +21,7 @@ export const DeviceTypeList = (props) => {
     const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField label="Slug" source="slug" />
                 <TextField label="Name" source="name" />
@@ -36,6 +37,7 @@ export const DeviceTypeList = (props) => {
                 <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
                     <ChipField source="slug" />
                 </ReferenceField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

@@ -35,7 +35,7 @@ const UserTitle = ({ record }) => {
 
 const UserBulkActionButtons = props => (
     <Fragment>
-        <DeleteUserButton variant="standard" fontSize="small" color="default" {...props}> Delete </DeleteUserButton>
+        <DeleteUserButton variant="text" size="small" color="default" {...props}> Delete </DeleteUserButton>
     </Fragment>
 );
 
@@ -46,9 +46,9 @@ export const UserList = (props) => {
                 <TextField source="id" />
                 <TextField source="username" />
                 <EmailField source="email" />
-                <ReferenceManyField label="Organizations" reference="organization membership" target="user">
-                    <SingleFieldList>
-                        <ReferenceField source="is member of-organization" reference="organization">
+                <ReferenceManyField label="Organizations" source="id" reference="organization membership" target="user">
+                    <SingleFieldList linkType={false}>
+                        <ReferenceField source="is member of-organization" reference="organization" target="id">
                             <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
@@ -58,16 +58,16 @@ export const UserList = (props) => {
                         <ChipField source="key" />
                     </SingleFieldList>
                 </ReferenceManyField>
-                <ReferenceManyField label="Roles" reference="user-has-role" target="user">
-                    <SingleFieldList>
-                        <ReferenceField source="role" reference="role">
+                <ReferenceManyField label="Roles" source="id" reference="user-has-role" target="user">
+                    <SingleFieldList linkType={false}>
+                        <ReferenceField source="role" reference="role" target="id">
                             <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
                 <UserPermissionsButton> Permissions </UserPermissionsButton>
                 <EditButton label="" color="default"/>
-                <DeleteUserButton variant="standard" fontSize="small" color="default"/>
+                <DeleteUserButton variant="text" size="small" color="default"/>
             </Datagrid>
         </List>
     )

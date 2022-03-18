@@ -32,7 +32,7 @@ export class Iframe extends React.Component {
     }
 }
 
-export const DeviceConnectButton = (props) => {
+export const DeviceConnectButton = ({basePath, ...props}) => {
 
     const [open, setOpen] = React.useState(false);
     const [containers, setContainers] = React.useState({choices: [], services: [], links: []});

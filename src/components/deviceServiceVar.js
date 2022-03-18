@@ -25,16 +25,16 @@ export const DeviceServiceVarList = (props) => {
                         <ChipField source="uuid" />
                     </ReferenceField>
                 </ReferenceField>
-                <ReferenceField label="Service" source="service install" reference="service install" target="id">
-                    <ReferenceField source="installs-service" reference="service" target="id">
+                <ReferenceField label="Service" source="service install" reference="service install" target="id" link={false}>
+                    <ReferenceField source="installs-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record['installs-service']}`}>
                         <ChipField source="service name" />
                     </ReferenceField>
                 </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
-                <ReferenceField label="Fleet" source="service install" reference="service install" target="id">
-                    <ReferenceField source="device" reference="device" target="id">
-                        <ReferenceField source="belongs to-application" reference="application" target="id">
+                <ReferenceField label="Fleet" source="service install" reference="service install" target="id" link={false}>
+                    <ReferenceField source="device" reference="device" target="id" link={false}>
+                        <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record['belongs to-application']}`}>
                             <ChipField source="app name" />
                         </ReferenceField>
                     </ReferenceField>

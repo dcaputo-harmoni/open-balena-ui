@@ -16,7 +16,7 @@ import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
 import dateFormat from 'dateformat';
 
-export const DeviceServicesButton = (props) => {
+export const DeviceServicesButton = ({basePath, ...props}) => {
     const [open, setOpen] = React.useState(false);
     const handleSubmit = async values => {
         setOpen(false);

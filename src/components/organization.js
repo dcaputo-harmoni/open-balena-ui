@@ -11,6 +11,7 @@ import {
     List,
     SimpleForm,
     TextInput,
+    EditButton
 } from 'react-admin';
 
 const OrganizationTitle = ({ record }) => {
@@ -20,17 +21,18 @@ const OrganizationTitle = ({ record }) => {
 export const OrganizationList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="name" />
                 <TextField source="handle" />
                 <ReferenceManyField label="Users" reference="organization membership" target="is member of-organization">
-                    <SingleFieldList>
+                    <SingleFieldList linkType={false}>
                         <ReferenceField source="user" reference="user">
                             <ChipField source="username" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

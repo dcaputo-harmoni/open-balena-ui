@@ -2,8 +2,7 @@ import * as React from "react";
 import {
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
 } from 'react-admin';
@@ -11,14 +10,12 @@ import {
 export const ServiceList = (props) => {
     return (
         <List {...props} bulkActionButtons={false}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField label="Name" source="service name" />
-                <ReferenceManyField label="Fleet" source="application" reference="application" target="id">
-                    <SingleFieldList>
-                        <ChipField source="app name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="application" reference="application" target="id">
+                    <ChipField source="app name" />
+                </ReferenceField>
             </Datagrid>
         </List>
     )

@@ -28,8 +28,8 @@ export const DeviceConfigVarList = (props) => {
                 </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
-                <ReferenceField label="Fleet" source="device" reference="device" target="id">
-                    <ReferenceField source="belongs to-application" reference="application" target="id">
+                <ReferenceField label="Fleet" source="device" reference="device" target="id" link={false}>
+                    <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record['belongs to-application']}`}>
                         <ChipField source="app name" />
                     </ReferenceField>
                 </ReferenceField>

@@ -4,11 +4,11 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
+    EditButton,
 } from 'react-admin';
 
 const ReleaseTagTitle = ({ record }) => {
@@ -18,24 +18,19 @@ const ReleaseTagTitle = ({ record }) => {
 export const ReleaseTagList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Fleet" source="release" reference="release" target="id">
-                    <SingleFieldList>
-                        <ReferenceManyField source="belongs to-application" reference="application" target="id">
-                            <SingleFieldList>
-                                <ChipField source="app name" />
-                            </SingleFieldList>
-                        </ReferenceManyField>
-                    </SingleFieldList>
-                </ReferenceManyField>
-                <ReferenceManyField label="Release Rev." source="release" reference="release" target="id">
-                    <SingleFieldList>
-                        <ChipField source="revision" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="release" reference="release" target="id" link={false}>
+                    <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record.id}`}>
+                        <ChipField source="app name" />
+                    </ReferenceField>
+                </ReferenceField>
+                <ReferenceField label="Release Rev." source="release" reference="release" target="id">
+                    <ChipField source="revision" />
+                </ReferenceField>
                 <TextField label="Name" source="tag key" />
                 <TextField label="Value" source="value" />
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

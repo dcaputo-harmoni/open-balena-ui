@@ -4,11 +4,11 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
+    EditButton,
 } from 'react-admin';
 
 const ServiceEnvVarTitle = ({ record }) => {
@@ -18,15 +18,14 @@ const ServiceEnvVarTitle = ({ record }) => {
 export const ServiceEnvVarList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Service" source="service" reference="service" target="id">
-                    <SingleFieldList>
-                        <ChipField source="service name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Service" source="service" reference="service" target="id">
+                    <ChipField source="service name" />
+                </ReferenceField>
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

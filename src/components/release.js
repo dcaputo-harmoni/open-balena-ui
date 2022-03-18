@@ -14,23 +14,17 @@ export const ReleaseList = (props) => {
         <List {...props} bulkActionButtons={false}>
             <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="Fleet" source="belongs to-application" reference="application" target="id">
-                    <SingleFieldList>
-                        <ChipField source="app name" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
+                    <ChipField source="app name" />
+                </ReferenceField>
                 <TextField label="Revision" source="revision" />
-                <ReferenceManyField label="Services" reference="image-is part of-release" target="is part of-release">
-                    <SingleFieldList>
-                        <ReferenceField source="image" reference="image">
-                            <ReferenceManyField label="Service" source="is a build of-service" reference="service" target="id">
-                                <SingleFieldList>
-                                    <ChipField source="service name" />
-                                </SingleFieldList>
-                            </ReferenceManyField>
+                <ReferenceField label="Services" source="id" reference="image-is part of-release" target="is part of-release" link={false}>
+                    <ReferenceField source="image" reference="image" target="id" link={false}>
+                        <ReferenceField label="Service" source="is a build of-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record.id}`}>
+                            <ChipField source="service name" />
                         </ReferenceField>
-                    </SingleFieldList>
-                </ReferenceManyField>
+                    </ReferenceField>
+                </ReferenceField>
                 <TextField label="Commit" source="commit" />
             </Datagrid>
         </List>

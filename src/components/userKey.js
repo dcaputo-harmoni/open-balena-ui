@@ -4,11 +4,11 @@ import {
     Edit,
     TextField,
     Datagrid,
-    ReferenceManyField,
-    SingleFieldList,
+    ReferenceField,
     ChipField,
     List,
     SimpleForm,
+    EditButton,
 } from 'react-admin';
 
 const UserKeysTitle = ({ record }) => {
@@ -18,15 +18,14 @@ const UserKeysTitle = ({ record }) => {
 export const UserKeysList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
-                <ReferenceManyField label="User" source="user" reference="user" target="id">
-                    <SingleFieldList>
-                        <ChipField source="username" />
-                    </SingleFieldList>
-                </ReferenceManyField>
+                <ReferenceField label="User" source="user" reference="user" target="id">
+                    <ChipField source="username" />
+                </ReferenceField>
                 <TextField label="Key Name" source="title" />
                 <TextField label="Key" source="public key" />
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

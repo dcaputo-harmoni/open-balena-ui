@@ -11,6 +11,7 @@ import {
     List,
     SimpleForm,
     TextInput,
+    EditButton,
 } from 'react-admin';
 
 const RoleTitle = ({ record }) => {
@@ -20,16 +21,17 @@ const RoleTitle = ({ record }) => {
 export const PermissionList = (props) => {
     return (
         <List {...props}>
-            <Datagrid rowClick="edit">
+            <Datagrid>
                 <TextField source="id" />
                 <TextField source="name" />
-                <ReferenceManyField label="Roles" reference="role-has-permission" target="permission">
-                    <SingleFieldList>
-                        <ReferenceField source="role" reference="role">
+                <ReferenceManyField label="Roles" source="id" reference="role-has-permission" target="permission">
+                    <SingleFieldList linkType={false}>
+                        <ReferenceField source="role" reference="role" target="id">
                             <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
+                <EditButton label="" color="default"/>
             </Datagrid>
         </List>
     )

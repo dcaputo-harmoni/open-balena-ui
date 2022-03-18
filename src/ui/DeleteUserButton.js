@@ -27,7 +27,7 @@ const deleteUser = async (userId, dataProvider) => {
         return await dataProvider.delete( 'user', { id: userId } );
 }
 
-export const DeleteUserButton = (props) => {
+export const DeleteUserButton = ({basePath, ...props}) => {
     const [open, setOpen] = React.useState(false);
     const dataProvider = useDataProvider();
     const notify = useNotify();
@@ -40,12 +40,12 @@ export const DeleteUserButton = (props) => {
         }
         setOpen(false);
         notify('User(s) successfully deleted');
-        redirect(props.redirect, props.basePath);    
+        redirect(props.redirect, basePath);    
     };
     
     return (
         <> 
-        <Button variant="contained" aria-label="delete" onClick={() => setOpen(true)} { ...props }>
+        <Button aria-label="delete" onClick={() => setOpen(true)} variant={props.variant || "contained"} fontSize={props.size} color={props.color} >
             <DeleteIcon style={{ marginRight: '4px' }} size={props.size}/> { props.children }
         </Button> 
         <Dialog

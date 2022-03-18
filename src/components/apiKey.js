@@ -72,14 +72,14 @@ export const ApiKeyList = (props) => {
                 <TextField label="Name" source="name" />
                 <TextField label="Description" source="description" />
                 <ReferenceManyField label="Roles" reference="api key-has-role" target="api key">
-                    <SingleFieldList>
+                    <SingleFieldList linkType={false}>
                         <ReferenceField source="role" reference="role">
                             <ChipField source="name" />
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ReferenceManyField label="Permissions" reference="api key-has-permission" target="api key">
-                    <SingleFieldList>
+                    <SingleFieldList linkType={false}>
                         <ReferenceField source="permission" reference="permission">
                             <ChipField source="name" />
                         </ReferenceField>
