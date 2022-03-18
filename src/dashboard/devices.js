@@ -27,7 +27,7 @@ const Devices = (props) => {
         <Grid container spacing={3}>
             {value.map((record, index) => {
                 return (
-                    <Grid item xs="auto">
+                    <Grid item key={index} xs="auto">
                         <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225  }}>
                             <CardHeader title={record['device name']} sx={{height: '15px', fontWeight: 'bold', backgroundColor: '#eeeeee'}} titleTypographyProps={{variant:'inherit' }}/>
                             <CardContent sx={{ paddingTop: "4px", paddingBottom: "4px" }}>

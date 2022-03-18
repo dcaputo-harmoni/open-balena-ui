@@ -1,7 +1,7 @@
 import jwt_decode from 'jwt-decode';
 
 const authProvider = {
-    login: ({ username, password }) =>  {
+    login: ({ username, password }) => {
         return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/login_`, {
             method: 'POST',
             body: JSON.stringify({ "username": username, "password": password }),
@@ -20,13 +20,17 @@ const authProvider = {
             throw new Error(`Error: Could not log in as user ${username}`)
         });
     },
-    checkAuth: () => {
+    checkAuth: (params) => {
         return localStorage.getItem('auth')
         ? Promise.resolve()
         : Promise.reject();
     },
-    getPermissions: () => {
-        return Promise.resolve();
+    getPermissions: (params) => {
+        const jwt = localStorage.getItem('auth');
+        console.dir(jwt_decode(jwt).permissions);
+        return jwt
+            ? Promise.resolve(jwt_decode(jwt).permissions)
+            : Promise.reject();
     },
     checkError: (error) => {
         return Promise.resolve();

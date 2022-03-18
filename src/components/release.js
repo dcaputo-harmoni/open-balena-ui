@@ -3,8 +3,6 @@ import {
     TextField,
     Datagrid,
     ReferenceField,
-    ReferenceManyField,
-    SingleFieldList,
     ChipField,
     List,
 } from 'react-admin';
