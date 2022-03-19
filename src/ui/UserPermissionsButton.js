@@ -78,13 +78,13 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
         console.dir(props.record.id);
         console.dir(selectedPermissions);
 
-        let createIds = selectedPermissions.filter(value => !originalPermissions.includes(value));
-        let deleteIds = originalPermissions.filter(value => !selectedPermissions.includes(value));
-        await Promise.all(createIds.map(insertId => 
+        let createPermissionIds = selectedPermissions.filter(value => !originalPermissions.includes(value));
+        let deletePermissions = originalPermissions.filter(value => !selectedPermissions.includes(value.permission));
+        await Promise.all(createPermissionIds.map(insertId => 
             dataProvider.create('user-has-permission', {data: { user: props.record.id, permission: insertId }})
         ));
-        await Promise.all(deleteIds.map(deleteId => 
-            dataProvider.delete('user-has-permission', { id: deleteId })
+        await Promise.all(deletePermissions.map(deletePermission => 
+            dataProvider.delete('user-has-permission', { id: deletePermission.id })
         ));
         setOpen(false);
         redirect(props.redirect, basePath);    
@@ -116,9 +116,8 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
             sort: { field: 'id', order: 'ASC' },
             filter: { 'user': props.record.id }
         }).then((userPermissions) => {
-            const permissionIds = userPermissions.data.map(x => x.permission);
-            setSelectedPermissions(permissionIds);
-            setOriginalPermissions(permissionIds);
+            setSelectedPermissions(userPermissions.data.map(x => x.permission));
+            setOriginalPermissions(userPermissions.data);
         });
         setOpen(true);
     }
