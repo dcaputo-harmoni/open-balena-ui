@@ -27,7 +27,6 @@ const authProvider = {
     },
     getPermissions: (params) => {
         const jwt = localStorage.getItem('auth');
-        console.dir(jwt_decode(jwt).permissions);
         return jwt
             ? Promise.resolve(jwt_decode(jwt).permissions)
             : Promise.reject();

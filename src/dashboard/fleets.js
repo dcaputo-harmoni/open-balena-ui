@@ -47,7 +47,7 @@ const Fleets = (props) => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                                            <TableCell align="right">{truncate(record['deviceTypeName'], 10)}</TableCell>
+                                            <TableCell align="right">{truncate(record['deviceTypeName'], 12)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={2} align="center">

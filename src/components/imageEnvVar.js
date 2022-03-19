@@ -10,6 +10,8 @@ import {
     SimpleForm,
     TextInput,
     EditButton,
+    ReferenceInput,
+    SelectInput,
 } from 'react-admin';
 
 const ImageEnvVarTitle = ({ record }) => {
@@ -50,9 +52,12 @@ export const ImageEnvVarList = (props) => {
 
 export const ImageEnvVarCreate = props => (
     <Create {...props}>
-        <SimpleForm>
-            <TextInput source="slug" />
-            <TextInput source="name" />
+        <SimpleForm redirect="list">
+            <ReferenceInput source="release image" reference="image" target="id">
+                <SelectInput optionText="id" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
@@ -60,9 +65,11 @@ export const ImageEnvVarCreate = props => (
 export const ImageEnvVarEdit = props => (
     <Edit title={<ImageEnvVarTitle />} {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="slug" />
-            <TextInput source="name" />
+            <ReferenceInput source="release image" reference="image" target="id">
+                <SelectInput optionText="id" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );

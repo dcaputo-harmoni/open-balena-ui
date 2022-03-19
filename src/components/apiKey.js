@@ -52,9 +52,17 @@ class ActorField extends React.Component {
         }));
     }
 
+    generateLabel() {
+        if (this.state.record.actorType && this.state.record.actorName) {
+            return `${this.state.record.actorType}: ${this.state.record.actorName}`
+        } else {
+            return 'Unassigned';
+        }
+    }
+
     render() {
         return (
-            <Chip label={`${this.state.record.actorType}: ${this.state.record.actorName}`} href={this.state.record.actorLink} component="a" clickable />
+            <Chip label={this.generateLabel()} href={this.state.record.actorLink} component="a" clickable />
         );
     }
 }

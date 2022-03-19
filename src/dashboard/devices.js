@@ -35,23 +35,23 @@ const Devices = (props) => {
                                     <TableBody>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Fleet</TableCell>
-                                            <TableCell align="right">{truncate(record['applicationName'], 10)}</TableCell>
+                                            <TableCell align="right">{truncate(record['applicationName'], 12)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
                                             <TableCell align="right">{record['status'] == null ? "Offline" : record['status']}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>OS Version</TableCell>
-                                            <TableCell align="right">{record['os version'] ? record['deviceTypeName'] : "n/a"}</TableCell>
+                                            <TableCell sx={{fontWeight: 'bold'}}>OS Ver</TableCell>
+                                            <TableCell align="right">{record['os version'] ? record['os version'].split(' ')[1] : "n/a"}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                                            <TableCell align="right">{truncate(record['deviceTypeName'], 10)}</TableCell>
+                                            <TableCell align="right">{truncate(record['deviceTypeName'], 12)}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={2} align="center">
-                                                <DeviceConnectButton variant="outlined" color="primary" size="small" href='/#/device/create?source={"uuid": "foo"}'>Connect</DeviceConnectButton>
+                                                <DeviceConnectButton variant="outlined" color="primary" size="small" record={record}>Connect</DeviceConnectButton>
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>

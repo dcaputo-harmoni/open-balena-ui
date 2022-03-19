@@ -1,5 +1,5 @@
 import React from "react";
-import { SelectInput, useDataProvider, useAuthProvider } from 'react-admin';
+import { SelectInput, useDataProvider, useAuthProvider, useNotify } from 'react-admin';
 import Button from '@material-ui/core/Button'; 
 import ConnectIcon from '@mui/icons-material/Sensors';
 import Dialog from '@material-ui/core/Dialog'; 
@@ -40,6 +40,7 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
     const [iframeUrl, setIframeUrl] = React.useState("");
     const dataProvider = useDataProvider();
     const authProvider = useAuthProvider();
+    const notify = useNotify();
     const classes = useStyles();
 
     const handleSubmit = async values => {
@@ -63,7 +64,11 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
                     sort: { field: 'id', order: 'ASC' },
                     filter: { 'is of-actor': user.data.actor }
                 }).then ((apiKeys) => {
-                    // use first API key found; we can do better than this!
+                    // use first API key found; can do better than this!
+                    if (!apiKeys.data[0]) {
+                        notify(`User ${user.data.username} must have at least one API key to perform this action`);
+                        return Promise.resolve();
+                    }
                     let apiKey = apiKeys.data[0].key;
                     let containerChoices = [{id: 0, name: 'host'}];
                     let containerServices = [[{id: 0, name: 'SSH'}]];

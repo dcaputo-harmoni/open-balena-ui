@@ -3,10 +3,11 @@ import {
     Datagrid,
     ReferenceField,
     ReferenceManyField,
-    SingleFieldList,
     TextField,
     FunctionField,
     ChipField,
+    useDataProvider,
+    useNotify,
 } from 'react-admin';
 import Button from '@material-ui/core/Button'; 
 import ListIcon from '@mui/icons-material/List';
@@ -21,9 +22,25 @@ export const DeviceServicesButton = ({basePath, ...props}) => {
     const handleSubmit = async values => {
         setOpen(false);
     };
+    const dataProvider = useDataProvider();
+    const notify = useNotify();
+    const handleClick = () => {
+        dataProvider.getList('image install', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { 'device': props.record.id }
+        }).then((imageInstalls) => {
+            if (imageInstalls.data.length > 0) {
+                setOpen(true);
+            } else {
+                notify("No services are installed on this device")
+            }
+        });
+    }
+
     return (
     <> 
-        <Button variant="outlined" color="primary" aria-label="services" onClick={() => setOpen(true)}>
+        <Button variant="outlined" color="primary" aria-label="services" onClick={() => handleClick()}>
             <ListIcon style={{ marginRight: '4px' }} /> Services 
         </Button> 
         <Dialog
@@ -39,13 +56,11 @@ export const DeviceServicesButton = ({basePath, ...props}) => {
                     <form onSubmit={handleSubmit}>
                             <ReferenceManyField source="id" reference="image install" target="device" filter={{"is provided by-release": props.record['is running-release']}}>
                                 <Datagrid>
-                                    <ReferenceManyField label="Image" source="installs-image" reference="image" target="id">
-                                        <SingleFieldList>
-                                            <ReferenceField label="Image" source="is a build of-service" reference="service" target="id">
-                                                <ChipField source="service name" />
-                                            </ReferenceField>
-                                        </SingleFieldList>
-                                    </ReferenceManyField>
+                                    <ReferenceField label="Image" source="installs-image" reference="image" target="id" link={false}>
+                                        <ReferenceField label="Image" source="is a build of-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record['is a build of-service']}`}>
+                                            <ChipField source="service name" />
+                                        </ReferenceField>
+                                    </ReferenceField>
                                     <TextField label="Status" source="status" />
                                     <FunctionField label="Install Date" render={record => `${dateFormat((new Date(record['install date'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
                                 </Datagrid>

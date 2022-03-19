@@ -10,6 +10,8 @@ import {
     SimpleForm,
     TextInput,
     EditButton,
+    ReferenceInput,
+    SelectInput,
 } from 'react-admin';
 
 const ImageLabelTitle = ({ record }) => {
@@ -50,7 +52,12 @@ export const ImageLabelList = (props) => {
 
 export const ImageLabelCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput source="release image" reference="image" target="id">
+                <SelectInput optionText="id" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="label name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
@@ -58,7 +65,11 @@ export const ImageLabelCreate = props => (
 export const ImageLabelEdit = props => (
     <Edit title={<ImageLabelTitle />} {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
+            <ReferenceInput source="release image" reference="image" target="id">
+                <SelectInput optionText="id" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Name" source="label name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );

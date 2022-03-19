@@ -41,7 +41,7 @@ export const DeviceList = (props) => {
                 <TextField label="Name" source="device name" />
                 <OnlineField label="Online" source="api heartbeat state" />
                 <TextField label="Status" source="status" />
-                <FunctionField label="OS" render={record => `${record['os version']}-${record['os variant']}`}/>
+                <FunctionField label="OS" render={record => (record['os version'] && record['os variant']) ? `${record['os version']}-${record['os variant']}` : ""}/>
                 <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
                     <ChipField source="app name" />
                 </ReferenceField>
