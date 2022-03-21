@@ -27,7 +27,8 @@ import {
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
-import UserPermissionsButton from "../ui/UserPermissionsButton";
+import ManageRolesButton from "../ui/ManageRolesButton";
+import ManagePermissionsButton from "../ui/ManagePermissionsButton";
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
@@ -65,7 +66,8 @@ export const UserList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
-                <UserPermissionsButton> Permissions </UserPermissionsButton>
+                <ManagePermissionsButton type="user"> Permissions </ManagePermissionsButton>
+                <ManageRolesButton type="user"> Roles </ManageRolesButton>
                 <EditButton label="" color="default"/>
                 <DeleteUserButton variant="text" size="small" color="default"/>
             </Datagrid>

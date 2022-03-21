@@ -37,6 +37,17 @@ const useStyles = makeStyles({
     }
 });
 
+const mappings = {
+    user: {
+        resource: "user-has-permission",
+        field: "user"
+    },
+    apiKey: {
+        resource: "api key-has-permission",
+        field: "api key",
+    }
+}
+
 const decode = {
     "actor eq @__ACTOR_ID": "self",
     "id eq @__ACTOR_ID": "self",
@@ -67,7 +78,7 @@ const decode = {
     "belongs_to__application/any(a:a/depends_on__application/any(da:da/owns__device/any(d:d/actor eq @__ACTOR_ID)))": "app accessible"
 };
 
-export const UserPermissionsButton = ({basePath, ...props}) => {
+export const ManagePermissionsButton = ({basePath, ...props}) => {
     const [open, setOpen] = React.useState(false);
     const [allPermissions, setAllPermissions] = React.useState([]);
     const [selectedPermissions, setSelectedPermissions] = React.useState([]);
@@ -78,13 +89,13 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
         console.dir(props.record.id);
         console.dir(selectedPermissions);
 
-        let createPermissionIds = selectedPermissions.filter(value => !originalPermissions.includes(value));
+        let createPermissionIds = selectedPermissions.filter(value => !originalPermissions.find(x => x.permission === value));
         let deletePermissions = originalPermissions.filter(value => !selectedPermissions.includes(value.permission));
         await Promise.all(createPermissionIds.map(insertId => 
-            dataProvider.create('user-has-permission', {data: { user: props.record.id, permission: insertId }})
+            dataProvider.create(mappings[props.type].resource, {data: { [mappings[props.type].field]: props.record.id, permission: insertId }})
         ));
         await Promise.all(deletePermissions.map(deletePermission => 
-            dataProvider.delete('user-has-permission', { id: deletePermission.id })
+            dataProvider.delete(mappings[props.type].resource, { id: deletePermission.id })
         ));
         setOpen(false);
         redirect(props.redirect, basePath);    
@@ -111,13 +122,13 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
             });
             setAllPermissions(permissionOpts);
         });
-        dataProvider.getList('user-has-permission', {
+        dataProvider.getList(mappings[props.type].resource, {
             pagination: { page: 1 , perPage: 1000 },
             sort: { field: 'id', order: 'ASC' },
-            filter: { 'user': props.record.id }
-        }).then((userPermissions) => {
-            setSelectedPermissions(userPermissions.data.map(x => x.permission));
-            setOriginalPermissions(userPermissions.data);
+            filter: { [mappings[props.type].field]: props.record.id }
+        }).then((permissions) => {
+            setSelectedPermissions(permissions.data.map(x => x.permission));
+            setOriginalPermissions(permissions.data);
         });
         setOpen(true);
     }
@@ -136,7 +147,7 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
             style={{width: "100%", maxWidth: "none"}}
             className={classes.root}
         >
-        <DialogTitle id="form-dialog-title"> User Permissions </DialogTitle>
+        <DialogTitle id="form-dialog-title"> Manage Permissions </DialogTitle>
         <DialogContent className={classes.dialogContent}>
             <Form
                 onSubmit={handleSubmit}
@@ -177,4 +188,4 @@ export const UserPermissionsButton = ({basePath, ...props}) => {
     );
 }
 
-export default UserPermissionsButton;
+export default ManagePermissionsButton;

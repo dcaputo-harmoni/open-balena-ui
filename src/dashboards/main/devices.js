@@ -12,7 +12,7 @@ import {
     TableCell,
 } from '@mui/material';
 import { tableCellClasses } from "@mui/material/TableCell";
-import DeviceConnectButton from '../ui/DeviceConnectButton';
+import DeviceConnectButton from '../../ui/DeviceConnectButton';
 
 const truncate = (str, n) => {
     return (str.length > n) ? str.substr(0, n-1) + '...' : str;
@@ -51,7 +51,7 @@ const Devices = (props) => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell colSpan={2} align="center">
-                                                <DeviceConnectButton variant="outlined" color="primary" size="small" record={record}>Connect</DeviceConnectButton>
+                                                <DeviceConnectButton variant="outlined" color="primary" size="small" record={record} label="Connect"></DeviceConnectButton>
                                             </TableCell>
                                         </TableRow>
                                     </TableBody>

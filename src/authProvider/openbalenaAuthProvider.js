@@ -38,27 +38,10 @@ const authProvider = {
         localStorage.removeItem('auth');
         return Promise.resolve();
     },
-    getCurrentUser: () => {
-        return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/user/v1/whoami`, {
-            method: 'GET',
-            headers: new Headers({
-                'Content-Type': 'application/json',
-                'Authorization': `Bearer ${localStorage.getItem('auth')}`,
-            }),
-            insecureHTTPParser: true
-        }).then(response => {
-            if (response.status < 200 || response.status >= 300) {
-                throw new Error(response.statusText);
-            }
-            return response.body.getReader().read().then((streamData) => {
-                let data = (new TextDecoder()).decode(streamData.value);
-                return data;
-            })
-        })
-        .catch(() => {
-            throw new Error('Error: Could not get current user details')
-        });
-    }
+    getSession: () => {
+        const jwt = localStorage.getItem('auth');
+        return ({jwt: jwt, object: jwt_decode(jwt)});
+    },
 };
 
 export default authProvider;

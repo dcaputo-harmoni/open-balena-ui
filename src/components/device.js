@@ -12,6 +12,7 @@ import {
     SimpleForm,
     TextInput,
     SearchInput,
+    ShowButton,
 } from 'react-admin';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
@@ -51,8 +52,9 @@ export const DeviceList = (props) => {
                 <ReferenceField label="Device Type" source="is of-device type" reference="device type" target="id">
                     <ChipField source="slug" />
                 </ReferenceField>
-                <DeviceServicesButton/>
-                <DeviceConnectButton/>
+                <DeviceServicesButton label="" style={{color: "black"}}/>
+                <DeviceConnectButton label="" style={{color: "black"}}/>
+                <ShowButton label="" color="default"/>
             </Datagrid>
         </List>
     )

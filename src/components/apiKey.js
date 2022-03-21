@@ -19,6 +19,9 @@ import {
     SearchInput
 } from 'react-admin';
 import Chip from '@material-ui/core/Chip';
+import ManageRolesButton from "../ui/ManageRolesButton";
+import ManagePermissionsButton from "../ui/ManagePermissionsButton";
+
 
 class ActorField extends React.Component {
     static contextType = DataProviderContext;
@@ -94,6 +97,8 @@ export const ApiKeyList = (props) => {
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ActorField label="Assigned To"/>
+                <ManageRolesButton type="apiKey"> Roles </ManageRolesButton>
+                <ManagePermissionsButton type="apiKey"> Permissions </ManagePermissionsButton>
                 <EditButton label="" color="default"/>
             </Datagrid>
         </List>
@@ -112,7 +117,7 @@ export const ApiKeyCreate = props => {
     const processApiKey = (data) => {
         data['is of-actor'] = data.userActor || data.deviceActor || data.fleetActor;
         ['userActor', 'deviceActor', 'fleetActor'].forEach(x => delete data[x]);
-        console.dir(data);
+        return data;
     }
    
     return (

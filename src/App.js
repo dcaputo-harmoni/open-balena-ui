@@ -26,7 +26,8 @@ import imageEnvVar from './components/imageEnvVar';
 import imageLabel from './components/imageLabel';
 import service from './components/service';
 import serviceEnvVar from './components/serviceEnvVar';
-import Dashboard from './dashboard';
+import MainDashboard from './dashboards/main';
+import DeviceDashboard from './dashboards/device';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -39,7 +40,7 @@ const httpClient = (url, options = {}) => {
 const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
 const App = () => (
-<Admin  title="Open Balena Admin" dataProvider={dataProvider} authProvider={openbalenaAuthProvider} dashboard={Dashboard} menu={TreeMenu} > 
+<Admin  title="Open Balena Admin" dataProvider={dataProvider} authProvider={openbalenaAuthProvider} dashboard={MainDashboard} menu={TreeMenu} > 
 
   <Resource name="menu-access" options={{ label: "Access", "isMenuParent": true }} />
   <Resource name="organization" options={{ label: 'Orgs', "menuParent": "menu-access" }} {...organization} />
@@ -54,7 +55,7 @@ const App = () => (
   <Resource name="application tag" options={{ label: 'Tags', "menuParent": "menu-fleet" }} {...fleetTag} />
 
   <Resource name="menu-device" options={{ label: "Devices", "isMenuParent": true }} />
-  <Resource name="device" options={{ label: 'Devices', "menuParent": "menu-device" }} {...device} />
+  <Resource name="device" options={{ label: 'Devices', "menuParent": "menu-device" }} {...device} show={DeviceDashboard} />
   <Resource name="device config variable" options={{ label: 'Config Vars', "menuParent": "menu-device" }} {...deviceConfigVar} />
   <Resource name="device environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-device" }} {...deviceEnvVar} />
   <Resource name="device service environment variable" options={{ label: 'Service Vars', "menuParent": "menu-device" }} {...deviceServiceVar} />
