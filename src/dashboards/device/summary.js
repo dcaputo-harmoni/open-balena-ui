@@ -2,7 +2,6 @@ import * as React from 'react';
 import { 
     TextField,
     ReferenceField,
-    ChipField
 } from 'react-admin'
 import {
     Table,
@@ -10,9 +9,11 @@ import {
     TableRow,
     TableCell,
 } from '@mui/material';
-import { makeStyles } from '@material-ui/core/styles';
+import { createStyles, makeStyles } from '@mui/styles';
+import DeviceServices from '../../ui/DeviceServices';
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() =>
+  createStyles({
     outerTable: {
         '& td': {
             borderBottom: "none",
@@ -38,14 +39,19 @@ const useStyles = makeStyles(theme => ({
             textAlign:"center"    
         }
     },
+    dataRow: {
+        '& td': {
+            height: "30px",
+        }
+    },
     labelCell: {
         fontWeight: "bold"
     },
     valueCell: {
-        paddingRight: "10px",
-        marginRight: "10px"
+        textAlign: "right",
     },
-}));
+  }),
+);
 
 const Summary = (props) => {
     const classes = useStyles();
@@ -57,34 +63,33 @@ const Summary = (props) => {
                     <TableCell>
                         <Table className={classes.innerTable}>
                             <TableBody>
-                                <TableRow class={classes.headerRow}>
-                                    <TableCell colspan={4}> Device Status </TableCell>
+                                <TableRow className={classes.headerRow}>
+                                    <TableCell colSpan={4}> Status </TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell className={classes.labelCell}>UUID</TableCell>
-                                    <TableCell className={classes.valueCell}>
-                                        <TextField source="uuid"/>
+                                <TableRow className={classes.dataRow}>
+                                    <TableCell class={classes.labelCell}>UUID</TableCell>
+                                    <TableCell class={classes.valueCell}>
                                     </TableCell>
-                                    <TableCell className={classes.labelCell}>Fleet</TableCell>
-                                    <TableCell className={classes.valueCell}>
+                                    <TableCell class={classes.labelCell}>Fleet</TableCell>
+                                    <TableCell class={classes.valueCell}>
                                         <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
-                                            <ChipField source="app name" />
+                                            <TextField source="app name" />
                                         </ReferenceField>
                                     </TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell className={classes.labelCell}>Devices</TableCell>
-                                    <TableCell className={classes.valueCell}>{record['numDevices']}</TableCell>
+                                <TableRow className={classes.dataRow}>
+                                    <TableCell class={classes.labelCell}>Devices</TableCell>
+                                    <TableCell class={classes.valueCell}>{record['numDevices']}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell className={classes.labelCell}>Online</TableCell>
-                                    <TableCell className={classes.valueCell}>{record['numOnlineDevices']}</TableCell>
+                                <TableRow className={classes.dataRow}>
+                                    <TableCell class={classes.labelCell}>Online</TableCell>
+                                    <TableCell class={classes.valueCell}>{record['numOnlineDevices']}</TableCell>
                                 </TableRow>
-                                <TableRow>
-                                    <TableCell className={classes.labelCell}>Type</TableCell>
-                                    <TableCell className={classes.valueCell}>{record['deviceTypeName']}</TableCell>
+                                <TableRow className={classes.dataRow}>
+                                    <TableCell class={classes.labelCell}>Type</TableCell>
+                                    <TableCell class={classes.valueCell}>{record['deviceTypeName']}</TableCell>
                                 </TableRow>
-                                <TableRow>
+                                <TableRow className={classes.dataRow}>
                                     <TableCell colSpan={4} align="center">
                                         Foo
                                     </TableCell>
@@ -95,19 +100,12 @@ const Summary = (props) => {
                     <TableCell>
                         <Table className={classes.innerTable}>
                             <TableBody>
-                                <TableRow class={classes.headerRow}>
-                                    <TableCell colspan={4}> Device Containers </TableCell>
+                                <TableRow className={classes.headerRow}>
+                                    <TableCell colSpan={4}> Services </TableCell>
                                 </TableRow>
                                 <TableRow>
-                                    <TableCell className={classes.labelCell}>UUID</TableCell>
-                                    <TableCell className={classes.valueCell}>
-                                        <TextField source="uuid"/>
-                                    </TableCell>
-                                    <TableCell className={classes.labelCell}>Fleet</TableCell>
-                                    <TableCell className={classes.valueCell}>
-                                        <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
-                                            <ChipField source="app name" />
-                                        </ReferenceField>
+                                    <TableCell colSpan={4}>
+                                        <DeviceServices {...props}/>
                                     </TableCell>
                                 </TableRow>
                             </TableBody>

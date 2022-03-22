@@ -1,9 +1,13 @@
 import * as React from 'react';
 import { Card, Box, CardActions, Button, Typography } from '@material-ui/core';
-import PersonIcon from '@mui/icons-material/Person';
-import CorporateFareIcon from '@mui/icons-material/CorporateFare';
-import KeyIcon from '@mui/icons-material/Key';
+import LightModeIcon from '@mui/icons-material/LightMode';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { makeStyles } from '@material-ui/core/styles';
+import { 
+    TextField,
+    ReferenceField,
+} from 'react-admin'
 
 const useStyles = makeStyles(theme => ({
     root: {
@@ -36,18 +40,23 @@ const Banner = (props) => {
                     </Typography>
                     <Box maxWidth="40em">
                         <Typography variant="body1" component="p" gutterBottom>
-                            UUID {props.record.uuid}
+                            <b>UUID:</b> {props.record.uuid}
+                            <br/>
+                            <b>Fleet:</b>&nbsp;
+                            <ReferenceField source="belongs to-application" reference="application" target="id" {...props} link={false}>
+                                <TextField source="app name" style={{fontSize: "12pt"}}/>
+                            </ReferenceField>
                         </Typography>
                     </Box>
                     <CardActions className={classes.actions}>
-                        <Button variant="contained" href="#/organization" style={{ minWidth: '120px'}} startIcon={<CorporateFareIcon />}>
-                            Orgs
+                        <Button variant="contained" href="#/organization" style={{ minWidth: '140px'}} startIcon={<LightModeIcon />}>
+                            Blink
                         </Button>
-                        <Button variant="contained" href="#/user" style={{ minWidth: '120px'}} startIcon={<PersonIcon />}>
-                            Users
+                        <Button variant="contained" href="#/user" style={{ minWidth: '140px'}} startIcon={<RestartAltIcon />}>
+                            Reboot
                         </Button>
-                        <Button variant="contained" href="#/api%20key" style={{ minWidth: '120px'}} startIcon={<KeyIcon />}>
-                            API Keys
+                        <Button variant="contained" href="#/api%20key" style={{ minWidth: '140px'}} startIcon={<PowerSettingsNewIcon />}>
+                            Shutdown
                         </Button>
                     </CardActions>
                 </Box>

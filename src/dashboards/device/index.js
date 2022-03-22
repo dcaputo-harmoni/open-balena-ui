@@ -3,8 +3,6 @@ import {
     Show,
     TabbedShowLayout,
     Tab,
-    SimpleShowLayout,
-    RecordContextProvider
 } from 'react-admin';
 import Banner from './banner';
 import Summary from './summary';
