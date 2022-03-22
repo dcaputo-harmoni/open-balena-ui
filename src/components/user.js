@@ -1,5 +1,4 @@
 import * as React from "react";
-import { Fragment } from 'react';
 import { pseudoRandomBytes } from 'crypto-browserify';
 import * as bcrypt from "bcryptjs";
 import base32Encode from 'base32-encode'
@@ -27,22 +26,22 @@ import {
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
-import ManageRolesButton from "../ui/ManageRolesButton";
-import ManagePermissionsButton from "../ui/ManagePermissionsButton";
+import ManagePermissions from "../ui/ManagePermissions";
+import ManageRoles from "../ui/ManageRoles";
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
 };
 
-const UserBulkActionButtons = props => (
-    <Fragment>
+const CustomBulkActionButtons = props => (
+    <React.Fragment>
         <DeleteUserButton variant="text" size="small" color="default" {...props}> Delete </DeleteUserButton>
-    </Fragment>
+    </React.Fragment>
 );
 
 export const UserList = (props) => {
     return (
-        <List {...props} bulkActionButtons={<UserBulkActionButtons />}>
+        <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
                 <TextField source="id" />
                 <TextField source="username" />
@@ -66,8 +65,6 @@ export const UserList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
-                <ManagePermissionsButton type="user"> Permissions </ManagePermissionsButton>
-                <ManageRolesButton type="user"> Roles </ManageRolesButton>
                 <EditButton label="" color="default"/>
                 <DeleteUserButton variant="text" size="small" color="default"/>
             </Datagrid>
@@ -157,10 +154,10 @@ export class UserEdit extends React.Component {
             filter: { [mappingSourceField]: data.id }
         });
         let existingData = existingMappings.data.map(x => x[mappingDestField]);
-        let createRoles = data[arrayField].filter(value => !existingData.includes(value));
+        let createData = data[arrayField].filter(value => !existingData.includes(value));
         let deleteIds = existingMappings.data.filter(value => !data[arrayField].includes(value[mappingDestField])).map(x => x.id);
-        await Promise.all(createRoles.map(insertData => 
-            this.context.create(mappingTable, {data: { [mappingSourceField]: data.id, [mappingDestField]: insertData }})
+        await Promise.all(createData.map(newData => 
+            this.context.create(mappingTable, {data: { [mappingSourceField]: data.id, [mappingDestField]: newData }})
         ));
         await Promise.all(deleteIds.map(deleteId => 
             this.context.delete(mappingTable, { id: deleteId })
@@ -181,20 +178,20 @@ export class UserEdit extends React.Component {
         return data;
     }
 
-    processUserEdit = async (data) => {
+    processEdit = async (data) => {
         data = await this.modifyMappingTables(data);
         return data;
     }
 
     render() {
         return (
-            <Edit title={<UserTitle />} transform={this.processUserEdit} {...this.props}>
-                <SimpleForm initialValues={this.state.record} toolbar={<CustomToolbar />}>
+            <Edit title={<UserTitle />} transform={this.processEdit} {...this.props}>
+                <SimpleForm initialValues={this.state.record} toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                     <TextInput disabled source="id"/>
                     <TextInput source="username"/>
                     <TextInput source="email"/>
                     <ChangePasswordButton/>
-                    <ReferenceArrayInput source="roleArray" reference="role">
+                    <ReferenceArrayInput source="r`oleArray" reference="role">
                         <SelectArrayInput optionText="name" optionValue="id"/>
                     </ReferenceArrayInput>
                     <ReferenceArrayInput source="permissionArray" reference="permission">
@@ -204,6 +201,8 @@ export class UserEdit extends React.Component {
                         <SelectArrayInput optionText="name" optionValue="id"/>
                     </ReferenceArrayInput>
                     <TextInput disabled source="jwt secret"/>
+                    <ManagePermissions source="permissionArray" initialValues={this.state.record.permissionArray}/>
+                    <ManageRoles source="roleArray" initialValues={this.state.record.roleArray}/>
                 </SimpleForm>
             </Edit>
         );
