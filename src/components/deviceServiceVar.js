@@ -14,6 +14,7 @@ import {
     SelectInput,
     TextInput,
     FormDataConsumer,
+    Toolbar,
 } from 'react-admin';
 
 const DeviceServiceVarTitle = ({ record }) => {
@@ -44,8 +45,10 @@ export const DeviceServiceVarList = (props) => {
                         </ReferenceField>
                     </ReferenceField>
                 </ReferenceField>
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

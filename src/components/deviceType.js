@@ -11,6 +11,7 @@ import {
     TextInput,
     EditButton,
     DeleteButton,
+    Toolbar,
 } from 'react-admin';
 import versions from '../versions'
 
@@ -38,8 +39,10 @@ export const DeviceTypeList = (props) => {
                 <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
                     <ChipField source="slug" />
                 </ReferenceField>
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

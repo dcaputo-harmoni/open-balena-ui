@@ -13,6 +13,7 @@ import {
     ReferenceInput,
     SelectInput,
     DeleteButton,
+    Toolbar,
 } from 'react-admin';
 
 const ImageLabelTitle = ({ record }) => {
@@ -45,8 +46,10 @@ export const ImageLabelList = (props) => {
                 </ReferenceField>
                 <TextField label="Name" source="label name" />
                 <TextField label="Value" source="value" />
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

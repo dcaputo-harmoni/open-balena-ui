@@ -13,9 +13,11 @@ import {
     TextInput,
     SearchInput,
     ShowButton,
+    Toolbar,
 } from 'react-admin';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
+import DeleteDeviceButton from '../ui/DeleteDeviceButton';
 
 const DeviceTitle = ({ record }) => {
     return <span>Device {record ? `"${record.name}"` : ''}</span>;
@@ -33,9 +35,15 @@ const deviceFilters = [
     <SearchInput source="#uuid,device name,status@ilike" alwaysOn />,
 ];
 
+const CustomBulkActionButtons = props => (
+    <React.Fragment>
+        <DeleteDeviceButton variant="text" size="small" color="default" {...props}> Delete </DeleteDeviceButton>
+    </React.Fragment>
+);
+
 export const DeviceList = (props) => {
     return (
-        <List {...props} filters={deviceFilters}>
+        <List {...props} filters={deviceFilters} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
                 <TextField source="id" />
                 <FunctionField label="UUID" render={record => record['uuid'].substring(0,7)}/>
@@ -52,9 +60,12 @@ export const DeviceList = (props) => {
                 <ReferenceField label="Device Type" source="is of-device type" reference="device type" target="id">
                     <ChipField source="slug" />
                 </ReferenceField>
-                <DeviceServicesButton label="" style={{color: "black"}}/>
-                <DeviceConnectButton label="" style={{color: "black"}}/>
-                <ShowButton label="" color="default"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <DeviceServicesButton label="" style={{color: "black"}}/>
+                    <DeviceConnectButton label="" style={{color: "black"}}/>
+                    <ShowButton label="" color="default"/>
+                    <DeleteDeviceButton variant="text" size="small" color="default"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

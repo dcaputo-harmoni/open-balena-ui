@@ -1,25 +1,24 @@
 import * as React from 'react';
-import { Box, Card, CardActions, Button, Typography } from '@material-ui/core';
+import { Box, Card, CardActions, Button, Typography } from '@mui/material';
 import PersonIcon from '@mui/icons-material/Person';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import KeyIcon from '@mui/icons-material/Key';
-import { makeStyles } from '@material-ui/core/styles';
 
 import publishArticleImage from './banner_illustration.svg';
 
-const useStyles = makeStyles(theme => ({
-    root: {
+const styles = {
+    bannerCard: {
         background: '#2196f3',
-        color: '#fff',
-        padding: 20,
-        marginTop: theme.spacing(2),
+        color: '#ffffff',
+        padding: '1.5em',
+        marginTop: 0,
         marginBottom: '1em',
     },
-    media: {
+    mediaBox: {
         background: `url(${publishArticleImage}) top right / cover`,
         marginLeft: 'auto',
     },
-    actions: {
+    actionCard: {
         padding: 0,
         flexWrap: 'wrap',
         '& a': {
@@ -28,12 +27,11 @@ const useStyles = makeStyles(theme => ({
             marginRight: '2em',
         },
     },
-}));
+}
 
 const Banner = () => {
-    const classes = useStyles();
     return (
-        <Card className={classes.root}>
+        <Card sx={styles.bannerCard}>
             <Box display="flex">
                 <Box flex="1">
                     <Typography variant="h5" component="h2" gutterBottom>
@@ -44,7 +42,7 @@ const Banner = () => {
                             An open source management tool for your Open Balena instance
                         </Typography>
                     </Box>
-                    <CardActions className={classes.actions}>
+                    <CardActions sx={styles.actionCard}>
                         <Button variant="contained" href="#/organization" style={{ minWidth: '120px'}} startIcon={<CorporateFareIcon />}>
                             Orgs
                         </Button>
@@ -57,8 +55,8 @@ const Banner = () => {
                     </CardActions>
                 </Box>
                 <Box
-                    display={{ xs: 'none', sm: 'none', md: 'block' }}
-                    className={classes.media}
+                    display="block"
+                    sx={styles.mediaBox}
                     width="16em"
                     height="9em"
                     overflow="hidden"

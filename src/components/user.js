@@ -65,8 +65,10 @@ export const UserList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
-                <EditButton label="" color="default"/>
-                <DeleteUserButton variant="text" size="small" color="default"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteUserButton variant="text" size="small" color="default"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

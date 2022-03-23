@@ -13,6 +13,7 @@ import {
     SelectInput,
     TextInput,
     DeleteButton,
+    Toolbar,
 } from 'react-admin';
 
 const DeviceFamilyTitle = ({ record }) => {
@@ -29,8 +30,10 @@ export const DeviceFamilyList = (props) => {
                 <ReferenceField label="Manufacturer" source="is manufactured by-device manufacturer" reference="device manufacturer" target="id" link={false}>
                     <ChipField source="name" />
                 </ReferenceField>
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

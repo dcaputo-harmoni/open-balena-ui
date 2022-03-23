@@ -13,6 +13,7 @@ import {
     TextInput,
     EditButton,
     DeleteButton,
+    Toolbar,
 } from 'react-admin';
 
 const RoleTitle = ({ record }) => {
@@ -32,8 +33,10 @@ export const PermissionList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                </Toolbar>
             </Datagrid>
         </List>
     )

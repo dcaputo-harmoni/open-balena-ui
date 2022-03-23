@@ -1,38 +1,39 @@
 import * as React from "react";
-import { Admin, Resource, ListGuesser, fetchUtils } from 'react-admin';
+import { Admin, Resource, fetchUtils } from 'react-admin';
 import TreeMenu from '@bb-tech/ra-treemenu';
 import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
-import user from './components/user';
-import userKey from './components/userKey';
-import organization from './components/organization';
-import role from './components/role';
-import permission from './components/permission';
 import apiKey from './components/apiKey';
+import config from './components/config';
+import cpuArchitecture from './components/cpuArchitecture';
+import device from './components/device';
+import deviceConfigVar from './components/deviceConfigVar';
+import deviceEnvVar from './components/deviceEnvVar';
+import deviceFamily from './components/deviceFamily';
+import deviceManufacturer from './components/deviceManufacturer';
+import deviceServiceVar from './components/deviceServiceVar';
+import deviceTag from './components/deviceTag';
+import deviceType from './components/deviceType';
 import fleet from './components/fleet';
 import fleetEnvVar from './components/fleetEnvVar';
 import fleetConfigVar from './components/fleetConfigVar';
 import fleetTag from './components/fleetTag';
-import device from './components/device';
-import deviceEnvVar from './components/deviceEnvVar';
-import deviceConfigVar from './components/deviceConfigVar';
-import deviceServiceVar from './components/deviceServiceVar';
-import deviceType from './components/deviceType';
-import deviceTag from './components/deviceTag';
+import fleetType from './components/fleetType';
 import image from './components/image';
-import release from './components/release';
-import releaseTag from './components/releaseTag';
 import imageEnvVar from './components/imageEnvVar';
 import imageLabel from './components/imageLabel';
+import organization from './components/organization';
+import permission from './components/permission';
+import release from './components/release';
+import releaseTag from './components/releaseTag';
+import role from './components/role';
 import service from './components/service';
 import serviceEnvVar from './components/serviceEnvVar';
+import serviceLabel from './components/serviceLabel';
+import user from './components/user';
+import userKey from './components/userKey';
 import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
-import config from './components/config';
-import cpuArchitecture from './components/cpuArchitecture';
-import deviceFamily from './components/deviceFamily';
-import deviceManufacturer from './components/deviceManufacturer';
-import fleetType from './components/fleetType';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -78,7 +79,7 @@ const App = () => (
   <Resource name="menu-service" options={{ label: "Services", "isMenuParent": true }} />
   <Resource name="service" options={{ label: 'Services', "menuParent": "menu-service" }} {...service} />
   <Resource name="service environment variable" options={{ label: 'Environment Vars', "menuParent": "menu-service" }} {...serviceEnvVar} />
-  <Resource name="service label" options={{ label: 'Labels', "menuParent": "menu-service" }} list={ListGuesser} />
+  <Resource name="service label" options={{ label: 'Labels', "menuParent": "menu-service" }} {...serviceLabel} />
 
   <Resource name="menu-static" options={{ label: "Static Data", "isMenuParent": true }} />
   <Resource name="config" options={{ label: 'Configs', "menuParent": "menu-static" }} {...config} />
@@ -87,14 +88,15 @@ const App = () => (
   <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} {...deviceManufacturer} />
   <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType} />
   <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} {...fleetType} />
-  <Resource name="gateway download" options={{ label: 'Gateway D/Ls', "menuParent": "menu-static" }} list={ListGuesser} />
   <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission} />
   <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role} />
   
+  {/* Reference tables */}
   <Resource name="actor" />
   <Resource name="api key-has-permission" />
   <Resource name="api key-has-role" />
   <Resource name="device type alias" />
+  <Resource name="gateway download" />
   <Resource name="image install" />
   <Resource name="image-is part of-release" />
   <Resource name="migration" />

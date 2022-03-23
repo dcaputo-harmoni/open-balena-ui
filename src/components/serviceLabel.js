@@ -9,26 +9,26 @@ import {
     List,
     SimpleForm,
     TextInput,
+    EditButton,
     ReferenceInput,
     SelectInput,
-    EditButton,
     DeleteButton,
     Toolbar,
 } from 'react-admin';
 
-const FleetConfigVarTitle = ({ record }) => {
-    return <span>Fleet Config Variable {record ? `"${record.name}"` : ''}</span>;
+const ServiceLabelTitle = ({ record }) => {
+    return <span>Service Label {record ? `"${record['label name']}"` : ''}</span>;
 };
 
-export const FleetConfigVarList = (props) => {
+export const ServiceLabelList = (props) => {
     return (
         <List {...props}>
             <Datagrid>
                 <TextField source="id" />
-                <ReferenceField label="Fleet" source="application" reference="application" target="id">
-                    <ChipField source="app name" />
+                <ReferenceField label="Service" source="service" reference="service" target="id">
+                    <ChipField source="service name" />
                 </ReferenceField>
-                <TextField label="Name" source="name" />
+                <TextField label="Name" source="label name" />
                 <TextField label="Value" source="value" />
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
@@ -39,34 +39,34 @@ export const FleetConfigVarList = (props) => {
     )
 };
 
-export const FleetConfigVarCreate = props => (
+export const ServiceLabelCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="application" reference="application" target="id">
-                <SelectInput optionText="app name" optionValue="id" />
+            <ReferenceInput source="service" reference="service" target="id">
+                <SelectInput optionText="service name" optionValue="id" />
             </ReferenceInput>
-            <TextInput label="Name" source="name" />
+            <TextInput label="Name" source="label name" />
             <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
 );
 
-export const FleetConfigVarEdit = props => (
-    <Edit title={<FleetConfigVarTitle />} {...props}>
+export const ServiceLabelEdit = props => (
+    <Edit title={<ServiceLabelTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="application" reference="application" target="id">
-                <SelectInput optionText="app name" optionValue="id" />
+            <ReferenceInput source="service" reference="service" target="id">
+                <SelectInput optionText="service name" optionValue="id" />
             </ReferenceInput>
-            <TextInput label="Name" source="name" />
+            <TextInput label="Name" source="label name" />
             <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );
 
-const fleetConfigVar = {
-    list: FleetConfigVarList,
-    create: FleetConfigVarCreate,
-    edit: FleetConfigVarEdit
+const serviceLabel = {
+    list: ServiceLabelList,
+    create: ServiceLabelCreate,
+    edit: ServiceLabelEdit
 }
 
-export default fleetConfigVar;
+export default serviceLabel;

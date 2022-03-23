@@ -9,6 +9,7 @@ import {
     EditButton,
     TextInput,
     DeleteButton,
+    Toolbar,
 } from 'react-admin';
 
 const ConfigTitle = ({ record }) => {
@@ -24,8 +25,10 @@ export const ConfigList = (props) => {
                 <TextField label="Value" source="value" />
                 <TextField label="Scope" source="scope" />
                 <TextField label="Description" source="description" />
-                <EditButton label="" color="default"/>
-                <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                    <EditButton label="" color="default"/>
+                    <DeleteButton label="" style={{color: "black"}} size="medium" />
+                </Toolbar>
             </Datagrid>
         </List>
     )
