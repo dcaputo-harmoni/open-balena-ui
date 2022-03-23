@@ -10,6 +10,10 @@ import {
     EditButton,
     ReferenceField,
     DeleteButton,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
+    FormDataConsumer,
 } from 'react-admin';
 
 const DeviceServiceVarTitle = ({ record }) => {
@@ -47,16 +51,46 @@ export const DeviceServiceVarList = (props) => {
     )
 };
 
-export const DeviceServiceVarCreate = props => (
+export const DeviceServiceVarCreate = props => {
+    return (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput label="Device" source="device" reference="device" target="id">
+                <SelectInput optionText="device name" optionValue="id"/>
+            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData["device"] &&
+                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}}>
+                        <ReferenceInput source="service" reference="service" target="id">
+                            <SelectInput optionText="service name" optionValue="id"/>
+                        </ReferenceInput>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+            <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Create>
-);
+    )
+}
 
 export const DeviceServiceVarEdit = props => (
     <Edit title={<DeviceServiceVarTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput source="device" reference="device" target="id">
+                <SelectInput optionText="device name" optionValue="id"/>
+            </ReferenceInput>
+                <FormDataConsumer>
+                    {({ formData, ...rest }) => formData['device'] &&
+                        <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}}>
+                            <ReferenceInput source="service" reference="service" target="id">
+                                <SelectInput optionText="service name" optionValue="id"/>
+                            </ReferenceInput>
+                        </ReferenceInput>
+                    }
+                </FormDataConsumer>
+                <TextInput label="Name" source="name" />
+            <TextInput label="Value" source="value" />
         </SimpleForm>
     </Edit>
 );

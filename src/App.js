@@ -28,6 +28,11 @@ import service from './components/service';
 import serviceEnvVar from './components/serviceEnvVar';
 import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
+import config from './components/config';
+import cpuArchitecture from './components/cpuArchitecture';
+import deviceFamily from './components/deviceFamily';
+import deviceManufacturer from './components/deviceManufacturer';
+import fleetType from './components/fleetType';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -76,12 +81,12 @@ const App = () => (
   <Resource name="service label" options={{ label: 'Labels', "menuParent": "menu-service" }} list={ListGuesser} />
 
   <Resource name="menu-static" options={{ label: "Static Data", "isMenuParent": true }} />
-  <Resource name="config" options={{ label: 'Configs', "menuParent": "menu-static" }} list={ListGuesser} />
-  <Resource name="cpu architecture" options={{ label: 'CPU Architectures', "menuParent": "menu-static" }} list={ListGuesser} />
-  <Resource name="device family" options={{ label: 'Device Families', "menuParent": "menu-static" }} list={ListGuesser} />
-  <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="config" options={{ label: 'Configs', "menuParent": "menu-static" }} {...config} />
+  <Resource name="cpu architecture" options={{ label: 'CPU Architectures', "menuParent": "menu-static" }} {...cpuArchitecture} />
+  <Resource name="device family" options={{ label: 'Device Families', "menuParent": "menu-static" }} {...deviceFamily} />
+  <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} {...deviceManufacturer} />
   <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType} />
-  <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} list={ListGuesser} />
+  <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} {...fleetType} />
   <Resource name="gateway download" options={{ label: 'Gateway D/Ls', "menuParent": "menu-static" }} list={ListGuesser} />
   <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission} />
   <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role} />
