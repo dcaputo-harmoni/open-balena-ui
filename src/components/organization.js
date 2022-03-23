@@ -11,7 +11,8 @@ import {
     List,
     SimpleForm,
     TextInput,
-    EditButton
+    EditButton,
+    DeleteButton,
 } from 'react-admin';
 
 const OrganizationTitle = ({ record }) => {
@@ -32,7 +33,13 @@ export const OrganizationList = (props) => {
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
+                <ReferenceManyField label="Fleets" source="id" reference="application" target="organization">
+                    <SingleFieldList linkType={false}>
+                        <ChipField source="app name" />
+                    </SingleFieldList>
+                </ReferenceManyField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

@@ -12,6 +12,7 @@ import {
     EditButton,
     ReferenceInput,
     SelectInput,
+    DeleteButton,
 } from 'react-admin';
 
 const ImageEnvVarTitle = ({ record }) => {
@@ -45,6 +46,7 @@ export const ImageEnvVarList = (props) => {
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

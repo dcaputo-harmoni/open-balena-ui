@@ -16,6 +16,9 @@ import {
     EditButton,
     useDataProvider,
     required,
+    BooleanInput,
+    FormDataConsumer,
+    DeleteButton,
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -37,6 +40,9 @@ export const FleetList = (props) => {
             <Datagrid>
                 <TextField source="id" />
                 <TextField label="Name" source="app name" />
+                <ReferenceField label="Organization" source="organization" reference="organization" target="id">
+                    <ChipField source="name" />
+                </ReferenceField>
                 <TextField label="Slug" source="slug" />
                 <ReferenceField label="Device Type" source="is for-device type" reference="device type" target="id">
                     <ChipField source="slug" />
@@ -45,17 +51,11 @@ export const FleetList = (props) => {
                 <ReferenceField label="Target Rel." source="should be running-release" reference="release" target="id">
                     <ChipField source="revision" />
                 </ReferenceField>
-                <TextField label="Depends On" source="depends on-application" />
                 <BooleanBinaryField label="Host" source="is host" />
                 <BooleanBinaryField label="Archived" source="is archived" />
                 <BooleanBinaryField label="Public" source="is public" />
-                <ReferenceField label="Organization" source="organization" reference="organization" target="id">
-                    <ChipField source="name" />
-                </ReferenceField>
-                <ReferenceField label="Fleet Type" source="application type" reference="application type" target="id">
-                    <ChipField source="name" />
-                </ReferenceField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )
@@ -80,8 +80,22 @@ export const FleetCreate = props => {
             <ReferenceInput label="Organization" source="organization" reference="organization" target="id" validate={required()}>
                 <SelectInput optionText="name" optionValue="id" />
             </ReferenceInput>
-            <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id" validate={required()}>
+            <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id" validate={required()} initialValue={1}>
                 <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
+            <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} />
+            <FormDataConsumer>
+                 {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
+                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id">
+                        <SelectInput optionText="revision" optionValue="id" />
+                    </ReferenceInput>
+                }
+             </FormDataConsumer>
+             <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+             <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+             <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+             <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
+                <SelectInput optionText="app name" optionValue="id" />
             </ReferenceInput>
         </SimpleForm>
     </Create>
@@ -102,6 +116,20 @@ export const FleetEdit = props => (
             </ReferenceInput>
             <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id">
                 <SelectInput optionText="name" optionValue="id" />
+            </ReferenceInput>
+            <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} />
+            <FormDataConsumer>
+                 {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
+                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id">
+                        <SelectInput optionText="revision" optionValue="id" />
+                    </ReferenceInput>
+                }
+             </FormDataConsumer>
+             <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0} />
+             <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0} />
+             <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0} />
+             <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
+                <SelectInput optionText="app name" optionValue="id" />
             </ReferenceInput>
         </SimpleForm>
     </Edit>

@@ -12,6 +12,7 @@ import {
     SimpleForm,
     TextInput,
     EditButton,
+    DeleteButton,
 } from 'react-admin';
 
 const RoleTitle = ({ record }) => {
@@ -32,6 +33,7 @@ export const PermissionList = (props) => {
                     </SingleFieldList>
                 </ReferenceManyField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

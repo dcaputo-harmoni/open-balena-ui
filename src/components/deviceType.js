@@ -10,6 +10,7 @@ import {
     SimpleForm,
     TextInput,
     EditButton,
+    DeleteButton,
 } from 'react-admin';
 import versions from '../versions'
 
@@ -38,6 +39,7 @@ export const DeviceTypeList = (props) => {
                     <ChipField source="slug" />
                 </ReferenceField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

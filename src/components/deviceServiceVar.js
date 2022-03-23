@@ -9,6 +9,7 @@ import {
     SimpleForm,
     EditButton,
     ReferenceField,
+    DeleteButton,
 } from 'react-admin';
 
 const DeviceServiceVarTitle = ({ record }) => {
@@ -40,6 +41,7 @@ export const DeviceServiceVarList = (props) => {
                     </ReferenceField>
                 </ReferenceField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

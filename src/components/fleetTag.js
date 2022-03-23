@@ -12,6 +12,7 @@ import {
     TextInput,
     ReferenceInput,
     EditButton,
+    DeleteButton,
 } from 'react-admin';
 
 const FleetTagTitle = ({ record }) => {
@@ -29,6 +30,7 @@ export const FleetTagList = (props) => {
                 <TextField label="Name" source="tag key" />
                 <TextField label="Value" source="value" />
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

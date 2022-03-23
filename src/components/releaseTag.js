@@ -9,6 +9,7 @@ import {
     List,
     SimpleForm,
     EditButton,
+    DeleteButton,
 } from 'react-admin';
 
 const ReleaseTagTitle = ({ record }) => {
@@ -31,6 +32,7 @@ export const ReleaseTagList = (props) => {
                 <TextField label="Name" source="tag key" />
                 <TextField label="Value" source="value" />
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

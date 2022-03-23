@@ -12,6 +12,7 @@ import {
     ReferenceInput,
     SelectInput,
     TextInput,
+    DeleteButton,
 } from 'react-admin';
 
 const DeviceConfigVarTitle = ({ record }) => {
@@ -34,6 +35,7 @@ export const DeviceConfigVarList = (props) => {
                     </ReferenceField>
                 </ReferenceField>
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )

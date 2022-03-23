@@ -9,6 +9,10 @@ import {
     List,
     SimpleForm,
     EditButton,
+    DeleteButton,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
 } from 'react-admin';
 
 const UserKeysTitle = ({ record }) => {
@@ -26,6 +30,7 @@ export const UserKeysList = (props) => {
                 <TextField label="Key Name" source="title" />
                 <TextField label="Key" source="public key" />
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )
@@ -33,7 +38,12 @@ export const UserKeysList = (props) => {
 
 export const UserKeysCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput source="user" reference="user" target="id">
+                <SelectInput optionText="username" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Title" source="title" />
+            <TextInput multiline label="Key" source="public key" />
         </SimpleForm>
     </Create>
 );
@@ -41,6 +51,11 @@ export const UserKeysCreate = props => (
 export const UserKeysEdit = props => (
     <Edit title={<UserKeysTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput source="user" reference="user" target="id">
+                <SelectInput optionText="username" optionValue="id" />
+            </ReferenceInput>
+            <TextInput label="Title" source="title" />
+            <TextInput multiline label="Key" source="public key" />
         </SimpleForm>
     </Edit>
 );

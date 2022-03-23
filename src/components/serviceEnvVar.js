@@ -9,6 +9,7 @@ import {
     List,
     SimpleForm,
     EditButton,
+    DeleteButton,
 } from 'react-admin';
 
 const ServiceEnvVarTitle = ({ record }) => {
@@ -26,6 +27,7 @@ export const ServiceEnvVarList = (props) => {
                 <TextField label="Name" source="name" />
                 <TextField label="Value" source="value" />
                 <EditButton label="" color="default"/>
+                <DeleteButton label="" style={{color: "black"}} size="medium"/>
             </Datagrid>
         </List>
     )
