@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { 
     TextField,
+    FunctionField,
     ReferenceField,
 } from 'react-admin'
 import {
@@ -9,11 +10,10 @@ import {
     TableRow,
     TableCell,
 } from '@mui/material';
-import { createStyles, makeStyles } from '@mui/styles';
 import DeviceServices from '../../ui/DeviceServices';
+import dateFormat from 'dateformat';
 
-const useStyles = makeStyles(() =>
-  createStyles({
+const styles = {
     outerTable: {
         '& td': {
             borderBottom: "none",
@@ -25,10 +25,12 @@ const useStyles = makeStyles(() =>
         }
     },
     innerTable: {
+        marginBottom: "20px",
         '& td': {
             borderBottom: "none",
             width: "25%",
-            padding: "4px"
+            paddingLeft: "8px",
+            paddingRight: "8px",
         }
     },
     headerRow: {
@@ -36,72 +38,164 @@ const useStyles = makeStyles(() =>
         '& td': {
             fontSize: "12pt",
             fontWeight: "bold",
-            textAlign:"center"    
+            textAlign:"center"  
         }
     },
     dataRow: {
         '& td': {
-            height: "30px",
+            paddingTop: "10px",
+            paddingBottom: "0px",
         }
     },
     labelCell: {
-        fontWeight: "bold"
+        fontWeight: "bold",
     },
     valueCell: {
         textAlign: "right",
     },
-  }),
-);
+}
+
+const toTitleCase = str => {
+    return str.split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
+}
 
 const Summary = (props) => {
-    const classes = useStyles();
-    let { record } = props;
     return (
-        <Table className={classes.outerTable}>
+        <Table sx={styles.outerTable}>
             <TableBody>
                 <TableRow>
                     <TableCell>
-                        <Table className={classes.innerTable}>
+                        <Table sx={styles.innerTable}>
                             <TableBody>
-                                <TableRow className={classes.headerRow}>
-                                    <TableCell colSpan={4}> Status </TableCell>
+                                <TableRow sx={styles.headerRow}>
+                                    <TableCell colSpan={4}> Device Status </TableCell>
                                 </TableRow>
-                                <TableRow className={classes.dataRow}>
-                                    <TableCell class={classes.labelCell}>UUID</TableCell>
-                                    <TableCell class={classes.valueCell}>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Device State</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="status" />
                                     </TableCell>
-                                    <TableCell class={classes.labelCell}>Fleet</TableCell>
-                                    <TableCell class={classes.valueCell}>
-                                        <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
+                                    <TableCell sx={styles.labelCell}>Fleet</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <ReferenceField source="belongs to-application" reference="application" target="id">
                                             <TextField source="app name" />
                                         </ReferenceField>
                                     </TableCell>
                                 </TableRow>
-                                <TableRow className={classes.dataRow}>
-                                    <TableCell class={classes.labelCell}>Devices</TableCell>
-                                    <TableCell class={classes.valueCell}>{record['numDevices']}</TableCell>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Release Revision</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <ReferenceField source="is running-release" reference="release" target="id">
+                                            <TextField source="revision" />
+                                        </ReferenceField>
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Target Revision</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                    {props.record['should be running-release'] ? 
+                                        <ReferenceField source="should be running-release" reference="release" target="id">
+                                            <TextField source="revision" />
+                                        </ReferenceField>
+                                    : "n/a"}
+                                    </TableCell>
                                 </TableRow>
-                                <TableRow className={classes.dataRow}>
-                                    <TableCell class={classes.labelCell}>Online</TableCell>
-                                    <TableCell class={classes.valueCell}>{record['numOnlineDevices']}</TableCell>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>OS</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${record['os version']}-${record['os variant']}`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Supervisor</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="supervisor version" />
+                                    </TableCell>
                                 </TableRow>
-                                <TableRow className={classes.dataRow}>
-                                    <TableCell class={classes.labelCell}>Type</TableCell>
-                                    <TableCell class={classes.valueCell}>{record['deviceTypeName']}</TableCell>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Connectivity</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${toTitleCase(record['api heartbeat state'])}`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>As of</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${dateFormat((new Date(record['last connectivity event'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
+                                    </TableCell>
                                 </TableRow>
-                                <TableRow className={classes.dataRow}>
-                                    <TableCell colSpan={4} align="center">
-                                        Foo
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>VPN State</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${record['is connected to vpn'] === 1 ? "Connected" : "Disconnected"}`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>As of</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${dateFormat((new Date(record['last vpn event'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Public Address</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="public address" />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>VPN Address</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="vpn address" />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>IP Address</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="ip address" />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Mac Addresses</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="mac address" />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Memory Usage</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['memory usage']))}mb`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Total Memory</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['memory total']))}mb`} />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>Storage Usage</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['storage usage']))}mb`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Total Storage</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['storage total']))}mb`} />
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>CPU Usage</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['cpu usage']))}%`} />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>CPU Temp</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${Math.round((record['cpu temp']))}`} />&deg;C
+                                    </TableCell>
+                                </TableRow>
+                                <TableRow sx={styles.dataRow}>
+                                    <TableCell sx={styles.labelCell}>CPU ID</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <TextField source="cpu id" />
+                                    </TableCell>
+                                    <TableCell sx={styles.labelCell}>Undervolted</TableCell>
+                                    <TableCell sx={styles.valueCell}>
+                                        <FunctionField render={record => `${record['is undervolted'] === 1 ? "Yes" : "No"}`} />
                                     </TableCell>
                                 </TableRow>
                             </TableBody>
                         </Table>
                     </TableCell>
                     <TableCell>
-                        <Table className={classes.innerTable}>
+                        <Table sx={styles.innerTable}>
                             <TableBody>
-                                <TableRow className={classes.headerRow}>
-                                    <TableCell colSpan={4}> Services </TableCell>
+                                <TableRow sx={styles.headerRow}>
+                                    <TableCell colSpan={4}> Device Services </TableCell>
                                 </TableRow>
                                 <TableRow>
                                     <TableCell colSpan={4}>

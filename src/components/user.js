@@ -193,12 +193,6 @@ export class UserEdit extends React.Component {
                     <TextInput source="username"/>
                     <TextInput source="email"/>
                     <ChangePasswordButton/>
-                    <ReferenceArrayInput source="r`oleArray" reference="role">
-                        <SelectArrayInput optionText="name" optionValue="id"/>
-                    </ReferenceArrayInput>
-                    <ReferenceArrayInput source="permissionArray" reference="permission">
-                        <SelectArrayInput optionText="name" optionValue="id"/>
-                    </ReferenceArrayInput>
                     <ReferenceArrayInput source="organizationArray" reference="organization">
                         <SelectArrayInput optionText="name" optionValue="id"/>
                     </ReferenceArrayInput>

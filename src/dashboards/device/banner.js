@@ -6,7 +6,10 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import { 
     TextField,
     ReferenceField,
+    useAuthProvider,
+    useNotify,
 } from 'react-admin'
+import utf8decode from '../../lib/utf8decode';
 
 const styles = {
     bannerCard: {
@@ -19,7 +22,7 @@ const styles = {
     actionCard: {
         padding: 0,
         flexWrap: 'wrap',
-        '& a': {
+        '& button': {
             marginTop: '2em',
             marginLeft: '0.25em !important',
             marginRight: '2em',
@@ -44,14 +47,44 @@ const LinearProgressWithLabel = (props) => {
 }
 
 const Banner = (props) => {
+
+    const authProvider = useAuthProvider();
+    const notify = useNotify();
+    
+    const invokeSupervisor = (device, command) => {
+        const session = authProvider.getSession();
+        return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v1/${command}`, {
+            method: 'POST',
+            body: JSON.stringify({ "uuid": device.uuid }),
+            headers: new Headers({ 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.jwt}`,
+            }),
+            insecureHTTPParser: true
+        }).then(response => {
+            if (response.status < 200 || response.status >= 300) {
+                throw new Error(response.statusText);
+            }
+            console.dir(response);
+            return response.body.getReader().read().then((streamData) => {
+                const result = utf8decode(streamData.value);
+                console.dir(result);
+                if (result === "OK") notify(`Successfully executed command ${command} on device ${device['device name']}`);
+            })
+        })
+        .catch(() => {
+            notify(`Error: Could not execute command ${command} on device ${device['device name']}`)
+        });
+    }
+
     if (props.loading) return null;
-    console.dir(props);
+
     return (
         <Card sx={styles.bannerCard}>
             <Box display="flex">
                 <Box flex="1">
                     <Typography variant="h5" component="h2" gutterBottom>
-                        Device {props.record['device name']}
+                        Device "{props.record['device name']}"
                     </Typography>
                     <Box maxWidth="40em">
                         <Typography variant="body1" component="p" gutterBottom>
@@ -64,13 +97,13 @@ const Banner = (props) => {
                         </Typography>
                     </Box>
                     <CardActions sx={styles.actionCard}>
-                        <Button variant="contained" href="#/organization" style={{ minWidth: '140px'}} startIcon={<LightModeIcon />}>
+                        <Button variant="contained" onClick={() => invokeSupervisor(props.record, "blink")} sx={{ minWidth: '140px'}} startIcon={<LightModeIcon />}>
                             Blink
                         </Button>
-                        <Button variant="contained" href="#/user" style={{ minWidth: '140px'}} startIcon={<RestartAltIcon />}>
+                        <Button variant="contained" onClick={() => invokeSupervisor(props.record, "reboot")} sx={{ minWidth: '140px'}} startIcon={<RestartAltIcon />}>
                             Reboot
                         </Button>
-                        <Button variant="contained" href="#/api%20key" style={{ minWidth: '140px'}} startIcon={<PowerSettingsNewIcon />}>
+                        <Button variant="contained" onClick={() => invokeSupervisor(props.record, "shutdown")} sx={{ minWidth: '140px'}} startIcon={<PowerSettingsNewIcon />}>
                             Shutdown
                         </Button>
                     </CardActions>

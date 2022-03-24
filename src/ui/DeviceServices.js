@@ -6,34 +6,48 @@ import {
     TextField,
     FunctionField,
     ChipField,
-    useDataProvider,
+    useAuthProvider,
     useNotify,
+    Toolbar,
 } from 'react-admin';
-import dateFormat from 'dateformat';
+import {
+    Button,
+ } from '@mui/material'; 
+ import RestartAltIcon from '@mui/icons-material/RestartAlt';
+ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+ import StopIcon from '@mui/icons-material/Stop';
+ import dateFormat from 'dateformat';
+ import utf8decode from '../lib/utf8decode';
 
 export const DeviceServices = ({basePath, ...props}) => {
-    const [loaded, setLoaded] = React.useState(false);
-    const dataProvider = useDataProvider();
+    const authProvider = useAuthProvider();
     const notify = useNotify();
 
-    React.useEffect(() => {
-        if (!loaded) {
-            dataProvider.getList('image install', {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { 'device': props.record.id }
-            }).then((imageInstalls) => {
-                if (imageInstalls.data.length > 0) {
-                } else {
-                    notify("No services are installed on this device")
-                }
-            });
-            setLoaded(true);    
-        }
-    }, [props, dataProvider, notify, setLoaded, loaded]);
+    const invokeSupervisor = (device, imageInstall, command) => {
+        const session = authProvider.getSession();
+        return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v2/applications/${device['belongs to-application']}/${command}-service`, {
+            method: 'POST',
+            body: JSON.stringify({ "uuid": device.uuid, "data": {"imageId": imageInstall['installs-image']} }),
+            headers: new Headers({ 
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${session.jwt}`,
+            }),
+            insecureHTTPParser: true
+        }).then(response => {
+            if (response.status < 200 || response.status >= 300) {
+                throw new Error(response.statusText);
+            }
+            return response.body.getReader().read().then((streamData) => {
+                const result = utf8decode(streamData.value);
+                if (result === "OK") notify(`Successfully executed command ${command} on device ${device['device name']}`);
+            })
+        })
+        .catch(() => {
+            notify(`Error: Could not execute command ${command} on device ${device['device name']}`)
+        });
+    }
 
     return (
-    <> 
         <ReferenceManyField source="id" reference="image install" target="device" filter={{"is provided by-release": props.record['is running-release']}}>
             <Datagrid>
                 <ReferenceField label="Image" source="installs-image" reference="image" target="id" link={false}>
@@ -43,10 +57,16 @@ export const DeviceServices = ({basePath, ...props}) => {
                 </ReferenceField>
                 <TextField label="Status" source="status" />
                 <FunctionField label="Install Date" render={record => `${dateFormat((new Date(record['install date'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
+                    <FunctionField render={record =>
+                        <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
+                                <Button onClick={() => invokeSupervisor(props.record, record, "start")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><PlayArrowIcon/></Button>
+                                <Button onClick={() => invokeSupervisor(props.record, record, "stop")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><StopIcon/></Button>
+                                <Button onClick={() => invokeSupervisor(props.record, record, "restart")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><RestartAltIcon/></Button>
+                        </Toolbar>
+                    } />
             </Datagrid>
         </ReferenceManyField>
-    </>
-  )
+    )
 }
 
 export default DeviceServices;

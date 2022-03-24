@@ -13,7 +13,10 @@ import {
     TextInput,
     SearchInput,
     ShowButton,
+    EditButton,
     Toolbar,
+    ReferenceInput,
+    SelectInput,
 } from 'react-admin';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
@@ -64,6 +67,7 @@ export const DeviceList = (props) => {
                     <DeviceServicesButton label="" style={{color: "black"}}/>
                     <DeviceConnectButton label="" style={{color: "black"}}/>
                     <ShowButton label="" color="default"/>
+                    <EditButton label="" color="default"/>
                     <DeleteDeviceButton variant="text" size="small" color="default"/>
                 </Toolbar>
             </Datagrid>
@@ -73,9 +77,19 @@ export const DeviceList = (props) => {
 
 export const DeviceCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
             <TextInput label="UUID" source="uuid" />
-            <TextInput label="Name" source="device name" />
+            <TextInput label="Device Name" source="device name" />
+            <TextInput label="Note" source="note" />
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
+                <SelectInput optionText="app name" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
+                <SelectInput optionText="revision" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
+                <SelectInput optionText="device name" optionValue="id" />
+            </ReferenceInput>
         </SimpleForm>
     </Create>
 );
@@ -84,8 +98,18 @@ export const DeviceEdit = props => (
     <Edit title={<DeviceTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
-            <TextInput source="uuid" />
-            <TextInput source="device name" />
+            <TextInput label="UUID" source="uuid" />
+            <TextInput label="Device Name" source="device name" />
+            <TextInput label="Note" source="note" />
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
+                <SelectInput optionText="app name" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
+                <SelectInput optionText="revision" optionValue="id" />
+            </ReferenceInput>
+            <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
+                <SelectInput optionText="device name" optionValue="id" />
+            </ReferenceInput>
         </SimpleForm>
     </Edit>
 );

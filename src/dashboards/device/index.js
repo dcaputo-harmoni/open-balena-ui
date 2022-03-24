@@ -12,11 +12,15 @@ import Control from './control';
 
 import { useShowController } from 'react-admin';
 
+const DeviceTitle = ({ record }) => {
+    return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
+};
+
 const DeviceDashboard = (props) => {
     return (
         <>
         <Banner {...useShowController(props)}/>
-        <Show actions={false} {...props}>
+        <Show title={<DeviceTitle />} actions={false} {...props}>
             <TabbedShowLayout syncWithLocation={false}>
                 <Tab label="Summary">
                     <Summary />

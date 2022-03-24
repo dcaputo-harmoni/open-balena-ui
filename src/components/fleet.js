@@ -69,9 +69,6 @@ export const FleetCreate = props => {
     const processFleetCreate = async (data) => {
         let actor = await dataProvider.create('actor', { data: {} });
         data.actor = actor.data.id;
-        if (data['should track latest release'] === 1) {
-            data['should be running-release'] = null;
-        }
         return data;
     };
     return (
@@ -110,9 +107,6 @@ export const FleetCreate = props => {
 
 export const FleetEdit = props => {
     const processFleetEdit = data => {
-        if (data['should track latest release'] === 1) {
-            data['should be running-release'] = null;
-        }
         return data;
     };
     return (
