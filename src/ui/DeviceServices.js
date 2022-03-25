@@ -48,7 +48,7 @@ export const DeviceServices = ({basePath, ...props}) => {
     }
 
     return (
-        <ReferenceManyField source="id" reference="image install" target="device" filter={{"is provided by-release": props.record['is running-release']}}>
+        <ReferenceManyField source="id" reference="image install" target="device" filter={props.record['is running-release'] ? {"is provided by-release": props.record['is running-release']} : {}}>
             <Datagrid>
                 <ReferenceField label="Image" source="installs-image" reference="image" target="id" link={false}>
                     <ReferenceField label="Image" source="is a build of-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record['is a build of-service']}`}>

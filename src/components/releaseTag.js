@@ -46,8 +46,15 @@ export const ReleaseTagList = props => {
     )
 };
 
-export const ReleaseTagCreate = props => (
-    <Create {...props}>
+export const ReleaseTagCreate = props => {
+
+    const processCreate = async (data) => {
+        delete data.application;
+        return data;
+    };
+
+    return (
+    <Create transform={processCreate} {...props}>
         <SimpleForm redirect="list">
             <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
@@ -63,10 +70,11 @@ export const ReleaseTagCreate = props => (
             <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
-);
+    )
+}
 
 export const ReleaseTagEdit = props => (
-    <Edit title={<ReleaseTagTitle />} {...props}>
+    <Edit title={<ReleaseTagTitle/>} {...props}>
         <SimpleForm>
             <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>

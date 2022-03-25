@@ -96,7 +96,7 @@ export const FleetCreate = props => {
             <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id" validate={required()} initialValue={1}>
                 <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
-            <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0}/>
+            <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={1}/>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
                     <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id">

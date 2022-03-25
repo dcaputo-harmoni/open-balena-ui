@@ -95,13 +95,13 @@ const Summary = props => {
                                         <ReferenceField source="should be running-release" reference="release" target="id">
                                             <TextField source="revision"/>
                                         </ReferenceField>
-                                    : "n/a"}
+                                    : ""}
                                     </TableCell>
                                 </TableRow>
                                 <TableRow sx={styles.dataRow}>
                                     <TableCell sx={styles.labelCell}>OS</TableCell>
                                     <TableCell sx={styles.valueCell}>
-                                        <FunctionField render={record => `${record['os version']}-${record['os variant']}`}/>
+                                        <FunctionField render={record => `${record['os version'] ? record['os version'] : ''}${record['os variant'] ? ('-' + record['os variant']) : ''}`}/>
                                     </TableCell>
                                     <TableCell sx={styles.labelCell}>Supervisor</TableCell>
                                     <TableCell sx={styles.valueCell}>

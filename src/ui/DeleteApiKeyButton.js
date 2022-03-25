@@ -20,7 +20,7 @@ export const DeleteApiKeyButton = ({basePath, ...props}) => {
         if (props.selectedIds) {
             await deleteApiKeyBulk(props.selectedIds);
         } else {
-            await deleteApiKey(props.record.id);
+            await deleteApiKey(props.record);
         }
         setOpen(false);
         notify('API Key(s) successfully deleted');

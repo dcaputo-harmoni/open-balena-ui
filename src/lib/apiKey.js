@@ -69,6 +69,7 @@ export function useDeleteApiKey () {
                 sort: { field: 'id', order: 'ASC' },
                 filter: { [x.field]: apiKey.id }
             }).then((existingMappings) => {
+                console.dir(existingMappings);
             if (existingMappings.data.length > 0) {
                 dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(y => y.id) } );
             }})
