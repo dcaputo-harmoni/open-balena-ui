@@ -16,7 +16,7 @@ const ConfigTitle = ({ record }) => {
     return <span>Config {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const ConfigList = (props) => {
+export const ConfigList = props => {
     return (
         <List {...props}>
             <Datagrid>

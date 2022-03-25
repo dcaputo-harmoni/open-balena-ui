@@ -16,7 +16,7 @@ const DeviceManufacturerTitle = ({ record }) => {
     return <span>Device Manufacturer {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceManufacturerList = (props) => {
+export const DeviceManufacturerList = props => {
     return (
         <List {...props}>
             <Datagrid>

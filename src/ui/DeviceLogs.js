@@ -43,11 +43,8 @@ export const DeviceLogs = ({basePath, ...props}) => {
             const reader = response.body.getReader();
             return reader.read().then(function processText({ done, value }) {
                 if (done) {
-                    console.dir(result);
                     const logs = JSON.parse(utf8decode(result));
-                    console.dir(logs);
                     const containerLogs = logs.filter(x => values.container === 0 ? !x.hasOwnProperty("serviceId") : x.serviceId === values.container);
-                    console.dir(containerLogs);
                     const formattedLogs = containerLogs.map(x => `[${(new Date(x.timestamp)).toISOString()}] ${x.message}`).join('<br/>');
                     setContent(`<html style='font-family: consolas; color: #ffffff'>${formattedLogs}</html>`);
                     return;

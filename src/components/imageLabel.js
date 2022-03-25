@@ -20,7 +20,7 @@ const ImageLabelTitle = ({ record }) => {
     return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const ImageLabelList = (props) => {
+export const ImageLabelList = props => {
     return (
         <List {...props}>
             <Datagrid>

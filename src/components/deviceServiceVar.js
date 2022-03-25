@@ -21,7 +21,7 @@ const DeviceServiceVarTitle = ({ record }) => {
     return <span>Device Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceServiceVarList = (props) => {
+export const DeviceServiceVarList = props => {
     return (
         <List {...props}>
             <Datagrid>

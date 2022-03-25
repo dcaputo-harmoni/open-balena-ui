@@ -11,7 +11,6 @@ export function useCreateFleet () {
     return async (data) => {
         let actor = await dataProvider.create('actor', { data: {} });
         data.actor = actor.data.id;
-        console.dir(data);
         return data;
     }
 }

@@ -20,7 +20,7 @@ const ImageEnvVarTitle = ({ record }) => {
     return <span>Image Environment Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const ImageEnvVarList = (props) => {
+export const ImageEnvVarList = props => {
     return (
         <List {...props}>
             <Datagrid>

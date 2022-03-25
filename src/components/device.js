@@ -21,12 +21,6 @@ import {
     useRedirect,
     SaveButton,
 } from 'react-admin';
-import {
-    Dialog,
-    DialogTitle,
-    DialogContent,
-    Typography,
- } from '@mui/material'; 
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
@@ -37,7 +31,7 @@ const DeviceTitle = ({ record }) => {
     return <span>Device {record ? `"${record.name}"` : ''}</span>;
 };
 
-const OnlineField = (props) => {
+const OnlineField = props => {
     return (
         <FunctionField {...props} render={(record, source) =>
             <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 'online') }} />}
@@ -96,14 +90,6 @@ export const DeviceCreate = props => {
     };   
     
     const processComplete = ({ data }) => {
-        /*return (
-        <Dialog open={true} onClose={() => redirect('list', props.basePath, data.id, data)}>
-            <DialogTitle> Delete User(s) </DialogTitle>
-            <DialogContent>
-                <Typography>{data.toString()}</Typography>
-            </DialogContent>        
-        </Dialog>
-        )*/
         redirect('list', props.basePath, data.id, data);
     };
 

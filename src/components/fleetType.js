@@ -18,7 +18,7 @@ const FleetTypeTitle = ({ record }) => {
     return <span>Fleet Type {record ? `"${record.name}"` : ''}</span>;
 };
 
-const BooleanBinaryField = (props) => {
+const BooleanBinaryField = props => {
     return (
         <FunctionField {...props} render={(record, source) =>
             <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 1) }} />}
@@ -26,7 +26,7 @@ const BooleanBinaryField = (props) => {
     );
 };
 
-export const FleetTypeList = (props) => {
+export const FleetTypeList = props => {
     return (
         <List {...props}>
             <Datagrid>

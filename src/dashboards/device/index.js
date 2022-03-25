@@ -16,7 +16,7 @@ const DeviceTitle = ({ record }) => {
     return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
 };
 
-const DeviceDashboard = (props) => {
+const DeviceDashboard = props => {
     return (
         <>
         <Banner {...useShowController(props)}/>

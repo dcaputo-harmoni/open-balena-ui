@@ -17,7 +17,7 @@ const ServiceEnvVarTitle = ({ record }) => {
     return <span>Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const ServiceEnvVarList = (props) => {
+export const ServiceEnvVarList = props => {
     return (
         <List {...props}>
             <Datagrid>

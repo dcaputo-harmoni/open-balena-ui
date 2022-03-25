@@ -7,7 +7,7 @@ import {
     List,
 } from 'react-admin';
 
-export const ServiceList = (props) => {
+export const ServiceList = props => {
     return (
         <List {...props} bulkActionButtons={false}>
             <Datagrid>

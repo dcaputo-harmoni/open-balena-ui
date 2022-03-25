@@ -20,7 +20,7 @@ const ServiceLabelTitle = ({ record }) => {
     return <span>Service Label {record ? `"${record['label name']}"` : ''}</span>;
 };
 
-export const ServiceLabelList = (props) => {
+export const ServiceLabelList = props => {
     return (
         <List {...props}>
             <Datagrid>

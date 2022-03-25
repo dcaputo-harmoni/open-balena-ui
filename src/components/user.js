@@ -34,7 +34,7 @@ const CustomBulkActionButtons = props => (
     </React.Fragment>
 );
 
-export const UserList = (props) => {
+export const UserList = props => {
     return (
         <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>

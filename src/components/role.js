@@ -18,7 +18,7 @@ const RoleTitle = ({ record }) => {
     return <span>Role {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const RoleList = (props) => {
+export const RoleList = props => {
     return (
         <List {...props}>
             <Datagrid>

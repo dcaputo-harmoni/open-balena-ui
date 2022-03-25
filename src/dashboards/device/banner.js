@@ -30,7 +30,7 @@ const styles = {
     }
 }
 
-const LinearProgressWithLabel = (props) => {
+const LinearProgressWithLabel = props => {
     return (
         <Box sx={{ minWidth: '20em', maxWidth: '20em', mb: 2.75, display: 'flex', alignItems: 'center' }}>
             <Box sx={{ minWidth: '3em', maxWidth: '3em'}}>
@@ -46,7 +46,7 @@ const LinearProgressWithLabel = (props) => {
     );
 }
 
-const Banner = (props) => {
+const Banner = props => {
 
     const authProvider = useAuthProvider();
     const notify = useNotify();
@@ -65,10 +65,8 @@ const Banner = (props) => {
             if (response.status < 200 || response.status >= 300) {
                 throw new Error(response.statusText);
             }
-            console.dir(response);
             return response.body.getReader().read().then((streamData) => {
                 const result = utf8decode(streamData.value);
-                console.dir(result);
                 if (result === "OK") notify(`Successfully executed command ${command} on device ${device['device name']}`);
             })
         })

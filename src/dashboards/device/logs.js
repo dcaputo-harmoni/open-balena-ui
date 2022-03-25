@@ -1,6 +1,6 @@
 import DeviceLogs from '../../ui/DeviceLogs';
 
-const Logs = (props) => {
+const Logs = props => {
     return (
         <>
             <DeviceLogs {...props}/>

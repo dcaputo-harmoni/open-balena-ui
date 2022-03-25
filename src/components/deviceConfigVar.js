@@ -20,7 +20,7 @@ const DeviceConfigVarTitle = ({ record }) => {
     return <span>Device Config Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceConfigVarList = (props) => {
+export const DeviceConfigVarList = props => {
     return (
         <List {...props}>
             <Datagrid>

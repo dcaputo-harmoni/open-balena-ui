@@ -16,7 +16,7 @@ const CpuArchitectureTitle = ({ record }) => {
     return <span>CpuArchitecture {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const CpuArchitectureList = (props) => {
+export const CpuArchitectureList = props => {
     return (
         <List {...props}>
             <Datagrid>

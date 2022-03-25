@@ -59,7 +59,7 @@ const toTitleCase = str => {
     return str.split(' ').map(w => w[0].toUpperCase() + w.substring(1).toLowerCase()).join(' ');
 }
 
-const Summary = (props) => {
+const Summary = props => {
     return (
         <Table sx={styles.outerTable}>
             <TableBody>

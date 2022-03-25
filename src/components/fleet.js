@@ -30,7 +30,7 @@ const FleetTitle = ({ record }) => {
     return <span>Fleet {record ? `"${record.name}"` : ''}</span>;
 };
 
-const BooleanBinaryField = (props) => {
+const BooleanBinaryField = props => {
     return (
         <FunctionField {...props} render={(record, source) =>
             <BooleanField source="enabled" record={{ ...record, enabled: (record[source] === 1) }} />}
@@ -44,7 +44,7 @@ const CustomBulkActionButtons = props => (
     </React.Fragment>
 );
 
-export const FleetList = (props) => {
+export const FleetList = props => {
     return (
         <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>

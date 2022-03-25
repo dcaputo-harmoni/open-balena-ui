@@ -9,7 +9,7 @@ import {
 } from 'react-admin';
 import dateFormat from 'dateformat';
 
-export const ImageList = (props) => {
+export const ImageList = props => {
     return (
         <List {...props} bulkActionButtons={false}>
             <Datagrid>

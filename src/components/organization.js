@@ -20,7 +20,7 @@ const OrganizationTitle = ({ record }) => {
     return <span>Organization {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const OrganizationList = (props) => {
+export const OrganizationList = props => {
     return (
         <List {...props}>
             <Datagrid>

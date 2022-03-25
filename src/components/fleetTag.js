@@ -20,7 +20,7 @@ const FleetTagTitle = ({ record }) => {
     return <span>Fleet Tag {record ? `"${record['tag key']}"` : ''}</span>;
 };
 
-export const FleetTagList = (props) => {
+export const FleetTagList = props => {
     return (
         <List {...props}>
             <Datagrid>

@@ -20,7 +20,7 @@ const FleetConfigVarTitle = ({ record }) => {
     return <span>Fleet Config Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const FleetConfigVarList = (props) => {
+export const FleetConfigVarList = props => {
     return (
         <List {...props}>
             <Datagrid>

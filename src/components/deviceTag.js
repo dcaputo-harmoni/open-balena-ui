@@ -20,7 +20,7 @@ const DeviceTagTitle = ({ record }) => {
     return <span>Device Tag {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceTagList = (props) => {
+export const DeviceTagList = props => {
     return (
         <List {...props}>
             <Datagrid>

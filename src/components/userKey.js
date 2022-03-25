@@ -20,7 +20,7 @@ const UserKeysTitle = ({ record }) => {
     return <span>User Key {record ? `"${record.id}"` : ''}</span>;
 };
 
-export const UserKeysList = (props) => {
+export const UserKeysList = props => {
     return (
         <List {...props}>
             <Datagrid>

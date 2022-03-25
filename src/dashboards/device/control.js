@@ -11,7 +11,7 @@ import {
  } from '@mui/material'; 
  import utf8decode from '../../lib/utf8decode';
 
- const Control = (props) => {
+ const Control = props => {
     const authProvider = useAuthProvider();
     const notify = useNotify();
 
@@ -29,10 +29,8 @@ import {
             if (response.status < 200 || response.status >= 300) {
                 throw new Error(response.statusText);
             }
-            console.dir(response);
             return response.body.getReader().read().then((streamData) => {
                 const result = utf8decode(streamData.value);
-                console.dir(result);
                 if (result === "OK") notify(`Successfully executed command ${command} on device ${device['device name']}`);
             })
         })

@@ -17,7 +17,7 @@ const ReleaseTagTitle = ({ record }) => {
     return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
 };
 
-export const ReleaseTagList = (props) => {
+export const ReleaseTagList = props => {
     return (
         <List {...props}>
             <Datagrid>

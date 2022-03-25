@@ -20,7 +20,7 @@ const DeviceEnvVarTitle = ({ record }) => {
     return <span>Device Environment Variable {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const DeviceEnvVarList = (props) => {
+export const DeviceEnvVarList = props => {
     return (
         <List {...props}>
             <Datagrid>
