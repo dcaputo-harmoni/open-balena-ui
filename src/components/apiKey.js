@@ -24,6 +24,7 @@ import Chip from '@material-ui/core/Chip';
 import DeleteApiKeyButton from "../ui/DeleteApiKeyButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
+import { useGenerateApiKey } from "../lib/apiKey";
 
 class ActorField extends React.Component {
     static contextType = DataProviderContext;
@@ -108,14 +109,8 @@ export const ApiKeyList = (props) => {
 };
 
 export const ApiKeyCreate = props => {
-    const genApiKey = (keyLength) => {
-        var i, key = "", characters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-        var charactersLength = characters.length;
-        for (i = 0; i < keyLength; i++) {
-            key += characters.substr(Math.floor((Math.random() * charactersLength) + 1), 1);
-        }
-        return key;
-    }
+
+    const generateApiKey = useGenerateApiKey();
     const processApiKey = (data) => {
         data['is of-actor'] = data.userActor || data.deviceActor || data.fleetActor;
         ['userActor', 'deviceActor', 'fleetActor'].forEach(x => delete data[x]);
@@ -124,8 +119,8 @@ export const ApiKeyCreate = props => {
    
     return (
         <Create {...props} transform={processApiKey}>
-            <SimpleForm initialValues={{ key: genApiKey(32) }}>
-                <TextInput source="key" />
+            <SimpleForm>
+                <TextInput source="key" initialValue={generateApiKey()}/>
                 <TextInput source="name" />
                 <TextInput source="description" />
                 <FormDataConsumer>

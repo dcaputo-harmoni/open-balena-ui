@@ -17,10 +17,21 @@ import {
     Toolbar,
     ReferenceInput,
     SelectInput,
+    required,
+    useRedirect,
+    SaveButton,
 } from 'react-admin';
+import {
+    Dialog,
+    DialogTitle,
+    DialogContent,
+    Typography,
+ } from '@mui/material'; 
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
+import { useCreateDevice } from '../lib/device';
+import { v4 as uuidv4 } from 'uuid';
 
 const DeviceTitle = ({ record }) => {
     return <span>Device {record ? `"${record.name}"` : ''}</span>;
@@ -54,14 +65,14 @@ export const DeviceList = (props) => {
                 <OnlineField label="Online" source="api heartbeat state" />
                 <TextField label="Status" source="status" />
                 <FunctionField label="OS" render={record => (record['os version'] && record['os variant']) ? `${record['os version']}-${record['os variant']}` : ""}/>
+                <ReferenceField label="Device Type" source="is of-device type" reference="device type" target="id">
+                    <ChipField source="slug" />
+                </ReferenceField>
                 <ReferenceField label="Fleet" source="belongs to-application" reference="application" target="id">
                     <ChipField source="app name" />
                 </ReferenceField>
-                <ReferenceField label="Release Rev." source="is running-release" reference="release" target="id" >
+                <ReferenceField label="Running Release" source="is running-release" reference="release" target="id" >
                     <ChipField source="revision" />
-                </ReferenceField>
-                <ReferenceField label="Device Type" source="is of-device type" reference="device type" target="id">
-                    <ChipField source="slug" />
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <DeviceServicesButton label="" style={{color: "black"}}/>
@@ -75,13 +86,37 @@ export const DeviceList = (props) => {
     )
 };
 
-export const DeviceCreate = props => (
-    <Create {...props}>
+export const DeviceCreate = (props) => {
+
+    const createDevice = useCreateDevice();
+    const redirect = useRedirect();
+    
+    const processCreate = async (data) => {
+        return await createDevice(data);
+    };   
+    
+    const processComplete = ({ data }) => {
+        /*return (
+        <Dialog open={true} onClose={() => redirect('list', props.basePath, data.id, data)}>
+            <DialogTitle> Delete User(s) </DialogTitle>
+            <DialogContent>
+                <Typography>{data.toString()}</Typography>
+            </DialogContent>        
+        </Dialog>
+        )*/
+        redirect('list', props.basePath, data.id, data);
+    };
+
+    return (
+    <Create transform={processCreate} onSuccess={processComplete} {...props}>
         <SimpleForm redirect="list">
-            <TextInput label="UUID" source="uuid" />
-            <TextInput label="Device Name" source="device name" />
+            <TextInput label="UUID" source="uuid" initialValue={uuidv4().replace(/-/g, '').toLowerCase()} validate={required()}/>
+            <TextInput label="Device Name" source="device name" validate={required()}/>
             <TextInput label="Note" source="note" />
-            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
+            <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id" />
             </ReferenceInput>
             <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
@@ -92,15 +127,26 @@ export const DeviceCreate = props => (
             </ReferenceInput>
         </SimpleForm>
     </Create>
+    );
+}
+
+const CustomToolbar = props => (
+    <Toolbar {...props} style={{ justifyContent: "space-between" }}>
+        <SaveButton/>
+        <DeleteDeviceButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteDeviceButton>
+    </Toolbar>
 );
 
 export const DeviceEdit = props => (
-    <Edit title={<DeviceTitle />} {...props}>
+    <Edit title={<DeviceTitle />} toolbar={<CustomToolbar/>} {...props}>
         <SimpleForm>
             <TextInput disabled source="id" />
             <TextInput label="UUID" source="uuid" />
             <TextInput label="Device Name" source="device name" />
             <TextInput label="Note" source="note" />
+            <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
             <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
                 <SelectInput optionText="app name" optionValue="id" />
             </ReferenceInput>

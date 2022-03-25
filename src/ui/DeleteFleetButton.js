@@ -6,24 +6,24 @@ import Dialog from '@material-ui/core/Dialog';
 import DialogTitle from '@material-ui/core/DialogTitle'; 
 import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
-import { useDeleteUser, useDeleteUserBulk } from '../lib/user'
+import { useDeleteFleet, useDeleteFleetBulk } from '../lib/fleet'
 
-export const DeleteUserButton = ({basePath, ...props}) => {
+export const DeleteFleetButton = ({basePath, ...props}) => {
     
     const [open, setOpen] = React.useState(false);
     const notify = useNotify();
     const redirect = useRedirect();
-    const deleteUser = useDeleteUser();
-    const deleteUserBulk = useDeleteUserBulk();
+    const deleteFleet = useDeleteFleet();
+    const deleteFleetBulk = useDeleteFleetBulk();
 
     const handleSubmit = async values => {
         if (props.selectedIds) {
-            await deleteUserBulk(props.selectedIds);
+            await deleteFleetBulk(props.selectedIds);
         } else {
-            await deleteUser(props.record);
+            await deleteFleet(props.record);
         }
         setOpen(false);
-        notify('User(s) successfully deleted');
+        notify('Fleet(s) successfully deleted');
         redirect(props.redirect, basePath);    
     };
     
@@ -37,7 +37,7 @@ export const DeleteUserButton = ({basePath, ...props}) => {
             onClose={() => setOpen(false)}
             aria-labelledby="form-dialog-title"
         >
-        <DialogTitle id="form-dialog-title"> Delete User(s) </DialogTitle>
+        <DialogTitle id="form-dialog-title"> Delete Fleet(s) </DialogTitle>
         <DialogContent>
             Note: this action will be irreversible<br/><br/>
             <Form
@@ -56,4 +56,4 @@ export const DeleteUserButton = ({basePath, ...props}) => {
     );
 }
 
-export default DeleteUserButton;
+export default DeleteFleetButton;

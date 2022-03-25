@@ -1,40 +1,26 @@
 import React from "react";
-import { useNotify, useDataProvider, useRedirect } from 'react-admin';
+import { useNotify, useRedirect } from 'react-admin';
 import Button from '@material-ui/core/Button'; 
 import DeleteIcon from '@mui/icons-material/Delete';
 import Dialog from '@material-ui/core/Dialog'; 
 import DialogTitle from '@material-ui/core/DialogTitle'; 
 import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
-
-const deleteApiKey= async (apiKeyId, dataProvider) => {
-        let relatedLookups = [
-            { resource: "api key-has-permission", field: "api key" },
-            { resource: "api key-has-role", field: "api key" },
-        ];
-        await Promise.all(relatedLookups.map( x => {
-            return dataProvider.getList(x.resource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.field]: apiKeyId }
-            }).then((existingMappings) => {
-            if (existingMappings.data.length > 0) {
-                dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(y => y.id) } );
-            }})
-        }));
-        return await dataProvider.delete( 'api key', { id: apiKeyId } );
-}
+import { useDeleteApiKey, useDeleteApiKeyBulk } from '../lib/apiKey';
 
 export const DeleteApiKeyButton = ({basePath, ...props}) => {
+    
     const [open, setOpen] = React.useState(false);
-    const dataProvider = useDataProvider();
     const notify = useNotify();
     const redirect = useRedirect();
+    const deleteApiKey = useDeleteApiKey();
+    const deleteApiKeyBulk = useDeleteApiKeyBulk();
+
     const handleSubmit = async values => {
         if (props.selectedIds) {
-            await Promise.all(props.selectedIds.map(id => deleteApiKey(id, dataProvider)));
+            await deleteApiKeyBulk(props.selectedIds);
         } else {
-            await deleteApiKey(props.record.id, dataProvider);
+            await deleteApiKey(props.record.id);
         }
         setOpen(false);
         notify('API Key(s) successfully deleted');

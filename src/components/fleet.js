@@ -14,14 +14,15 @@ import {
     ReferenceInput,
     SelectInput,
     EditButton,
-    useDataProvider,
     required,
     BooleanInput,
     FormDataConsumer,
-    DeleteButton,
     Toolbar,
+    SaveButton,
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
+import DeleteFleetButton from '../ui/DeleteFleetButton';
+import { useCreateFleet } from '../lib/fleet'
 
 const FleetTitle = ({ record }) => {
     return <span>Fleet {record ? `"${record.name}"` : ''}</span>;
@@ -35,9 +36,15 @@ const BooleanBinaryField = (props) => {
     );
 };
 
+const CustomBulkActionButtons = props => (
+    <React.Fragment>
+        <DeleteFleetButton variant="text" size="small" color="default" {...props}> Delete </DeleteFleetButton>
+    </React.Fragment>
+);
+
 export const FleetList = (props) => {
     return (
-        <List {...props}>
+        <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
                 <TextField source="id" />
                 <TextField label="Name" source="app name" />
@@ -57,7 +64,7 @@ export const FleetList = (props) => {
                 <BooleanBinaryField label="Public" source="is public" />
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
+                    <DeleteFleetButton variant="text" size="small" color="default"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -65,12 +72,13 @@ export const FleetList = (props) => {
 };
 
 export const FleetCreate = props => {
-    let dataProvider = useDataProvider();
+
+    let createFleet = useCreateFleet();
+    
     const processFleetCreate = async (data) => {
-        let actor = await dataProvider.create('actor', { data: {} });
-        data.actor = actor.data.id;
-        return data;
+        return await createFleet(data);
     };
+    
     return (
     <Create transform={processFleetCreate} {...props}>
         <SimpleForm redirect="list">
@@ -105,13 +113,20 @@ export const FleetCreate = props => {
     );
 }
 
+const CustomToolbar = props => (
+    <Toolbar {...props} style={{ justifyContent: "space-between" }}>
+        <SaveButton/>
+        <DeleteFleetButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteFleetButton>
+    </Toolbar>
+);
+
 export const FleetEdit = props => {
     const processFleetEdit = data => {
         return data;
     };
     return (
         <Edit title={<FleetTitle />} transform={processFleetEdit} {...props}>
-            <SimpleForm>
+            <SimpleForm toolbar={<CustomToolbar/>}>
                 <TextInput disabled source="id" />
                 <TextInput source="app name" />
                 <TextInput source="slug" />
@@ -127,7 +142,7 @@ export const FleetEdit = props => {
                 <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} />
                 <FormDataConsumer>
                     {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
-                        <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id">
+                        <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
                             <SelectInput optionText="revision" optionValue="id" />
                         </ReferenceInput>
                     }

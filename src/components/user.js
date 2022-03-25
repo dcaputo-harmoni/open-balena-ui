@@ -1,7 +1,4 @@
 import * as React from "react";
-import { pseudoRandomBytes } from 'crypto-browserify';
-import * as bcrypt from "bcryptjs";
-import base32Encode from 'base32-encode'
 import {
     Create,
     Edit,
@@ -19,7 +16,6 @@ import {
     ReferenceArrayInput,
     SelectArrayInput,
     DataProviderContext,
-    useDataProvider,
     Toolbar,
     EditButton,
     SaveButton,
@@ -28,6 +24,7 @@ import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
+import { useCreateUser } from '../lib/user'
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
@@ -74,24 +71,15 @@ export const UserList = (props) => {
     )
 };
 
-const hashPassword = (password) => {
-    const saltRounds = 10;
-    return bcrypt.hashSync(password, saltRounds).replace('2a','2b');
-}
-
 export const UserCreate = props => {
-    let dataProvider = useDataProvider();
-    const processUserCreate = async (data) => {
-        let actor = await dataProvider.create('actor', { data: {} });
-        data.actor = actor.data.id;
-        data.password = hashPassword(data.password);
-        const key = pseudoRandomBytes(20);
-    	data['jwt secret'] = base32Encode(key, 'RFC3548').toString();
-        return data;
+    const createUser = useCreateUser();
+
+    const processCreate = async (data) => {
+        return createUser(data);
     };    
 
     return (
-        <Create transform={processUserCreate} {...props} >
+        <Create transform={processCreate} {...props} >
             <SimpleForm>
                 <TextInput source="username" />
                 <TextInput source="email" />
@@ -104,7 +92,7 @@ export const UserCreate = props => {
 const CustomToolbar = props => (
     <Toolbar {...props} style={{ justifyContent: "space-between" }}>
         <SaveButton/>
-        <DeleteUserButton variant="standard" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteUserButton>
+        <DeleteUserButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteUserButton>
     </Toolbar>
 );
 
@@ -205,10 +193,10 @@ export class UserEdit extends React.Component {
     }
 }
 
-const user = {
+const userExport = {
     list: UserList,
     create: UserCreate,
     edit: UserEdit
 }
 
-export default user;
+export default userExport;
