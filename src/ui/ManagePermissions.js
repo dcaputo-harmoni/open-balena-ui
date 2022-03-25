@@ -86,8 +86,15 @@ export const ManagePermissions = ({basePath, ...props}) => {
             loaded.all = true
             setLoaded(loaded);
         }
-        if (!loaded.selected && props.initialValues) {
-            setSelectedPermissions(props.initialValues);
+        if (!loaded.selected && props.record) {
+            dataProvider.getList(props.reference, {
+                pagination: { page: 1 , perPage: 1000 },
+                sort: { field: 'id', order: 'ASC' },
+                filter: { [props.target]: props.record.id }
+            }).then((existingMappings) => {
+                const selectedIds = existingMappings.data.map(x => x.permission);
+                setSelectedPermissions(selectedIds);
+            })
             loaded.selected = true;
             setLoaded(loaded);
         }

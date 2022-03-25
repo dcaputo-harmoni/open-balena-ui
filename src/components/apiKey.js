@@ -24,7 +24,7 @@ import Chip from '@material-ui/core/Chip';
 import DeleteApiKeyButton from "../ui/DeleteApiKeyButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
-import { useGenerateApiKey } from "../lib/apiKey";
+import { useGenerateApiKey, useModifyApiKey } from "../lib/apiKey";
 
 class ActorField extends React.Component {
     static contextType = DataProviderContext;
@@ -83,7 +83,7 @@ const CustomBulkActionButtons = props => (
     </React.Fragment>
 );
 
-export const ApiKeyList = (props) => {
+export const ApiKeyList = props => {
     return (
         <List {...props} filters={apiKeyFilters} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
@@ -165,93 +165,27 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-export class ApiKeyEdit extends React.Component {
+export const ApiKeyEdit = props => {
 
-    static contextType = DataProviderContext;
+    const modifyApiKey = useModifyApiKey();
 
-    constructor(props) {
-        super(props);
-        this.state = { record: {} }; // defaults while fetch is occurring
-        this.mappings = {
-            roleMapping: {
-                arrayField: 'roleArray',
-                mappingTable: 'api key-has-role',
-                mappingSourceField: 'api key',
-                mappingDestField: 'role',
-            },
-            permissionMapping: {
-                arrayField: 'permissionArray',
-                mappingTable: 'api key-has-permission',
-                mappingSourceField: 'api key',
-                mappingDestField: 'permission',
-            },
-        }
-    }
-
-    componentDidMount() {
-        Object.keys(this.mappings).map(x => {
-                return this.context.getList(this.mappings[x].mappingTable, {
-                    pagination: { page: 1 , perPage: 1000 },
-                    sort: { field: 'id', order: 'ASC' },
-                    filter: { [this.mappings[x].mappingSourceField]: this.props.id }
-            }).then((existingMappings) => {
-                let currentState = this.state;
-                currentState.record[this.mappings[x].arrayField] = existingMappings.data.map(y => y[this.mappings[x].mappingDestField]);
-                this.setState(currentState);
-            })
-        })
-    }
-
-    modifyMappingTable = async (data, arrayField, mappingTable, mappingSourceField, mappingDestField) => {
-        let existingMappings = await this.context.getList(mappingTable, {
-            pagination: { page: 1 , perPage: 1000 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: { [mappingSourceField]: data.id }
-        });
-        let existingData = existingMappings.data.map(x => x[mappingDestField]);
-        let createData = data[arrayField].filter(value => !existingData.includes(value));
-        let deleteIds = existingMappings.data.filter(value => !data[arrayField].includes(value[mappingDestField])).map(x => x.id);
-        await Promise.all(createData.map(newData => 
-            this.context.create(mappingTable, {data: { [mappingSourceField]: data.id, [mappingDestField]: newData }})
-        ));
-        await Promise.all(deleteIds.map(deleteId => 
-            this.context.delete(mappingTable, { id: deleteId })
-        ));
-    }
-
-    modifyMappingTables = async (data) => {
-        await Promise.all(Object.keys(this.mappings).map(x => 
-            this.modifyMappingTable(
-                data, 
-                this.mappings[x].arrayField, 
-                this.mappings[x].mappingTable, 
-                this.mappings[x].mappingSourceField, 
-                this.mappings[x].mappingDestField
-            )
-        ));
-        Object.keys(this.mappings).forEach(x => delete data[this.mappings[x].arrayField])
+    const processEdit = async (data) => {
+        data = await modifyApiKey(data);
         return data;
     }
 
-    processEdit = async (data) => {
-        data = await this.modifyMappingTables(data);
-        return data;
-    }
-
-    render() {
-        return (
-        <Edit transform={this.processEdit} {...this.props}>
-            <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>} >
+    return (
+        <Edit transform={processEdit} {...props}>
+            <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id" />
                 <TextInput source="key" />
                 <TextInput source="name" />
                 <TextInput source="description" />
-                <ManagePermissions source="permissionArray" initialValues={this.state.record.permissionArray}/>
-                <ManageRoles source="roleArray" initialValues={this.state.record.roleArray}/>
+                <ManagePermissions source="permissionArray" reference="api key-has-permission" target="api key"/>
+                <ManageRoles source="roleArray" reference="api key-has-role" target="api key"/>
             </SimpleForm>
         </Edit>
-        )
-    }
+    )
 }
 
 const apiKey = {

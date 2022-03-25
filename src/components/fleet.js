@@ -15,6 +15,8 @@ import {
     SelectInput,
     EditButton,
     required,
+    minLength,
+    maxLength,
     BooleanInput,
     FormDataConsumer,
     Toolbar,
@@ -82,9 +84,9 @@ export const FleetCreate = props => {
     return (
     <Create transform={processFleetCreate} {...props}>
         <SimpleForm redirect="list">
-            <TextInput source="app name" validate={required()}/>
+            <TextInput source="app name" validate={[required(), minLength(4), maxLength(100)]}/>
             <TextInput source="slug" validate={required()}/>
-            <TextInput source="uuid" initialValue={uuidv4().replace(/-/g, '').toLowerCase()} validate={required()}/>
+            <TextInput source="uuid" initialValue={uuidv4().replace(/-/g, '').toLowerCase()} validate={[required(), minLength(32), maxLength(32)]}/>
             <ReferenceInput label="Device Type" source="is for-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>

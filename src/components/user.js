@@ -13,9 +13,6 @@ import {
     SimpleForm,
     TextInput,
     PasswordInput,
-    ReferenceArrayInput,
-    SelectArrayInput,
-    DataProviderContext,
     Toolbar,
     EditButton,
     SaveButton,
@@ -24,7 +21,8 @@ import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
-import { useCreateUser } from '../lib/user'
+import ManageOrganizations from "../ui/ManageOrganizations";
+import { useCreateUser, useModifyUser } from '../lib/user'
 
 const UserTitle = ({ record }) => {
     return <span>User {record ? `"${record.username}"` : ''}</span>;
@@ -96,101 +94,29 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-export class UserEdit extends React.Component {
-    static contextType = DataProviderContext;
-    constructor(props) {
-        super(props);
-        this.state = { record: {} }; // defaults while fetch is occurring
-        this.mappings = {
-            roleMapping: {
-                arrayField: 'roleArray',
-                mappingTable: 'user-has-role',
-                mappingSourceField: 'user',
-                mappingDestField: 'role',
-            },
-            permissionMapping: {
-                arrayField: 'permissionArray',
-                mappingTable: 'user-has-permission',
-                mappingSourceField: 'user',
-                mappingDestField: 'permission',
-            },
-            organizationMapping: {
-                arrayField: 'organizationArray',
-                mappingTable: 'organization membership',
-                mappingSourceField: 'user',
-                mappingDestField: 'is member of-organization',
-            },
-        }
-    }
+export const UserEdit = props => {
 
-    componentDidMount() {
-        Object.keys(this.mappings).map(x => {
-                return this.context.getList(this.mappings[x].mappingTable, {
-                    pagination: { page: 1 , perPage: 1000 },
-                    sort: { field: 'id', order: 'ASC' },
-                    filter: { [this.mappings[x].mappingSourceField]: this.props.id }
-            }).then((existingMappings) => {
-                let currentState = this.state;
-                currentState.record[this.mappings[x].arrayField] = existingMappings.data.map(y => y[this.mappings[x].mappingDestField]);
-                this.setState(currentState);
-            })
-        })
-    }
+    const modifyUser = useModifyUser();
 
-    modifyMappingTable = async (data, arrayField, mappingTable, mappingSourceField, mappingDestField) => {
-        let existingMappings = await this.context.getList(mappingTable, {
-            pagination: { page: 1 , perPage: 1000 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: { [mappingSourceField]: data.id }
-        });
-        let existingData = existingMappings.data.map(x => x[mappingDestField]);
-        let createData = data[arrayField].filter(value => !existingData.includes(value));
-        let deleteIds = existingMappings.data.filter(value => !data[arrayField].includes(value[mappingDestField])).map(x => x.id);
-        await Promise.all(createData.map(newData => 
-            this.context.create(mappingTable, {data: { [mappingSourceField]: data.id, [mappingDestField]: newData }})
-        ));
-        await Promise.all(deleteIds.map(deleteId => 
-            this.context.delete(mappingTable, { id: deleteId })
-        ));
-    }
-
-    modifyMappingTables = async (data) => {
-        await Promise.all(Object.keys(this.mappings).map(x => 
-            this.modifyMappingTable(
-                data, 
-                this.mappings[x].arrayField, 
-                this.mappings[x].mappingTable, 
-                this.mappings[x].mappingSourceField, 
-                this.mappings[x].mappingDestField
-            )
-        ));
-        Object.keys(this.mappings).forEach(x => delete data[this.mappings[x].arrayField])
+    const processEdit = async (data) => {
+        data = await modifyUser(data);
         return data;
     }
 
-    processEdit = async (data) => {
-        data = await this.modifyMappingTables(data);
-        return data;
-    }
-
-    render() {
-        return (
-            <Edit title={<UserTitle />} transform={this.processEdit} {...this.props}>
-                <SimpleForm initialValues={this.state.record} toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
-                    <TextInput disabled source="id"/>
-                    <TextInput source="username"/>
-                    <TextInput source="email"/>
-                    <ChangePasswordButton/>
-                    <ReferenceArrayInput source="organizationArray" reference="organization">
-                        <SelectArrayInput optionText="name" optionValue="id"/>
-                    </ReferenceArrayInput>
-                    <TextInput disabled source="jwt secret"/>
-                    <ManagePermissions source="permissionArray" initialValues={this.state.record.permissionArray}/>
-                    <ManageRoles source="roleArray" initialValues={this.state.record.roleArray}/>
-                </SimpleForm>
-            </Edit>
-        );
-    }
+    return (
+        <Edit title={<UserTitle />} transform={processEdit} {...props}>
+            <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
+                <TextInput disabled source="id"/>
+                <TextInput source="username"/>
+                <TextInput source="email"/>
+                <TextInput disabled source="jwt secret"/>
+                <ChangePasswordButton/>
+                <ManageOrganizations source="organizationArray" reference="organization membership" target="user"/>
+                <ManagePermissions source="permissionArray" reference="user-has-permission" target="user"/>
+                <ManageRoles source="roleArray" reference="user-has-role" target="user"/>
+            </SimpleForm>
+        </Edit>
+    );
 }
 
 const userExport = {

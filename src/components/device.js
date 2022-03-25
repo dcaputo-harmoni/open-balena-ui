@@ -55,7 +55,7 @@ const CustomBulkActionButtons = props => (
     </React.Fragment>
 );
 
-export const DeviceList = (props) => {
+export const DeviceList = props => {
     return (
         <List {...props} filters={deviceFilters} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
@@ -86,7 +86,7 @@ export const DeviceList = (props) => {
     )
 };
 
-export const DeviceCreate = (props) => {
+export const DeviceCreate = props => {
 
     const createDevice = useCreateDevice();
     const redirect = useRedirect();

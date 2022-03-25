@@ -22,23 +22,23 @@ const useStyles = makeStyles({
     }
 });
 
-export const ManageRoles = ({basePath, ...props}) => {
+export const ManageOrganizations = ({basePath, ...props}) => {
 
     const [loaded, setLoaded] = React.useState({all: false, selected: false});
-    const [allRoles, setAllRoles] = React.useState([]);
-    const [selectedRoles, setSelectedRoles] = React.useState([]);
+    const [allOrganizations, setAllOrganizations] = React.useState([]);
+    const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);
     const dataProvider = useDataProvider();
     const classes = useStyles();
 
     React.useEffect(() => {
         if (!loaded.all) {
-            dataProvider.getList('role', {
+            dataProvider.getList('organization', {
                 pagination: { page: 1 , perPage: 1000 },
                 sort: { field: 'id', order: 'ASC' },
                 filter: { }
-            }).then((roles) => {
-                const roleOpts = roles.data.map(x => ({label: x.name, value: x.id}));
-                setAllRoles(roleOpts);
+            }).then((organizations) => {
+                const organizationOpts = organizations.data.map(x => ({label: x.name, value: x.id}));
+                setAllOrganizations(organizationOpts);
             });
             loaded.all = true
             setLoaded(loaded);
@@ -49,23 +49,23 @@ export const ManageRoles = ({basePath, ...props}) => {
                 sort: { field: 'id', order: 'ASC' },
                 filter: { [props.target]: props.record.id }
             }).then((existingMappings) => {
-                const selectedIds = existingMappings.data.map(x => x.role);
-                setSelectedRoles(selectedIds);
+                const selectedIds = existingMappings.data.map(x => x['is member of-organization']);
+                setSelectedOrganizations(selectedIds);
             })
             loaded.selected = true;
             setLoaded(loaded);
         }
-    }, [props, dataProvider, setLoaded, loaded, setAllRoles, setSelectedRoles]);
+    }, [props, dataProvider, setLoaded, loaded, setAllOrganizations, setSelectedOrganizations]);
 
     if (!loaded) return null;
 
     return (
         <Box sx={{width: "800px"}}>
-            <Typography variant="subtitle1">Roles:</Typography>
+            <Typography variant="subtitle1">Organizations:</Typography>
             <DualListBox
-                options={allRoles}
-                selected={selectedRoles}
-                onChange={setSelectedRoles}
+                options={allOrganizations}
+                selected={selectedOrganizations}
+                onChange={setSelectedOrganizations}
                 showHeaderLabels="true"
                 className={classes.dualListBox}
                 icons={{
@@ -77,12 +77,12 @@ export const ManageRoles = ({basePath, ...props}) => {
             />
             <TextInput 
                 source={props.source} 
-                format={() => selectedRoles} 
-                onChange={props.record[props.source] = selectedRoles} 
+                format={() => selectedOrganizations} 
+                onChange={props.record[props.source] = selectedOrganizations} 
                 style={{display: "none"}}
             />
         </Box>
     );
 }
 
-export default ManageRoles;
+export default ManageOrganizations;
