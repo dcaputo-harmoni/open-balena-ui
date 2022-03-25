@@ -38,25 +38,25 @@ export const UserList = props => {
     return (
         <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField source="username" />
-                <EmailField source="email" />
+                <TextField source="id"/>
+                <TextField source="username"/>
+                <EmailField source="email"/>
                 <ReferenceManyField label="Organizations" source="id" reference="organization membership" target="user">
                     <SingleFieldList linkType={false}>
                         <ReferenceField source="is member of-organization" reference="organization" target="id">
-                            <ChipField source="name" />
+                            <ChipField source="name"/>
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ReferenceManyField label="API Keys" source="actor" reference="api key" target="is of-actor">
                     <SingleFieldList>
-                        <ChipField source="key" />
+                        <ChipField source="key"/>
                     </SingleFieldList>
                 </ReferenceManyField>
                 <ReferenceManyField label="Roles" source="id" reference="user-has-role" target="user">
                     <SingleFieldList linkType={false}>
                         <ReferenceField source="role" reference="role" target="id">
-                            <ChipField source="name" />
+                            <ChipField source="name"/>
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
@@ -79,9 +79,9 @@ export const UserCreate = props => {
     return (
         <Create transform={processCreate} {...props} >
             <SimpleForm>
-                <TextInput source="username" />
-                <TextInput source="email" />
-                <PasswordInput source="password" />
+                <TextInput source="username"/>
+                <TextInput source="email"/>
+                <PasswordInput source="password"/>
             </SimpleForm>
         </Create>
     )

@@ -52,18 +52,18 @@ export const DeviceServices = ({basePath, ...props}) => {
             <Datagrid>
                 <ReferenceField label="Image" source="installs-image" reference="image" target="id" link={false}>
                     <ReferenceField label="Image" source="is a build of-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record['is a build of-service']}`}>
-                        <ChipField source="service name" />
+                        <ChipField source="service name"/>
                     </ReferenceField>
                 </ReferenceField>
-                <TextField label="Status" source="status" />
-                <FunctionField label="Install Date" render={record => `${dateFormat((new Date(record['install date'])), "dd-mmm-yy h:MM:ss TT Z")}`} />
+                <TextField label="Status" source="status"/>
+                <FunctionField label="Install Date" render={record => `${dateFormat((new Date(record['install date'])), "dd-mmm-yy h:MM:ss TT Z")}`}/>
                     <FunctionField render={record =>
                         <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                                 <Button onClick={() => invokeSupervisor(props.record, record, "start")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><PlayArrowIcon/></Button>
                                 <Button onClick={() => invokeSupervisor(props.record, record, "stop")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><StopIcon/></Button>
                                 <Button onClick={() => invokeSupervisor(props.record, record, "restart")} variant={"text"} sx={{p:"4px", m:"4px", minWidth:0}}><RestartAltIcon/></Button>
                         </Toolbar>
-                    } />
+                    }/>
             </Datagrid>
         </ReferenceManyField>
     )

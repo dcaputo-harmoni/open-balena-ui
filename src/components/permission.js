@@ -24,12 +24,12 @@ export const PermissionList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField source="name" />
+                <TextField source="id"/>
+                <TextField source="name"/>
                 <ReferenceManyField label="Roles" source="id" reference="role-has-permission" target="permission">
                     <SingleFieldList linkType={false}>
                         <ReferenceField source="role" reference="role" target="id">
-                            <ChipField source="name" />
+                            <ChipField source="name"/>
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
@@ -45,7 +45,7 @@ export const PermissionList = props => {
 export const PermissionCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="name" />
+            <TextInput source="name"/>
         </SimpleForm>
     </Create>
 );
@@ -53,8 +53,8 @@ export const PermissionCreate = props => (
 export const PermissionEdit = props => (
     <Edit title={<RoleTitle />} {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="name" />
+            <TextInput disabled source="id"/>
+            <TextInput source="name"/>
         </SimpleForm>
     </Edit>
 );

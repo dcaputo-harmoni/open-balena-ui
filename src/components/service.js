@@ -11,10 +11,10 @@ export const ServiceList = props => {
     return (
         <List {...props} bulkActionButtons={false}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="Name" source="service name" />
+                <TextField source="id"/>
+                <TextField label="Name" source="service name"/>
                 <ReferenceField label="Fleet" source="application" reference="application" target="id">
-                    <ChipField source="app name" />
+                    <ChipField source="app name"/>
                 </ReferenceField>
             </Datagrid>
         </List>

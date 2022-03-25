@@ -37,7 +37,7 @@ const LinearProgressWithLabel = props => {
                 {props.label}
             </Box>
             <Box sx={{ minWidth: '12em', maxWidth: '12em', mr: 1, ml: 2 }}>
-                <LinearProgress variant="determinate" {...props} />
+                <LinearProgress variant="determinate" {...props}/>
             </Box>
             <Box sx={{ minWidth: '3em', maxWidth: '3em' }}>
                 {props.displayValue ? (props.displayValue + props.displayUnits) : Math.round(props.value) + '%'}
@@ -107,9 +107,9 @@ const Banner = props => {
                     </CardActions>
                 </Box>
                 <Box display='block' height="9.5em" overflow="hidden">
-                    <LinearProgressWithLabel label="CPU" value={props.record['cpu usage']} />
-                    <LinearProgressWithLabel label="SD" value={props.record['storage usage']/props.record['storage total'] * 100} />
-                    <LinearProgressWithLabel label="RAM" value={props.record['memory usage']/props.record['memory total'] * 100} />
+                    <LinearProgressWithLabel label="CPU" value={props.record['cpu usage']}/>
+                    <LinearProgressWithLabel label="SD" value={props.record['storage usage']/props.record['storage total'] * 100}/>
+                    <LinearProgressWithLabel label="RAM" value={props.record['memory usage']/props.record['memory total'] * 100}/>
                     <LinearProgressWithLabel label="Temp" value={(props.record['cpu temp']/90)*100} displayValue={props.record['cpu temp']} displayUnits="&deg;C"/>
                 </Box>
             </Box>

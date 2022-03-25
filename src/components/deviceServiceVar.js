@@ -25,23 +25,23 @@ export const DeviceServiceVarList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
+                <TextField source="id"/>
                 <ReferenceField label="Device" source="service install" reference="service install" target="id">
                     <ReferenceField source="device" reference="device" target="id">
-                        <ChipField source="uuid" />
+                        <ChipField source="uuid"/>
                     </ReferenceField>
                 </ReferenceField>
                 <ReferenceField label="Service" source="service install" reference="service install" target="id" link={false}>
                     <ReferenceField source="installs-service" reference="service" target="id" link={(record, reference) => `/${reference}/${record['installs-service']}`}>
-                        <ChipField source="service name" />
+                        <ChipField source="service name"/>
                     </ReferenceField>
                 </ReferenceField>
-                <TextField label="Name" source="name" />
-                <TextField label="Value" source="value" />
+                <TextField label="Name" source="name"/>
+                <TextField label="Value" source="value"/>
                 <ReferenceField label="Fleet" source="service install" reference="service install" target="id" link={false}>
                     <ReferenceField source="device" reference="device" target="id" link={false}>
                         <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record['belongs to-application']}`}>
-                            <ChipField source="app name" />
+                            <ChipField source="app name"/>
                         </ReferenceField>
                     </ReferenceField>
                 </ReferenceField>
@@ -70,8 +70,8 @@ export const DeviceServiceVarCreate = props => {
                     </ReferenceInput>
                 }
             </FormDataConsumer>
-            <TextInput label="Name" source="name" />
-            <TextInput label="Value" source="value" />
+            <TextInput label="Name" source="name"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Create>
     )
@@ -92,8 +92,8 @@ export const DeviceServiceVarEdit = props => (
                         </ReferenceInput>
                     }
                 </FormDataConsumer>
-                <TextInput label="Name" source="name" />
-            <TextInput label="Value" source="value" />
+                <TextInput label="Name" source="name"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Edit>
 );

@@ -24,11 +24,11 @@ export const DeviceFamilyList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="Slug" source="slug" />
-                <TextField label="Name" source="name" />
+                <TextField source="id"/>
+                <TextField label="Slug" source="slug"/>
+                <TextField label="Name" source="name"/>
                 <ReferenceField label="Manufacturer" source="is manufactured by-device manufacturer" reference="device manufacturer" target="id" link={false}>
-                    <ChipField source="name" />
+                    <ChipField source="name"/>
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
@@ -42,10 +42,10 @@ export const DeviceFamilyList = props => {
 export const DeviceFamilyCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <TextInput label="Slug" source="slug" />
-            <TextInput label="Name" source="name" />
+            <TextInput label="Slug" source="slug"/>
+            <TextInput label="Name" source="name"/>
             <ReferenceInput source="is manufactured by-device manufacturer" reference="device manufacturer" target="id">
-                <SelectInput optionText="name" optionValue="id" />
+                <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
         </SimpleForm>
     </Create>
@@ -54,10 +54,10 @@ export const DeviceFamilyCreate = props => (
 export const DeviceFamilyEdit = props => (
     <Edit title={<DeviceFamilyTitle />} {...props}>
         <SimpleForm>
-            <TextInput label="Slug" source="slug" />
-            <TextInput label="Name" source="name" />
+            <TextInput label="Slug" source="slug"/>
+            <TextInput label="Name" source="name"/>
             <ReferenceInput label="Manufacturer" source="is manufactured by-device manufacturer" reference="device manufacturer" target="id">
-                <SelectInput optionText="name" optionValue="id" />
+                <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
         </SimpleForm>
     </Edit>

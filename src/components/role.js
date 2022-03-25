@@ -22,8 +22,8 @@ export const RoleList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField source="name" />
+                <TextField source="id"/>
+                <TextField source="name"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
@@ -36,7 +36,7 @@ export const RoleList = props => {
 export const RoleCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="name" />
+            <TextInput source="name"/>
         </SimpleForm>
     </Create>
 );

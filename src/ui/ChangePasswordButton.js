@@ -45,7 +45,7 @@ export const ChangePasswordButton = ({basePath, ...props}) => {
     return (
     <> 
         <Button variant="outlined" color="primary" aria-label="create" onClick={() => setOpen(true)}>
-            <LockIcon style={{ marginRight: '4px' }} /> Change Password 
+            <LockIcon style={{ marginRight: '4px' }}/> Change Password 
         </Button> 
         <Dialog
             open={open}

@@ -21,17 +21,17 @@ export const ReleaseTagList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
+                <TextField source="id"/>
                 <ReferenceField label="Fleet" source="release" reference="release" target="id" link={false}>
                     <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record.id}`}>
-                        <ChipField source="app name" />
+                        <ChipField source="app name"/>
                     </ReferenceField>
                 </ReferenceField>
                 <ReferenceField label="Release Rev." source="release" reference="release" target="id">
-                    <ChipField source="revision" />
+                    <ChipField source="revision"/>
                 </ReferenceField>
-                <TextField label="Name" source="tag key" />
-                <TextField label="Value" source="value" />
+                <TextField label="Name" source="tag key"/>
+                <TextField label="Value" source="value"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>

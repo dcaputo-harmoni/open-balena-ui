@@ -87,15 +87,15 @@ export const ApiKeyList = props => {
     return (
         <List {...props} filters={apiKeyFilters} bulkActionButtons={<CustomBulkActionButtons />}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="API Key" source="key" />
-                <TextField label="Name" source="name" />
-                <TextField label="Description" source="description" />
+                <TextField source="id"/>
+                <TextField label="API Key" source="key"/>
+                <TextField label="Name" source="name"/>
+                <TextField label="Description" source="description"/>
                 <ActorField label="Assigned To"/>
                 <ReferenceManyField label="Roles" source="id" reference="api key-has-role" target="api key">
                     <SingleFieldList linkType={false}>
                         <ReferenceField source="role" reference="role" target="id">
-                            <ChipField source="name" />
+                            <ChipField source="name"/>
                         </ReferenceField>
                     </SingleFieldList>
                 </ReferenceManyField>
@@ -121,8 +121,8 @@ export const ApiKeyCreate = props => {
         <Create {...props} transform={processApiKey}>
             <SimpleForm>
                 <TextInput source="key" initialValue={generateApiKey()}/>
-                <TextInput source="name" />
-                <TextInput source="description" />
+                <TextInput source="name"/>
+                <TextInput source="description"/>
                 <FormDataConsumer>
                 {({ formData, ...rest }) => {
                     if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
@@ -177,10 +177,10 @@ export const ApiKeyEdit = props => {
     return (
         <Edit transform={processEdit} {...props}>
             <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
-                <TextInput disabled source="id" />
-                <TextInput source="key" />
-                <TextInput source="name" />
-                <TextInput source="description" />
+                <TextInput disabled source="id"/>
+                <TextInput source="key"/>
+                <TextInput source="name"/>
+                <TextInput source="description"/>
                 <ManagePermissions source="permissionArray" reference="api key-has-permission" target="api key"/>
                 <ManageRoles source="roleArray" reference="api key-has-role" target="api key"/>
             </SimpleForm>

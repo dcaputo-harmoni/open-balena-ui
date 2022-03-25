@@ -24,20 +24,20 @@ export const DeviceTypeList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="Slug" source="slug" />
-                <TextField label="Name" source="name" />
+                <TextField source="id"/>
+                <TextField label="Slug" source="slug"/>
+                <TextField label="Name" source="name"/>
                 <ReferenceField label="Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
-                    <ChipField source="slug" />
+                    <ChipField source="slug"/>
                 </ReferenceField>
                 {deviceTypeAlias ? 
                 <ReferenceField label="Aliases" source="id" reference={deviceTypeAlias} target="device type">
-                    <ChipField source="is referenced by-alias" />
+                    <ChipField source="is referenced by-alias"/>
                 </ReferenceField>
                 : <></>
                 }
                 <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
-                    <ChipField source="slug" />
+                    <ChipField source="slug"/>
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
@@ -51,8 +51,8 @@ export const DeviceTypeList = props => {
 export const DeviceTypeCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="slug" />
-            <TextInput source="name" />
+            <TextInput source="slug"/>
+            <TextInput source="name"/>
         </SimpleForm>
     </Create>
 );
@@ -60,9 +60,9 @@ export const DeviceTypeCreate = props => (
 export const DeviceTypeEdit = props => (
     <Edit title={<DeviceTypeTitle />} {...props}>
         <SimpleForm>
-            <TextInput disabled source="id" />
-            <TextInput source="slug" />
-            <TextInput source="name" />
+            <TextInput disabled source="id"/>
+            <TextInput source="slug"/>
+            <TextInput source="name"/>
         </SimpleForm>
     </Edit>
 );

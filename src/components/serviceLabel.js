@@ -24,12 +24,12 @@ export const ServiceLabelList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
+                <TextField source="id"/>
                 <ReferenceField label="Service" source="service" reference="service" target="id">
-                    <ChipField source="service name" />
+                    <ChipField source="service name"/>
                 </ReferenceField>
-                <TextField label="Name" source="label name" />
-                <TextField label="Value" source="value" />
+                <TextField label="Name" source="label name"/>
+                <TextField label="Value" source="value"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
@@ -43,10 +43,10 @@ export const ServiceLabelCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <ReferenceInput source="service" reference="service" target="id">
-                <SelectInput optionText="service name" optionValue="id" />
+                <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="label name" />
-            <TextInput label="Value" source="value" />
+            <TextInput label="Name" source="label name"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Create>
 );
@@ -55,10 +55,10 @@ export const ServiceLabelEdit = props => (
     <Edit title={<ServiceLabelTitle />} {...props}>
         <SimpleForm>
             <ReferenceInput source="service" reference="service" target="id">
-                <SelectInput optionText="service name" optionValue="id" />
+                <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="label name" />
-            <TextInput label="Value" source="value" />
+            <TextInput label="Name" source="label name"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Edit>
 );

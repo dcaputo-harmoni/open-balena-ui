@@ -20,14 +20,14 @@ export const ConfigList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="Key" source="key" />
-                <TextField label="Value" source="value" />
-                <TextField label="Scope" source="scope" />
-                <TextField label="Description" source="description" />
+                <TextField source="id"/>
+                <TextField label="Key" source="key"/>
+                <TextField label="Value" source="value"/>
+                <TextField label="Scope" source="scope"/>
+                <TextField label="Description" source="description"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium" />
+                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -37,10 +37,10 @@ export const ConfigList = props => {
 export const ConfigCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <TextInput label="Key" source="key" />
-            <TextInput label="Value" source="value" />
-            <TextInput label="Scope" source="scope" />
-            <TextInput label="Description" source="description" />
+            <TextInput label="Key" source="key"/>
+            <TextInput label="Value" source="value"/>
+            <TextInput label="Scope" source="scope"/>
+            <TextInput label="Description" source="description"/>
         </SimpleForm>
     </Create>
 );
@@ -48,10 +48,10 @@ export const ConfigCreate = props => (
 export const ConfigEdit = props => (
     <Edit title={<ConfigTitle />} {...props}>
         <SimpleForm>
-            <TextInput label="Key" source="key" />
-            <TextInput label="Value" source="value" />
-            <TextInput label="Scope" source="scope" />
-            <TextInput label="Description" source="description" />
+            <TextInput label="Key" source="key"/>
+            <TextInput label="Value" source="value"/>
+            <TextInput label="Scope" source="scope"/>
+            <TextInput label="Description" source="description"/>
         </SimpleForm>
     </Edit>
 );

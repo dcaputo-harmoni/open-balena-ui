@@ -20,9 +20,9 @@ export const DeviceManufacturerList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
-                <TextField label="Slug" source="slug" />
-                <TextField label="Name" source="name" />
+                <TextField source="id"/>
+                <TextField label="Slug" source="slug"/>
+                <TextField label="Name" source="name"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
@@ -35,8 +35,8 @@ export const DeviceManufacturerList = props => {
 export const DeviceManufacturerCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <TextInput label="Slug" source="slug" />
-            <TextInput label="Name" source="name" />
+            <TextInput label="Slug" source="slug"/>
+            <TextInput label="Name" source="name"/>
         </SimpleForm>
     </Create>
 );
@@ -44,8 +44,8 @@ export const DeviceManufacturerCreate = props => (
 export const DeviceManufacturerEdit = props => (
     <Edit title={<DeviceManufacturerTitle />} {...props}>
         <SimpleForm>
-            <TextInput label="Slug" source="slug" />
-            <TextInput label="Name" source="name" />
+            <TextInput label="Slug" source="slug"/>
+            <TextInput label="Name" source="name"/>
         </SimpleForm>
     </Edit>
 );

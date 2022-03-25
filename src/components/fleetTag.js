@@ -24,12 +24,12 @@ export const FleetTagList = props => {
     return (
         <List {...props}>
             <Datagrid>
-                <TextField source="id" />
+                <TextField source="id"/>
                 <ReferenceField label="Fleet" source="application" reference="application" target="id">
-                    <ChipField source="app name" />
+                    <ChipField source="app name"/>
                 </ReferenceField>
-                <TextField label="Name" source="tag key" />
-                <TextField label="Value" source="value" />
+                <TextField label="Name" source="tag key"/>
+                <TextField label="Value" source="value"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
@@ -43,10 +43,10 @@ export const FleetTagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
             <ReferenceInput source="application" reference="application" target="id">
-                <SelectInput optionText="app name" optionValue="id" />
+                <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key" />
-            <TextInput label="Value" source="value" />
+            <TextInput label="Name" source="tag key"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Create>
 );
@@ -55,10 +55,10 @@ export const FleetTagEdit = props => (
     <Edit title={<FleetTagTitle />} {...props}>
         <SimpleForm>
             <ReferenceInput source="application" reference="application" target="id">
-                <SelectInput optionText="app name" optionValue="id" />
+                <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key" />
-            <TextInput label="Value" source="value" />
+            <TextInput label="Name" source="tag key"/>
+            <TextInput label="Value" source="value"/>
         </SimpleForm>
     </Edit>
 );
