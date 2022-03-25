@@ -20,7 +20,7 @@ import {
     SaveButton,
     Toolbar,
 } from 'react-admin';
-import Chip from '@material-ui/core/Chip';
+import Chip from '@mui/material/Chip';
 import DeleteApiKeyButton from "../ui/DeleteApiKeyButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
@@ -79,7 +79,7 @@ const apiKeyFilters = [
 
 const CustomBulkActionButtons = props => (
     <React.Fragment>
-        <DeleteApiKeyButton variant="text" size="small" color="default" {...props}> Delete </DeleteApiKeyButton>
+        <DeleteApiKeyButton variant="text" size="small" {...props}> Delete </DeleteApiKeyButton>
     </React.Fragment>
 );
 
@@ -101,7 +101,7 @@ export const ApiKeyList = props => {
                 </ReferenceManyField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
-                    <DeleteApiKeyButton variant="text" size="small" color="default"/>
+                    <DeleteApiKeyButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -161,7 +161,7 @@ export const ApiKeyCreate = props => {
 const CustomToolbar = props => (
     <Toolbar {...props} style={{ justifyContent: "space-between" }}>
         <SaveButton/>
-        <DeleteApiKeyButton variant="standard" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteApiKeyButton>
+        <DeleteApiKeyButton variant="text" sx={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteApiKeyButton>
     </Toolbar>
 );
 

@@ -20,6 +20,7 @@ import {
     required,
     useRedirect,
     SaveButton,
+    FormDataConsumer,
 } from 'react-admin';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
@@ -45,7 +46,7 @@ const deviceFilters = [
 
 const CustomBulkActionButtons = props => (
     <React.Fragment>
-        <DeleteDeviceButton variant="text" size="small" color="default" {...props}> Delete </DeleteDeviceButton>
+        <DeleteDeviceButton variant="text" size="small" {...props}> Delete </DeleteDeviceButton>
     </React.Fragment>
 );
 
@@ -73,7 +74,7 @@ export const DeviceList = props => {
                     <DeviceConnectButton label="" style={{color: "black"}}/>
                     <ShowButton label="" color="default"/>
                     <EditButton label="" color="default"/>
-                    <DeleteDeviceButton variant="text" size="small" color="default"/>
+                    <DeleteDeviceButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -105,9 +106,13 @@ export const DeviceCreate = props => {
             <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
-                <SelectInput optionText="revision" optionValue="id"/>
-            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['belongs to-application'] &&
+                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" filter={{'belongs to-application': formData['belongs to-application']}} allowEmpty>
+                        <SelectInput optionText="revision" optionValue="id"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
             <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
@@ -119,7 +124,7 @@ export const DeviceCreate = props => {
 const CustomToolbar = props => (
     <Toolbar {...props} style={{ justifyContent: "space-between" }}>
         <SaveButton/>
-        <DeleteDeviceButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteDeviceButton>
+        <DeleteDeviceButton variant="text" sx={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteDeviceButton>
     </Toolbar>
 );
 
@@ -136,9 +141,13 @@ export const DeviceEdit = props => (
             <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
-                <SelectInput optionText="revision" optionValue="id"/>
-            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['belongs to-application'] &&
+                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" filter={{'belongs to-application': formData['belongs to-application']}} allowEmpty>
+                        <SelectInput optionText="revision" optionValue="id"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
             <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>

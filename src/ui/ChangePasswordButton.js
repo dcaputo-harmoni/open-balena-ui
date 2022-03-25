@@ -1,21 +1,16 @@
 import React from "react";
 import { PasswordInput, useNotify, useDataProvider } from 'react-admin';
-import { withStyles } from '@material-ui/core' 
-import MuiButton from '@material-ui/core/Button'; 
-import LockIcon from '@material-ui/icons/Lock'; 
-import Dialog from '@material-ui/core/Dialog'; 
-import DialogTitle from '@material-ui/core/DialogTitle'; 
-import DialogContent from '@material-ui/core/DialogContent';
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+} from '@mui/material';
+import LockIcon from '@mui/icons-material/Lock'; 
+import SaveIcon from '@mui/icons-material/Save';
 import { Form } from 'react-final-form';
 import { useForm } from 'react-final-form';
-import Save from '@material-ui/icons/Save';
 import * as bcrypt from "bcryptjs";
-
-const Button = withStyles({ 
-   root: { 
-      margin: '16px 0px'
-   }
-})(MuiButton); 
 
 const hashPassword = (password) => {
     const saltRounds = 10;
@@ -44,9 +39,9 @@ export const ChangePasswordButton = ({basePath, ...props}) => {
     
     return (
     <> 
-        <Button variant="outlined" color="primary" aria-label="create" onClick={() => setOpen(true)}>
+        <Button onClick={() => setOpen(true)} variant={props.variant || "contained"} color="inherit" size={props.size} sx={{...props.sx, mb: "20px"}}>
             <LockIcon style={{ marginRight: '4px' }}/> Change Password 
-        </Button> 
+        </Button>
         <Dialog
             open={open}
             onClose={() => setOpen(false)}
@@ -58,13 +53,9 @@ export const ChangePasswordButton = ({basePath, ...props}) => {
                 onSubmit={handleSubmit}
                 render={({handleSubmit, form, submitting, pristine, values }) => (
                     <form onSubmit={handleSubmit}>
-                        <PasswordInput
-                            label="Password"
-                            variant="filled"
-                            name="password"
-                        />
-                        <Button variant="contained" color="primary" type="submit" disabled={submitting || pristine}>
-                            <Save style={{ marginRight: '8px' }}/> Save
+                        <PasswordInput label="Password" variant="filled" name="password"/>
+                        <Button variant={props.variant || "contained"} color="inherit" type="submit" size={props.size} sx={{...props.sx, ml: "20px", mt: "15px"}} disabled={submitting || pristine}>
+                            <SaveIcon sx={{ mr: '8px' }}/> Save
                         </Button>
                     </form>
                 )}

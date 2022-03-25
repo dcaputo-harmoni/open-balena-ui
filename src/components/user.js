@@ -31,7 +31,7 @@ const UserTitle = ({ record }) => {
 
 const CustomBulkActionButtons = props => (
     <React.Fragment>
-        <DeleteUserButton variant="text" size="small" color="default" {...props}> Delete </DeleteUserButton>
+        <DeleteUserButton variant="text" size="small" {...props}> Delete </DeleteUserButton>
     </React.Fragment>
 );
 
@@ -63,7 +63,7 @@ export const UserList = props => {
                 </ReferenceManyField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
-                    <DeleteUserButton variant="text" size="small" color="default"/>
+                    <DeleteUserButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -91,7 +91,7 @@ export const UserCreate = props => {
 const CustomToolbar = props => (
     <Toolbar {...props} style={{ justifyContent: "space-between" }}>
         <SaveButton/>
-        <DeleteUserButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteUserButton>
+        <DeleteUserButton variant="text" sx={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteUserButton>
     </Toolbar>
 );
 

@@ -108,9 +108,9 @@ const Banner = props => {
                 </Box>
                 <Box display='block' height="9.5em" overflow="hidden">
                     <LinearProgressWithLabel label="CPU" value={isFinite(props.record['cpu usage']) ? props.record['cpu usage'] : 0 }/>
+                    <LinearProgressWithLabel label="Temp" value={isFinite(props.record['cpu temp']) ? ((props.record['cpu temp']/90)*100) : 0} displayValue={isFinite(props.record['cpu temp']) ? props.record['cpu temp'] : 0} displayUnits="&deg;C"/>
                     <LinearProgressWithLabel label="SD" value={isFinite(props.record['storage usage']/props.record['storage total']) ? (props.record['storage usage']/props.record['storage total'] * 100) : 0}/>
                     <LinearProgressWithLabel label="RAM" value={isFinite(props.record['memory usage']/props.record['memory total']) ? (props.record['memory usage']/props.record['memory total'] * 100) : 0}/>
-                    <LinearProgressWithLabel label="Temp" value={isFinite(props.record['cpu temp']) ? ((props.record['cpu temp']/90)*100) : 0} displayValue={isFinite(props.record['cpu temp']) ? props.record['cpu temp'] : 0} displayUnits="&deg;C"/>
                 </Box>
             </Box>
         </Card>

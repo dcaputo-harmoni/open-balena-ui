@@ -40,7 +40,7 @@ const BooleanBinaryField = props => {
 
 const CustomBulkActionButtons = props => (
     <React.Fragment>
-        <DeleteFleetButton variant="text" size="small" color="default" {...props}> Delete </DeleteFleetButton>
+        <DeleteFleetButton variant="text" size="small" {...props}> Delete </DeleteFleetButton>
     </React.Fragment>
 );
 
@@ -66,7 +66,7 @@ export const FleetList = props => {
                 <BooleanBinaryField label="Public" source="is public"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
-                    <DeleteFleetButton variant="text" size="small" color="default"/>
+                    <DeleteFleetButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>
         </List>
@@ -97,17 +97,10 @@ export const FleetCreate = props => {
                 <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
             <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={1}/>
-            <FormDataConsumer>
-                {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
-                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id">
-                        <SelectInput optionText="revision" optionValue="id"/>
-                    </ReferenceInput>
-                }
-             </FormDataConsumer>
-             <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
-             <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
-             <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
-             <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
+            <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+            <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+            <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
+            <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
         </SimpleForm>
@@ -118,7 +111,7 @@ export const FleetCreate = props => {
 const CustomToolbar = props => (
     <Toolbar {...props} style={{ justifyContent: "space-between" }}>
         <SaveButton/>
-        <DeleteFleetButton variant="text" style={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteFleetButton>
+        <DeleteFleetButton variant="text" sx={{padding: "6px", color: "#f44336", ".hover": { backgroundColor: '#fff', color: '#3c52b2'}}} > Delete </DeleteFleetButton>
     </Toolbar>
 );
 
@@ -145,7 +138,7 @@ export const FleetEdit = props => {
                 <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0}/>
                 <FormDataConsumer>
                     {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
-                        <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id" allowEmpty>
+                        <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id"  filter={{'belongs to-application': formData.id}} allowEmpty>
                             <SelectInput optionText="revision" optionValue="id"/>
                         </ReferenceInput>
                     }

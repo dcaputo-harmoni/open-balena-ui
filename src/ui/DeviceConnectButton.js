@@ -9,11 +9,12 @@ import {
 import IconButton from '@mui/material/IconButton';
 import ConnectIcon from '@mui/icons-material/Sensors';
 import CloseIcon from '@mui/icons-material/Close';
-import { makeStyles } from '@material-ui/core/styles';
 import DeviceConnect from './DeviceConnect';
 
-const useStyles = makeStyles({
-    root: {
+const styles = {
+    dialog: {
+        width: "100%",
+        maxWidth: "none",
         "& .MuiPaper-root": {
             maxWidth: 'none',
             width: '100%'
@@ -24,7 +25,7 @@ const useStyles = makeStyles({
         maxHeight: '80vh',
         maxWidth: 'none',
     }, 
-});
+};
 
 export class Iframe extends React.Component {
     render () {
@@ -39,7 +40,6 @@ export class Iframe extends React.Component {
 export const DeviceConnectButton = ({basePath, ...props}) => {
 
     const [open, setOpen] = React.useState(false);
-    const classes = useStyles();
 
     const handleClose = () => {
         setOpen(false);
@@ -48,24 +48,22 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
     return (
     <> 
         <Button aria-label="connect" onClick={() => setOpen(true)} {...props}>
-        <ConnectIcon/>{props.label ? <span style={{paddingLeft: "4px"}}>{props.label}</span> : ""}
+        <ConnectIcon/>{props.label ? <span sx={{pl: "4px"}}>{props.label}</span> : ""}
         </Button> 
         <Dialog
             open={open}
             onClose={handleClose}
-            aria-labelledby="form-dialog-title"
-            style={{width: "100%", maxWidth: "none"}}
-            className={classes.root}
+            sx={styles.dialog}
         >
             <DialogTitle id="form-dialog-title">
-                <Grid container style={{ justifyContent: "space-between" }}>
+                <Grid container sx={{ justifyContent: "space-between" }}>
                     Connect
-                    <IconButton aria-label="close" onClick={() => setOpen(false)}>
+                    <IconButton onClick={() => setOpen(false)}>
                         <CloseIcon />
                     </IconButton>
                 </Grid>
             </DialogTitle>
-            <DialogContent className={classes.dialogContent}>
+            <DialogContent sx={styles.dialogContent}>
                 <DeviceConnect {...props}/>
             </DialogContent>
         </Dialog>

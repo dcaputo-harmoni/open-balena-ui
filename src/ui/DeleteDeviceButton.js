@@ -1,10 +1,12 @@
 import React from "react";
 import { useNotify, useRedirect } from 'react-admin';
-import Button from '@material-ui/core/Button'; 
+import {
+    Button,
+    Dialog,
+    DialogTitle,
+    DialogContent,
+} from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
-import Dialog from '@material-ui/core/Dialog'; 
-import DialogTitle from '@material-ui/core/DialogTitle'; 
-import DialogContent from '@material-ui/core/DialogContent';
 import { Form } from 'react-final-form';
 import { useDeleteDevice, useDeleteDeviceBulk} from '../lib/device'
 
@@ -28,9 +30,9 @@ export const DeleteDeviceButton = ({basePath, ...props}) => {
     };
     
     return (
-        <> 
-        <Button aria-label="delete" onClick={() => setOpen(true)} variant={props.variant || "contained"} fontSize={props.size} color={props.color} >
-            <DeleteIcon style={{ marginRight: '4px' }} size={props.size}/> { props.children }
+        <>
+        <Button onClick={() => setOpen(true)} variant={props.variant || "contained"} color="inherit" size={props.size} sx={props.sx}>
+            <DeleteIcon sx={{ mr: '4px' }} size={props.size}/> { props.children }
         </Button> 
         <Dialog
             open={open}
@@ -50,9 +52,9 @@ export const DeleteDeviceButton = ({basePath, ...props}) => {
                     </form>
                 )}
             />
-        </DialogContent>        
+        </DialogContent>
         </Dialog>
-        </>        
+        </>
     );
 }
 
