@@ -14,6 +14,7 @@ import {
     SelectInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const ImageEnvVarTitle = ({ record }) => {
@@ -58,11 +59,11 @@ export const ImageEnvVarList = props => {
 export const ImageEnvVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="release image" reference="image" target="id">
+            <ReferenceInput source="release image" reference="image" target="id" validate={required()}>
                 <SelectInput optionText="id" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -70,11 +71,11 @@ export const ImageEnvVarCreate = props => (
 export const ImageEnvVarEdit = props => (
     <Edit title={<ImageEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="release image" reference="image" target="id">
+            <ReferenceInput source="release image" reference="image" target="id" validate={required()}>
                 <SelectInput optionText="id" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

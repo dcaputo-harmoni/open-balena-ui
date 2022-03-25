@@ -14,6 +14,7 @@ import {
     TextInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const DeviceTagTitle = ({ record }) => {
@@ -47,11 +48,11 @@ export const DeviceTagList = props => {
 export const DeviceTagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -59,11 +60,11 @@ export const DeviceTagCreate = props => (
 export const DeviceTagEdit = props => (
     <Edit title={<DeviceTagTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

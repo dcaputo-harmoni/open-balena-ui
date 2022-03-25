@@ -14,6 +14,7 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const OrganizationTitle = ({ record }) => {
@@ -51,8 +52,8 @@ export const OrganizationList = props => {
 export const OrganizationCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="name"/>
-            <TextInput source="handle"/>
+            <TextInput source="name" validate={required()}/>
+            <TextInput source="handle" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -61,8 +62,8 @@ export const OrganizationEdit = props => (
     <Edit title={<OrganizationTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            <TextInput source="name"/>
-            <TextInput source="handle"/>
+            <TextInput source="name" validate={required()}/>
+            <TextInput source="handle" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

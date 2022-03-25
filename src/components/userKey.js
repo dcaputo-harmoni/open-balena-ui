@@ -14,6 +14,7 @@ import {
     SelectInput,
     TextInput,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const UserKeysTitle = ({ record }) => {
@@ -42,11 +43,11 @@ export const UserKeysList = props => {
 export const UserKeysCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="user" reference="user" target="id">
+            <ReferenceInput source="user" reference="user" target="id" validate={required()}>
                 <SelectInput optionText="username" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Title" source="title"/>
-            <TextInput multiline label="Key" source="public key"/>
+            <TextInput label="Title" source="title" validate={required()}/>
+            <TextInput multiline label="Key" source="public key" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,11 +55,11 @@ export const UserKeysCreate = props => (
 export const UserKeysEdit = props => (
     <Edit title={<UserKeysTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="user" reference="user" target="id">
+            <ReferenceInput source="user" reference="user" target="id" validate={required()}>
                 <SelectInput optionText="username" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Title" source="title"/>
-            <TextInput multiline label="Key" source="public key"/>
+            <TextInput label="Title" source="title" validate={required()}/>
+            <TextInput multiline label="Key" source="public key" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

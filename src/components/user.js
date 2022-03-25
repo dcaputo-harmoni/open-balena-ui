@@ -16,6 +16,7 @@ import {
     Toolbar,
     EditButton,
     SaveButton,
+    required,
 } from 'react-admin';
 import ChangePasswordButton from "../ui/ChangePasswordButton";
 import DeleteUserButton from "../ui/DeleteUserButton";
@@ -79,9 +80,9 @@ export const UserCreate = props => {
     return (
         <Create transform={processCreate} {...props} >
             <SimpleForm>
-                <TextInput source="username"/>
+                <TextInput source="username" validate={required()}/>
                 <TextInput source="email"/>
-                <PasswordInput source="password"/>
+                <PasswordInput source="password" validate={required()}/>
             </SimpleForm>
         </Create>
     )
@@ -107,7 +108,7 @@ export const UserEdit = props => {
         <Edit title={<UserTitle />} transform={processEdit} {...props}>
             <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
-                <TextInput source="username"/>
+                <TextInput source="username" validate={required()}/>
                 <TextInput source="email"/>
                 <TextInput disabled source="jwt secret"/>
                 <ChangePasswordButton/>

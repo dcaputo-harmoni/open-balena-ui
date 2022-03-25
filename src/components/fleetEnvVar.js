@@ -14,6 +14,7 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const FleetEnvVarTitle = ({ record }) => {
@@ -42,11 +43,11 @@ export const FleetEnvVarList = props => {
 export const FleetEnvVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="application" reference="application" target="id">
+            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,11 +55,11 @@ export const FleetEnvVarCreate = props => (
 export const FleetEnvVarEdit = props => (
     <Edit title={<FleetEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="application" reference="application" target="id">
+            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

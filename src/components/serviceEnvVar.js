@@ -8,9 +8,13 @@ import {
     ChipField,
     List,
     SimpleForm,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const ServiceEnvVarTitle = ({ record }) => {
@@ -38,7 +42,12 @@ export const ServiceEnvVarList = props => {
 
 export const ServiceEnvVarCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
+                <SelectInput optionText="service name" optionValue="id"/>
+            </ReferenceInput>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -46,6 +55,11 @@ export const ServiceEnvVarCreate = props => (
 export const ServiceEnvVarEdit = props => (
     <Edit title={<ServiceEnvVarTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
+                <SelectInput optionText="service name" optionValue="id"/>
+            </ReferenceInput>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

@@ -14,6 +14,7 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const FleetTagTitle = ({ record }) => {
@@ -42,11 +43,11 @@ export const FleetTagList = props => {
 export const FleetTagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="application" reference="application" target="id">
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,11 +55,11 @@ export const FleetTagCreate = props => (
 export const FleetTagEdit = props => (
     <Edit title={<FleetTagTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="application" reference="application" target="id">
+            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="tag key"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

@@ -15,6 +15,7 @@ import {
     TextInput,
     FormDataConsumer,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const DeviceServiceVarTitle = ({ record }) => {
@@ -58,20 +59,20 @@ export const DeviceServiceVarCreate = props => {
     return (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput label="Device" source="device" reference="device" target="id">
+            <ReferenceInput label="Device" source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData["device"] &&
-                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}}>
+                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}} validate={required()}>
                         <ReferenceInput source="service" reference="service" target="id">
                             <SelectInput optionText="service name" optionValue="id"/>
                         </ReferenceInput>
                     </ReferenceInput>
                 }
             </FormDataConsumer>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
     )
@@ -80,20 +81,20 @@ export const DeviceServiceVarCreate = props => {
 export const DeviceServiceVarEdit = props => (
     <Edit title={<DeviceServiceVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
-                <FormDataConsumer>
-                    {({ formData, ...rest }) => formData['device'] &&
-                        <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}}>
-                            <ReferenceInput source="service" reference="service" target="id">
-                                <SelectInput optionText="service name" optionValue="id"/>
-                            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['device'] &&
+                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}} validate={required()}>
+                        <ReferenceInput source="service" reference="service" target="id">
+                            <SelectInput optionText="service name" optionValue="id"/>
                         </ReferenceInput>
-                    }
-                </FormDataConsumer>
-                <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

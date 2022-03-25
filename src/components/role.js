@@ -10,6 +10,7 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 import ManagePermissions from "../ui/ManagePermissions";
 import { useModifyRole } from '../lib/role';
@@ -36,7 +37,7 @@ export const RoleList = props => {
 export const RoleCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="name"/>
+            <TextInput source="name" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,7 +55,7 @@ export const RoleEdit = props => {
         <Edit title={<RoleTitle />} transform={processEdit} {...props}>
             <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
-                <TextInput source="name"/>
+                <TextInput source="name" validate={required()}/>
                 <ManagePermissions source="permissionArray" reference="role-has-permission" target="role"/>
             </SimpleForm>
         </Edit>

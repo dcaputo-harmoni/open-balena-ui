@@ -14,6 +14,7 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const RoleTitle = ({ record }) => {
@@ -45,7 +46,7 @@ export const PermissionList = props => {
 export const PermissionCreate = props => (
     <Create {...props}>
         <SimpleForm>
-            <TextInput source="name"/>
+            <TextInput source="name" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,7 +55,7 @@ export const PermissionEdit = props => (
     <Edit title={<RoleTitle />} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
-            <TextInput source="name"/>
+            <TextInput source="name" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

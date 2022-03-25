@@ -14,6 +14,7 @@ import {
     SelectInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const ServiceLabelTitle = ({ record }) => {
@@ -42,11 +43,11 @@ export const ServiceLabelList = props => {
 export const ServiceLabelCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="service" reference="service" target="id">
+            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
                 <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="label name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="label name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -54,11 +55,11 @@ export const ServiceLabelCreate = props => (
 export const ServiceLabelEdit = props => (
     <Edit title={<ServiceLabelTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="service" reference="service" target="id">
+            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
                 <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="label name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="label name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

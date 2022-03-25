@@ -14,6 +14,7 @@ import {
     TextInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const DeviceEnvVarTitle = ({ record }) => {
@@ -47,11 +48,11 @@ export const DeviceEnvVarList = props => {
 export const DeviceEnvVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -59,11 +60,11 @@ export const DeviceEnvVarCreate = props => (
 export const DeviceEnvVarEdit = props => (
     <Edit title={<DeviceEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
-            <TextInput label="Name" source="name"/>
-            <TextInput label="Value" source="value"/>
+            <TextInput label="Name" source="name" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );

@@ -10,7 +10,12 @@ import {
     SimpleForm,
     EditButton,
     DeleteButton,
+    ReferenceInput,
+    SelectInput,
+    TextInput,
     Toolbar,
+    required,
+    FormDataConsumer,
 } from 'react-admin';
 
 const ReleaseTagTitle = ({ record }) => {
@@ -43,7 +48,19 @@ export const ReleaseTagList = props => {
 
 export const ReleaseTagCreate = props => (
     <Create {...props}>
-        <SimpleForm>
+        <SimpleForm redirect="list">
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+                <SelectInput optionText="app name" optionValue="id"/>
+            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['application'] &&
+                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} validate={required()}>
+                        <SelectInput optionText="revision" optionValue="id"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Create>
 );
@@ -51,6 +68,18 @@ export const ReleaseTagCreate = props => (
 export const ReleaseTagEdit = props => (
     <Edit title={<ReleaseTagTitle />} {...props}>
         <SimpleForm>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+                <SelectInput optionText="app name" optionValue="id"/>
+            </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['application'] &&
+                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} validate={required()}>
+                        <SelectInput optionText="revision" optionValue="id"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+            <TextInput label="Name" source="tag key" validate={required()}/>
+            <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
 );
