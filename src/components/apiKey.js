@@ -24,7 +24,7 @@ import Chip from '@mui/material/Chip';
 import DeleteApiKeyButton from "../ui/DeleteApiKeyButton";
 import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
-import { useGenerateApiKey, useModifyApiKey } from "../lib/apiKey";
+import { useGenerateApiKey, useCreateApiKey, useModifyApiKey } from "../lib/apiKey";
 
 class ActorField extends React.Component {
     static contextType = DataProviderContext;
@@ -111,14 +111,10 @@ export const ApiKeyList = props => {
 export const ApiKeyCreate = props => {
 
     const generateApiKey = useGenerateApiKey();
-    const processApiKey = (data) => {
-        data['is of-actor'] = data.userActor || data.deviceActor || data.fleetActor;
-        ['userActor', 'deviceActor', 'fleetActor'].forEach(x => delete data[x]);
-        return data;
-    }
+    const createApiKey = useCreateApiKey();
    
     return (
-        <Create {...props} transform={processApiKey}>
+        <Create {...props} transform={createApiKey}>
             <SimpleForm>
                 <TextInput source="key" initialValue={generateApiKey()}/>
                 <TextInput source="name"/>
@@ -169,13 +165,8 @@ export const ApiKeyEdit = props => {
 
     const modifyApiKey = useModifyApiKey();
 
-    const processEdit = async (data) => {
-        data = await modifyApiKey(data);
-        return data;
-    }
-
     return (
-        <Edit transform={processEdit} {...props}>
+        <Edit transform={modifyApiKey} {...props}>
             <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
                 <TextInput source="key"/>

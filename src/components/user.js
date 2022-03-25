@@ -71,14 +71,11 @@ export const UserList = props => {
 };
 
 export const UserCreate = props => {
+    
     const createUser = useCreateUser();
 
-    const processCreate = async (data) => {
-        return createUser(data);
-    };    
-
     return (
-        <Create transform={processCreate} {...props} >
+        <Create transform={createUser} {...props} >
             <SimpleForm>
                 <TextInput source="username" validate={required()}/>
                 <TextInput source="email"/>
@@ -99,13 +96,8 @@ export const UserEdit = props => {
 
     const modifyUser = useModifyUser();
 
-    const processEdit = async (data) => {
-        data = await modifyUser(data);
-        return data;
-    }
-
     return (
-        <Edit title={<UserTitle />} transform={processEdit} {...props}>
+        <Edit title={<UserTitle />} transform={modifyUser} {...props}>
             <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
                 <TextInput source="username" validate={required()}/>

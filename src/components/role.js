@@ -46,13 +46,8 @@ export const RoleEdit = props => {
 
     const modifyRole = useModifyRole();
 
-    const processEdit = async (data) => {
-        data = await modifyRole(data);
-        return data;
-    }
-
     return (
-        <Edit title={<RoleTitle />} transform={processEdit} {...props}>
+        <Edit title={<RoleTitle />} transform={modifyRole} {...props}>
             <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
                 <TextInput source="name" validate={required()}/>

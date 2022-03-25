@@ -14,6 +14,15 @@ export function useGenerateApiKey () {
     }
 }
 
+export function useCreateApiKey () {
+
+    return (data) => {
+        data['is of-actor'] = data.userActor || data.deviceActor || data.fleetActor;
+        ['userActor', 'deviceActor', 'fleetActor'].forEach(x => delete data[x]);
+        return data;
+    }
+}
+
 export function useModifyApiKey () {
 
     const dataProvider = useDataProvider();

@@ -77,12 +77,8 @@ export const FleetCreate = props => {
 
     let createFleet = useCreateFleet();
     
-    const processFleetCreate = async (data) => {
-        return await createFleet(data);
-    };
-    
     return (
-    <Create transform={processFleetCreate} {...props}>
+    <Create transform={createFleet} {...props}>
         <SimpleForm redirect="list">
             <TextInput source="app name" validate={[required(), minLength(4), maxLength(100)]}/>
             <TextInput source="slug" validate={required()}/>
@@ -115,44 +111,39 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-export const FleetEdit = props => {
-    const processFleetEdit = data => {
-        return data;
-    };
-    return (
-        <Edit title={<FleetTitle />} transform={processFleetEdit} {...props}>
-            <SimpleForm toolbar={<CustomToolbar/>}>
-                <TextInput disabled source="id"/>
-                <TextInput source="app name" validate={[required(), minLength(4), maxLength(100)]}/>
-                <TextInput source="slug" validate={required()}/>
-                <TextInput source="uuid" validate={[required(), minLength(32), maxLength(32)]}/>
-                <ReferenceInput label="Device Type" source="is for-device type" reference="device type" target="id" validate={required()}>
-                    <SelectInput optionText="slug" optionValue="id"/>
-                </ReferenceInput>
-                <ReferenceInput label="Organization" source="organization" reference="organization" target="id" validate={required()}>
-                    <SelectInput optionText="name" optionValue="id"/>
-                </ReferenceInput>
-                <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id" validate={required()}>
-                    <SelectInput optionText="name" optionValue="id"/>
-                </ReferenceInput>
-                <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0}/>
-                <FormDataConsumer>
-                    {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
-                        <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id"  filter={{'belongs to-application': formData.id}} allowEmpty>
-                            <SelectInput optionText="revision" optionValue="id"/>
-                        </ReferenceInput>
-                    }
-                </FormDataConsumer>
-                <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0}/>
-                <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0}/>
-                <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0}/>
-                <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
-                    <SelectInput optionText="app name" optionValue="id"/>
-                </ReferenceInput>
-            </SimpleForm>
-        </Edit>
-    );
-}
+export const FleetEdit = props => (
+    <Edit title={<FleetTitle />} {...props}>
+        <SimpleForm toolbar={<CustomToolbar/>}>
+            <TextInput disabled source="id"/>
+            <TextInput source="app name" validate={[required(), minLength(4), maxLength(100)]}/>
+            <TextInput source="slug" validate={required()}/>
+            <TextInput source="uuid" validate={[required(), minLength(32), maxLength(32)]}/>
+            <ReferenceInput label="Device Type" source="is for-device type" reference="device type" target="id" validate={required()}>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
+            <ReferenceInput label="Organization" source="organization" reference="organization" target="id" validate={required()}>
+                <SelectInput optionText="name" optionValue="id"/>
+            </ReferenceInput>
+            <ReferenceInput label="Fleet Type" source="application type" reference="application type" target="id" validate={required()}>
+                <SelectInput optionText="name" optionValue="id"/>
+            </ReferenceInput>
+            <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0}/>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['should track latest release'] === 0 &&
+                    <ReferenceInput label="Target Release" source="should be running-release" reference="release" target="id"  filter={{'belongs to-application': formData.id}} allowEmpty>
+                        <SelectInput optionText="revision" optionValue="id"/>
+                    </ReferenceInput>
+                }
+            </FormDataConsumer>
+            <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0}/>
+            <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0}/>
+            <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0}/>
+            <ReferenceInput label="Depends on Fleet" source="depends on-application" reference="application" target="id" allowEmpty>
+                <SelectInput optionText="app name" optionValue="id"/>
+            </ReferenceInput>
+        </SimpleForm>
+    </Edit>
+);
 
 const fleet = {
     list: FleetList,

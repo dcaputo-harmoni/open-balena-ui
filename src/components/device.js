@@ -86,16 +86,12 @@ export const DeviceCreate = props => {
     const createDevice = useCreateDevice();
     const redirect = useRedirect();
     
-    const processCreate = async (data) => {
-        return await createDevice(data);
-    };   
-    
     const processComplete = ({ data }) => {
         redirect('list', props.basePath, data.id, data);
     };
 
     return (
-    <Create transform={processCreate} onSuccess={processComplete} {...props}>
+    <Create transform={createDevice} onSuccess={processComplete} {...props}>
         <SimpleForm redirect="list">
             <TextInput label="UUID" source="uuid" initialValue={uuidv4().replace(/-/g, '').toLowerCase()} validate={required()}/>
             <TextInput label="Device Name" source="device name" validate={required()}/>
