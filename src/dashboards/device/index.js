@@ -1,42 +1,44 @@
 import * as React from "react";
 import { 
-    Show,
+    ShowView,
     TabbedShowLayout,
     Tab,
 } from 'react-admin';
+import {
+    ShowContextProvider,
+} from 'ra-core';
 import Banner from './banner';
 import Summary from './summary';
 import Logs from './logs';
 import Connect from './connect';
 import Control from './control';
 
-import { useShowController } from 'react-admin';
-
-const DeviceTitle = ({ record }) => {
-    return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
-};
+import { useCustomShowController } from './useCustomShowController';
 
 const DeviceDashboard = props => {
+    const controllerProps = useCustomShowController({...props});
     return (
-        <>
-        <Banner {...useShowController(props)}/>
-        <Show title={<DeviceTitle />} actions={false} {...props}>
-            <TabbedShowLayout syncWithLocation={false}>
-                <Tab label="Summary">
-                    <Summary />
-                </Tab>
-                <Tab label="Logs" path="body">
-                    <Logs/>
-                </Tab>
-                <Tab label="Connect" path="miscellaneous">
-                    <Connect/>
-                </Tab>
-                <Tab label="Control" path="comments">
-                    <Control/>
-                </Tab>
-            </TabbedShowLayout>
-        </Show>
-        </>
+        <ShowContextProvider value={controllerProps}>
+            <ShowView component="div" actions={false} {...props} {...controllerProps}>
+                <Banner/>
+            </ShowView>
+            <ShowView actions={false} {...props} {...controllerProps}>
+                <TabbedShowLayout>
+                    <Tab label="Summary">
+                        <Summary />
+                    </Tab>
+                    <Tab label="Logs" path="body">
+                        <Logs/>
+                    </Tab>
+                    <Tab label="Connect" path="miscellaneous">
+                        <Connect/>
+                    </Tab>
+                    <Tab label="Control" path="comments">
+                        <Control/>
+                    </Tab>
+                </TabbedShowLayout>
+            </ShowView>
+        </ShowContextProvider>
     );
 };
 
