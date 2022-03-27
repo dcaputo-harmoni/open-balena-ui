@@ -19,10 +19,10 @@ const DeviceDashboard = props => {
     const controllerProps = useCustomShowController({...props});
     return (
         <ShowContextProvider value={controllerProps}>
-            <ShowView component="div" actions={false} {...props} {...controllerProps}>
+            <ShowView component="div" title="Device Dashboard" actions={false} {...props} {...controllerProps}>
                 <Banner/>
             </ShowView>
-            <ShowView actions={false} {...props} {...controllerProps}>
+            <ShowView actions={false} title="&nbsp;" {...props} {...controllerProps}>
                 <TabbedShowLayout>
                     <Tab label="Summary">
                         <Summary />
