@@ -49,6 +49,9 @@ VNC Services:
 
 **Note**: The port specified above is a host container port, so the service needs to be mapped to a host port matching the port specified in the label in your `docker-compose` file.
 
+## Dashboard URL Routes
+
+`open-balena-ui` includes routes that conform to the standard balena convention that you will see when running `balena devices` using `balena-cli`.  Specifically, if you point your browser to your `open-balena-ui` server with a path of `/devices/<UUID>/summary`, it will redirect you to the dashboard for that device.  If you point the `dashboard.yourdomain.com` host to your `open-balena-ui` instance, the URL should conform to the standard balena convention. 
 
 ## Compatibility
 
@@ -56,7 +59,7 @@ This project is compatible with `open-balena-api` v0.139.0 or newer, all the way
 
 ## Installation
 
-Set the required environment variables accordingly, and run `yarn start` from the main project folder - and you should be up and running.
+Set the required environment variables accordingly, and run `yarn start` from the main project folder.  If running locally, you can access `open-balena-ui` via your web browser at `http://localhost:PORT`, and provided the configuration environment variables are appropriately pointed to live `open-balena-api` and `open-balena-postgrest` instances, you should be up and running.
 
 ## Credits
 
