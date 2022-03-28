@@ -39,7 +39,7 @@ const Devices = props => {
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
-                                            <TableCell align="right">{record['status'] == null ? "Offline" : record['status']}</TableCell>
+                                            <TableCell align="right">{record['api heartbeat state'] === 'online' ? "Online" : "Offline"}</TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>OS Ver</TableCell>
