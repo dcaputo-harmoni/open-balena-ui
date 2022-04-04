@@ -23,7 +23,7 @@ const Dashboard = () => {
             {
                 filter: { },
                 sort: { field: 'id', order: 'ASC' },
-                pagination: { page: 1, perPage: 50 },
+                pagination: { page: 1, perPage: 1000 },
             }
         );
         let { data: organizations } = await dataProvider.getList(
@@ -31,7 +31,7 @@ const Dashboard = () => {
             {
                 filter: { },
                 sort: { field: 'id', order: 'ASC' },
-                pagination: { page: 1, perPage: 50 },
+                pagination: { page: 1, perPage: 1000 },
             }
         );
         let { data: fleets } = await dataProvider.getList(
@@ -39,7 +39,7 @@ const Dashboard = () => {
             {
                 filter: { },
                 sort: { field: 'id', order: 'ASC' },
-                pagination: { page: 1, perPage: 50 },
+                pagination: { page: 1, perPage: 1000 },
             }
         );
         let { data: devices } = await dataProvider.getList(
@@ -47,7 +47,7 @@ const Dashboard = () => {
             {
                 filter: { },
                 sort: { field: 'id', order: 'ASC' },
-                pagination: { page: 1, perPage: 50 },
+                pagination: { page: 1, perPage: 1000 },
             }
         );
         if (fleets.length > 0) {
