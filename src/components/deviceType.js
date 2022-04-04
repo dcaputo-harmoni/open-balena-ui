@@ -12,6 +12,9 @@ import {
     EditButton,
     DeleteButton,
     Toolbar,
+    ReferenceInput,
+    SelectInput,
+    required,
 } from 'react-admin';
 import versions from '../versions'
 
@@ -19,24 +22,25 @@ const DeviceTypeTitle = ({ record }) => {
     return <span>Device Type {record ? `"${record.name}"` : ''}</span>;
 };
 
+const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+
 export const DeviceTypeList = props => {
-    const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
     return (
         <List {...props}>
             <Datagrid>
                 <TextField source="id"/>
                 <TextField label="Slug" source="slug"/>
                 <TextField label="Name" source="name"/>
-                <ReferenceField label="Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
+                <ReferenceField label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
                     <ChipField source="slug"/>
                 </ReferenceField>
                 {deviceTypeAlias ? 
-                <ReferenceField label="Aliases" source="id" reference={deviceTypeAlias} target="device type">
+                <ReferenceField label="Alias" source="id" reference={deviceTypeAlias} target="device type">
                     <ChipField source="is referenced by-alias"/>
                 </ReferenceField>
                 : <></>
                 }
-                <ReferenceField label="Family" source="belongs to-device family" reference="device family" target="id" allowEmpty>
+                <ReferenceField label="Device Family" source="belongs to-device family" reference="device family" target="id">
                     <ChipField source="slug"/>
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
@@ -53,6 +57,12 @@ export const DeviceTypeCreate = props => (
         <SimpleForm>
             <TextInput source="slug"/>
             <TextInput source="name"/>
+            <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
+            <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
         </SimpleForm>
     </Create>
 );
@@ -63,6 +73,12 @@ export const DeviceTypeEdit = props => (
             <TextInput disabled source="id"/>
             <TextInput source="slug"/>
             <TextInput source="name"/>
+            <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
+            <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
+                <SelectInput optionText="slug" optionValue="id"/>
+            </ReferenceInput>
         </SimpleForm>
     </Edit>
 );
