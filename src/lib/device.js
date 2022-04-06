@@ -7,11 +7,6 @@ export function useCreateDevice () {
     const generateApiKey = useGenerateApiKey();
 
     return async (data) => {
-        const fleet = await dataProvider.getList('application', {
-            pagination: { page: 1 , perPage: 1000 },
-            sort: { field: 'id', order: 'ASC' },
-            filter: { id: data['belongs to-application']}
-        });
         const roles = await dataProvider.getList('role', {
             pagination: { page: 1 , perPage: 1000 },
             sort: { field: 'id', order: 'ASC' },
