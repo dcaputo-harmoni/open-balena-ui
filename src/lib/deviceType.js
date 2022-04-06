@@ -1,4 +1,7 @@
 import { useDataProvider } from 'react-admin';
+import versions from '../versions'
+
+const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
 
 export function useCreateDeviceType () {
 
@@ -6,7 +9,9 @@ export function useCreateDeviceType () {
 
     return async (data) => {
         const deviceType = dataProvider.create('device type', {data: data});
-        await dataProvider.create('device type alias', {data: {'device type': deviceType.data.id, 'is referenced by-alias': data['slug']}});
+        if (deviceTypeAlias) {
+            await dataProvider.create('device type alias', {data: {'device type': deviceType.data.id, 'is referenced by-alias': data['slug']}});
+        }
         return null;
     }
 }
@@ -18,9 +23,11 @@ export function useDeleteDeviceType () {
     return async (deviceType) => {
         let relatedIndirectLookups = [
         ];
-        let relatedLookups = [
+        let relatedLookups = deviceTypeAlias 
+        ? [
             { resource: "device type alias", field: "device type", localField: "id" },
-        ];
+        ]
+        : [];
         await Promise.all(relatedIndirectLookups.map( x => {
             return dataProvider.getList(x.viaResource, {
                 pagination: { page: 1 , perPage: 1000 },

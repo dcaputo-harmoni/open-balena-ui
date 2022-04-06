@@ -36,6 +36,7 @@ import user from './components/user';
 import userKey from './components/userKey';
 import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
+import versions from './versions'
 
 const httpClient = (url, options = {}) => {
     if (!options.headers) {
@@ -46,6 +47,8 @@ const httpClient = (url, options = {}) => {
 };
 
 const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
+
+const deviceTypeAliasVer = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
 
 const App = () => (
     <BrowserRouter>
@@ -109,7 +112,10 @@ const OpenBalenaAdmin = () => (
     <Resource name="device family" options={{ label: 'Device Families', "menuParent": "menu-static" }} {...deviceFamily}/>
     <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} {...deviceManufacturer}/>
     <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType}/>
+    {deviceTypeAliasVer ? 
     <Resource name="device type alias" options={{ label: 'DT Aliases', "menuParent": "menu-static" }} {...deviceTypeAlias}/>
+    : <></>
+    }
     <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} {...fleetType}/>
     <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission}/>
     <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role}/>
