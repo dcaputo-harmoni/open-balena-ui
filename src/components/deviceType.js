@@ -17,6 +17,7 @@ import {
     required,
 } from 'react-admin';
 import versions from '../versions'
+import { useCreateDeviceType } from '../lib/deviceType'
 
 const DeviceTypeTitle = ({ record }) => {
     return <span>Device Type {record ? `"${record.name}"` : ''}</span>;
@@ -52,20 +53,25 @@ export const DeviceTypeList = props => {
     )
 };
 
-export const DeviceTypeCreate = props => (
-    <Create {...props}>
-        <SimpleForm>
-            <TextInput source="slug"/>
-            <TextInput source="name"/>
-            <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
-                <SelectInput optionText="slug" optionValue="id"/>
-            </ReferenceInput>
-            <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
-                <SelectInput optionText="slug" optionValue="id"/>
-            </ReferenceInput>
-        </SimpleForm>
-    </Create>
-);
+export const DeviceTypeCreate = props => {
+
+    const createDeviceType = useCreateDeviceType();
+
+    return (
+        <Create transform={createDeviceType} {...props}>
+            <SimpleForm redirect="list">
+                <TextInput source="slug"/>
+                <TextInput source="name"/>
+                <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
+                    <SelectInput optionText="slug" optionValue="id"/>
+                </ReferenceInput>
+                <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
+                    <SelectInput optionText="slug" optionValue="id"/>
+                </ReferenceInput>
+            </SimpleForm>
+        </Create>
+    );
+}
 
 export const DeviceTypeEdit = props => (
     <Edit title={<DeviceTypeTitle />} {...props}>

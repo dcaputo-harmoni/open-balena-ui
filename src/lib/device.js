@@ -17,10 +17,6 @@ export function useCreateDevice () {
             sort: { field: 'id', order: 'ASC' },
             filter: { }
         });
-        // create provisioning API key
-        const provisioningRole = roles.data.find(x => x.name === 'provisioning-api-key');
-        const provisioningApiKey = await dataProvider.create('api key', {data: {key: generateApiKey(), 'is of-actor': fleet.data[0].actor}});
-        await dataProvider.create('api key-has-role', {data: {'api key': provisioningApiKey.data.id, role: provisioningRole.id}});
         // create device actor and device API key
         const deviceRole = roles.data.find(x => x.name === 'device-api-key');
         const deviceActor = await dataProvider.create('actor', { data: {} });

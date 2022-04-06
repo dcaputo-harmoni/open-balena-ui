@@ -2,15 +2,30 @@ import { useDataProvider } from 'react-admin';
 import { useDeleteRelease } from './release';
 import { useDeleteDevice } from './device';
 import { useDeleteService } from '../lib/service'
-import { useDeleteApiKey } from './apiKey';
+import { useGenerateApiKey, useDeleteApiKey } from './apiKey';
 
 export function useCreateFleet () {
 
     const dataProvider = useDataProvider();
+    const generateApiKey = useGenerateApiKey();
 
     return async (data) => {
-        let actor = await dataProvider.create('actor', { data: {} });
-        data.actor = actor.data.id;
+        const fleet = await dataProvider.getList('application', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { id: data['belongs to-application']}
+        });
+        const roles = await dataProvider.getList('role', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { }
+        });
+        // create fleet actor and provisioning API key
+        const fleetActor = await dataProvider.create('actor', { data: {} });
+        data.actor = fleetActor.data.id;
+        const provisioningRole = roles.data.find(x => x.name === 'provisioning-api-key');
+        const provisioningApiKey = await dataProvider.create('api key', {data: {key: generateApiKey(), 'is of-actor': fleetActor.data.id}});
+        await dataProvider.create('api key-has-role', {data: {'api key': provisioningApiKey.data.id, role: provisioningRole.id}});
         return data;
     }
 }

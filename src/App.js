@@ -15,6 +15,7 @@ import deviceManufacturer from './components/deviceManufacturer';
 import deviceServiceVar from './components/deviceServiceVar';
 import deviceTag from './components/deviceTag';
 import deviceType from './components/deviceType';
+import deviceTypeAlias from './components/deviceTypeAlias';
 import fleet from './components/fleet';
 import fleetEnvVar from './components/fleetEnvVar';
 import fleetConfigVar from './components/fleetConfigVar';
@@ -108,6 +109,7 @@ const OpenBalenaAdmin = () => (
     <Resource name="device family" options={{ label: 'Device Families', "menuParent": "menu-static" }} {...deviceFamily}/>
     <Resource name="device manufacturer" options={{ label: 'Device Mfgs', "menuParent": "menu-static" }} {...deviceManufacturer}/>
     <Resource name="device type" options={{ label: 'Device Types', "menuParent": "menu-static" }} {...deviceType}/>
+    <Resource name="device type alias" options={{ label: 'DT Aliases', "menuParent": "menu-static" }} {...deviceTypeAlias}/>
     <Resource name="application type" options={{ label: 'Fleet Types', "menuParent": "menu-static" }} {...fleetType}/>
     <Resource name="permission" options={{ label: 'Permissions', "menuParent": "menu-static" }} {...permission}/>
     <Resource name="role" options={{ label: 'Roles', "menuParent": "menu-static" }} {...role}/>
@@ -116,7 +118,6 @@ const OpenBalenaAdmin = () => (
     <Resource name="actor"/>
     <Resource name="api key-has-permission"/>
     <Resource name="api key-has-role"/>
-    <Resource name="device type alias"/>
     <Resource name="gateway download"/>
     <Resource name="image install"/>
     <Resource name="image-is part of-release"/>
