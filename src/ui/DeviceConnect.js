@@ -9,8 +9,8 @@ import { Form } from 'react-final-form';
 export class Iframe extends React.Component {
     render () {
         return(
-            <div>
-                <iframe id={this.props.id} title={this.props.title} src={this.props.src} height={this.props.height} width={this.props.width} style={{ position: "relative", minHeight: this.props.minHeight }}/>         
+            <div style={{flex: "1", display: "flex", flexDirection: "column"}}>
+                <iframe id={this.props.id} title={this.props.title} src={this.props.src} height={this.props.height} width={this.props.width} style={{ flex: "1", position: "relative", minHeight: this.props.minHeight }}/>         
             </div>
         )
     }
@@ -126,7 +126,7 @@ export const DeviceConnect = ({basePath, ...props}) => {
                 </form>
             )}
         />
-        <Iframe src={iframeUrl} width="100%" maxHeight="65vh" minHeight="40vh"/>,
+        <Iframe src={iframeUrl} width="100%"/>,
     </>
   )
 }

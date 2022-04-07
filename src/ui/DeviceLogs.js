@@ -10,8 +10,8 @@ import utf8decode from '../lib/utf8decode';
 export class Iframe extends React.Component {
 render () {
     return(
-        <div>
-            <iframe id={this.props.id} title={this.props.title} srcDoc={this.props.content} height={this.props.height} width={this.props.width} style={{ position: "relative", minHeight: this.props.minHeight, background: "#000000" }}/>         
+        <div style={{flex: "1", display: "flex", flexDirection: "column"}}>
+            <iframe id={this.props.id} title={this.props.title} srcDoc={this.props.content} height={this.props.height} width={this.props.width} style={{ marginBottom: "20px", flex: "1",  position: "relative", minHeight: this.props.minHeight, background: "#000000" }}/>         
         </div>
     )
 }
@@ -106,7 +106,7 @@ export const DeviceLogs = ({basePath, ...props}) => {
                 </form>
             )}
         />
-        <Iframe content={content} width="100%" maxHeight="65vh" minHeight="40vh"/>,
+        <Iframe content={content} width="100%"/>
     </>
     )
 }

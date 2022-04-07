@@ -17,13 +17,14 @@ const styles = {
         maxWidth: "none",
         "& .MuiPaper-root": {
             maxWidth: 'none',
-            width: '100%'
+            width: '100%',
+            height: '80vh',
         }
     },
     dialogContent: {
-        minHeight: '80vh',
-        maxHeight: '80vh',
         maxWidth: 'none',
+        display: 'flex',
+        flexDirection: 'column',
     }, 
 };
 
