@@ -25,14 +25,14 @@ import DevicesIcon from '@mui/icons-material/Devices';
 const Fleets = props => {
     let { value } = props;
     return (
-        <Card>
+        <Card sx={{flex: '1', dispay: 'flex', flexDirection: 'column'}}>
         <CardHeader title="Fleets" sx={{height: '20px', color: 'white', backgroundColor: '#2196f3'}}/>
-        <CardContent sx={{ minHeight: 225, maxHeight: 225, overflow: 'auto' }}>
-        <Grid container spacing={3}>
+        <CardContent sx={{ minHeight: 225, overflow: 'auto', flex: '1', display: 'flex', flexDirection: 'column'}}>
+        <Grid container spacing={3} sx={{flex: '1'}}>
             {value.map((record, index) => {
                 return (
                     <Grid item key={index} xs="auto">
-                        <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225  }}>
+                        <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225 }}>
                             <CardHeader title={record['app name']} sx={{height: '15px', fontWeight: 'bold', backgroundColor: '#eeeeee'}} titleTypographyProps={{variant:'inherit' }}/>
                             <CardContent sx={{ paddingTop: "4px", paddingBottom: "4px" }}>
                                 <Table sx={{[`& .${tableCellClasses.root}`]: {borderBottom: "none", paddingLeft: "0px", paddingRight: "0px", paddingTop: "2px", paddingBottom: "2px"}}}>

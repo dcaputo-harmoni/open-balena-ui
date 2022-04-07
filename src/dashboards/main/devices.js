@@ -24,10 +24,10 @@ import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 const Devices = props => {
     let { value } = props;
     return (
-        <Card>
+        <Card sx={{flex: '1', dispay: 'flex', flexDirection: 'column'}}>
         <CardHeader title="Devices" sx={{height: '20px', color: 'white', backgroundColor: '#2196f3'}}/>
-        <CardContent sx={{ minHeight: 225, maxHeight: 225, overflow: 'auto' }}>
-        <Grid container spacing={3}>
+        <CardContent sx={{ minHeight: 225, overflow: 'auto', flex: '1', dispay: 'flex', flexDirection: 'column'}}>
+        <Grid container spacing={3} sx={{flex: '1'}}>
             {value.map((record, index) => {
                 return (
                     <Grid item key={index} xs="auto">
