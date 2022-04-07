@@ -10,13 +10,17 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Chip,
 } from '@mui/material';
+import {
+    EditButton,
+} from 'react-admin';
 import { tableCellClasses } from "@mui/material/TableCell";
+import EnvVarButton from '../../ui/EnvVarButton';
 import AddIcon from '@mui/icons-material/Add';
-
-const truncate = (str, n) => {
-    return (str.length > n) ? str.substr(0, n-1) + '...' : str;
-};
+import CorporateFareIcon from '@mui/icons-material/CorporateFare';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
+import DevicesIcon from '@mui/icons-material/Devices';
 
 const Fleets = props => {
     let { value } = props;
@@ -34,34 +38,31 @@ const Fleets = props => {
                                 <Table sx={{[`& .${tableCellClasses.root}`]: {borderBottom: "none", paddingLeft: "0px", paddingRight: "0px", paddingTop: "2px", paddingBottom: "2px"}}}>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Org</TableCell>
-                                            <TableCell align="right">{record['organizationName']}</TableCell>
+                                            <TableCell colSpan={2}><Chip icon={<CorporateFareIcon/>} label={record['organizationName']} variant="outlined" style={{width:"100%", justifyContent: 'space-between', paddingLeft: "5px"}}/></TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Devices</TableCell>
+                                            <TableCell colSpan={2}><Chip icon={<DeveloperBoardIcon/>} label={record['deviceTypeName']} variant="outlined" style={{width:"100%", justifyContent: 'space-between', paddingLeft: "5px"}}/></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell sx={{fontWeight: 'bold'}}># Devices</TableCell>
                                             <TableCell align="right">{record['numDevices']}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Online</TableCell>
+                                            <TableCell sx={{fontWeight: 'bold'}}># Online</TableCell>
                                             <TableCell align="right">{record['numOnlineDevices']}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                                            <TableCell align="right">{truncate(record['deviceTypeName'], 12)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell colSpan={2} align="center">
-                                                <Button variant="outlined" color="primary" size="small" href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}>
-                                                    <AddIcon style={{marginRight: "4px"}}/> Add Device
-                                                    </Button>
-                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
                             </CardContent>
                             <CardActions sx={{ paddingTop: "4px", paddingBottom: "4px", justifyContent: "center" }}>
-                                <Button size="small" href={`/#/application/${record['id']}`}>Details</Button>
-                                <Button size="small" href={`/#/application%20environment%20variable?filter={"application":${record["id"]}}`}>Env Vars</Button>
+                                <Button variant="text" color="primary" size="small" href={`/#/device?filter={"belongs to-application": ${record['id']}}`} style={{minWidth: "40px"}}>
+                                    <DevicesIcon style={{marginRight: "4px", color: "black"}}/>
+                                </Button>
+                                <Button variant="text" color="primary" size="small" href={`/#/device/create?source={"belongs to-application": ${record['id']}}`} style={{minWidth: "40px"}}>
+                                    <AddIcon style={{marginRight: "4px", color: "black"}}/>
+                                </Button>
+                                <EditButton record={record} basePath="/application" label="" color="default" style={{minWidth: "40px"}}/>
+                                <EnvVarButton resource="application" record={record} label="" style={{color: "black", minWidth: "40px"}}/>
                             </CardActions>
                         </Card>
                     </Grid>

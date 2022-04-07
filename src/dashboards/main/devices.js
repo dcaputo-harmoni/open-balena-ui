@@ -1,7 +1,6 @@
 import * as React from 'react';
 import {
     Grid,
-    Button,
     Card,
     CardHeader,
     CardActions,
@@ -10,13 +9,17 @@ import {
     TableBody,
     TableRow,
     TableCell,
+    Chip,
 } from '@mui/material';
+import {
+    ShowButton,
+    EditButton,
+} from 'react-admin';
 import { tableCellClasses } from "@mui/material/TableCell";
+import EnvVarButton from '../../ui/EnvVarButton';
 import DeviceConnectButton from '../../ui/DeviceConnectButton';
-
-const truncate = (str, n) => {
-    return (str.length > n) ? str.substr(0, n-1) + '...' : str;
-};
+import GrainIcon from '@mui/icons-material/Grain';
+import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
 
 const Devices = props => {
     let { value } = props;
@@ -34,32 +37,27 @@ const Devices = props => {
                                 <Table sx={{[`& .${tableCellClasses.root}`]: {borderBottom: "none", paddingLeft: "0px", paddingRight: "0px", paddingTop: "2px", paddingBottom: "2px"}}}>
                                     <TableBody>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Fleet</TableCell>
-                                            <TableCell align="right">{truncate(record['applicationName'], 12)}</TableCell>
+                                            <TableCell colSpan={2}><Chip icon={<GrainIcon/>} label={record['applicationName']} variant="outlined" style={{width:"100%", justifyContent: 'space-between', paddingLeft: "5px"}}/></TableCell>
+                                        </TableRow>
+                                        <TableRow>
+                                            <TableCell colSpan={2}><Chip icon={<DeveloperBoardIcon/>} label={record['deviceTypeName']} variant="outlined" style={{width:"100%", justifyContent: 'space-between', paddingLeft: "5px"}}/></TableCell>
                                         </TableRow>
                                         <TableRow>
                                             <TableCell sx={{fontWeight: 'bold'}}>Status</TableCell>
                                             <TableCell align="right">{record['api heartbeat state'] === 'online' ? "Online" : "Offline"}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>OS Ver</TableCell>
+                                            <TableCell sx={{fontWeight: 'bold'}}>OS</TableCell>
                                             <TableCell align="right">{record['os version'] ? record['os version'].split(' ')[1] : "n/a"}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}>Type</TableCell>
-                                            <TableCell align="right">{truncate(record['deviceTypeName'], 12)}</TableCell>
-                                        </TableRow>
-                                        <TableRow>
-                                            <TableCell colSpan={2} align="center">
-                                                <DeviceConnectButton variant="outlined" color="primary" size="small" record={record} label="Connect"></DeviceConnectButton>
-                                            </TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
                             </CardContent>
                             <CardActions sx={{ paddingTop: "4px", paddingBottom: "4px", justifyContent: "center" }}>
-                                <Button size="small" href={`/#/device/${record['id']}`}>Details</Button>
-                                <Button size="small" href={`/#/device%20environment%20variable?filter={"device":${record["id"]}}`}>Env Vars</Button>
+                                <DeviceConnectButton record={record} label="" style={{color: "black", minWidth: "40px", marginRight: "7px"}}/>
+                                <ShowButton record={record} basePath="/device" label="" color="default" style={{minWidth: "40px"}}/>
+                                <EditButton record={record} basePath="/device" label="" color="default" style={{minWidth: "40px"}}/>
+                                <EnvVarButton resource="device" record={record} label="" style={{color: "black", minWidth: "40px"}}/>
                             </CardActions>
                         </Card>
                     </Grid>
