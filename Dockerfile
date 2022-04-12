@@ -16,7 +16,6 @@ WORKDIR /usr/src/app
 
 COPY ./src ./src
 COPY ./public ./public
-COPY ./patches ./patches
 COPY ./package.json ./
 COPY ./package-lock.json ./
 COPY ./yarn.lock ./
