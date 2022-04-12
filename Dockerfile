@@ -16,6 +16,7 @@ WORKDIR /usr/src/app
 
 COPY ./src ./src
 COPY ./public ./public
+COPY ./craco.config.js ./
 COPY ./package.json ./
 COPY ./package-lock.json ./
 COPY ./yarn.lock ./
