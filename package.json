@@ -4,16 +4,18 @@
   "private": true,
   "dependencies": {
     "@bb-tech/ra-treemenu": "^1.0.7",
+    "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
+    "@material-ui/core": "^4.12.3",
     "@mui/icons-material": "^5.5.0",
     "@mui/material": "^5.5.0",
     "@mui/styles": "^5.5.1",
     "@raphiniert/ra-data-postgrest": "^1.1.8",
     "@types/jwt-decode": "^3.1.0",
+    "assert": "^2.0.0",
     "base32-encode": "^2.0.0",
     "bcryptjs": "^2.4.3",
-    "crypto": "^1.0.1",
     "dateformat": "^5.0.3",
     "jwt-decode": "^3.1.2",
     "patch-package": "^6.4.7",
@@ -27,10 +29,13 @@
     "recharts": "^2.1.9",
     "redux-form": "^8.3.8",
     "semver": "^7.3.5",
+    "sshpk-browser": "^1.17.0",
     "util": "^0.12.4"
   },
   "scripts": {
-    "start": "react-scripts start",
+    "start": "craco start",
+    "build": "craco build",
+    "test": "craco test",
     "postinstall": "patch-package"
   },
   "eslintConfig": {

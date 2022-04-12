@@ -5,6 +5,7 @@ import {
 } from '@mui/material';
 import ConnectIcon from '@mui/icons-material/Sensors';
 import { Form } from 'react-final-form';
+var sshpk = require('sshpk-browser');
 
 export class Iframe extends React.Component {
     render () {
@@ -19,14 +20,67 @@ export class Iframe extends React.Component {
 export const DeviceConnect = ({basePath, ...props}) => {
 
     const [loaded, setLoaded] = React.useState(false);
+    const [username, setUsername] = React.useState("");
     const [containers, setContainers] = React.useState({choices: [], services: [], links: []});
     const [services, setServices] = React.useState({choices: []});
     const [iframeUrl, setIframeUrl] = React.useState("");
     const dataProvider = useDataProvider();
     const authProvider = useAuthProvider();
 
+    const genRsaKeys = () => {
+        return window.crypto.subtle.generateKey(
+            { name: 'RSA-OAEP', modulusLength: 2048, publicExponent: new Uint8Array([1, 0, 1]), hash: {name: 'SHA-256'} },
+            true,
+            ['encrypt', 'decrypt']
+        ).then(keyPair => {
+            return window.crypto.subtle.exportKey('spki', keyPair.publicKey).then(publicKeyEncoded => {
+                const publicKey = window.btoa(String.fromCharCode.apply(null, new Uint8Array(publicKeyEncoded)));
+                return window.crypto.subtle.exportKey('pkcs8', keyPair.privateKey).then(privateKeyEncoded => {
+                    const privateKey = window.btoa(String.fromCharCode.apply(null, new Uint8Array(privateKeyEncoded)));
+                    const publicKeySsh = sshpk.parseKey(`-----BEGIN PUBLIC KEY-----\n${publicKey}\n-----END PUBLIC KEY-----`, 'pem', username).toString('ssh');
+                    const privateKeySsh = sshpk.parsePrivateKey(`-----BEGIN PRIVATE KEY-----\n${privateKey}\n-----END PRIVATE KEY-----`, 'pem').toString('ssh');
+                    return { publicKeySsh: publicKeySsh, privateKeySsh: privateKeySsh };
+                })
+            })
+        });
+    }
+
+    const upsertUserPublicKey = (publicKeySsh) => {
+        const keyTitle = 'open-balena-remote';
+        return dataProvider.getList('user', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { username: username }
+        }).then(user => {
+            return dataProvider.getList('user-has-public key', {
+                pagination: { page: 1 , perPage: 1000 },
+                sort: { field: 'id', order: 'ASC' },
+                filter: { user: user.data[0].id, title: keyTitle }
+            }).then(remoteKey => {
+                if (remoteKey.data.length > 0) {
+                    return dataProvider.update('user-has-public key', {
+                        id: remoteKey.data[0].id, 
+                        data: { user: user.data[0].id, title: keyTitle, 'public key': publicKeySsh }
+                    })
+                } else {
+                    return dataProvider.create('user-has-public key', {
+                        data: { user: user.data[0].id, title: keyTitle, 'public key': publicKeySsh }
+                    })
+                }
+            })    
+        })
+    }
+
     const handleSubmit = values => {
-        setIframeUrl(containers.links[values.container][values.service]);
+        genRsaKeys().then(rsaKeys => {
+            upsertUserPublicKey(rsaKeys.publicKeySsh).then(result => {
+                let targetUrl = containers.links[values.container][values.service];
+                if (containers.services[values.container][values.service].name === "SSH") {
+                    targetUrl += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
+                }
+                setIframeUrl(targetUrl);
+            })
+        })
     };
 
     const updateServices = (event) => {
@@ -38,6 +92,7 @@ export const DeviceConnect = ({basePath, ...props}) => {
         if (!loaded) {
             let REMOTE_HOST = process.env.REACT_APP_OPEN_BALENA_REMOTE_URL;
             let session = authProvider.getSession();
+            setUsername(session.object.username);
             let containerChoices = [{id: 0, name: 'host'}];
             let containerServices = [[{id: 0, name: 'SSH'}]];
             let containerLinks = [[`${REMOTE_HOST}?service=ssh&uuid=${props.record.uuid}&jwt=${session.jwt}`]];

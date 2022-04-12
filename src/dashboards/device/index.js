@@ -12,7 +12,7 @@ import Summary from './summary';
 import DeviceLogs from '../../ui/DeviceLogs';
 import DeviceConnect from '../../ui/DeviceConnect';
 import Control from './control';
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from '@material-ui/styles';
 import { useCustomShowController } from './useCustomShowController';
 
 const flexStyle = {
