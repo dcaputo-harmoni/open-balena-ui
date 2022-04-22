@@ -15,6 +15,7 @@ import {
     DeleteButton,
     Toolbar,
     required,
+    FormDataConsumer,
 } from 'react-admin';
 
 const ServiceEnvVarTitle = ({ record }) => {
@@ -26,6 +27,11 @@ export const ServiceEnvVarList = props => {
         <List {...props}>
             <Datagrid>
                 <TextField source="id"/>
+                <ReferenceField label="Fleet" source="service" reference="service" target="id">
+                    <ReferenceField source="application" reference="application" target="id">
+                        <ChipField source="app name"/>
+                    </ReferenceField>
+                </ReferenceField>
                 <ReferenceField label="Service" source="service" reference="service" target="id">
                     <ChipField source="service name"/>
                 </ReferenceField>
@@ -40,24 +46,46 @@ export const ServiceEnvVarList = props => {
     )
 };
 
-export const ServiceEnvVarCreate = props => (
-    <Create {...props}>
-        <SimpleForm redirect="list">
-            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
-                <SelectInput optionText="service name" optionValue="id"/>
-            </ReferenceInput>
-            <TextInput label="Name" source="name" validate={required()}/>
-            <TextInput label="Value" source="value" validate={required()}/>
-        </SimpleForm>
-    </Create>
-);
+export const ServiceEnvVarCreate = props => {
+
+    const processCreate = async (data) => {
+        delete data.application;
+        return data;
+    };
+
+    return (
+        <Create transform={processCreate} {...props}>
+            <SimpleForm redirect="list">
+                <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+                    <SelectInput optionText="app name" optionValue="id"/>
+                </ReferenceInput>
+                <FormDataConsumer>
+                    {({ formData, ...rest }) => formData['application'] &&
+                    <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} validate={required()}>
+                        <SelectInput optionText="service name" optionValue="id"/>
+                    </ReferenceInput>
+                    }
+                </FormDataConsumer>
+                <TextInput label="Name" source="name" validate={required()}/>
+                <TextInput label="Value" source="value" validate={required()}/>
+            </SimpleForm>
+        </Create>
+    );
+}
 
 export const ServiceEnvVarEdit = props => (
     <Edit title={<ServiceEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
-                <SelectInput optionText="service name" optionValue="id"/>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+                <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
+            <FormDataConsumer>
+                {({ formData, ...rest }) => formData['application'] &&
+                <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} validate={required()}>
+                    <SelectInput optionText="service name" optionValue="id"/>
+                </ReferenceInput>
+                }
+            </FormDataConsumer>
             <TextInput label="Name" source="name" validate={required()}/>
             <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
