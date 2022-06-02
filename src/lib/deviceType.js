@@ -8,7 +8,7 @@ export function useCreateDeviceType () {
     const dataProvider = useDataProvider();
 
     return async (data) => {
-        const deviceType = dataProvider.create('device type', {data: data});
+        const deviceType = await dataProvider.create('device type', {data: data});
         if (deviceTypeAlias) {
             await dataProvider.create('device type alias', {data: {'device type': deviceType.data.id, 'is referenced by-alias': data['slug']}});
         }
