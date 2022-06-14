@@ -25,7 +25,7 @@ import {
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
-import { useCreateDevice } from '../lib/device';
+import { useCreateDevice, useModifyDevice } from '../lib/device';
 import { v4 as uuidv4 } from 'uuid';
 
 const DeviceTitle = ({ record }) => {
@@ -124,8 +124,12 @@ const CustomToolbar = props => (
     </Toolbar>
 );
 
-export const DeviceEdit = props => (
-    <Edit title={<DeviceTitle />} toolbar={<CustomToolbar/>} {...props}>
+export const DeviceEdit = props => {
+    
+    const modifyDevice = useModifyDevice();
+
+    return (
+    <Edit title={<DeviceTitle />} transform={modifyDevice} toolbar={<CustomToolbar/>} {...props}>
         <SimpleForm>
             <TextInput disabled source="id"/>
             <TextInput label="UUID" source="uuid"/>
@@ -149,7 +153,8 @@ export const DeviceEdit = props => (
             </ReferenceInput>
         </SimpleForm>
     </Edit>
-);
+    );
+}
 
 const device = {
     list: DeviceList,

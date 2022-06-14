@@ -18,6 +18,44 @@ export function useCreateDevice () {
         data.actor = deviceActor.data.id;
         const deviceApiKey = await dataProvider.create('api key', {data: {key: generateApiKey(), 'is of-actor': deviceActor.data.id}});
         await dataProvider.create('api key-has-role', {data: {'api key': deviceApiKey.data.id, role: deviceRole.id}});
+        // create service installs
+        const deviceServices = await dataProvider.getList('service', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { application: data['belongs to-application'] }
+        });
+        await Promise.all(deviceServices.data.map(service => 
+            dataProvider.create('service install', {data: { device: data.id, 'installs-service': service.id }})
+        ));
+        return data;
+    }
+}
+
+export function useModifyDevice () {
+
+    const dataProvider = useDataProvider();
+
+    return async (data) => {
+        let existingMappings = await dataProvider.getList('service install', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { device: data.id }
+        });
+        let existingData = existingMappings.data.map(x => x['installs-service']);
+        let newMappings = await dataProvider.getList('service', {
+            pagination: { page: 1 , perPage: 1000 },
+            sort: { field: 'id', order: 'ASC' },
+            filter: { application: data['belongs to-application'] }
+        });
+        let newData = newMappings.data.map(x => x.id);
+        let createData = newData.filter(value => !existingData.includes(value));
+        let deleteIds = existingMappings.data.filter(value => !newData.includes(value['installs-service'])).map(x => x.id);
+        await Promise.all(createData.map(createDataItem => 
+            dataProvider.create('service install', {data: { 'device': data.id, 'installs-service': createDataItem }})
+        ));
+        await Promise.all(deleteIds.map(deleteId => 
+            dataProvider.delete('service install', { id: deleteId })
+        ));
         return data;
     }
 }
