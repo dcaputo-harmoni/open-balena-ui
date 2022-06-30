@@ -22,6 +22,7 @@ import {
     SaveButton,
     FormDataConsumer,
 } from 'react-admin';
+import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
@@ -29,7 +30,7 @@ import { useCreateDevice, useModifyDevice } from '../lib/device';
 import { v4 as uuidv4 } from 'uuid';
 
 const DeviceTitle = ({ record }) => {
-    return <span>Device {record ? `"${record.name}"` : ''}</span>;
+    return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
 };
 
 const OnlineField = props => {
@@ -99,7 +100,7 @@ export const DeviceCreate = props => {
             <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" validate={required()}>
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" validate={required()} filter={{"is of-class": "fleet"}}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
@@ -109,6 +110,7 @@ export const DeviceCreate = props => {
                     </ReferenceInput>
                 }
             </FormDataConsumer>
+            <SelectOperatingSystem label="Target OS" source="should be operated by-release"/>
             <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
@@ -138,7 +140,7 @@ export const DeviceEdit = props => {
             <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id">
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" filter={{"is of-class": "fleet"}}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
@@ -148,6 +150,7 @@ export const DeviceEdit = props => {
                     </ReferenceInput>
                 }
             </FormDataConsumer>
+            <SelectOperatingSystem label="Target OS" source="should be operated by-release"/>
             <ReferenceInput label="Managed by Device" source="is managed by-device" reference="device" target="id" allowEmpty>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>

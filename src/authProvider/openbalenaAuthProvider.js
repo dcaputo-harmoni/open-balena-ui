@@ -32,6 +32,12 @@ const authProvider = {
             : Promise.reject();
     },
     checkError: (error) => {
+        console.log(error);
+        const status = error.status;
+        if (status === 504 || status === 403 || status === 504) {
+            localStorage.removeItem('auth');
+            return Promise.reject();
+        }
         return Promise.resolve();
     },
     logout: () => {

@@ -3,6 +3,7 @@ import {
     Create,
     Edit,
     TextField,
+    FunctionField,
     Datagrid,
     ReferenceField,
     ChipField,
@@ -16,6 +17,7 @@ import {
     Toolbar,
     required,
 } from 'react-admin';
+import { truncateString } from "../lib/common";
 
 const UserKeysTitle = ({ record }) => {
     return <span>User Key {record ? `"${record.id}"` : ''}</span>;
@@ -30,7 +32,7 @@ export const UserKeysList = props => {
                     <ChipField source="username"/>
                 </ReferenceField>
                 <TextField label="Key Name" source="title"/>
-                <TextField label="Key" source="public key"/>
+                <FunctionField label="Key" render={record => truncateString(record['public key'], 30)} />
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <EditButton label="" color="default"/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>

@@ -26,6 +26,10 @@ import ManagePermissions from "../ui/ManagePermissions";
 import ManageRoles from "../ui/ManageRoles";
 import { useGenerateApiKey, useCreateApiKey, useModifyApiKey } from "../lib/apiKey";
 
+const ApiKeyTitle = ({ record }) => {
+    return <span>API Key {record ? (record.name ? `"${record.name}"` : `#${record.id}`) : ''}</span>;
+};
+
 class ActorField extends React.Component {
     static contextType = DataProviderContext;
     constructor(props) {
@@ -166,7 +170,7 @@ export const ApiKeyEdit = props => {
     const modifyApiKey = useModifyApiKey();
 
     return (
-        <Edit transform={modifyApiKey} {...props}>
+        <Edit title={<ApiKeyTitle />} transform={modifyApiKey} {...props}>
             <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton/>}>
                 <TextInput disabled source="id"/>
                 <TextInput source="key"/>

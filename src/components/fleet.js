@@ -6,6 +6,7 @@ import {
     Datagrid,
     FunctionField,
     BooleanField,
+    SelectField,
     ReferenceField,
     ChipField,
     List,
@@ -27,7 +28,7 @@ import DeleteFleetButton from '../ui/DeleteFleetButton';
 import { useCreateFleet } from '../lib/fleet'
 
 const FleetTitle = ({ record }) => {
-    return <span>Fleet {record ? `"${record.name}"` : ''}</span>;
+    return <span>Fleet {record ? `"${record['app name']}"` : ''}</span>;
 };
 
 const BooleanBinaryField = props => {
@@ -61,6 +62,11 @@ export const FleetList = props => {
                 <ReferenceField label="Target Rel." source="should be running-release" reference="release" target="id">
                     <ChipField source="revision"/>
                 </ReferenceField>
+                <SelectField label="Class" source="is of-class" choices={[
+                    { id: "fleet", name: "Fleet" },
+                    { id: "app", name: "App" },
+                    { id: "block", name: "Block" },
+                ]}/>
                 <BooleanBinaryField label="Host" source="is host"/>
                 <BooleanBinaryField label="Archived" source="is archived"/>
                 <BooleanBinaryField label="Public" source="is public"/>
@@ -93,6 +99,11 @@ export const FleetCreate = props => {
                 <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
             <BooleanInput label="Track Latest Release" source="should track latest release" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={1}/>
+            <SelectInput label="Class" source="is of-class" choices={[
+                { id: "fleet", name: "Fleet" },
+                { id: "app", name: "App" },
+                { id: "block", name: "Block" },
+            ]} initialValue={ "fleet" }/>
             <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
             <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
             <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0} initialValue={0}/>
@@ -135,6 +146,11 @@ export const FleetEdit = props => (
                     </ReferenceInput>
                 }
             </FormDataConsumer>
+            <SelectInput label="Class" source="is of-class" choices={[
+                { id: "fleet", name: "Fleet" },
+                { id: "app", name: "App" },
+                { id: "block", name: "Block" },
+            ]} initialValue={ "fleet" }/>
             <BooleanInput label="Host" source="is host" format={v => v !== 0} parse={v => v ? 1 : 0}/>
             <BooleanInput label="Archived" source="is archived" format={v => v !== 0} parse={v => v ? 1 : 0}/>
             <BooleanInput label="Public" source="is public" format={v => v !== 0} parse={v => v ? 1 : 0}/>

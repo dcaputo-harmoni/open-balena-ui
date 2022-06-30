@@ -27,6 +27,8 @@ export function useCreateDevice () {
         await Promise.all(deviceServices.data.map(service => 
             dataProvider.create('service install', {data: { device: data.id, 'installs-service': service.id }})
         ));
+        // delete unused field
+        delete data['operated by-application'];
         return data;
     }
 }
@@ -56,6 +58,8 @@ export function useModifyDevice () {
         await Promise.all(deleteIds.map(deleteId => 
             dataProvider.delete('service install', { id: deleteId })
         ));
+        // delete unused field
+        delete data['operated by-application'];
         return data;
     }
 }

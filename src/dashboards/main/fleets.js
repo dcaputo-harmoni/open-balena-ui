@@ -33,7 +33,7 @@ const Fleets = props => {
                 return (
                     <Grid item key={index} xs="auto">
                         <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225 }}>
-                            <CardHeader title={record['app name']} sx={{height: '15px', fontWeight: 'bold', backgroundColor: '#eeeeee'}} titleTypographyProps={{variant:'inherit' }}/>
+                            <CardHeader title={record['app name']} sx={{height: '15px', fontWeight: 'bold', backgroundColor: record['is of-class'] === 'app' ? '#bee8ce' : '#eeeeee'}} titleTypographyProps={{variant:'inherit' }}/>
                             <CardContent sx={{ paddingTop: "4px", paddingBottom: "4px" }}>
                                 <Table sx={{[`& .${tableCellClasses.root}`]: {borderBottom: "none", paddingLeft: "0px", paddingRight: "0px", paddingTop: "2px", paddingBottom: "2px"}}}>
                                     <TableBody>
@@ -44,12 +44,12 @@ const Fleets = props => {
                                             <TableCell colSpan={2}><Chip icon={<DeveloperBoardIcon/>} label={record['deviceTypeName']} variant="outlined" style={{width:"100%", justifyContent: 'space-between', paddingLeft: "5px"}}/></TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}># Devices</TableCell>
-                                            <TableCell align="right">{record['numDevices']}</TableCell>
+                                            <TableCell sx={{fontWeight: 'bold'}}>Class</TableCell>
+                                            <TableCell align="right">{record['is of-class']}</TableCell>
                                         </TableRow>
                                         <TableRow>
-                                            <TableCell sx={{fontWeight: 'bold'}}># Online</TableCell>
-                                            <TableCell align="right">{record['numOnlineDevices']}</TableCell>
+                                            <TableCell sx={{fontWeight: 'bold'}}>Online</TableCell>
+                                            <TableCell align="right">{`${record['numOnlineDevices']} / ${record['numDevices']}`}</TableCell>
                                         </TableRow>
                                     </TableBody>
                                 </Table>
