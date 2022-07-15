@@ -43,7 +43,7 @@ export const SelectOperatingSystem = ({basePath, ...props}) => {
     if (!loaded) return null;
 
     return (
-        <SelectInput choices={availableOperatingSystems} emptyText="foo" emptyValue={"16"} {...props}/>
+        <SelectInput choices={availableOperatingSystems} {...props}/>
     );
 }
 

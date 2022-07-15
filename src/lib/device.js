@@ -50,13 +50,24 @@ export function useModifyDevice () {
             filter: { application: data['belongs to-application'] }
         });
         let newData = newMappings.data.map(x => x.id);
-        let createData = newData.filter(value => !existingData.includes(value));
         let deleteIds = existingMappings.data.filter(value => !newData.includes(value['installs-service'])).map(x => x.id);
+        let createData = newData.filter(value => !existingData.includes(value));
+        await Promise.all(deleteIds.map(deleteId => 
+            dataProvider.getList('device service environment variable', {
+                pagination: { page: 1 , perPage: 1000 },
+                sort: { field: 'id', order: 'ASC' },
+                filter: { 'service install': deleteId }
+            }).then(deviceServiceEnvVars =>
+                Promise.all(deviceServiceEnvVars.data.map(deviceServiceEnvVar =>
+                    dataProvider.delete('device service environment variable', { id: deviceServiceEnvVar.id })
+                ))
+            )
+        ));
+        await Promise.all(deleteIds.map(deleteId =>
+            dataProvider.delete('service install', { id: deleteId })
+        ));
         await Promise.all(createData.map(createDataItem => 
             dataProvider.create('service install', {data: { 'device': data.id, 'installs-service': createDataItem }})
-        ));
-        await Promise.all(deleteIds.map(deleteId => 
-            dataProvider.delete('service install', { id: deleteId })
         ));
         // delete unused field
         delete data['operated by-application'];

@@ -10,13 +10,14 @@ import {
     EditButton,
     ReferenceField,
     DeleteButton,
-    ReferenceInput,
-    SelectInput,
     TextInput,
     FormDataConsumer,
     Toolbar,
     required,
 } from 'react-admin';
+import SelectDevice from '../ui/SelectDevice';
+import SelectDeviceService from '../ui/SelectDeviceService';
+import { useCreateDeviceServiceVar, useModifyDeviceServiceVar } from '../lib/deviceServiceVar';
 
 const DeviceServiceVarTitle = ({ record }) => {
     return <span>Device Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -56,19 +57,16 @@ export const DeviceServiceVarList = props => {
 };
 
 export const DeviceServiceVarCreate = props => {
+
+    const createDeviceServiceVar = useCreateDeviceServiceVar();
+
     return (
-    <Create {...props}>
+    <Create transform={createDeviceServiceVar} {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput label="Device" source="device" reference="device" target="id" validate={required()}>
-                <SelectInput optionText="device name" optionValue="id"/>
-            </ReferenceInput>
+            <SelectDevice label="Device" source="device"/>
             <FormDataConsumer>
-                {({ formData, ...rest }) => formData["device"] &&
-                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}} validate={required()}>
-                        <ReferenceInput source="service" reference="service" target="id">
-                            <SelectInput optionText="service name" optionValue="id"/>
-                        </ReferenceInput>
-                    </ReferenceInput>
+                {({ formData, ...rest }) => formData['device'] &&
+                    <SelectDeviceService label="Service" source="service install" device={formData.device}/>
                 }
             </FormDataConsumer>
             <TextInput label="Name" source="name" validate={required()}/>
@@ -78,26 +76,25 @@ export const DeviceServiceVarCreate = props => {
     )
 }
 
-export const DeviceServiceVarEdit = props => (
-    <Edit title={<DeviceServiceVarTitle />} {...props}>
+export const DeviceServiceVarEdit = props => {
+
+    const modifyDeviceServiceVar = useModifyDeviceServiceVar();
+
+    return (
+    <Edit transform={modifyDeviceServiceVar} title={<DeviceServiceVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
-                <SelectInput optionText="device name" optionValue="id"/>
-            </ReferenceInput>
+            <SelectDevice label="Device" source="device"/>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData['device'] &&
-                    <ReferenceInput label="Service" source="service install" reference="service install" target="device" filter={{device: formData.device}} validate={required()}>
-                        <ReferenceInput source="service" reference="service" target="id">
-                            <SelectInput optionText="service name" optionValue="id"/>
-                        </ReferenceInput>
-                    </ReferenceInput>
+                    <SelectDeviceService label="Service" source="service install" device={formData.device}/>
                 }
             </FormDataConsumer>
             <TextInput label="Name" source="name" validate={required()}/>
             <TextInput label="Value" source="value" validate={required()}/>
         </SimpleForm>
     </Edit>
-);
+    );
+}
 
 const deviceServiceVar = {
     list: DeviceServiceVarList,
