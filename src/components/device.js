@@ -100,7 +100,7 @@ export const DeviceCreate = props => {
             <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" validate={required()} filter={{"is of-class": "fleet"}}>
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()} filter={{"is of-class": "fleet"}}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
@@ -140,7 +140,7 @@ export const DeviceEdit = props => {
             <ReferenceInput label="Device Type" source="is of-device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
-            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" filter={{"is of-class": "fleet"}}>
+            <ReferenceInput label="Fleet" source="belongs to-application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()} filter={{"is of-class": "fleet"}}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>

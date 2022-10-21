@@ -56,12 +56,12 @@ export const ServiceEnvVarCreate = props => {
     return (
         <Create transform={processCreate} {...props}>
             <SimpleForm redirect="list">
-                <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+                <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                     <SelectInput optionText="app name" optionValue="id"/>
                 </ReferenceInput>
                 <FormDataConsumer>
                     {({ formData, ...rest }) => formData['application'] &&
-                    <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} validate={required()}>
+                    <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} perPage={1000} sort={{field: "service name", order: "ASC"}} validate={required()}>
                         <SelectInput optionText="service name" optionValue="id"/>
                     </ReferenceInput>
                     }
@@ -76,12 +76,12 @@ export const ServiceEnvVarCreate = props => {
 export const ServiceEnvVarEdit = props => (
     <Edit title={<ServiceEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData['application'] &&
-                <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} validate={required()}>
+                <ReferenceInput label="Service" source="service" reference="service" target="id" filter={{'application': formData.application}} perPage={1000} sort={{field: "service name", order: "ASC"}} validate={required()}>
                     <SelectInput optionText="service name" optionValue="id"/>
                 </ReferenceInput>
                 }

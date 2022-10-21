@@ -43,7 +43,7 @@ export const FleetTagList = props => {
 export const FleetTagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="tag key" validate={required()}/>
@@ -55,7 +55,7 @@ export const FleetTagCreate = props => (
 export const FleetTagEdit = props => (
     <Edit title={<FleetTagTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="tag key" validate={required()}/>

@@ -48,7 +48,7 @@ export const DeviceEnvVarList = props => {
 export const DeviceEnvVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name" validate={required()}/>
@@ -60,7 +60,7 @@ export const DeviceEnvVarCreate = props => (
 export const DeviceEnvVarEdit = props => (
     <Edit title={<DeviceEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name" validate={required()}/>

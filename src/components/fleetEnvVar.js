@@ -43,7 +43,7 @@ export const FleetEnvVarList = props => {
 export const FleetEnvVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name" validate={required()}/>
@@ -55,7 +55,7 @@ export const FleetEnvVarCreate = props => (
 export const FleetEnvVarEdit = props => (
     <Edit title={<FleetEnvVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name" validate={required()}/>

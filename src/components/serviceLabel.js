@@ -43,7 +43,7 @@ export const ServiceLabelList = props => {
 export const ServiceLabelCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
+            <ReferenceInput source="service" reference="service" target="id" perPage={1000} sort={{field: "service name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="label name" validate={required()}/>
@@ -55,7 +55,7 @@ export const ServiceLabelCreate = props => (
 export const ServiceLabelEdit = props => (
     <Edit title={<ServiceLabelTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="service" reference="service" target="id" validate={required()}>
+            <ReferenceInput source="service" reference="service" target="id" perPage={1000} sort={{field: "service name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="service name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="label name" validate={required()}/>

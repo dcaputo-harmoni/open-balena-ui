@@ -14,6 +14,7 @@ import {
     TextInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const DeviceFamilyTitle = ({ record }) => {
@@ -44,7 +45,7 @@ export const DeviceFamilyCreate = props => (
         <SimpleForm redirect="list">
             <TextInput label="Slug" source="slug"/>
             <TextInput label="Name" source="name"/>
-            <ReferenceInput source="is manufactured by-device manufacturer" reference="device manufacturer" target="id">
+            <ReferenceInput source="is manufactured by-device manufacturer" reference="device manufacturer" target="id" perPage={1000} sort={{field: "name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
         </SimpleForm>
@@ -56,7 +57,7 @@ export const DeviceFamilyEdit = props => (
         <SimpleForm>
             <TextInput label="Slug" source="slug"/>
             <TextInput label="Name" source="name"/>
-            <ReferenceInput label="Manufacturer" source="is manufactured by-device manufacturer" reference="device manufacturer" target="id">
+            <ReferenceInput label="Manufacturer" source="is manufactured by-device manufacturer" reference="device manufacturer" target="id" perPage={1000} sort={{field: "name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="name" optionValue="id"/>
             </ReferenceInput>
         </SimpleForm>

@@ -12,7 +12,7 @@ export const SelectDevice = ({basePath, ...props}) => {
             setLoaded(false);
             dataProvider.getList('device', {
                 pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
+                sort: { field: 'device name', order: 'ASC' },
                 filter: { }
             }).then(devices => {
                 if (props.record['service install']) {

@@ -56,12 +56,12 @@ export const ReleaseTagCreate = props => {
     return (
     <Create transform={processCreate} {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData['application'] &&
-                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} validate={required()}>
+                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} perPage={1000} sort={{field: "revision", order: "ASC"}} validate={required()}>
                         <SelectInput optionText="revision" optionValue="id"/>
                     </ReferenceInput>
                 }
@@ -76,12 +76,12 @@ export const ReleaseTagCreate = props => {
 export const ReleaseTagEdit = props => (
     <Edit title={<ReleaseTagTitle/>} {...props}>
         <SimpleForm>
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" validate={required()}>
+            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="app name" optionValue="id"/>
             </ReferenceInput>
             <FormDataConsumer>
                 {({ formData, ...rest }) => formData['application'] &&
-                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} validate={required()}>
+                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} perPage={1000} sort={{field: "revision", order: "ASC"}} validate={required()}>
                         <SelectInput optionText="revision" optionValue="id"/>
                     </ReferenceInput>
                 }

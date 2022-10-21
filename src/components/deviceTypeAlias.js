@@ -42,7 +42,7 @@ export const DeviceTypeAliasList = props => {
 export const DeviceTypeAliasCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device type" reference="device type" target="id" validate={required()}>
+            <ReferenceInput source="device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Alias" source="is referenced by-alias" validate={required()}/>
@@ -53,7 +53,7 @@ export const DeviceTypeAliasCreate = props => (
 export const DeviceTypeAliasEdit = props => (
     <Edit title={<DeviceTypeAliasTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device type" reference="device type" target="id" validate={required()}>
+            <ReferenceInput source="device type" reference="device type" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="slug" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Alias" source="is referenced by-alias" validate={required()}/>

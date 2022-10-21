@@ -45,7 +45,7 @@ export const UserKeysList = props => {
 export const UserKeysCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="user" reference="user" target="id" validate={required()}>
+            <ReferenceInput source="user" reference="user" target="id" perPage={1000} sort={{field: "username", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="username" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Title" source="title" validate={required()}/>
@@ -57,7 +57,7 @@ export const UserKeysCreate = props => (
 export const UserKeysEdit = props => (
     <Edit title={<UserKeysTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="user" reference="user" target="id" validate={required()}>
+            <ReferenceInput source="user" reference="user" target="id" perPage={1000} sort={{field: "username", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="username" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Title" source="title" validate={required()}/>

@@ -14,6 +14,7 @@ import {
     TextInput,
     DeleteButton,
     Toolbar,
+    required,
 } from 'react-admin';
 
 const DeviceConfigVarTitle = ({ record }) => {
@@ -47,7 +48,7 @@ export const DeviceConfigVarList = props => {
 export const DeviceConfigVarCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name"/>
@@ -59,7 +60,7 @@ export const DeviceConfigVarCreate = props => (
 export const DeviceConfigVarEdit = props => (
     <Edit title={<DeviceConfigVarTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id">
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="name"/>

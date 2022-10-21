@@ -48,7 +48,7 @@ export const DeviceTagList = props => {
 export const DeviceTagCreate = props => (
     <Create {...props}>
         <SimpleForm redirect="list">
-            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="tag key" validate={required()}/>
@@ -60,7 +60,7 @@ export const DeviceTagCreate = props => (
 export const DeviceTagEdit = props => (
     <Edit title={<DeviceTagTitle />} {...props}>
         <SimpleForm>
-            <ReferenceInput source="device" reference="device" target="id" validate={required()}>
+            <ReferenceInput source="device" reference="device" target="id" perPage={1000} sort={{field: "device name", order: "ASC"}} validate={required()}>
                 <SelectInput optionText="device name" optionValue="id"/>
             </ReferenceInput>
             <TextInput label="Name" source="tag key" validate={required()}/>
