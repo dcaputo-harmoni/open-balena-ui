@@ -1,10 +1,13 @@
 {
-  "name": "test-admin",
+  "name": "open-balena-ui",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "@babel/core": "^7.21.4",
+    "@babel/polyfill": "^7.12.1",
+    "@babel/preset-env": "^7.21.4",
+    "@babel/preset-react": "^7.18.6",
     "@bb-tech/ra-treemenu": "^1.0.7",
-    "@craco/craco": "^6.4.3",
     "@emotion/react": "^11.8.2",
     "@emotion/styled": "^11.8.1",
     "@material-ui/core": "^4.12.3",
@@ -14,11 +17,22 @@
     "@raphiniert/ra-data-postgrest": "^1.1.8",
     "@types/jwt-decode": "^3.1.0",
     "assert": "^2.0.0",
+    "axios": "^1.3.5",
+    "babel-loader": "^9.1.2",
     "base32-encode": "^2.0.0",
     "bcryptjs": "^2.4.3",
+    "buffer": "^6.0.3",
+    "crypto-browserify": "^3.12.0",
+    "css-loader": "^6.7.3",
     "dateformat": "^5.0.3",
+    "html-loader": "^4.2.0",
+    "html-webpack-plugin": "^5.5.0",
     "jwt-decode": "^3.1.2",
+    "memfs": "^3.5.0",
+    "minio": "^7.0.33",
+    "njwt": "^2.0.0",
     "patch-package": "^6.4.7",
+    "process": "^0.11.10",
     "prop-types": "^15.8.1",
     "query-string": "^7.1.1",
     "react": "^17.0.2",
@@ -30,13 +44,19 @@
     "redux-form": "^8.3.8",
     "semver": "^7.3.5",
     "sshpk-browser": "^1.17.0",
-    "util": "^0.12.4"
+    "stream-browserify": "^3.0.0",
+    "style-loader": "^3.3.2",
+    "svg-url-loader": "^8.0.0",
+    "util": "^0.12.4",
+    "webpack": "^5.78.0",
+    "webpack-cli": "^5.0.1",
+    "webpack-dev-middleware": "^6.0.2",
+    "webpack-dev-server": "^4.13.2",
+    "webpack-hot-middleware": "^2.25.3"
   },
   "scripts": {
-    "start": "craco start",
-    "build": "craco build",
-    "test": "craco test",
-    "postinstall": "patch-package"
+    "start": "node server",
+    "build": "webpack"
   },
   "eslintConfig": {
     "extends": [
@@ -55,10 +75,5 @@
       "last 1 firefox version",
       "last 1 safari version"
     ]
-  },
-  "devDependencies": {
-    "buffer": "^6.0.3",
-    "crypto-browserify": "^3.12.0",
-    "stream-browserify": "^3.0.0"
   }
 }

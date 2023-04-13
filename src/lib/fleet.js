@@ -3,6 +3,7 @@ import { useDeleteRelease } from './release';
 import { useDeleteDevice } from './device';
 import { useDeleteService } from '../lib/service'
 import { useGenerateApiKey, useDeleteApiKey } from './apiKey';
+import { deleteAllRelated } from './delete';
 
 export function useCreateFleet () {
 
@@ -36,49 +37,17 @@ export function useDeleteFleet () {
     return async (fleet) => {
         // to do: set "should be running-release" to null
         let relatedIndirectLookups = [
-            { resource: "api key", field: "is of-actor", viaResource: "actor", viaField: "id", localField: "actor", deleteFunction: deleteApiKey},
+            { remoteResource: "api key", remoteField: "is of-actor", viaRemoteField: "id", viaResource: "actor", viaLocalField: "id", localField: "actor", deleteFunction: deleteApiKey},
         ];
-        let relatedLookups = [
-            { resource: "service", field: "application", localField: "id", deleteFunction: deleteService },
-            { resource: "release", field: "belongs to-application", localField: "id", deleteFunction: deleteRelease },
-            { resource: "device", field: "belongs to-application", localField: "id", deleteFunction: deleteDevice},
-            { resource: "application config variable", field: "application", localField: "id" },
-            { resource: "application environment variable", field: "application", localField: "id" },
-            { resource: "application tag", field: "application", localField: "id" },
+        let relatedDirectLookups = [
+            { remoteResource: "service", remoteField: "application", localField: "id", deleteFunction: deleteService },
+            { remoteResource: "release", remoteField: "belongs to-application", localField: "id", deleteFunction: deleteRelease },
+            { remoteResource: "device", remoteField: "belongs to-application", localField: "id", deleteFunction: deleteDevice},
+            { remoteResource: "application config variable", remoteField: "application", localField: "id" },
+            { remoteResource: "application environment variable", remoteField: "application", localField: "id" },
+            { remoteResource: "application tag", remoteField: "application", localField: "id" },
         ];
-        await Promise.all(relatedIndirectLookups.map( x => {
-            return dataProvider.getList(x.viaResource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.viaField]: fleet[x.localField] }
-            }).then((existingIndirectMappings) => {
-                return Promise.all(existingIndirectMappings.data.map( y => {
-                    return dataProvider.getList(x.resource, {
-                        pagination: { page: 1 , perPage: 1000 },
-                        sort: { field: 'id', order: 'ASC' },
-                        filter: { [x.field]: y.id }
-                    }).then((existingMappings) => {
-                        if (existingMappings.data.length > 0) {
-                            return x.deleteFunction
-                                ? Promise.all(existingMappings.data.map(z => x.deleteFunction(z)))
-                                : dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(z => z.id) } );
-                        }
-                    })
-                }))
-            })
-        }));
-        await Promise.all(relatedLookups.map( x => {
-            return dataProvider.getList(x.resource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.field]: fleet[x.localField] }
-            }).then((existingMappings) => {
-            if (existingMappings.data.length > 0) {
-                return x.deleteFunction
-                ? Promise.all(existingMappings.data.map(y => x.deleteFunction(y)))
-                : dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(y => y.id) } );
-            }})
-        }));
+        await deleteAllRelated(dataProvider, fleet, relatedIndirectLookups, relatedDirectLookups);
         await dataProvider.delete( 'application', { id: fleet['id'] } );
         await dataProvider.delete( 'actor', { id: fleet['actor'] } );
         return Promise.resolve();

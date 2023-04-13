@@ -3,6 +3,7 @@ import { pseudoRandomBytes } from 'crypto-browserify';
 import base32Encode from 'base32-encode'
 import * as bcrypt from "bcryptjs";
 import { useGenerateApiKey, useDeleteApiKey } from './apiKey';
+import { deleteAllRelated } from './delete';
 
 const hashPassword = (password) => {
     const saltRounds = 10;
@@ -81,45 +82,15 @@ export function useDeleteUser () {
 
     return async (user) => {
         let relatedIndirectLookups = [
-            { resource: "api key", field: "is of-actor", viaResource: "actor", viaField: "id", localField: "actor", deleteFunction: deleteApiKey},
+            { remoteResource: "api key", remoteField: "is of-actor", viaRemoteField: "id", viaResource: "actor", viaLocalField: "id", localField: "actor", deleteFunction: deleteApiKey},
         ];
-        let relatedLookups = [
-            { resource: "user-has-permission", field: "user", localField: "id" },
-            { resource: "user-has-public key", field: "user", localField: "id" },
-            { resource: "user-has-role", field: "user", localField: "id" },
-            { resource: "organization membership", field: "user", localField: "id" },
+        let relatedDirectLookups = [
+            { remoteResource: "user-has-permission", remoteField: "user", localField: "id" },
+            { remoteResource: "user-has-public key", remoteField: "user", localField: "id" },
+            { remoteResource: "user-has-role", remoteField: "user", localField: "id" },
+            { remoteResource: "organization membership", remoteField: "user", localField: "id" },
         ];
-        await Promise.all(relatedIndirectLookups.map( x => {
-            return dataProvider.getList(x.viaResource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.viaField]: user[x.localField] }
-            }).then((existingIndirectMappings) => {
-                return Promise.all(existingIndirectMappings.data.map( y => {
-                    return dataProvider.getList(x.resource, {
-                        pagination: { page: 1 , perPage: 1000 },
-                        sort: { field: 'id', order: 'ASC' },
-                        filter: { [x.field]: y.id }
-                    }).then((existingMappings) => {
-                        if (existingMappings.data.length > 0) {
-                            return x.deleteFunction
-                                ? Promise.all(existingMappings.data.map(z => x.deleteFunction(z)))
-                                : dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(z => z.id) } );
-                        }
-                    })
-                }))
-            })
-        }));
-        await Promise.all(relatedLookups.map( x => {
-            return dataProvider.getList(x.resource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.field]: user[x.localField] }
-            }).then((existingMappings) => {
-            if (existingMappings.data.length > 0) {
-                dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(y => y.id) } );
-            }})
-        }));
+        await deleteAllRelated(dataProvider, user, relatedIndirectLookups, relatedDirectLookups);
         await dataProvider.delete( 'user', { id: user['id'] } );
         await dataProvider.delete( 'actor', { id: user['actor'] } );
         return Promise.resolve();

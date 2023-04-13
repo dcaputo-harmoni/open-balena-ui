@@ -14,15 +14,13 @@ RUN apt-get update && apt-get install -y \
 
 WORKDIR /usr/src/app
 
+COPY ./server ./server
 COPY ./src ./src
-COPY ./public ./public
-COPY ./craco.config.js ./
+COPY ./webpack.config.js ./
 COPY ./package.json ./
 COPY ./package-lock.json ./
-COPY ./yarn.lock ./
 
-RUN npm install --global yarn && \
-    npm install --no-fund --no-update-notifier
+RUN npm install --no-fund --no-update-notifier
 
 COPY start.sh ./
 

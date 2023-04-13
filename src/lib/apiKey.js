@@ -1,4 +1,5 @@
 import { useDataProvider } from 'react-admin';
+import { deleteAllRelated } from './delete';
 
 export function useGenerateApiKey () {
 
@@ -68,21 +69,12 @@ export function useDeleteApiKey () {
     const dataProvider = useDataProvider();
 
     return async (apiKey) => {
-        let relatedLookups = [
-            { resource: "api key-has-permission", field: "api key" },
-            { resource: "api key-has-role", field: "api key" },
+        let relatedIndirectLookups = [];
+        let relatedDirectLookups = [
+            { remoteResource: "api key-has-permission", remoteField: "api key", localField: "id" },
+            { remoteResource: "api key-has-role", remoteField: "api key", localField: "id" },
         ];
-        await Promise.all(relatedLookups.map( x => {
-            return dataProvider.getList(x.resource, {
-                pagination: { page: 1 , perPage: 1000 },
-                sort: { field: 'id', order: 'ASC' },
-                filter: { [x.field]: apiKey.id }
-            }).then((existingMappings) => {
-                console.dir(existingMappings);
-            if (existingMappings.data.length > 0) {
-                dataProvider.deleteMany( x.resource, { ids: existingMappings.data.map(y => y.id) } );
-            }})
-        }));
+        await deleteAllRelated(dataProvider, apiKey, relatedIndirectLookups, relatedDirectLookups);
         await dataProvider.delete( 'api key', { id: apiKey.id } );
         return Promise.resolve();
     }
