@@ -89,8 +89,8 @@ app.post('/deleteOrphanedRegistryImages', async (req, res) => {
 
 
 // React client endpoints
-const fs = createFsFromVolume(new Volume());
-fs.join = path.join.bind(path);
+const memfs = createFsFromVolume(new Volume());
+memfs.join = path.join.bind(path);
 
 const compiler = webpack(webpackConfig);
 
@@ -104,7 +104,7 @@ app.use(webpackHotMiddleware(compiler));
 
 app.get('*', async (req, res) => {
   try {
-    res.send(fs.readFileSync(path.join(compiler.outputPath, 'index.html')).toString());
+    res.send(memfs.readFileSync(path.join(compiler.outputPath, 'index.html')).toString());
   } catch (error) {
     res.sendStatus(404);
   }
