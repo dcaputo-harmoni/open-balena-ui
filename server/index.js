@@ -97,7 +97,7 @@ const compiler = webpack(webpackConfig);
 app.use(webpackDevMiddleware(compiler, {
   publicPath: webpackConfig.output.publicPath,
   stats: 'errors-only',
-  outputFileSystem: fs,
+  outputFileSystem: memfs,
 }));
 
 app.use(webpackHotMiddleware(compiler));

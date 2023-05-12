@@ -26,3 +26,5 @@ yarn-error.log*
 
 # custom startup scripts
 start-harmoni.sh
+
+yarn.lock
