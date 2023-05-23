@@ -15,6 +15,8 @@ import {
     ReferenceInput,
     SelectInput,
     required,
+    ReferenceManyField,
+    SingleFieldList,
 } from 'react-admin';
 import versions from '../versions'
 import { useCreateDeviceType } from '../lib/deviceType'
@@ -32,16 +34,18 @@ export const DeviceTypeList = props => {
                 <TextField source="id"/>
                 <TextField label="Slug" source="slug"/>
                 <TextField label="Name" source="name"/>
-                <ReferenceField label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id">
+                <ReferenceField label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" style={{color: "black"}}>
                     <ChipField source="slug"/>
                 </ReferenceField>
                 {deviceTypeAlias ? 
-                <ReferenceField label="Alias" source="id" reference={deviceTypeAlias} target="device type">
-                    <ChipField source="is referenced by-alias"/>
-                </ReferenceField>
+                <ReferenceManyField label="Alias" source="id" reference={deviceTypeAlias} target="device type">
+                    <SingleFieldList>
+                        <ChipField source="is referenced by-alias"/>
+                    </SingleFieldList>
+                </ReferenceManyField>
                 : <></>
                 }
-                <ReferenceField label="Device Family" source="belongs to-device family" reference="device family" target="id">
+                <ReferenceField label="Device Family" source="belongs to-device family" reference="device family" target="id" style={{color: "black"}}>
                     <ChipField source="slug"/>
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
