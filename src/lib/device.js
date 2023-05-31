@@ -92,7 +92,6 @@ export function useDeleteDevice () {
             { remoteResource: "device environment variable", remoteField: "device", localField: "id" },
             { remoteResource: "service install", remoteField: "device", localField: "id" },
             { remoteResource: "image install", remoteField: "device", localField: "id" },
-            { remoteResource: "gateway download", remoteField: "is downloaded by-device", localField: "id" },
         ];
         await deleteAllRelated(dataProvider, device, relatedIndirectLookups, relatedDirectLookups);
         await dataProvider.delete( 'device', { id: device['id'] } );

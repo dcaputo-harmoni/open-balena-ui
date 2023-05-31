@@ -124,7 +124,6 @@ const OpenBalenaAdmin = () => (
     <Resource name="actor"/>
     <Resource name="api key-has-permission"/>
     <Resource name="api key-has-role"/>
-    <Resource name="gateway download"/>
     <Resource name="image install"/>
     <Resource name="image-is part of-release"/>
     <Resource name="migration"/>
