@@ -68,6 +68,11 @@ export const ReleaseList = props => {
                         </SingleFieldList>
                     </FilterUnique>
                 </ReferenceManyField>
+                <ReferenceManyField label="Fleets" source="id" reference="application" target="should be running-release" link={false} sortable={false}>
+                    <SingleFieldList linkType={false}>
+                        <ChipField source="slug"/>
+                    </SingleFieldList>
+                </ReferenceManyField>
                 <ReferenceManyField label="Tags" source="id" reference="release tag" target="release" link={false} sortable={false} >
                     <SingleFieldList linkType={false}>
                         <ChipField source="value"/>
