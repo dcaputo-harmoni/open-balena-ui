@@ -154,7 +154,6 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     const ftsIdx = Object.keys(params.filter).findIndex(x => x.includes("#"));
     if (ftsIdx !== -1) {
       let ftsKey = Object.keys(params.filter)[ftsIdx];
-      console.log(ftsKey);
       let ftsFields = ftsKey.split("#")[1].split("@")[0].split(",");
       let ftsFilterType = ftsKey.split("#")[1].split("@")[1];
       ftsFields.forEach(field => {
