@@ -60,7 +60,7 @@ export const FleetList = props => {
                 </ReferenceField>
                 <BooleanBinaryField label="Track Latest Rel." source="should track latest release"/>
                 <ReferenceField label="Target Rel." source="should be running-release" reference="release" target="id">
-                    <ChipField source="revision"/>
+                    <ChipField source="id"/>
                 </ReferenceField>
                 <SelectField label="Class" source="is of-class" choices={[
                     { id: "fleet", name: "Fleet" },
