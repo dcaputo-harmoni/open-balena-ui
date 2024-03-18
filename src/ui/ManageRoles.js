@@ -2,25 +2,23 @@ import React from "react";
 import { useDataProvider, TextInput } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
-import { makeStyles } from '@mui/styles';
+import { styled } from '@mui/material/styles';
 import { Box, Typography } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
-const useStyles = makeStyles({
-    dualListBox: {
-        fontSize: '12pt',
-        fontStyle: 'italic',
-        "& .rdl-move": {
-            border: 'none'
-        },
-        "& .rdl-control": {
-            fontSize: '11pt',
+const StyledDualListBox = styled(DualListBox)({
+    fontSize: '12pt',
+    fontStyle: 'italic',
+    '& .rdl-move': {
+      border: 'none',
     },
-    }
-});
+    '& .rdl-control': {
+      fontSize: '11pt',
+    },
+  });
 
 export const ManageRoles = ({basePath, ...props}) => {
 
@@ -28,7 +26,6 @@ export const ManageRoles = ({basePath, ...props}) => {
     const [allRoles, setAllRoles] = React.useState([]);
     const [selectedRoles, setSelectedRoles] = React.useState([]);
     const dataProvider = useDataProvider();
-    const classes = useStyles();
 
     React.useEffect(() => {
         if (!loaded.all) {
@@ -62,12 +59,11 @@ export const ManageRoles = ({basePath, ...props}) => {
     return (
         <Box sx={{width: "800px"}}>
             <Typography variant="subtitle1">Roles:</Typography>
-            <DualListBox
+            <StyledDualListBox
                 options={allRoles}
                 selected={selectedRoles}
                 onChange={setSelectedRoles}
                 showHeaderLabels="true"
-                className={classes.dualListBox}
                 icons={{
                     moveLeft: <KeyboardArrowLeftIcon/>,
                     moveAllLeft: <KeyboardDoubleArrowLeftIcon/>,

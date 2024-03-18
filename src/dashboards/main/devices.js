@@ -55,8 +55,8 @@ const Devices = props => {
                             </CardContent>
                             <CardActions sx={{ paddingTop: "4px", paddingBottom: "4px", justifyContent: "center" }}>
                                 <DeviceConnectButton record={record} label="" style={{color: "black", minWidth: "40px", marginRight: "7px"}}/>
-                                <ShowButton record={record} basePath="/device" label="" color="default" style={{minWidth: "40px"}}/>
-                                <EditButton record={record} basePath="/device" label="" color="default" style={{minWidth: "40px"}}/>
+                                <ShowButton record={record} basePath="/device" label="" style={{minWidth: "40px"}}/>
+                                <EditButton record={record} basePath="/device" label="" style={{minWidth: "40px"}}/>
                                 <EnvVarButton resource="device" record={record} label="" style={{color: "black", minWidth: "40px"}}/>
                             </CardActions>
                         </Card>

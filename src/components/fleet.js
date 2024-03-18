@@ -71,7 +71,7 @@ export const FleetList = props => {
                 <BooleanBinaryField label="Archived" source="is archived"/>
                 <BooleanBinaryField label="Public" source="is public"/>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
+                    <EditButton label=""/>
                     <DeleteFleetButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>

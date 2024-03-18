@@ -61,7 +61,7 @@ const Fleets = props => {
                                 <Button variant="text" color="primary" size="small" href={`/#/device/create?source={"belongs to-application": ${record['id']}}`} style={{minWidth: "40px"}}>
                                     <AddIcon style={{marginRight: "4px", color: "black"}}/>
                                 </Button>
-                                <EditButton record={record} basePath="/application" label="" color="default" style={{minWidth: "40px"}}/>
+                                <EditButton record={record} basePath="/application" label="" style={{minWidth: "40px"}}/>
                                 <EnvVarButton resource="application" record={record} label="" style={{color: "black", minWidth: "40px"}}/>
                             </CardActions>
                         </Card>

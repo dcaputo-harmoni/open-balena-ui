@@ -9,6 +9,7 @@ import {
 import IconButton from '@mui/material/IconButton';
 import ConnectIcon from '@mui/icons-material/Sensors';
 import CloseIcon from '@mui/icons-material/Close';
+import Tooltip from '@mui/material/Tooltip';
 import DeviceConnect from './DeviceConnect';
 
 const styles = {
@@ -46,11 +47,12 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
         setOpen(false);
     }
 
-    return (
-    <> 
-        <Button aria-label="connect" onClick={() => setOpen(true)} {...props}>
-        <ConnectIcon/>{props.label ? <span sx={{pl: "4px"}}>{props.label}</span> : ""}
-        </Button> 
+    return <> 
+        <Tooltip title="Connect">
+            <Button aria-label="connect" onClick={() => setOpen(true)} {...props}>
+                <ConnectIcon/>{props.label ? <span sx={{pl: "4px"}}>{props.label}</span> : ""}
+            </Button> 
+        </Tooltip>
         <Dialog
             open={open}
             onClose={handleClose}
@@ -59,7 +61,7 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
             <DialogTitle id="form-dialog-title">
                 <Grid container sx={{ justifyContent: "space-between" }}>
                     Connect
-                    <IconButton onClick={() => setOpen(false)}>
+                    <IconButton onClick={() => setOpen(false)} size="large">
                         <CloseIcon />
                     </IconButton>
                 </Grid>
@@ -68,8 +70,7 @@ export const DeviceConnectButton = ({basePath, ...props}) => {
                 <DeviceConnect {...props}/>
             </DialogContent>
         </Dialog>
-    </>
-  )
+    </>;
 }
 
 export default DeviceConnectButton;

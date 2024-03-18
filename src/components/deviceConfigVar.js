@@ -37,7 +37,7 @@ export const DeviceConfigVarList = props => {
                     </ReferenceField>
                 </ReferenceField>
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
+                    <EditButton label=""/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
                 </Toolbar>
             </Datagrid>

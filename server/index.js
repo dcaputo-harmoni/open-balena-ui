@@ -4,7 +4,6 @@ const path = require("path");
 const webpack = require('webpack');
 const { createFsFromVolume, Volume } = require('memfs');
 const webpackDevMiddleware = require('webpack-dev-middleware');
-const webpackHotMiddleware = require('webpack-hot-middleware');
 const webpackConfig = require('../webpack.config.js');
 const Minio = require('minio')
 const jwt = require('njwt');
@@ -18,7 +17,7 @@ const minioClient = new Minio.Client({
 });
 const registryBucket = 'registry-data';
 
-const PORT = process.env.PORT;
+const PORT = process.env.PORT || 3000;
 const HOST = '0.0.0.0';
 
 const app = express();
@@ -99,8 +98,6 @@ app.use(webpackDevMiddleware(compiler, {
   stats: 'errors-only',
   outputFileSystem: memfs,
 }));
-
-app.use(webpackHotMiddleware(compiler));
 
 app.get('*', async (req, res) => {
   try {

@@ -9,7 +9,7 @@ import {
 import LockIcon from '@mui/icons-material/Lock'; 
 import SaveIcon from '@mui/icons-material/Save';
 import { Form } from 'react-final-form';
-import { useForm } from 'react-final-form';
+import { useForm } from 'react-hook-form';
 import * as bcrypt from "bcryptjs";
 
 const hashPassword = (password) => {

@@ -11,8 +11,8 @@ import dateFormat from 'dateformat';
 
 export const ImageList = props => {
     return (
-        <List {...props} bulkActionButtons={false}>
-            <Datagrid>
+        <List {...props}>
+            <Datagrid bulkActionButtons={false}>
                 <TextField source="id"/>
                 <ReferenceField label="Fleet" source="id" reference="image-is part of-release" target="image" link={false}>
                     <ReferenceField source="is part of-release" reference="release" target="id" link={false}>

@@ -73,8 +73,8 @@ export const DeviceList = props => {
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
                     <DeviceServicesButton label="" style={{color: "black"}}/>
                     <DeviceConnectButton label="" style={{color: "black"}}/>
-                    <ShowButton label="" color="default"/>
-                    <EditButton label="" color="default"/>
+                    <ShowButton label=""/>
+                    <EditButton label=""/>
                     <DeleteDeviceButton variant="text" size="small"/>
                 </Toolbar>
             </Datagrid>

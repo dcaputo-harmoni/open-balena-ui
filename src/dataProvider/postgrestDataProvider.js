@@ -1,6 +1,6 @@
 // Credit to https://github.com/raphiniert-com/ra-data-postgrest for the base code / inspiration for this component
 
-import { stringify } from 'query-string';
+import queryString from 'query-string';
 import { fetchUtils } from 'ra-core';
 
 function parseFilters(filter, defaultListOp) {
@@ -71,7 +71,7 @@ const encodeId = (data, primaryKey) => {
 }
 
 const dataWithId = (data, primaryKey) => {
-  if (primaryKey === ['id']) {
+  if (primaryKey == ['id']) {
     return data;
   }
 
@@ -102,7 +102,7 @@ const getQuery = (primaryKey, ids, resource) => {
             }
         )`;
       } else {
-        return stringify({ [primaryKey[0]]: `in.(${ids.join(',')})` });
+        return queryString.stringify({ [primaryKey[0]]: `in.(${ids.join(',')})` });
       }
   } else {
     // if ids is one Identifier
@@ -115,7 +115,7 @@ const getQuery = (primaryKey, ids, resource) => {
       else
         return `and=(${primaryKey.map((key, i) => `${key}.eq.${primaryKeyParams[i]}`).join(',')})`;
     } else {
-      return stringify({ [primaryKey[0]]: `eq.${id}` });
+      return queryString.stringify({ [primaryKey[0]]: `eq.${id}` });
     }
   }
 }
@@ -182,7 +182,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       })
     };
 
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
 
     return httpClient(url, options).then(({ headers, json }) => {
       if (!headers.has('content-range')) {
@@ -258,7 +258,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       })
     }
 
-    const url = `${apiUrl}/${resource}?${stringify(query)}`;
+    const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
 
     return httpClient(url, options).then(({ headers, json }) => {
       if (!headers.has('content-range')) {

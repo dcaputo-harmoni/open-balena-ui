@@ -9,8 +9,8 @@ import {
 
 export const ServiceList = props => {
     return (
-        <List {...props} bulkActionButtons={false}>
-            <Datagrid>
+        <List {...props}>
+            <Datagrid bulkActionButtons={false}>
                 <TextField source="id"/>
                 <TextField label="Name" source="service name"/>
                 <ReferenceField label="Fleet" source="application" reference="application" target="id">

@@ -5,6 +5,7 @@ import {
     Dialog,
     DialogTitle,
     DialogContent,
+    Tooltip,
 } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
@@ -31,9 +32,11 @@ export const DeleteDeviceButton = ({basePath, ...props}) => {
     
     return (
         <>
-        <Button onClick={() => setOpen(true)} variant={props.variant || "contained"} color="inherit" size={props.size} sx={props.sx}>
-            <DeleteIcon sx={{ mr: '4px' }} size={props.size}/> { props.children }
-        </Button> 
+        <Tooltip title="Delete">
+            <Button onClick={() => setOpen(true)} variant={props.variant || "contained"} color="inherit" size={props.size} sx={props.sx}>
+                <DeleteIcon sx={{ mr: '4px' }} size={props.size}/> { props.children }
+            </Button> 
+        </Tooltip>
         <Dialog
             open={open}
             onClose={() => setOpen(false)}

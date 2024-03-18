@@ -34,7 +34,7 @@ export const UserKeysList = props => {
                 <TextField label="Key Name" source="title"/>
                 <FunctionField label="Key" render={record => truncateString(record['public key'], 30)} />
                 <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
+                    <EditButton label=""/>
                     <DeleteButton label="" style={{color: "black"}} size="medium"/>
                 </Toolbar>
             </Datagrid>
