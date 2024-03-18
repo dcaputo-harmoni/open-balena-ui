@@ -16,6 +16,7 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import SemVerChip from '../ui/SemVerChip';
 
 const ImageEnvVarTitle = ({ record }) => {
   return <span>Image Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -45,7 +46,7 @@ export const ImageEnvVarList = (props) => {
               reference='release'
               link={(record, reference) => `/${reference}/${record['is part of-release']}`}
             >
-              <ChipField source='revision' />
+              <SemVerChip />
             </ReferenceField>
           </ReferenceField>
         </ReferenceField>

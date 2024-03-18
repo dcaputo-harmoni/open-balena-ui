@@ -2,6 +2,7 @@ import * as React from 'react';
 import { TextField, FunctionField, ReferenceField } from 'react-admin';
 import { Table, TableBody, TableRow, TableCell } from '@mui/material';
 import DeviceServices from '../../ui/DeviceServices';
+import SemVerTextField from '../../ui/SemVerTextField';
 import dateFormat from 'dateformat';
 
 const styles = {
@@ -80,14 +81,14 @@ const Summary = (props) => {
                   <TableCell sx={styles.labelCell}>Release Revision</TableCell>
                   <TableCell sx={styles.valueCell}>
                     <ReferenceField source='is running-release' reference='release' target='id'>
-                      <TextField source='revision' />
+                      <SemVerTextField />
                     </ReferenceField>
                   </TableCell>
                   <TableCell sx={styles.labelCell}>Target Revision</TableCell>
                   <TableCell sx={styles.valueCell}>
                     {props.record['should be running-release'] ? (
                       <ReferenceField source='should be running-release' reference='release' target='id'>
-                        <TextField source='revision' />
+                        <SemVerTextField />
                       </ReferenceField>
                     ) : (
                       ''

@@ -25,6 +25,7 @@ import {
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
 import DeleteFleetButton from '../ui/DeleteFleetButton';
+import SemVerChip from '../ui/SemVerChip';
 import { useCreateFleet } from '../lib/fleet';
 
 const FleetTitle = ({ record }) => {
@@ -53,8 +54,8 @@ const CustomBulkActionButtons = (props) => (
 
 export const FleetList = (props) => {
   return (
-    <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
-      <Datagrid>
+    <List {...props}>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='id' />
         <TextField label='Name' source='app name' />
         <ReferenceField label='Organization' source='organization' reference='organization' target='id'>
@@ -66,7 +67,7 @@ export const FleetList = (props) => {
         </ReferenceField>
         <BooleanBinaryField label='Track Latest Rel.' source='should track latest release' />
         <ReferenceField label='Target Rel.' source='should be running-release' reference='release' target='id'>
-          <ChipField source='id' />
+          <SemVerChip />
         </ReferenceField>
         <SelectField
           label='Class'

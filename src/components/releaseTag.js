@@ -17,6 +17,7 @@ import {
   required,
   FormDataConsumer,
 } from 'react-admin';
+import SemVerChip from '../ui/SemVerChip';
 
 const ReleaseTagTitle = ({ record }) => {
   return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
@@ -38,7 +39,7 @@ export const ReleaseTagList = (props) => {
           </ReferenceField>
         </ReferenceField>
         <ReferenceField label='Release Rev.' source='release' reference='release' target='id'>
-          <ChipField source='revision' />
+          <SemVerChip />
         </ReferenceField>
         <TextField label='Name' source='tag key' />
         <TextField label='Value' source='value' />

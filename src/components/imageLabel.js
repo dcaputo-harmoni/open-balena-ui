@@ -16,6 +16,7 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import SemVerChip from '../ui/SemVerChip';
 
 const ImageLabelTitle = ({ record }) => {
   return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
@@ -45,7 +46,7 @@ export const ImageLabelList = (props) => {
               reference='release'
               link={(record, reference) => `/${reference}/${record['is part of-release']}`}
             >
-              <ChipField source='revision' />
+              <SemVerChip />
             </ReferenceField>
           </ReferenceField>
         </ReferenceField>

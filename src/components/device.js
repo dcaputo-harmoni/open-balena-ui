@@ -22,10 +22,12 @@ import {
   SaveButton,
   FormDataConsumer,
 } from 'react-admin';
+import Tooltip from '@mui/material/Tooltip';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
+import SemVerChip from '../ui/SemVerChip';
 import { useCreateDevice, useModifyDevice } from '../lib/device';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -57,8 +59,8 @@ const CustomBulkActionButtons = (props) => (
 
 export const DeviceList = (props) => {
   return (
-    <List {...props} filters={deviceFilters} bulkActionButtons={<CustomBulkActionButtons />}>
-      <Datagrid>
+    <List {...props} filters={deviceFilters}>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='id' />
         <FunctionField label='UUID' render={(record) => record['uuid'].substring(0, 7)} />
         <TextField label='Name' source='device name' />
@@ -76,12 +78,12 @@ export const DeviceList = (props) => {
         <ReferenceField label='Fleet' source='belongs to-application' reference='application' target='id'>
           <ChipField source='app name' />
         </ReferenceField>
-        <ReferenceField label='Running Release' source='is running-release' reference='release' target='id'>
-          <ChipField source='revision' />
+        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
+          <SemVerChip />
         </ReferenceField>
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <DeviceServicesButton label='' style={{ color: 'black' }} />
-          <DeviceConnectButton label='' style={{ color: 'black' }} />
+          <DeviceServicesButton label='' />
+          <DeviceConnectButton label='' />
           <ShowButton label='' />
           <EditButton label='' />
           <DeleteDeviceButton variant='text' size='small' />

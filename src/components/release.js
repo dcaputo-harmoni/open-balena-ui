@@ -3,6 +3,7 @@ import {
   TextField,
   Datagrid,
   ReferenceField,
+  ReferenceManyCount,
   ReferenceManyField,
   SingleFieldList,
   ChipField,
@@ -14,6 +15,7 @@ import {
   useDataProvider,
 } from 'react-admin';
 import DeleteReleaseButton from '../ui/DeleteReleaseButton';
+import SemVerTextField from '../ui/SemVerTextField';
 
 const releaseFilters = [<SearchInput source='status@ilike' alwaysOn />];
 
@@ -28,19 +30,28 @@ const BooleanBinaryField = (props) => {
   );
 };
 
+const TagChipField = (props) => {
+  return (
+    <FunctionField
+      {...props}
+      render={(record) => (
+        <ChipField source='tag' record={{ ...record, tag: `${record['tag key']}: ${record['value']}` }} />
+      )}
+    />
+  );
+};
+
 export const ReleaseList = (props) => {
   return (
-    <List
-      {...props}
-      filters={releaseFilters}
-      bulkActionButtons={
-        <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} {...props}>
-          {' '}
-          Delete{' '}
-        </DeleteReleaseButton>
-      }
-    >
-      <Datagrid>
+    <List {...props} filters={releaseFilters}>
+      <Datagrid
+        bulkActionButtons={
+          <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} {...props}>
+            {' '}
+            Delete{' '}
+          </DeleteReleaseButton>
+        }
+      >
         <TextField source='id' />
         <ReferenceField
           label='Fleet'
@@ -60,19 +71,15 @@ export const ReleaseList = (props) => {
         >
           <BooleanBinaryField source='is host' />
         </ReferenceField>
-        <TextField label='Revision' source='revision' />
-        <ReferenceManyField
+        <SemVerTextField label='Version' />
+        <ReferenceManyCount
           label='Devices'
           source='id'
           reference='device'
           target='is running-release'
           link={false}
-          sortable={false}
-        >
-          <SingleFieldList linkType={false}>
-            <ChipField source='device name' />
-          </SingleFieldList>
-        </ReferenceManyField>
+          sortable={true}
+        />
         <ReferenceManyField
           label='Fleets'
           source='id'
@@ -94,7 +101,7 @@ export const ReleaseList = (props) => {
           sortable={false}
         >
           <SingleFieldList linkType={false}>
-            <ChipField source='value' />
+            <TagChipField />
           </SingleFieldList>
         </ReferenceManyField>
         <TextField label='Status' source='status' />

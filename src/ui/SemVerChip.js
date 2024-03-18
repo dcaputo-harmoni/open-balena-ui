@@ -1,0 +1,47 @@
+import React from 'react';
+import Chip from '@mui/material/Chip';
+import { useRecordContext } from 'react-admin';
+import Tooltip from '@mui/material/Tooltip';
+
+export function getSemver(record) {
+  const major = record['semver major'] ?? '0';
+  const minor = record['semver minor'] ?? '0';
+  const patch = record['semver patch'] ?? '0';
+  const prerelease = record['semver prerelease'] ?? '';
+  const build = record['semver build'] ?? '';
+  const revision = record['semver revision'] ?? '0';
+
+  let versionLabel = [major, minor, patch].join('.');
+  if (prerelease) {
+    versionLabel += '-' + prerelease;
+    if (build) {
+      versionLabel += '.' + build;
+    }
+  }
+  if (revision !== '0') {
+    versionLabel += `+rev${revision}`;
+  }
+
+  return versionLabel;
+}
+
+const SemVerChip = ({ record, showBlankOnNull = false }) => {
+  if (!record) {
+    record = useRecordContext();
+  }
+
+  if (!record) {
+    return showBlankOnNull ? null : <Chip label='Unknown' color='error' />;
+  }
+
+  const semver = getSemver(record);
+  const commit = record['commit'] ?? 'unknown commit';
+
+  return (
+    <Tooltip title={commit}>
+      <Chip label={semver} />
+    </Tooltip>
+  );
+};
+
+export default SemVerChip;
