@@ -29,21 +29,21 @@ const DeviceDashboard = (props) => {
   const controllerProps = useCustomShowController({ ...props });
   return (
     <ShowContextProvider value={controllerProps}>
-      <ShowView component="div" title="Device Dashboard" actions={false} {...props} {...controllerProps}>
+      <ShowView component='div' title='Device Dashboard' actions={false} {...props} {...controllerProps}>
         <Banner />
       </ShowView>
-      <ShowView actions={false} title="&nbsp;" {...props} {...controllerProps}>
+      <ShowView actions={false} title='&nbsp;' {...props} {...controllerProps}>
         <TabbedShowLayout style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
-          <Tab label="Summary" style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <Tab label='Summary' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
             <Summary />
           </Tab>
-          <Tab label="Logs" style={{ flex: '1' }}>
+          <Tab label='Logs' style={{ flex: '1' }}>
             <DeviceLogs />
           </Tab>
-          <Tab label="Connect" style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <Tab label='Connect' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
             <DeviceConnect />
           </Tab>
-          <Tab label="Control" style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <Tab label='Control' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
             <Control />
           </Tab>
         </TabbedShowLayout>

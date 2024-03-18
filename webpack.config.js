@@ -11,9 +11,7 @@ console.log(`isDevelopment: ${isDevelopment}`);
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
   entry: {
-    main: [
-      path.join(process.cwd(), 'src/index.js'),
-    ],
+    main: [path.join(process.cwd(), 'src/index.js')],
   },
   output: {
     path: path.resolve(process.cwd(), 'build'),
@@ -120,5 +118,5 @@ module.exports = {
     open: true, // Open the browser after server has been started
     hot: true, // Enable Hot Module Replacement
     port: 3000,
-  }
+  },
 };

@@ -23,26 +23,27 @@ function parseFilters(filter, defaultListOp) {
     //console.dir(splitKey);
     //console.dir(values);
 
-    values.forEach(value => {
-      // if operator is intentionally blank, rpc syntax 
-      let op = operation.includes('like') ? `${operation}.*${value}*` : operation.length === 0 ? `${value}` : `${operation}.${value}`;
+    values.forEach((value) => {
+      // if operator is intentionally blank, rpc syntax
+      let op = operation.includes('like')
+        ? `${operation}.*${value}*`
+        : operation.length === 0
+          ? `${value}`
+          : `${operation}.${value}`;
 
       if (result[splitKey[0]] === undefined) {
         // first operator for the key, we add it to the dict
         result[splitKey[0]] = op;
-      }
-      else
-      {
+      } else {
         if (!Array.isArray(result[splitKey[0]])) {
           // second operator, we transform to an array
-          result[splitKey[0]] = [result[splitKey[0]], op]
+          result[splitKey[0]] = [result[splitKey[0]], op];
         } else {
           // third and subsequent, we add to array
           result[splitKey[0]].push(op);
         }
       }
     });
-
   });
 
   return result;
@@ -52,7 +53,7 @@ function parseFilters(filter, defaultListOp) {
 
 const getPrimaryKey = (resource, primaryKeys) => {
   return primaryKeys.get(resource) || ['id'];
-}
+};
 
 const decodeId = (id, primaryKey) => {
   if (isCompoundKey(primaryKey)) {
@@ -60,15 +61,15 @@ const decodeId = (id, primaryKey) => {
   } else {
     return [id.toString()];
   }
-}
+};
 
 const encodeId = (data, primaryKey) => {
   if (isCompoundKey(primaryKey)) {
-    return JSON.stringify(primaryKey.map(key => data[key]));
+    return JSON.stringify(primaryKey.map((key) => data[key]));
   } else {
     return data[primaryKey[0]];
   }
-}
+};
 
 const dataWithId = (data, primaryKey) => {
   if (primaryKey == ['id']) {
@@ -76,34 +77,35 @@ const dataWithId = (data, primaryKey) => {
   }
 
   return Object.assign(data, {
-    id: encodeId(data, primaryKey)
+    id: encodeId(data, primaryKey),
   });
-}
+};
 
 const isCompoundKey = (primaryKey) => {
   return primaryKey.length > 1;
-}
+};
 
 const getQuery = (primaryKey, ids, resource) => {
   if (Array.isArray(ids) && ids.length > 1) {
     // no standardized query with multiple ids possible for rpc endpoints which are api-exposed database functions
     if (resource.startsWith('rpc/')) {
-      console.error('PostgREST\'s rpc endpoints are not intended to be handled as views. Therefore, no query generation for multiple key values implemented!');
+      console.error(
+        "PostgREST's rpc endpoints are not intended to be handled as views. Therefore, no query generation for multiple key values implemented!",
+      );
 
-      return ;
+      return;
     }
 
     if (isCompoundKey(primaryKey)) {
       return `or=(
-          ${ids.map(id => {
-                const primaryKeyParams = decodeId(id, primaryKey);
-                return `and(${primaryKey.map((key, i) => `${key}.eq.${primaryKeyParams[i]}`).join(',')})`;
-              })
-            }
+          ${ids.map((id) => {
+            const primaryKeyParams = decodeId(id, primaryKey);
+            return `and(${primaryKey.map((key, i) => `${key}.eq.${primaryKeyParams[i]}`).join(',')})`;
+          })}
         )`;
-      } else {
-        return queryString.stringify({ [primaryKey[0]]: `in.(${ids.join(',')})` });
-      }
+    } else {
+      return queryString.stringify({ [primaryKey[0]]: `in.(${ids.join(',')})` });
+    }
   } else {
     // if ids is one Identifier
     const id = ids.toString();
@@ -112,30 +114,30 @@ const getQuery = (primaryKey, ids, resource) => {
     if (isCompoundKey(primaryKey)) {
       if (resource.startsWith('rpc/'))
         return `${primaryKey.map((key, i) => `${key}=${primaryKeyParams[i]}`).join('&')}`;
-      else
-        return `and=(${primaryKey.map((key, i) => `${key}.eq.${primaryKeyParams[i]}`).join(',')})`;
+      else return `and=(${primaryKey.map((key, i) => `${key}.eq.${primaryKeyParams[i]}`).join(',')})`;
     } else {
       return queryString.stringify({ [primaryKey[0]]: `eq.${id}` });
     }
   }
-}
+};
 
 const getKeyData = (primaryKey, data) => {
   if (isCompoundKey(primaryKey)) {
     return primaryKey.reduce(
       (keyData, key) => ({
         ...keyData,
-          [key]: data[key]
-        }), 
-      {});
+        [key]: data[key],
+      }),
+      {},
+    );
   } else {
     return { [primaryKey[0]]: data[primaryKey[0]] };
   }
-}
+};
 
 const getOrderBy = (field, order, primaryKey) => {
   if (field === 'id') {
-    return primaryKey.map(key => (`${key}.${order.toLowerCase()}`)).join(',');
+    return primaryKey.map((key) => `${key}.${order.toLowerCase()}`).join(',');
   } else {
     return `${field}.${order.toLowerCase()}`;
   }
@@ -143,22 +145,26 @@ const getOrderBy = (field, order, primaryKey) => {
 
 const defaultPrimaryKeys = new Map();
 
-export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson, defaultListOp = 'eq', 
-                primaryKeys = defaultPrimaryKeys) => ({
+export const postgrestDataProvider = (
+  apiUrl,
+  httpClient = fetchUtils.fetchJson,
+  defaultListOp = 'eq',
+  primaryKeys = defaultPrimaryKeys,
+) => ({
   getList: async (resource, params) => {
     const primaryKey = getPrimaryKey(resource, primaryKeys);
 
     const { page, perPage } = params.pagination;
     const { field, order } = params.sort;
     const ftsFilter = {};
-    const ftsIdx = Object.keys(params.filter).findIndex(x => x.includes("#"));
+    const ftsIdx = Object.keys(params.filter).findIndex((x) => x.includes('#'));
     if (ftsIdx !== -1) {
       let ftsKey = Object.keys(params.filter)[ftsIdx];
-      let ftsFields = ftsKey.split("#")[1].split("@")[0].split(",");
-      let ftsFilterType = ftsKey.split("#")[1].split("@")[1];
-      ftsFields.forEach(field => {
-        ftsFilter[`${field}@${ftsFilterType}`] = params.filter[ftsKey]; 
-      })
+      let ftsFields = ftsKey.split('#')[1].split('@')[0].split(',');
+      let ftsFilterType = ftsKey.split('#')[1].split('@')[1];
+      ftsFields.forEach((field) => {
+        ftsFilter[`${field}@${ftsFilterType}`] = params.filter[ftsKey];
+      });
       delete params.filter[ftsKey];
     }
     const parsedFilter = parseFilters(params.filter, defaultListOp);
@@ -171,15 +177,17 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     };
     if (Object.keys(ftsFilter).length > 0) {
       const parsedFtsFilter = parseFilters(ftsFilter, defaultListOp);
-      const orString = Object.keys(parsedFtsFilter).map(field => `${field}.${parsedFtsFilter[field]}`).toString();
+      const orString = Object.keys(parsedFtsFilter)
+        .map((field) => `${field}.${parsedFtsFilter[field]}`)
+        .toString();
       query.or = `(${orString})`;
     }
     // add header that Content-Range is in returned header
     const options = {
       headers: new Headers({
         Accept: 'application/json',
-        Prefer: 'count=exact'
-      })
+        Prefer: 'count=exact',
+      }),
     };
 
     const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
@@ -189,18 +197,12 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
         throw new Error(
           `The Content-Range header is missing in the HTTP Response. The postgREST data provider expects 
           responses for lists of resources to contain this header with the total number of results to build 
-          the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?`
+          the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?`,
         );
       }
       return {
-        data: json.map(obj => dataWithId(obj, primaryKey)),
-        total: parseInt(
-          headers
-            .get('content-range')
-            .split('/')
-            .pop(),
-          10
-        )
+        data: json.map((obj) => dataWithId(obj, primaryKey)),
+        total: parseInt(headers.get('content-range').split('/').pop(), 10),
       };
     });
   },
@@ -208,16 +210,16 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
   getOne: (resource, params) => {
     const id = params.id;
     const primaryKey = getPrimaryKey(resource, primaryKeys);
-    
+
     const query = getQuery(primaryKey, id, resource);
-    
+
     const url = `${apiUrl}/${resource}?${query}`;
 
     return httpClient(url, {
-      headers: new Headers({ 'accept': 'application/vnd.pgrst.object+json' }),
+      headers: new Headers({ accept: 'application/vnd.pgrst.object+json' }),
     }).then(({ json }) => ({
       data: dataWithId(json, primaryKey),
-    }))
+    }));
   },
 
   getMany: (resource, params) => {
@@ -225,10 +227,10 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     const primaryKey = getPrimaryKey(resource, primaryKeys);
 
     const query = getQuery(primaryKey, ids, resource);
-      
+
     const url = `${apiUrl}/${resource}?${query}`;
 
-    return httpClient(url).then(({ json }) => ({ data: json.map(data => dataWithId(data, primaryKey)) }));
+    return httpClient(url).then(({ json }) => ({ data: json.map((data) => dataWithId(data, primaryKey)) }));
   },
 
   getManyReference: (resource, params) => {
@@ -237,26 +239,28 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     const parsedFilter = parseFilters(params.filter, defaultListOp);
     const primaryKey = getPrimaryKey(resource, primaryKeys);
 
-    const query = params.target ? {
-      [params.target]: `eq.${params.id}`,
-      order: getOrderBy(field, order, primaryKey),
-      offset: (page - 1) * perPage,
-      limit: perPage,
-      ...parsedFilter,
-    }:{
-      order: getOrderBy(field, order, primaryKey),
-      offset: (page - 1) * perPage,
-      limit: perPage,
-      ...parsedFilter,
-    };
+    const query = params.target
+      ? {
+          [params.target]: `eq.${params.id}`,
+          order: getOrderBy(field, order, primaryKey),
+          offset: (page - 1) * perPage,
+          limit: perPage,
+          ...parsedFilter,
+        }
+      : {
+          order: getOrderBy(field, order, primaryKey),
+          offset: (page - 1) * perPage,
+          limit: perPage,
+          ...parsedFilter,
+        };
 
     // add header that Content-Range is in returned header
     const options = {
       headers: new Headers({
         Accept: 'application/json',
-        Prefer: 'count=exact'
-      })
-    }
+        Prefer: 'count=exact',
+      }),
+    };
 
     const url = `${apiUrl}/${resource}?${queryString.stringify(query)}`;
 
@@ -265,18 +269,12 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
         throw new Error(
           `The Content-Range header is missing in the HTTP Response. The postgREST data provider expects 
           responses for lists of resources to contain this header with the total number of results to build 
-          the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?`
+          the pagination. If you are using CORS, did you declare Content-Range in the Access-Control-Expose-Headers header?`,
         );
       }
       return {
-        data: json.map(data => dataWithId(data, primaryKey)),
-        total: parseInt(
-          headers
-            .get('content-range')
-            .split('/')
-            .pop(),
-          10
-        ),
+        data: json.map((data) => dataWithId(data, primaryKey)),
+        total: parseInt(headers.get('content-range').split('/').pop(), 10),
       };
     });
   },
@@ -293,7 +291,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
 
     const body = JSON.stringify({
       ...data,
-      ...primaryKeyData
+      ...primaryKeyData,
     });
 
     return httpClient(url, {
@@ -301,7 +299,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       headers: new Headers({
         'Accept': 'application/vnd.pgrst.object+json',
         'Prefer': 'return=representation',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
       body,
     }).then(({ json }) => ({ data: dataWithId(json, primaryKey) }));
@@ -314,15 +312,15 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     const query = getQuery(primaryKey, ids, resource);
 
     const body = JSON.stringify(
-      params.data.map(obj => {
+      params.data.map((obj) => {
         const { id, ...data } = obj;
         const primaryKeyData = getKeyData(primaryKey, data);
 
         return {
           ...data,
-          ...primaryKeyData
+          ...primaryKeyData,
         };
-      })
+      }),
     );
 
     const url = `${apiUrl}/${resource}?${query}`;
@@ -335,7 +333,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       }),
       body,
     }).then(({ json }) => ({
-      data: json.map(data => encodeId(data, primaryKey))
+      data: json.map((data) => encodeId(data, primaryKey)),
     }));
   },
 
@@ -349,21 +347,21 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       headers: new Headers({
         'Accept': 'application/vnd.pgrst.object+json',
         'Prefer': 'return=representation',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
       body: JSON.stringify(params.data),
     }).then(({ json }) => ({
       data: {
         ...params.data,
-        id: encodeId(json, primaryKey)
-      }
+        id: encodeId(json, primaryKey),
+      },
     }));
   },
 
   delete: (resource, params) => {
     const id = params.id;
     const primaryKey = getPrimaryKey(resource, primaryKeys);
-    
+
     const query = getQuery(primaryKey, id, resource);
 
     const url = `${apiUrl}/${resource}?${query}`;
@@ -373,7 +371,7 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
       headers: new Headers({
         'Accept': 'application/vnd.pgrst.object+json',
         'Prefer': 'return=representation',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
     }).then(({ json }) => ({ data: dataWithId(json, primaryKey) }));
   },
@@ -383,16 +381,16 @@ export const postgrestDataProvider = (apiUrl, httpClient = fetchUtils.fetchJson,
     const primaryKey = getPrimaryKey(resource, primaryKeys);
 
     const query = getQuery(primaryKey, ids, resource);
-      
+
     const url = `${apiUrl}/${resource}?${query}`;
 
     return httpClient(url, {
       method: 'DELETE',
       headers: new Headers({
         'Prefer': 'return=representation',
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
       }),
-    }).then(({ json }) => ({ data: json.map(data => encodeId(data, primaryKey)) }));
+    }).then(({ json }) => ({ data: json.map((data) => encodeId(data, primaryKey)) }));
   },
 });
 
