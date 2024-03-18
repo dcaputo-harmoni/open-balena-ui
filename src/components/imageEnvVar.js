@@ -1,21 +1,23 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import SemVerChip from '../ui/SemVerChip';
+import { TrimField } from '../ui/TrimField';
 
 const ImageEnvVarTitle = ({ record }) => {
   return <span>Image Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -45,7 +47,7 @@ export const ImageEnvVarList = (props) => {
               reference='release'
               link={(record, reference) => `/${reference}/${record['is part of-release']}`}
             >
-              <ChipField source='revision' />
+              <SemVerChip />
             </ReferenceField>
           </ReferenceField>
         </ReferenceField>
@@ -60,10 +62,10 @@ export const ImageEnvVarList = (props) => {
           </ReferenceField>
         </ReferenceField>
         <TextField label='Name' source='name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -73,8 +75,8 @@ export const ImageEnvVarList = (props) => {
 export const ImageEnvVarCreate = (props) => (
   <Create {...props}>
     <SimpleForm redirect='list'>
-      <ReferenceInput source='release image' reference='image' target='id' validate={required()}>
-        <SelectInput optionText='id' optionValue='id' />
+      <ReferenceInput source='release image' reference='image' target='id'>
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -85,8 +87,8 @@ export const ImageEnvVarCreate = (props) => (
 export const ImageEnvVarEdit = (props) => (
   <Edit title={<ImageEnvVarTitle />} {...props}>
     <SimpleForm>
-      <ReferenceInput source='release image' reference='image' target='id' validate={required()}>
-        <SelectInput optionText='id' optionValue='id' />
+      <ReferenceInput source='release image' reference='image' target='id'>
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

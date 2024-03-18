@@ -1,18 +1,18 @@
 import * as React from 'react';
 import {
+  ChipField,
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  List,
   ReferenceField,
   ReferenceManyField,
-  SingleFieldList,
-  ChipField,
-  List,
   SimpleForm,
+  SingleFieldList,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
@@ -36,7 +36,7 @@ export const PermissionList = (props) => {
         </ReferenceManyField>
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>

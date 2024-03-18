@@ -1,21 +1,22 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
   List,
-  SimpleForm,
-  TextInput,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  EditButton,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const FleetEnvVarTitle = ({ record }) => {
   return <span>Fleet Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -30,10 +31,10 @@ export const FleetEnvVarList = (props) => {
           <ChipField source='app name' />
         </ReferenceField>
         <TextField label='Name' source='name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -49,9 +50,8 @@ export const FleetEnvVarCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -68,9 +68,8 @@ export const FleetEnvVarEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

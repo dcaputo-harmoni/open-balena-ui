@@ -1,16 +1,16 @@
 import * as React from 'react';
 import {
+  BooleanField,
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FunctionField,
   List,
   SimpleForm,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
-  FunctionField,
-  BooleanField,
   Toolbar,
 } from 'react-admin';
 
@@ -46,7 +46,7 @@ export const FleetTypeList = (props) => {
         <TextField label='Max Devices' source='maximum device count' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>

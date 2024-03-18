@@ -1,25 +1,25 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
-  EditButton,
+  Create,
+  Datagrid,
   DeleteButton,
-  Toolbar,
+  Edit,
+  EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
-  SelectInput,
-  required,
   ReferenceManyField,
+  SelectInput,
+  SimpleForm,
   SingleFieldList,
+  TextField,
+  TextInput,
+  Toolbar,
+  required,
 } from 'react-admin';
-import versions from '../versions';
 import { useCreateDeviceType } from '../lib/deviceType';
+import versions from '../versions';
 
 const DeviceTypeTitle = ({ record }) => {
   return <span>Device Type {record ? `"${record.name}"` : ''}</span>;
@@ -39,7 +39,6 @@ export const DeviceTypeList = (props) => {
           source='is of-cpu architecture'
           reference='cpu architecture'
           target='id'
-          style={{ color: 'black' }}
         >
           <ChipField source='slug' />
         </ReferenceField>
@@ -52,18 +51,12 @@ export const DeviceTypeList = (props) => {
         ) : (
           <></>
         )}
-        <ReferenceField
-          label='Device Family'
-          source='belongs to-device family'
-          reference='device family'
-          target='id'
-          style={{ color: 'black' }}
-        >
+        <ReferenceField label='Device Family' source='belongs to-device family' reference='device family' target='id'>
           <ChipField source='slug' />
         </ReferenceField>
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -85,9 +78,8 @@ export const DeviceTypeCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'slug', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='slug' optionValue='id' />
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Device Family'
@@ -118,9 +110,8 @@ export const DeviceTypeEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <ReferenceInput
         label='Device Family'

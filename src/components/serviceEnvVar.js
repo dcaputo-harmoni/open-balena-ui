@@ -1,22 +1,23 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FormDataConsumer,
   List,
-  SimpleForm,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
   Toolbar,
   required,
-  FormDataConsumer,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const ServiceEnvVarTitle = ({ record }) => {
   return <span>Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -36,10 +37,10 @@ export const ServiceEnvVarList = (props) => {
           <ChipField source='service name' />
         </ReferenceField>
         <TextField label='Name' source='name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -62,9 +63,8 @@ export const ServiceEnvVarCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='app name' optionValue='id' />
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <FormDataConsumer>
           {({ formData, ...rest }) =>
@@ -77,9 +77,8 @@ export const ServiceEnvVarCreate = (props) => {
                 filter={{ application: formData.application }}
                 perPage={1000}
                 sort={{ field: 'service name', order: 'ASC' }}
-                validate={required()}
               >
-                <SelectInput optionText='service name' optionValue='id' />
+                <SelectInput optionText='service name' optionValue='id' validate={required()} />
               </ReferenceInput>
             )
           }
@@ -101,9 +100,8 @@ export const ServiceEnvVarEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <FormDataConsumer>
         {({ formData, ...rest }) =>
@@ -116,9 +114,8 @@ export const ServiceEnvVarEdit = (props) => (
               filter={{ application: formData.application }}
               perPage={1000}
               sort={{ field: 'service name', order: 'ASC' }}
-              validate={required()}
             >
-              <SelectInput optionText='service name' optionValue='id' />
+              <SelectInput optionText='service name' optionValue='id' validate={required()} />
             </ReferenceInput>
           )
         }

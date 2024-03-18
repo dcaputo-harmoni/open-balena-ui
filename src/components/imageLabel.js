@@ -1,21 +1,23 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import SemVerChip from '../ui/SemVerChip';
+import { TrimField } from '../ui/TrimField';
 
 const ImageLabelTitle = ({ record }) => {
   return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
@@ -45,7 +47,7 @@ export const ImageLabelList = (props) => {
               reference='release'
               link={(record, reference) => `/${reference}/${record['is part of-release']}`}
             >
-              <ChipField source='revision' />
+              <SemVerChip />
             </ReferenceField>
           </ReferenceField>
         </ReferenceField>
@@ -61,10 +63,10 @@ export const ImageLabelList = (props) => {
           </ReferenceField>
         </ReferenceField>
         <TextField label='Name' source='label name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -80,9 +82,8 @@ export const ImageLabelCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='id' optionValue='id' />
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -99,9 +100,8 @@ export const ImageLabelEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='id' optionValue='id' />
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

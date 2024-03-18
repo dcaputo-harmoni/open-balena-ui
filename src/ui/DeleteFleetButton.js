@@ -1,26 +1,27 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteFleet, useDeleteFleetBulk } from '../lib/fleet';
 
-export const DeleteFleetButton = ({ basePath, ...props }) => {
+export const DeleteFleetButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
   const deleteFleet = useDeleteFleet();
   const deleteFleetBulk = useDeleteFleetBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteFleetBulk(props.selectedIds);
     } else {
-      await deleteFleet(props.record);
+      await deleteFleet(record);
     }
     setOpen(false);
     notify('Fleet(s) successfully deleted');
-    redirect(props.redirect, basePath);
+    redirect(props.redirect);
   };
 
   return (
@@ -28,7 +29,7 @@ export const DeleteFleetButton = ({ basePath, ...props }) => {
       <Button
         onClick={() => setOpen(true)}
         variant={props.variant || 'contained'}
-        color='inherit'
+        color='error'
         size={props.size}
         sx={props.sx}
       >

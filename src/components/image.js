@@ -1,6 +1,7 @@
 import * as React from 'react';
 import { TextField, Datagrid, FunctionField, ReferenceField, ChipField, List } from 'react-admin';
 import dateFormat from 'dateformat';
+import SemVerChip from '../ui/SemVerChip';
 
 export const ImageList = (props) => {
   return (
@@ -33,7 +34,7 @@ export const ImageList = (props) => {
             target='id'
             link={(record, reference) => `/${reference}/${record['is part of-release']}`}
           >
-            <ChipField source='revision' />
+            <SemVerChip />
           </ReferenceField>
         </ReferenceField>
         <ReferenceField label='Service' source='is a build of-service' reference='service' target='id'>

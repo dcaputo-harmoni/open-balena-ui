@@ -1,22 +1,24 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  EditButton,
+  Create,
+  Datagrid,
   DeleteButton,
+  Edit,
+  EditButton,
+  FormDataConsumer,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
   Toolbar,
   required,
-  FormDataConsumer,
 } from 'react-admin';
+import SemVerChip, { getSemver } from '../ui/SemVerChip';
+import { TrimField } from '../ui/TrimField';
 
 const ReleaseTagTitle = ({ record }) => {
   return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
@@ -38,13 +40,13 @@ export const ReleaseTagList = (props) => {
           </ReferenceField>
         </ReferenceField>
         <ReferenceField label='Release Rev.' source='release' reference='release' target='id'>
-          <ChipField source='revision' />
+          <SemVerChip />
         </ReferenceField>
         <TextField label='Name' source='tag key' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -67,9 +69,8 @@ export const ReleaseTagCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='app name' optionValue='id' />
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <FormDataConsumer>
           {({ formData, ...rest }) =>
@@ -82,9 +83,8 @@ export const ReleaseTagCreate = (props) => {
                 filter={{ 'belongs to-application': formData.application }}
                 perPage={1000}
                 sort={{ field: 'revision', order: 'ASC' }}
-                validate={required()}
               >
-                <SelectInput optionText='revision' optionValue='id' />
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
               </ReferenceInput>
             )
           }
@@ -106,9 +106,8 @@ export const ReleaseTagEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <FormDataConsumer>
         {({ formData, ...rest }) =>
@@ -121,9 +120,8 @@ export const ReleaseTagEdit = (props) => (
               filter={{ 'belongs to-application': formData.application }}
               perPage={1000}
               sort={{ field: 'revision', order: 'ASC' }}
-              validate={required()}
             >
-              <SelectInput optionText='revision' optionValue='id' />
+              <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
             </ReferenceInput>
           )
         }

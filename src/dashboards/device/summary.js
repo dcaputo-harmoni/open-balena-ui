@@ -1,223 +1,198 @@
-import * as React from 'react';
-import { TextField, FunctionField, ReferenceField } from 'react-admin';
-import { Table, TableBody, TableRow, TableCell } from '@mui/material';
-import DeviceServices from '../../ui/DeviceServices';
+import { Box, Card, Tooltip, styled, useTheme } from '@mui/material';
 import dateFormat from 'dateformat';
+import React from 'react';
+import { FunctionField, Link, ReferenceField, TextField, useRecordContext } from 'react-admin';
+import CopyChip from '../../ui/CopyChip';
+import DeviceConnect from '../../ui/DeviceConnect';
+import DeviceLogs from '../../ui/DeviceLogs';
+import DeviceServices from '../../ui/DeviceServices';
+import SemVerChip from '../../ui/SemVerChip';
+import Controls from './controls';
+import Usage from './usage';
 
-const styles = {
-  outerTable: {
-    '& td': {
-      borderBottom: 'none',
-      width: '50%',
-      padding: '0px',
-      verticalAlign: 'top',
-      paddingLeft: '10px',
-      paddingRight: '10px',
-    },
-  },
-  innerTable: {
-    'marginBottom': '20px',
-    '& td': {
-      borderBottom: 'none',
-      width: '25%',
-      paddingLeft: '8px',
-      paddingRight: '8px',
-    },
-  },
-  headerRow: {
-    'borderBottom': '2px #cccccc solid',
-    '& td': {
-      fontSize: '12pt',
-      fontWeight: 'bold',
-      textAlign: 'center',
-    },
-  },
-  dataRow: {
-    '& td': {
-      paddingTop: '10px',
-      paddingBottom: '0px',
-    },
-  },
-  labelCell: {
-    fontWeight: 'bold',
-  },
-  valueCell: {
-    textAlign: 'right',
-  },
-};
+const Summary = () => {
+  const record = useRecordContext();
+  const theme = useTheme();
 
-const toTitleCase = (str) => {
-  return str
-    .split(' ')
-    .map((w) => w[0].toUpperCase() + w.substring(1).toLowerCase())
-    .join(' ');
-};
+  if (!record) {
+    return null;
+  }
 
-const Summary = (props) => {
   return (
-    <Table sx={styles.outerTable}>
-      <TableBody>
-        <TableRow>
-          <TableCell>
-            <Table sx={styles.innerTable}>
-              <TableBody>
-                <TableRow sx={styles.headerRow}>
-                  <TableCell colSpan={4}> Device Status </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Device State</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='status' />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Fleet</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <ReferenceField source='belongs to-application' reference='application' target='id'>
-                      <TextField source='app name' />
+    <>
+      <Box
+        sx={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          marginTop: '15px',
+        }}
+      >
+        <div style={{ width: '50%', marginRight: '7.5px' }}>
+          <Card style={{ padding: '15px' }}>
+            <Controls />
+          </Card>
+
+          <Card
+            sx={{
+              'padding': '15px',
+              'flex': 1,
+              'marginTop': '15px',
+              'td': {
+                fontSize: '13px',
+                verticalAlign: 'top',
+                width: '33.3333333%',
+                paddingTop: '30px',
+              },
+              'tr:first-of-type': {
+                td: {
+                  paddingTop: '0',
+                },
+              },
+            }}
+          >
+            <table style={{ width: '100%' }}>
+              <tbody>
+                <tr>
+                  <td>
+                    <Label>UUID</Label>
+                    <CopyChip title={record.uuid} label={record.uuid.substring(0, 7)} />
+                  </td>
+
+                  <td>
+                    <Label>State</Label>
+                    <span>{record.status}</span>
+                  </td>
+
+                  <td>
+                    <Label>Device Type</Label>
+                    <ReferenceField source='is of-device type' reference='device type' target='id' link={false}>
+                      <TextField source='slug' />
                     </ReferenceField>
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Release Revision</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <ReferenceField source='is running-release' reference='release' target='id'>
-                      <TextField source='revision' />
-                    </ReferenceField>
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Target Revision</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    {props.record['should be running-release'] ? (
-                      <ReferenceField source='should be running-release' reference='release' target='id'>
-                        <TextField source='revision' />
-                      </ReferenceField>
-                    ) : (
-                      ''
-                    )}
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>OS</TableCell>
-                  <TableCell sx={styles.valueCell}>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <Label>OS Version</Label>
+                    <Link to='https://github.com/balena-os/meta-balena/blob/master/CHANGELOG.md' target='_blank'>
+                      {record['os version']}
+                    </Link>
+                  </td>
+
+                  <td>
+                    <Label>OS Variant</Label>
+                    {record['os variant']}
+                  </td>
+
+                  <td>
+                    <Label>VPN State</Label>
                     <FunctionField
-                      render={(record) =>
-                        `${record['os version'] ? record['os version'] : ''}${record['os variant'] ? '-' + record['os variant'] : ''}`
-                      }
+                      render={(record) => (
+                        <Tooltip
+                          placement='top'
+                          arrow={true}
+                          title={'Since ' + dateFormat(new Date(record['last vpn event']))}
+                        >
+                          {record['is connected to vpn'] ? 'Connected' : 'Disconnected'}
+                        </Tooltip>
+                      )}
                     />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Supervisor</TableCell>
-                  <TableCell sx={styles.valueCell}>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <Label>Supervisor Version</Label>
                     <TextField source='supervisor version' />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Connectivity</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${toTitleCase(record['api heartbeat state'])}`} />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>As of</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField
-                      render={(record) =>
-                        `${dateFormat(new Date(record['last connectivity event']), 'dd-mmm-yy h:MM:ss TT Z')}`
-                      }
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>VPN State</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField
-                      render={(record) => `${record['is connected to vpn'] === 1 ? 'Connected' : 'Disconnected'}`}
-                    />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>As of</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField
-                      render={(record) => `${dateFormat(new Date(record['last vpn event']), 'dd-mmm-yy h:MM:ss TT Z')}`}
-                    />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Public Address</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='public address' />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>VPN Address</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='vpn address' />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>IP Address</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='ip address' />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Mac Addresses</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='mac address' />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Memory Usage</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['memory usage'])}mb`} />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Total Memory</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['memory total'])}mb`} />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>Storage Usage</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['storage usage'])}mb`} />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Total Storage</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['storage total'])}mb`} />
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>CPU Usage</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['cpu usage'])}%`} />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>CPU Temp</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${Math.round(record['cpu temp'])}`} />
-                    &deg;C
-                  </TableCell>
-                </TableRow>
-                <TableRow sx={styles.dataRow}>
-                  <TableCell sx={styles.labelCell}>CPU ID</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <TextField source='cpu id' />
-                  </TableCell>
-                  <TableCell sx={styles.labelCell}>Undervolted</TableCell>
-                  <TableCell sx={styles.valueCell}>
-                    <FunctionField render={(record) => `${record['is undervolted'] === 1 ? 'Yes' : 'No'}`} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableCell>
-          <TableCell>
-            <Table sx={styles.innerTable}>
-              <TableBody>
-                <TableRow sx={styles.headerRow}>
-                  <TableCell colSpan={4}> Device Services </TableCell>
-                </TableRow>
-                <TableRow>
-                  <TableCell colSpan={4}>
-                    <DeviceServices {...props} />
-                  </TableCell>
-                </TableRow>
-              </TableBody>
-            </Table>
-          </TableCell>
-        </TableRow>
-      </TableBody>
-    </Table>
+                  </td>
+
+                  <td>
+                    <Label>Current Release</Label>
+                    <ReferenceField source='is running-release' reference='release' target='id'>
+                      <SemVerChip />
+                    </ReferenceField>
+                  </td>
+
+                  <td>
+                    <Label>Target Release</Label>
+                    <ReferenceField source='should be running-release' reference='release' target='id'>
+                      <SemVerChip />
+                    </ReferenceField>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td>
+                    <Label>MAC Addresses</Label>
+                    {record['mac address']?.split(' ').map((mac) => (
+                      <CopyChip placement='left' style={{ marginBottom: '5px' }} title={mac} label={mac} />
+                    ))}
+                  </td>
+
+                  <td>
+                    <Label>Local IP Addresses</Label>
+                    {record['ip address']?.split(' ').map((ip) => (
+                      <CopyChip
+                        placement='left'
+                        style={{ marginBottom: '5px' }}
+                        title={ip}
+                        label={ip.length > 15 ? ip.slice(0, 14) + '...' : ip}
+                      />
+                    ))}
+                  </td>
+
+                  <td>
+                    <Label>Public IP Addresses</Label>
+                    {record['public address']?.split(' ').map((ip) => (
+                      <CopyChip
+                        placement='left'
+                        style={{ marginBottom: '5px' }}
+                        title={ip}
+                        label={ip.length > 15 ? ip.slice(0, 15) + '...' : ip}
+                      />
+                    ))}
+                  </td>
+                </tr>
+
+                <tr>
+                  <td colSpan={3}>
+                    <Label>Notes</Label>
+                    <p>{record.note}</p>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </Card>
+
+          <Card sx={{ padding: '15px', marginTop: '15px' }}>
+            <DeviceServices />
+          </Card>
+        </div>
+
+        <div style={{ width: '50%', marginLeft: '7.5px' }}>
+          <Card sx={{ padding: '15px' }}>
+            <Usage />
+          </Card>
+
+          <Card sx={{ padding: 0, marginTop: '15px' }}>
+            <DeviceLogs />
+          </Card>
+
+          <Card sx={{ padding: 0, marginTop: '15px' }}>
+            <DeviceConnect />
+          </Card>
+        </div>
+      </Box>
+    </>
   );
 };
+
+const Label = styled('span')(({ theme }) => ({
+  color: theme.palette.text.secondary,
+  fontSize: '11px',
+  display: 'block',
+  textTransform: 'uppercase',
+  marginBottom: '6px',
+}));
 
 export default Summary;

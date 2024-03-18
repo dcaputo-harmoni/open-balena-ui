@@ -1,19 +1,24 @@
 import React from 'react';
-import { useDataProvider, SelectInput } from 'react-admin';
+import { SelectInput, useDataProvider, useRecordContext } from 'react-admin';
 
-export const SelectOperatingSystem = ({ basePath, ...props }) => {
+export const SelectOperatingSystem = (props) => {
+  const record = useRecordContext();
   const [loaded, setLoaded] = React.useState(null);
   const [availableOperatingSystems, setAvailableOperatingSystems] = React.useState([]);
   const dataProvider = useDataProvider();
 
   React.useEffect(() => {
+    if (!record) {
+      return;
+    }
+
     if (loaded === null) {
       setLoaded(false);
       dataProvider
         .getList('application', {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { 'is of-class': 'app', 'is host': 1, 'is for-device type': props.record['is of-device type'] },
+          filter: { 'is of-class': 'app', 'is host': 1, 'is for-device type': record['is of-device type'] },
         })
         .then((operatingSystems) => {
           var operatingSystemOpts = [];
@@ -50,7 +55,7 @@ export const SelectOperatingSystem = ({ basePath, ...props }) => {
           });
         });
     }
-  }, [props, dataProvider, loaded, setLoaded, availableOperatingSystems, setAvailableOperatingSystems]);
+  }, [record, dataProvider, loaded, setLoaded, availableOperatingSystems, setAvailableOperatingSystems]);
 
   if (!loaded) return null;
 

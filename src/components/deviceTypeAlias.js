@@ -1,18 +1,18 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
@@ -32,7 +32,7 @@ export const DeviceTypeAliasList = (props) => {
         <TextField label='Alias' source='is referenced by-alias' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -48,9 +48,8 @@ export const DeviceTypeAliasCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
     </SimpleForm>
@@ -66,9 +65,8 @@ export const DeviceTypeAliasEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
     </SimpleForm>

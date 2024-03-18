@@ -1,21 +1,22 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const ServiceLabelTitle = ({ record }) => {
   return <span>Service Label {record ? `"${record['label name']}"` : ''}</span>;
@@ -30,10 +31,10 @@ export const ServiceLabelList = (props) => {
           <ChipField source='service name' />
         </ReferenceField>
         <TextField label='Name' source='label name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -49,9 +50,8 @@ export const ServiceLabelCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -68,9 +68,8 @@ export const ServiceLabelEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

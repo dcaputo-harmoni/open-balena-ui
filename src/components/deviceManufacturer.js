@@ -1,14 +1,14 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
   List,
   SimpleForm,
-  EditButton,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
 } from 'react-admin';
 
@@ -25,7 +25,7 @@ export const DeviceManufacturerList = (props) => {
         <TextField label='Name' source='name' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>

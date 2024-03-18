@@ -1,29 +1,29 @@
 import * as React from 'react';
 import {
+  ChipField,
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  Edit,
+  EditButton,
   EmailField,
+  List,
+  PasswordInput,
   ReferenceField,
   ReferenceManyField,
-  SingleFieldList,
-  ChipField,
-  List,
-  SimpleForm,
-  TextInput,
-  PasswordInput,
-  Toolbar,
-  EditButton,
   SaveButton,
+  SimpleForm,
+  SingleFieldList,
+  TextField,
+  TextInput,
+  Toolbar,
   required,
 } from 'react-admin';
+import { useCreateUser, useModifyUser } from '../lib/user';
 import ChangePasswordButton from '../ui/ChangePasswordButton';
 import DeleteUserButton from '../ui/DeleteUserButton';
+import ManageOrganizations from '../ui/ManageOrganizations';
 import ManagePermissions from '../ui/ManagePermissions';
 import ManageRoles from '../ui/ManageRoles';
-import ManageOrganizations from '../ui/ManageOrganizations';
-import { useCreateUser, useModifyUser } from '../lib/user';
 
 const UserTitle = ({ record }) => {
   return <span>User {record ? `"${record.username}"` : ''}</span>;
@@ -40,8 +40,8 @@ const CustomBulkActionButtons = (props) => (
 
 export const UserList = (props) => {
   return (
-    <List {...props} bulkActionButtons={<CustomBulkActionButtons />}>
-      <Datagrid>
+    <List {...props}>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='id' />
         <TextField source='username' />
         <EmailField source='email' />
