@@ -29,7 +29,7 @@ export const DeleteUserButton = (props) => {
       <Button
         onClick={() => setOpen(true)}
         variant={props.variant || 'contained'}
-        color='inherit'
+        color='error'
         size={props.size}
         sx={props.sx}
       >

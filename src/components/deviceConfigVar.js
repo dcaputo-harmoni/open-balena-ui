@@ -1,18 +1,18 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
@@ -44,7 +44,7 @@ export const DeviceConfigVarList = (props) => {
         </ReferenceField>
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>

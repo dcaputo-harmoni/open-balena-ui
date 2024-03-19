@@ -114,8 +114,6 @@ const TreeMenu = (props) => {
   );
 
   const mapParentStack = (parentResource) => {
-    console.log(parentActiveResName);
-
     return (
       <CustomMenuItem
         key={parentResource.name}

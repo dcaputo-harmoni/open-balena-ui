@@ -89,29 +89,22 @@ const Fleets = (props) => {
                     <CardActions sx={{ paddingTop: '4px', paddingBottom: '4px', justifyContent: 'center' }}>
                       <Button
                         variant='text'
-                        color='primary'
                         size='small'
                         href={`/#/device?filter={"belongs to-application": ${record['id']}}`}
                         style={{ minWidth: '40px' }}
                       >
-                        <DevicesIcon style={{ marginRight: '4px', color: 'black' }} />
+                        <DevicesIcon style={{ marginRight: '4px' }} />
                       </Button>
                       <Button
                         variant='text'
-                        color='primary'
                         size='small'
                         href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}
                         style={{ minWidth: '40px' }}
                       >
-                        <AddIcon style={{ marginRight: '4px', color: 'black' }} />
+                        <AddIcon style={{ marginRight: '4px' }} />
                       </Button>
                       <EditButton record={record} label='' style={{ minWidth: '40px' }} />
-                      <EnvVarButton
-                        resource='application'
-                        record={record}
-                        label=''
-                        style={{ color: 'black', minWidth: '40px' }}
-                      />
+                      <EnvVarButton resource='application' record={record} label='' style={{ minWidth: '40px' }} />
                     </CardActions>
                   </Card>
                 </Grid>

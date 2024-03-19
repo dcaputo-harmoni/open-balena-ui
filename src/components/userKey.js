@@ -1,18 +1,17 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  FunctionField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  EditButton,
+  Create,
+  Datagrid,
   DeleteButton,
+  Edit,
+  EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
   Toolbar,
   required,
@@ -35,7 +34,7 @@ export const UserKeysList = (props) => {
         <TrimField label='Key' source='public key' limit={30} />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>

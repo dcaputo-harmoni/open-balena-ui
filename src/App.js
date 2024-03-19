@@ -1,6 +1,5 @@
-import { createTheme } from '@mui/material/styles';
 import * as React from 'react';
-import { Admin, Layout, Resource, fetchUtils, nanoDarkTheme, nanoLightTheme } from 'react-admin';
+import { Admin, Layout, Resource, fetchUtils } from 'react-admin';
 import { Navigate, Route, useParams } from 'react-router-dom';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';
@@ -47,42 +46,6 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-//
-// Customize the nano themes
-//
-const normalFont = '"Source Sans Pro", Helvetica, sans-serif';
-const monoFont = '"Ubuntu Mono", "Courier New", monospace';
-
-const theme = createTheme(nanoLightTheme, {
-  typography: {
-    fontFamily: normalFont,
-  },
-  components: {
-    MuiCode: {
-      styleOverrides: {
-        root: {
-          fontFamily: monoFont,
-        },
-      },
-    },
-  },
-});
-
-const darkTheme = createTheme(nanoDarkTheme, {
-  typography: {
-    fontFamily: normalFont,
-  },
-  components: {
-    MuiCode: {
-      styleOverrides: {
-        root: {
-          fontFamily: monoFont,
-        },
-      },
-    },
-  },
-});
-
 const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
 const deviceTypeAliasVer = versions.resource('deviceTypeAlias', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
@@ -109,8 +72,6 @@ const OpenBalenaAdmin = () => (
     authProvider={openbalenaAuthProvider}
     dashboard={MainDashboard}
     customRoutes={customRoutes}
-    theme={theme}
-    darkTheme={darkTheme}
     layout={treeLayout}
   >
     <Resource name='menu-access' options={{ label: 'Access', isMenuParent: true }} />

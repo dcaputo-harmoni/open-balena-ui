@@ -1,21 +1,21 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FormDataConsumer,
   List,
-  SimpleForm,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
   Toolbar,
   required,
-  FormDataConsumer,
 } from 'react-admin';
 import { TrimField } from '../ui/TrimField';
 
@@ -40,7 +40,7 @@ export const ServiceEnvVarList = (props) => {
         <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+          <DeleteButton label='' size='medium' />
         </Toolbar>
       </Datagrid>
     </List>
