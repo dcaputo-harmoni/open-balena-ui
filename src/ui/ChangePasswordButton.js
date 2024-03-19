@@ -12,7 +12,7 @@ const hashPassword = (password) => {
   return bcrypt.hashSync(password, saltRounds).replace('2a', '2b');
 };
 
-export const ChangePasswordButton = ({ basePath, ...props }) => {
+export const ChangePasswordButton = ({ basepath, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();

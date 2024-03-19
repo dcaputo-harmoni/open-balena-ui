@@ -20,7 +20,7 @@ const StyledDualListBox = styled(DualListBox)({
   },
 });
 
-export const ManageOrganizations = ({ basePath, ...props }) => {
+export const ManageOrganizations = ({ basepath, ...props }) => {
   const [loaded, setLoaded] = React.useState({ all: false, selected: false });
   const [allOrganizations, setAllOrganizations] = React.useState([]);
   const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);

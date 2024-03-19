@@ -88,8 +88,8 @@ const Devices = (props) => {
                       label=''
                       style={{ color: 'black', minWidth: '40px', marginRight: '7px' }}
                     />
-                    <ShowButton record={record} basePath='/device' label='' style={{ minWidth: '40px' }} />
-                    <EditButton record={record} basePath='/device' label='' style={{ minWidth: '40px' }} />
+                    <ShowButton record={record} basepath='/device' label='' style={{ minWidth: '40px' }} />
+                    <EditButton record={record} basepath='/device' label='' style={{ minWidth: '40px' }} />
                     <EnvVarButton
                       resource='device'
                       record={record}

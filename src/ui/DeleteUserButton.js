@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
 import { useDeleteUser, useDeleteUserBulk } from '../lib/user';
 
-export const DeleteUserButton = ({ basePath, ...props }) => {
+export const DeleteUserButton = ({ basepath, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -20,7 +20,7 @@ export const DeleteUserButton = ({ basePath, ...props }) => {
     }
     setOpen(false);
     notify('User(s) successfully deleted');
-    redirect(props.redirect, basePath);
+    redirect(props.redirect, basepath);
   };
 
   return (

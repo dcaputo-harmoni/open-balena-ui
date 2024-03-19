@@ -57,7 +57,7 @@ const decode = {
     'app accessible',
 };
 
-export const ManagePermissions = ({ basePath, ...props }) => {
+export const ManagePermissions = ({ basepath, ...props }) => {
   const [loaded, setLoaded] = React.useState({ all: false, selected: false });
   const [allPermissions, setAllPermissions] = React.useState([]);
   const [selectedPermissions, setSelectedPermissions] = React.useState([]);

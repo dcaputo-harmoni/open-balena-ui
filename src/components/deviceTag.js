@@ -16,6 +16,7 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const DeviceTagTitle = ({ record }) => {
   return <span>Device Tag {record ? `"${record.name}"` : ''}</span>;
@@ -30,7 +31,7 @@ export const DeviceTagList = (props) => {
           <ChipField source='uuid' />
         </ReferenceField>
         <TextField label='Name' source='tag key' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <ReferenceField label='Fleet' source='device' reference='device' target='id' link={false}>
           <ReferenceField
             source='belongs to-application'

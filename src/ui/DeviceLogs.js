@@ -28,7 +28,7 @@ export class Iframe extends React.Component {
   }
 }
 
-export const DeviceLogs = ({ basePath, ...props }) => {
+export const DeviceLogs = ({ basepath, ...props }) => {
   const [loaded, setLoaded] = React.useState(false);
   const [containers, setContainers] = React.useState([]);
   const [content, setContent] = React.useState('');

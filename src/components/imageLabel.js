@@ -17,6 +17,7 @@ import {
   required,
 } from 'react-admin';
 import SemVerChip from '../ui/SemVerChip';
+import { TrimField } from '../ui/TrimField';
 
 const ImageLabelTitle = ({ record }) => {
   return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
@@ -62,7 +63,7 @@ export const ImageLabelList = (props) => {
           </ReferenceField>
         </ReferenceField>
         <TextField label='Name' source='label name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
           <DeleteButton label='' style={{ color: 'black' }} size='medium' />

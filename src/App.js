@@ -1,6 +1,6 @@
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
-import { Admin, Resource, fetchUtils, nanoLightTheme, nanoDarkTheme } from 'react-admin';
+import { Admin, Layout, Resource, fetchUtils, nanoLightTheme, nanoDarkTheme } from 'react-admin';
 import { Route, Navigate } from 'react-router-dom';
 import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
@@ -37,6 +37,7 @@ import userKey from './components/userKey';
 import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
 import versions from './versions';
+import TreeMenu from './ui/TreeMenu';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -97,16 +98,20 @@ const customRoutes = [
   <Route key='custom-route-device-summary' path='/devices/:uuid/summary' element={<NavigateToDevice />} />,
 ];
 
+const treeLayout = (props) => <Layout {...props} menu={TreeMenu} />;
+
 const OpenBalenaAdmin = () => (
   <Admin
     requireAuth
     title='Open Balena Admin'
+    disableTelemetry={true}
     dataProvider={dataProvider}
     authProvider={openbalenaAuthProvider}
     dashboard={MainDashboard}
     customRoutes={customRoutes}
     theme={theme}
     darkTheme={darkTheme}
+    layout={treeLayout}
   >
     <Resource name='menu-access' options={{ label: 'Access', isMenuParent: true }} />
     <Resource name='organization' options={{ label: 'Orgs', menuParent: 'menu-access' }} {...organization} />

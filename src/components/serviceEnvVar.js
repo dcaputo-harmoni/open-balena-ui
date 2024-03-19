@@ -17,6 +17,7 @@ import {
   required,
   FormDataConsumer,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const ServiceEnvVarTitle = ({ record }) => {
   return <span>Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
@@ -36,7 +37,7 @@ export const ServiceEnvVarList = (props) => {
           <ChipField source='service name' />
         </ReferenceField>
         <TextField label='Name' source='name' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
           <DeleteButton label='' style={{ color: 'black' }} size='medium' />

@@ -98,7 +98,7 @@ export const DeviceCreate = (props) => {
   const redirect = useRedirect();
 
   const processComplete = ({ data }) => {
-    redirect('list', props.basePath, data.id, data);
+    redirect('list', props.basepath, data.id, data);
   };
 
   return (

@@ -18,6 +18,7 @@ import {
   FormDataConsumer,
 } from 'react-admin';
 import SemVerChip from '../ui/SemVerChip';
+import { TrimField } from '../ui/TrimField';
 
 const ReleaseTagTitle = ({ record }) => {
   return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
@@ -42,7 +43,7 @@ export const ReleaseTagList = (props) => {
           <SemVerChip />
         </ReferenceField>
         <TextField label='Name' source='tag key' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
           <DeleteButton label='' style={{ color: 'black' }} size='medium' />

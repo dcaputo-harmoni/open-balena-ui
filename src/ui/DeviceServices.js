@@ -17,7 +17,7 @@ import StopIcon from '@mui/icons-material/Stop';
 import dateFormat from 'dateformat';
 import utf8decode from '../lib/utf8decode';
 
-export const DeviceServices = ({ basePath, ...props }) => {
+export const DeviceServices = ({ basepath, ...props }) => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
 

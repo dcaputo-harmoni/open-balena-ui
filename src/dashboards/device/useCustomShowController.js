@@ -2,8 +2,8 @@ import { useCheckMinimumRequiredProps, useGetList, useTranslate } from 'react-ad
 import { useResourceContext, useGetResourceLabel } from 'ra-core';
 
 export const useCustomShowController = (props) => {
-  useCheckMinimumRequiredProps('Show', ['basePath', 'resource'], props);
-  const { basePath, hasCreate, hasEdit, hasList, hasShow, id } = props;
+  useCheckMinimumRequiredProps('Show', ['basepath', 'resource'], props);
+  const { basepath, hasCreate, hasEdit, hasList, hasShow, id } = props;
   const resource = useResourceContext(props);
   const translate = useTranslate();
   let searchParams = {};
@@ -35,7 +35,7 @@ export const useCustomShowController = (props) => {
     loaded,
     defaultTitle,
     resource,
-    basePath,
+    basepath,
     record,
     refetch,
     hasCreate,

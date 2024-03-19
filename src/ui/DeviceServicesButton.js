@@ -6,7 +6,7 @@ import ListIcon from '@mui/icons-material/List';
 import Tooltip from '@mui/material/Tooltip';
 import DeviceServices from './DeviceServices';
 
-export const DeviceServicesButton = ({ basePath, ...props }) => {
+export const DeviceServicesButton = ({ basepath, ...props }) => {
   const [open, setOpen] = React.useState(false);
 
   return (

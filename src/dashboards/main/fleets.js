@@ -103,7 +103,7 @@ const Fleets = (props) => {
                     >
                       <AddIcon style={{ marginRight: '4px', color: 'black' }} />
                     </Button>
-                    <EditButton record={record} basePath='/application' label='' style={{ minWidth: '40px' }} />
+                    <EditButton record={record} basepath='/application' label='' style={{ minWidth: '40px' }} />
                     <EnvVarButton
                       resource='application'
                       record={record}

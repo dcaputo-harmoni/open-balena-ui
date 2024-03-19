@@ -20,7 +20,7 @@ const StyledDualListBox = styled(DualListBox)({
   },
 });
 
-export const ManageRoles = ({ basePath, ...props }) => {
+export const ManageRoles = ({ basepath, ...props }) => {
   const [loaded, setLoaded] = React.useState({ all: false, selected: false });
   const [allRoles, setAllRoles] = React.useState([]);
   const [selectedRoles, setSelectedRoles] = React.useState([]);

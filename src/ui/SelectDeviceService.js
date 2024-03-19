@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDataProvider, SelectInput } from 'react-admin';
 
-export const SelectDeviceService = ({ basePath, ...props }) => {
+export const SelectDeviceService = ({ basepath, ...props }) => {
   const [loaded, setLoaded] = React.useState(null);
   const [availableServices, setAvailableServices] = React.useState([]);
   const dataProvider = useDataProvider();

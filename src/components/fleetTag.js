@@ -16,6 +16,7 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import { TrimField } from '../ui/TrimField';
 
 const FleetTagTitle = ({ record }) => {
   return <span>Fleet Tag {record ? `"${record['tag key']}"` : ''}</span>;
@@ -30,7 +31,7 @@ export const FleetTagList = (props) => {
           <ChipField source='app name' />
         </ReferenceField>
         <TextField label='Name' source='tag key' />
-        <TextField label='Value' source='value' />
+        <TrimField label='Value' source='value' />
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
           <EditButton label='' />
           <DeleteButton label='' style={{ color: 'black' }} size='medium' />
