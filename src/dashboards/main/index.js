@@ -88,14 +88,16 @@ const Dashboard = () => {
   return (
     <>
       <Title title='Dashboard' />
+
       <Banner />
+
       <div style={styles.flex}>
         <div style={styles.leftCol}>
-          <Fleets value={fleets ? fleets : []} />
+          <Fleets value={fleets || []} />
         </div>
 
         <div style={styles.rightCol}>
-          <Devices value={devices ? devices : []} />
+          <Devices value={devices || []} />
         </div>
       </div>
     </>

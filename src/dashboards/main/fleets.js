@@ -26,7 +26,7 @@ const Fleets = (props) => {
   return (
     <ResourceContextProvider value='application'>
       <Card sx={{ flex: '1', dispay: 'flex', flexDirection: 'column' }}>
-        <CardHeader title='Fleets' sx={{ height: '20px', color: 'white', backgroundColor: '#2196f3' }} />
+        <CardHeader title='Fleets' sx={{ color: 'white', backgroundColor: '#2196f3' }} />
         <CardContent sx={{ minHeight: 225, overflow: 'auto', flex: '1', display: 'flex', flexDirection: 'column' }}>
           <Grid container spacing={3} sx={{ flex: '1' }}>
             {value.map((record, index) => {
@@ -36,7 +36,6 @@ const Fleets = (props) => {
                     <CardHeader
                       title={record['app name']}
                       sx={{
-                        height: '15px',
                         fontWeight: 'bold',
                         backgroundColor: record['is of-class'] === 'app' ? '#bee8ce' : '#eeeeee',
                       }}

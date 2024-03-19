@@ -1,8 +1,8 @@
-import * as React from 'react';
-import { Box, Card, CardActions, Button, Typography } from '@mui/material';
-import PersonIcon from '@mui/icons-material/Person';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import KeyIcon from '@mui/icons-material/Key';
+import PersonIcon from '@mui/icons-material/Person';
+import { Box, Button, Card, CardActions, Typography } from '@mui/material';
+import * as React from 'react';
 
 import publishArticleImage from './banner_illustration.svg';
 
@@ -11,7 +11,7 @@ const styles = {
     background: '#2196f3',
     color: '#ffffff',
     padding: '1.5em',
-    marginTop: 0,
+    marginTop: '1em',
     marginBottom: '1em',
   },
   mediaBox: {
