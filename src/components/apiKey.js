@@ -1,30 +1,31 @@
+import Chip from '@mui/material/Chip';
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  List,
-  ReferenceManyField,
-  SingleFieldList,
-  ReferenceField,
   ChipField,
-  SimpleForm,
-  TextInput,
-  ReferenceArrayInput,
-  SelectInput,
-  FormDataConsumer,
+  Create,
   DataProviderContext,
+  Datagrid,
+  Edit,
   EditButton,
-  SearchInput,
+  FormDataConsumer,
+  List,
+  ReferenceArrayInput,
+  ReferenceField,
+  ReferenceManyField,
   SaveButton,
+  SearchInput,
+  SelectInput,
+  SimpleForm,
+  SingleFieldList,
+  TextField,
+  TextInput,
   Toolbar,
+  useRecordContext,
 } from 'react-admin';
-import Chip from '@mui/material/Chip';
+import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
 import DeleteApiKeyButton from '../ui/DeleteApiKeyButton';
 import ManagePermissions from '../ui/ManagePermissions';
 import ManageRoles from '../ui/ManageRoles';
-import { useGenerateApiKey, useCreateApiKey, useModifyApiKey } from '../lib/apiKey';
 
 const ApiKeyTitle = ({ record }) => {
   return <span>API Key {record ? (record.name ? `"${record.name}"` : `#${record.id}`) : ''}</span>;
@@ -99,15 +100,20 @@ const CustomBulkActionButtons = (props) => (
   </React.Fragment>
 );
 
-export const ApiKeyList = (props) => {
+const ActorFieldWrapper = (props) => {
+  const record = useRecordContext();
+  return <ActorField {...props} record={record} />;
+};
+
+export const ApiKeyList = () => {
   return (
-    <List {...props} filters={apiKeyFilters} bulkActionButtons={<CustomBulkActionButtons />}>
-      <Datagrid>
+    <List filters={apiKeyFilters}>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='id' />
         <TextField label='API Key' source='key' />
         <TextField label='Name' source='name' />
         <TextField label='Description' source='description' />
-        <ActorField label='Assigned To' />
+        <ActorFieldWrapper label='Assigned To' />
         <ReferenceManyField label='Roles' source='id' reference='api key-has-role' target='api key'>
           <SingleFieldList linkType={false}>
             <ReferenceField source='role' reference='role' target='id'>

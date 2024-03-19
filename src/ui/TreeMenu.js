@@ -21,7 +21,7 @@ const classes = {
   closed: `${PREFIX}-closed`,
 };
 
-const StyledTreeMenu = styled('div')(({ theme }) => ({
+const StyledMenu = styled('div')(({ theme }) => ({
   [`& .${classes.main}`]: {
     display: 'flex',
     flexDirection: 'column',
@@ -62,44 +62,48 @@ const TreeMenu = (props) => {
     setState((state) => ({ [parent]: !state[parent] }));
   };
 
-  const isParent = (resource) =>
-    resource && resource.options && resource.options.hasOwnProperty('isMenuParent') && resource.options.isMenuParent;
+  const isParent = (resource) => !!resource?.options?.isMenuParent;
 
   const isOrphan = (resource) =>
-    resource &&
-    resource.options &&
-    !resource.options.hasOwnProperty('menuParent') &&
-    !resource.options.hasOwnProperty('isMenuParent');
+    !resource?.options?.hasOwnProperty?.('menuParent') && !resource?.options?.hasOwnProperty?.('isMenuParent');
 
-  const isChildOfParent = (resource, parentResource) =>
-    resource &&
-    resource.options &&
-    resource.options.hasOwnProperty('menuParent') &&
-    resource.options.menuParent == parentResource.name;
+  const isChildOfParent = (resource, parentResource) => resource?.options?.menuParent == parentResource?.name;
+
   const geResourceName = (slug) => {
-    if (!slug) return;
+    if (!slug) {
+      return '';
+    }
+
     var words = slug.toString().split('_');
+
     for (var i = 0; i < words.length; i++) {
       var word = words[i];
       words[i] = word.charAt(0).toUpperCase() + word.slice(1);
     }
+
     return words.join(' ');
   };
 
   const getPrimaryTextForResource = (resource) => {
     let resourcename = '';
-    if (resource && resource.options && resource.options.label) resourcename = resource.options.label;
-    else if (resource.name) {
+
+    if (resource?.options?.label) {
+      resourcename = resource.options.label;
+    } else if (resource?.name) {
       resourcename = translate(`resources.${resource.name}.name`);
-      if (resourcename.startsWith('resources.')) resourcename = geResourceName(resource.name);
+
+      if (resourcename.startsWith('resources.')) {
+        resourcename = geResourceName(resource.name);
+      }
     }
+
     return resourcename;
   };
 
   const MenuItem = (resource) => (
     <MenuItemLink
       key={resource.name}
-      to={`/${resource.name}`}
+      to={`/${encodeURIComponent(resource.name)}`}
       primaryText={getPrimaryTextForResource(resource)}
       leftIcon={resource.icon ? <resource.icon /> : <DefaultIcon />}
       onClick={onMenuClick}
@@ -109,47 +113,48 @@ const TreeMenu = (props) => {
     />
   );
 
-  const mapParentStack = (parentResource) => (
-    <CustomMenuItem
-      key={parentResource.name}
-      handleToggle={() => handleToggle(parentResource.name)}
-      isOpen={state[parentResource.name] || parentActiveResName === parentResource.name}
-      sidebarIsOpen={open}
-      name={getPrimaryTextForResource(parentResource)}
-      icon={parentResource.icon ? <parentResource.icon /> : <LabelIcon />}
-      dense={dense}
-      setMenuColors={setMenuColors}
-    >
-      {
-        // eslint-disable-next-line
-        resources
-          .filter((resource) => isChildOfParent(resource, parentResource) && hasList(resource))
-          .map((childResource) => {
-            return MenuItem(childResource);
-          })
-      }
-    </CustomMenuItem>
-  );
+  const mapParentStack = (parentResource) => {
+    console.log(parentActiveResName);
+
+    return (
+      <CustomMenuItem
+        key={parentResource.name}
+        handleToggle={() => handleToggle(parentResource.name)}
+        isOpen={state[parentResource.name] || parentActiveResName === parentResource.name}
+        sidebarIsOpen={open}
+        name={getPrimaryTextForResource(parentResource)}
+        icon={parentResource.icon ? <parentResource.icon /> : <LabelIcon />}
+        dense={dense}
+        setMenuColors={setMenuColors}
+      >
+        {
+          // eslint-disable-next-line
+          resources
+            .filter((resource) => isChildOfParent(resource, parentResource) && hasList(resource))
+            .map((childResource) => {
+              return MenuItem(childResource);
+            })
+        }
+      </CustomMenuItem>
+    );
+  };
 
   const mapIndependent = (independentResource) => hasList(independentResource) && MenuItem(independentResource);
 
   const initialExpansionState = {};
+
   let parentActiveResName = null;
 
-  resources &&
-    resources.length > 0 &&
-    resources.forEach((resource) => {
-      if (isParent(resource)) {
-        initialExpansionState[resource.name] = false;
-      } else if (
-        pathname.startsWith(`#/${resource.name}`) &&
-        resource &&
-        resource.options &&
-        resource.options.hasOwnProperty('menuParent')
-      ) {
-        parentActiveResName = resource.options.menuParent;
-      }
-    });
+  resources?.forEach((resource) => {
+    if (isParent(resource)) {
+      initialExpansionState[resource.name] = false;
+    } else if (
+      pathname.startsWith(`#/${encodeURIComponent(resource.name)}`) &&
+      resource?.options?.hasOwnProperty?.('menuParent')
+    ) {
+      parentActiveResName = resource.options.menuParent;
+    }
+  });
 
   const [state, setState] = useState(initialExpansionState);
   const resRenderGroup = [];
@@ -162,7 +167,7 @@ const TreeMenu = (props) => {
     });
 
   return (
-    <StyledTreeMenu>
+    <StyledMenu>
       <div
         className={classnames(classes.main, className, {
           [classes.open]: open,
@@ -181,7 +186,7 @@ const TreeMenu = (props) => {
         )}
         {resRenderGroup}
       </div>
-    </StyledTreeMenu>
+    </StyledMenu>
   );
 };
 
