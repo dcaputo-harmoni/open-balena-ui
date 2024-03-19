@@ -8,6 +8,10 @@ export const SelectOperatingSystem = (props) => {
   const dataProvider = useDataProvider();
 
   React.useEffect(() => {
+    if (!record) {
+      return;
+    }
+
     if (loaded === null) {
       setLoaded(false);
       dataProvider
@@ -51,7 +55,7 @@ export const SelectOperatingSystem = (props) => {
           });
         });
     }
-  }, [props, dataProvider, loaded, setLoaded, availableOperatingSystems, setAvailableOperatingSystems]);
+  }, [record, dataProvider, loaded, setLoaded, availableOperatingSystems, setAvailableOperatingSystems]);
 
   if (!loaded) return null;
 
