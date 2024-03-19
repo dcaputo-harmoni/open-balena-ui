@@ -48,9 +48,8 @@ export const DeviceTypeAliasCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
     </SimpleForm>
@@ -66,9 +65,8 @@ export const DeviceTypeAliasEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
     </SimpleForm>

@@ -68,9 +68,8 @@ export const ReleaseTagCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='app name' optionValue='id' />
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <FormDataConsumer>
           {({ formData, ...rest }) =>
@@ -83,9 +82,8 @@ export const ReleaseTagCreate = (props) => {
                 filter={{ 'belongs to-application': formData.application }}
                 perPage={1000}
                 sort={{ field: 'revision', order: 'ASC' }}
-                validate={required()}
               >
-                <SelectInput optionText='revision' optionValue='id' />
+                <SelectInput optionText='revision' optionValue='id' validate={required()} />
               </ReferenceInput>
             )
           }
@@ -107,9 +105,8 @@ export const ReleaseTagEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <FormDataConsumer>
         {({ formData, ...rest }) =>
@@ -122,9 +119,8 @@ export const ReleaseTagEdit = (props) => (
               filter={{ 'belongs to-application': formData.application }}
               perPage={1000}
               sort={{ field: 'revision', order: 'ASC' }}
-              validate={required()}
             >
-              <SelectInput optionText='revision' optionValue='id' />
+              <SelectInput optionText='revision' optionValue='id' validate={required()} />
             </ReferenceInput>
           )
         }

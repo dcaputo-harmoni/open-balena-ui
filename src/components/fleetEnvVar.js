@@ -49,9 +49,8 @@ export const FleetEnvVarCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -68,9 +67,8 @@ export const FleetEnvVarEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

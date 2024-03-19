@@ -51,9 +51,8 @@ export const UserKeysCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'username', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='username' optionValue='id' />
+        <SelectInput optionText='username' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Title' source='title' validate={required()} />
       <TextInput multiline label='Key' source='public key' validate={required()} />
@@ -70,9 +69,8 @@ export const UserKeysEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'username', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='username' optionValue='id' />
+        <SelectInput optionText='username' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Title' source='title' validate={required()} />
       <TextInput multiline label='Key' source='public key' validate={required()} />

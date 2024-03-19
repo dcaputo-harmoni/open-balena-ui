@@ -50,9 +50,8 @@ export const FleetTagCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='tag key' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -69,9 +68,8 @@ export const FleetTagEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='tag key' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

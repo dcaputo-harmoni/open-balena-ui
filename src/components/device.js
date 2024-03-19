@@ -119,9 +119,8 @@ export const DeviceCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'slug', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='slug' optionValue='id' />
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Fleet'
@@ -130,10 +129,9 @@ export const DeviceCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
-          validate={required()}
           filter={{ 'is of-class': 'fleet' }}
         >
-          <SelectInput optionText='app name' optionValue='id' />
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <FormDataConsumer>
           {({ formData, ...rest }) =>
@@ -196,9 +194,8 @@ export const DeviceEdit = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'slug', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='slug' optionValue='id' />
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Fleet'
@@ -207,10 +204,9 @@ export const DeviceEdit = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
-          validate={required()}
           filter={{ 'is of-class': 'fleet' }}
         >
-          <SelectInput optionText='app name' optionValue='id' />
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <FormDataConsumer>
           {({ formData, ...rest }) =>

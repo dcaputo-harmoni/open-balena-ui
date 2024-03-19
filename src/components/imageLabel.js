@@ -81,9 +81,8 @@ export const ImageLabelCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='id' optionValue='id' />
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -100,9 +99,8 @@ export const ImageLabelEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='id' optionValue='id' />
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

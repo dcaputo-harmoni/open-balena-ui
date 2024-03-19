@@ -49,9 +49,8 @@ export const ServiceLabelCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -68,9 +67,8 @@ export const ServiceLabelEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='label name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

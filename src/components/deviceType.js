@@ -85,9 +85,8 @@ export const DeviceTypeCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'slug', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='slug' optionValue='id' />
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Device Family'
@@ -118,9 +117,8 @@ export const DeviceTypeEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <ReferenceInput
         label='Device Family'

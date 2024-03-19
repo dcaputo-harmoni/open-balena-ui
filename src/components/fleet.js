@@ -110,9 +110,8 @@ export const FleetCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'slug', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='slug' optionValue='id' />
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Organization'
@@ -121,9 +120,8 @@ export const FleetCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'name', order: 'ASC' }}
-          validate={required()}
         >
-          <SelectInput optionText='name' optionValue='id' />
+          <SelectInput optionText='name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <ReferenceInput
           label='Fleet Type'
@@ -132,10 +130,9 @@ export const FleetCreate = (props) => {
           target='id'
           perPage={1000}
           sort={{ field: 'name', order: 'ASC' }}
-          validate={required()}
           initialValue={1}
         >
-          <SelectInput optionText='name' optionValue='id' />
+          <SelectInput optionText='name' optionValue='id' validate={required()} />
         </ReferenceInput>
         <BooleanInput
           label='Track Latest Release'
@@ -216,9 +213,8 @@ export const FleetEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'slug', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='slug' optionValue='id' />
+        <SelectInput optionText='slug' optionValue='id' validate={required()} />
       </ReferenceInput>
       <ReferenceInput
         label='Organization'
@@ -227,9 +223,8 @@ export const FleetEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='name' optionValue='id' />
+        <SelectInput optionText='name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <ReferenceInput
         label='Fleet Type'
@@ -238,9 +233,8 @@ export const FleetEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='name' optionValue='id' />
+        <SelectInput optionText='name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <BooleanInput
         label='Track Latest Release'

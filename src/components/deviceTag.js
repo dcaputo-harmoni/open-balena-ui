@@ -59,9 +59,8 @@ export const DeviceTagCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='tag key' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -78,9 +77,8 @@ export const DeviceTagEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='tag key' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

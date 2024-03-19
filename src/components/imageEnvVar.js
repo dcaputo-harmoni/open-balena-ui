@@ -74,8 +74,8 @@ export const ImageEnvVarList = (props) => {
 export const ImageEnvVarCreate = (props) => (
   <Create {...props}>
     <SimpleForm redirect='list'>
-      <ReferenceInput source='release image' reference='image' target='id' validate={required()}>
-        <SelectInput optionText='id' optionValue='id' />
+      <ReferenceInput source='release image' reference='image' target='id'>
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />
@@ -86,8 +86,8 @@ export const ImageEnvVarCreate = (props) => (
 export const ImageEnvVarEdit = (props) => (
   <Edit title={<ImageEnvVarTitle />} {...props}>
     <SimpleForm>
-      <ReferenceInput source='release image' reference='image' target='id' validate={required()}>
-        <SelectInput optionText='id' optionValue='id' />
+      <ReferenceInput source='release image' reference='image' target='id'>
+        <SelectInput optionText='id' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' validate={required()} />
       <TextInput label='Value' source='value' validate={required()} />

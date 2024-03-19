@@ -59,9 +59,8 @@ export const DeviceConfigVarCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' />
       <TextInput label='Value' source='value' />
@@ -78,9 +77,8 @@ export const DeviceConfigVarEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} />
       </ReferenceInput>
       <TextInput label='Name' source='name' />
       <TextInput label='Value' source='value' />
