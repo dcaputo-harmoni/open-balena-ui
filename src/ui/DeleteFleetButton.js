@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteFleet, useDeleteFleetBulk } from '../lib/fleet';
 
@@ -11,12 +11,13 @@ export const DeleteFleetButton = (props) => {
   const redirect = useRedirect();
   const deleteFleet = useDeleteFleet();
   const deleteFleetBulk = useDeleteFleetBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteFleetBulk(props.selectedIds);
     } else {
-      await deleteFleet(props.record);
+      await deleteFleet(record);
     }
     setOpen(false);
     notify('Fleet(s) successfully deleted');

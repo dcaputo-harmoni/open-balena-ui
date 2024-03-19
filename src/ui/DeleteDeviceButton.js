@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent, Tooltip } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogContent, DialogTitle, Tooltip } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteDevice, useDeleteDeviceBulk } from '../lib/device';
 
@@ -11,12 +11,13 @@ export const DeleteDeviceButton = (props) => {
   const redirect = useRedirect();
   const deleteDevice = useDeleteDevice();
   const deleteDeviceBulk = useDeleteDeviceBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteDeviceBulk(props.selectedIds);
     } else {
-      await deleteDevice(props.record);
+      await deleteDevice(record);
     }
     setOpen(false);
     notify('Device(s) successfully deleted');

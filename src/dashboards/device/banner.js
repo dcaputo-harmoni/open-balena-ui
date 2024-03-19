@@ -3,9 +3,8 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Box, Button, Card, CardActions, LinearProgress, Typography } from '@mui/material';
 import * as React from 'react';
-import { ReferenceField, TextField, useAuthProvider, useNotify } from 'react-admin';
+import { ReferenceField, TextField, useAuthProvider, useNotify, useRecordContext } from 'react-admin';
 import utf8decode from '../../lib/utf8decode';
-import { useCustomShowController } from './useCustomShowController';
 
 const styles = {
   bannerCard: {
@@ -43,7 +42,7 @@ const LinearProgressWithLabel = (props) => {
 const Banner = () => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
-  const props = useCustomShowController();
+  const record = useRecordContext();
 
   const invokeSupervisor = (device, command) => {
     const session = authProvider.getSession();
@@ -73,27 +72,21 @@ const Banner = () => {
       });
   };
 
-  if (!props.record) return null;
+  if (!record) return null;
 
   return (
     <Card sx={styles.bannerCard}>
       <Box display='flex'>
         <Box flex='1'>
           <Typography variant='h5' component='h2' gutterBottom>
-            Device "{props.record['device name']}"
+            Device "{record['device name']}"
           </Typography>
           <Box maxWidth='40em'>
             <Typography variant='body1' component='p' gutterBottom>
-              <b>UUID:</b> {props.record.uuid}
+              <b>UUID:</b> {record.uuid}
               <br />
               <b>Fleet:</b>&nbsp;
-              <ReferenceField
-                source='belongs to-application'
-                reference='application'
-                target='id'
-                {...props}
-                link={false}
-              >
+              <ReferenceField source='belongs to-application' reference='application' target='id' link={false}>
                 <TextField source='app name' style={{ fontSize: '12pt' }} />
               </ReferenceField>
             </Typography>
@@ -101,7 +94,7 @@ const Banner = () => {
           <CardActions sx={styles.actionCard}>
             <Button
               variant='contained'
-              onClick={() => invokeSupervisor(props.record, 'blink')}
+              onClick={() => invokeSupervisor(record, 'blink')}
               sx={{ minWidth: '140px' }}
               startIcon={<LightModeIcon />}
             >
@@ -109,7 +102,7 @@ const Banner = () => {
             </Button>
             <Button
               variant='contained'
-              onClick={() => invokeSupervisor(props.record, 'reboot')}
+              onClick={() => invokeSupervisor(record, 'reboot')}
               sx={{ minWidth: '140px' }}
               startIcon={<RestartAltIcon />}
             >
@@ -117,7 +110,7 @@ const Banner = () => {
             </Button>
             <Button
               variant='contained'
-              onClick={() => invokeSupervisor(props.record, 'shutdown')}
+              onClick={() => invokeSupervisor(record, 'shutdown')}
               sx={{ minWidth: '140px' }}
               startIcon={<PowerSettingsNewIcon />}
             >
@@ -126,29 +119,26 @@ const Banner = () => {
           </CardActions>
         </Box>
         <Box display='block' height='9.5em' overflow='hidden'>
-          <LinearProgressWithLabel
-            label='CPU'
-            value={isFinite(props.record['cpu usage']) ? props.record['cpu usage'] : 0}
-          />
+          <LinearProgressWithLabel label='CPU' value={isFinite(record['cpu usage']) ? record['cpu usage'] : 0} />
           <LinearProgressWithLabel
             label='Temp'
-            value={isFinite(props.record['cpu temp']) ? (props.record['cpu temp'] / 90) * 100 : 0}
-            displayValue={isFinite(props.record['cpu temp']) ? props.record['cpu temp'] : 0}
+            value={isFinite(record['cpu temp']) ? (record['cpu temp'] / 90) * 100 : 0}
+            displayValue={isFinite(record['cpu temp']) ? record['cpu temp'] : 0}
             displayUnits='&deg;C'
           />
           <LinearProgressWithLabel
             label='SD'
             value={
-              isFinite(props.record['storage usage'] / props.record['storage total'])
-                ? (props.record['storage usage'] / props.record['storage total']) * 100
+              isFinite(record['storage usage'] / record['storage total'])
+                ? (record['storage usage'] / record['storage total']) * 100
                 : 0
             }
           />
           <LinearProgressWithLabel
             label='RAM'
             value={
-              isFinite(props.record['memory usage'] / props.record['memory total'])
-                ? (props.record['memory usage'] / props.record['memory total']) * 100
+              isFinite(record['memory usage'] / record['memory total'])
+                ? (record['memory usage'] / record['memory total']) * 100
                 : 0
             }
           />

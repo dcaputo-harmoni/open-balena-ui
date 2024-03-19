@@ -57,8 +57,6 @@ const CustomBulkActionButtons = (props) => (
 );
 
 export const DeviceList = (props) => {
-  console.log('props', props);
-
   return (
     <List {...props} filters={deviceFilters}>
       <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>

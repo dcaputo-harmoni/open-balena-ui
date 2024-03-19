@@ -1,7 +1,8 @@
 import React from 'react';
-import { useDataProvider, SelectInput } from 'react-admin';
+import { SelectInput, useDataProvider, useRecordContext } from 'react-admin';
 
 export const SelectOperatingSystem = (props) => {
+  const record = useRecordContext();
   const [loaded, setLoaded] = React.useState(null);
   const [availableOperatingSystems, setAvailableOperatingSystems] = React.useState([]);
   const dataProvider = useDataProvider();
@@ -13,7 +14,7 @@ export const SelectOperatingSystem = (props) => {
         .getList('application', {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { 'is of-class': 'app', 'is host': 1, 'is for-device type': props.record['is of-device type'] },
+          filter: { 'is of-class': 'app', 'is host': 1, 'is for-device type': record['is of-device type'] },
         })
         .then((operatingSystems) => {
           var operatingSystemOpts = [];

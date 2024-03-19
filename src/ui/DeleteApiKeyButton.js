@@ -1,7 +1,7 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteApiKey, useDeleteApiKeyBulk } from '../lib/apiKey';
 
@@ -11,12 +11,13 @@ export const DeleteApiKeyButton = (props) => {
   const redirect = useRedirect();
   const deleteApiKey = useDeleteApiKey();
   const deleteApiKeyBulk = useDeleteApiKeyBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteApiKeyBulk(props.selectedIds);
     } else {
-      await deleteApiKey(props.record);
+      await deleteApiKey(record);
     }
     setOpen(false);
     notify('API Key(s) successfully deleted');

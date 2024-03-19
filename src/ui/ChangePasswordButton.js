@@ -1,11 +1,11 @@
-import React from 'react';
-import { PasswordInput, useNotify, useDataProvider } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import LockIcon from '@mui/icons-material/Lock';
 import SaveIcon from '@mui/icons-material/Save';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import * as bcrypt from 'bcryptjs';
+import React from 'react';
+import { PasswordInput, useDataProvider, useNotify, useRecordContext } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useForm } from 'react-hook-form';
-import * as bcrypt from 'bcryptjs';
 
 const hashPassword = (password) => {
   const saltRounds = 10;
@@ -17,11 +17,13 @@ export const ChangePasswordButton = (props) => {
   const dataProvider = useDataProvider();
   const notify = useNotify();
   const form = useForm();
+  const record = useRecordContext();
+
   const handleSubmit = async (values) => {
     const hashedPassword = hashPassword(values.password);
     dataProvider
       .update('user', {
-        id: props.record.id,
+        id: record.id,
         data: { password: hashedPassword },
       })
       .then((data) => {

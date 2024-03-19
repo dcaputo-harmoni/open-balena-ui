@@ -1,13 +1,13 @@
+import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
+import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
+import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { Box, Typography } from '@mui/material';
+import { styled } from '@mui/material/styles';
 import React from 'react';
-import { useDataProvider, TextInput } from 'react-admin';
+import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
-import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
-import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
-import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
-import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12pt',
@@ -25,6 +25,7 @@ export const ManageOrganizations = (props) => {
   const [allOrganizations, setAllOrganizations] = React.useState([]);
   const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);
   const dataProvider = useDataProvider();
+  const record = useRecordContext();
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -41,12 +42,12 @@ export const ManageOrganizations = (props) => {
       loaded.all = true;
       setLoaded(loaded);
     }
-    if (!loaded.selected && props.record) {
+    if (!loaded.selected && record) {
       dataProvider
         .getList(props.reference, {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { [props.target]: props.record.id },
+          filter: { [props.target]: record.id },
         })
         .then((existingMappings) => {
           const selectedIds = existingMappings.data.map((x) => x['is member of-organization']);
@@ -77,7 +78,7 @@ export const ManageOrganizations = (props) => {
       <TextInput
         source={props.source}
         format={() => selectedOrganizations}
-        onChange={(props.record[props.source] = selectedOrganizations)}
+        onChange={(record[props.source] = selectedOrganizations)}
         style={{ display: 'none' }}
       />
     </Box>
