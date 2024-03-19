@@ -1,9 +1,10 @@
+import { Button, Card, Grid, Typography } from '@mui/material';
 import React from 'react';
-import { useAuthProvider, useNotify } from 'react-admin';
-import { Grid, Button, Card, Typography } from '@mui/material';
+import { useAuthProvider, useNotify, useRecordContext } from 'react-admin';
 import utf8decode from '../../lib/utf8decode';
 
-const Control = (props) => {
+const Control = () => {
+  const record = useRecordContext();
   const authProvider = useAuthProvider();
   const notify = useNotify();
 
@@ -43,7 +44,7 @@ const Control = (props) => {
             Device Control
           </Typography>
           <Button
-            onClick={() => invokeSupervisor(props.record, 'blink')}
+            onClick={() => invokeSupervisor(record, 'blink')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -52,7 +53,7 @@ const Control = (props) => {
           Blink indicator light on device
           <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'reboot')}
+            onClick={() => invokeSupervisor(record, 'reboot')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -60,7 +61,7 @@ const Control = (props) => {
           </Button>{' '}
           Reboot device <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'shutdown')}
+            onClick={() => invokeSupervisor(record, 'shutdown')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -75,7 +76,7 @@ const Control = (props) => {
             Container Control
           </Typography>
           <Button
-            onClick={() => invokeSupervisor(props.record, 'blink')}
+            onClick={() => invokeSupervisor(record, 'blink')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -84,7 +85,7 @@ const Control = (props) => {
           Blink indicator light on device
           <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'reboot')}
+            onClick={() => invokeSupervisor(record, 'reboot')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -92,7 +93,7 @@ const Control = (props) => {
           </Button>{' '}
           Reboot device <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'shutdown')}
+            onClick={() => invokeSupervisor(record, 'shutdown')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -107,7 +108,7 @@ const Control = (props) => {
             Fleet Control
           </Typography>
           <Button
-            onClick={() => invokeSupervisor(props.record, 'blink')}
+            onClick={() => invokeSupervisor(record, 'blink')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -116,7 +117,7 @@ const Control = (props) => {
           Blink indicator light on device
           <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'reboot')}
+            onClick={() => invokeSupervisor(record, 'reboot')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >
@@ -124,7 +125,7 @@ const Control = (props) => {
           </Button>{' '}
           Reboot device <br />
           <Button
-            onClick={() => invokeSupervisor(props.record, 'shutdown')}
+            onClick={() => invokeSupervisor(record, 'shutdown')}
             variant={'contained'}
             sx={{ p: '4px', m: '4px', minWidth: '180px' }}
           >

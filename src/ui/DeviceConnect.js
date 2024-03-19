@@ -1,8 +1,7 @@
-import React from 'react';
-import { SelectInput, useDataProvider, useAuthProvider } from 'react-admin';
-import { Button } from '@mui/material';
 import ConnectIcon from '@mui/icons-material/Sensors';
-import { Form } from 'react-final-form';
+import { Button } from '@mui/material';
+import React from 'react';
+import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
 var sshpk = require('sshpk-browser');
 
 export class Iframe extends React.Component {
@@ -22,7 +21,8 @@ export class Iframe extends React.Component {
   }
 }
 
-export const DeviceConnect = (props) => {
+export const DeviceConnect = () => {
+  const record = useRecordContext();
   const [loaded, setLoaded] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [containers, setContainers] = React.useState({ choices: [], services: [], links: [] });
@@ -109,12 +109,12 @@ export const DeviceConnect = (props) => {
       setUsername(session.object.username);
       let containerChoices = [{ id: 0, name: 'host' }];
       let containerServices = [[{ id: 0, name: 'SSH' }]];
-      let containerLinks = [[`${REMOTE_HOST}?service=ssh&uuid=${props.record.uuid}&jwt=${session.jwt}`]];
+      let containerLinks = [[`${REMOTE_HOST}?service=ssh&uuid=${record.uuid}&jwt=${session.jwt}`]];
       dataProvider
         .getList('image install', {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { device: props.record.id, status: 'Running' },
+          filter: { device: record.id, status: 'Running' },
         })
         .then((installs) => {
           Promise.all(
@@ -160,7 +160,7 @@ export const DeviceConnect = (props) => {
               let containerName = image.service.data[0]['service name'];
               let services = [{ id: 0, name: 'SSH' }];
               let links = [
-                `${REMOTE_HOST}?service=ssh&container=${containerName}&uuid=${props.record.uuid}&jwt=${session.jwt}`,
+                `${REMOTE_HOST}?service=ssh&container=${containerName}&uuid=${record.uuid}&jwt=${session.jwt}`,
               ];
               if (image.labels.data.find((x) => x['label name'] === 'openbalena.remote.http')) {
                 let name = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.http.label');
@@ -168,7 +168,7 @@ export const DeviceConnect = (props) => {
                 let port = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.http.port');
                 let path = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.http.path');
                 links.push(
-                  `${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '80'}&protocol=http&uuid=${props.record.uuid}&jwt=${session.jwt}`,
+                  `${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '80'}&protocol=http&uuid=${record.uuid}&jwt=${session.jwt}`,
                 );
               }
               if (image.labels.data.find((x) => x['label name'] === 'openbalena.remote.https')) {
@@ -177,7 +177,7 @@ export const DeviceConnect = (props) => {
                 let port = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.https.port');
                 let path = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.https.path');
                 links.push(
-                  `${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '443'}&protocol=https&uuid=${props.record.uuid}&jwt=${session.jwt}`,
+                  `${REMOTE_HOST}${path ? path.value : ''}?service=tunnel&port=${port ? port.value : '443'}&protocol=https&uuid=${record.uuid}&jwt=${session.jwt}`,
                 );
               }
               if (image.labels.data.find((x) => x['label name'] === 'openbalena.remote.vnc')) {
@@ -185,7 +185,7 @@ export const DeviceConnect = (props) => {
                 services.push({ id: services.length, name: name ? name.value : 'VNC' });
                 let port = image.labels.data.find((x) => x['label name'] === 'openbalena.remote.vnc.port');
                 links.push(
-                  `${REMOTE_HOST}?service=vnc&port=${port ? port.value : '5900'}&uuid=${props.record.uuid}&jwt=${session.jwt}`,
+                  `${REMOTE_HOST}?service=vnc&port=${port ? port.value : '5900'}&uuid=${record.uuid}&jwt=${session.jwt}`,
                 );
               }
               containerChoices.push({ id: containerChoices.length, name: containerName });
@@ -199,40 +199,34 @@ export const DeviceConnect = (props) => {
         });
       setLoaded(true);
     }
-  }, [props, authProvider, dataProvider, setLoaded, loaded]);
+  }, [record, authProvider, dataProvider, setLoaded, loaded]);
 
   return (
     <>
-      <Form
-        onSubmit={handleSubmit}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit}>
-            <SelectInput
-              source='container'
-              disabled={containers.choices.length === 0}
-              choices={containers.choices}
-              style={{ marginRight: '16px', marginTop: '8px' }}
-              onChange={(event) => updateServices(event)}
-            />
-            <SelectInput
-              source='service'
-              disabled={services.choices.length === 0}
-              choices={services.choices}
-              style={{ MarginRight: '16px', marginTop: '8px' }}
-            />
-            <Button
-              variant='contained'
-              color='primary'
-              type='submit'
-              style={{ margin: '16px', minWidth: '160px' }}
-              startIcon={<ConnectIcon />}
-              disabled={submitting || pristine}
-            >
-              Connect
-            </Button>
-          </form>
-        )}
-      />
+      <Form onSubmit={handleSubmit}>
+        <SelectInput
+          source='container'
+          disabled={containers.choices.length === 0}
+          choices={containers.choices}
+          style={{ marginRight: '16px', marginTop: '8px' }}
+          onChange={(event) => updateServices(event)}
+        />
+        <SelectInput
+          source='service'
+          disabled={services.choices.length === 0}
+          choices={services.choices}
+          style={{ MarginRight: '16px', marginTop: '8px' }}
+        />
+        <Button
+          variant='contained'
+          color='primary'
+          type='submit'
+          style={{ margin: '16px', minWidth: '160px' }}
+          startIcon={<ConnectIcon />}
+        >
+          Connect
+        </Button>
+      </Form>
       <Iframe src={iframeUrl} width='100%' />,
     </>
   );

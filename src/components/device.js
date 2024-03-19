@@ -1,35 +1,34 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  Datagrid,
-  TextField,
-  FunctionField,
   BooleanField,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
-  SearchInput,
-  ShowButton,
+  Create,
+  Datagrid,
+  Edit,
   EditButton,
-  Toolbar,
+  FormDataConsumer,
+  FunctionField,
+  List,
+  ReferenceField,
   ReferenceInput,
+  SaveButton,
+  SearchInput,
   SelectInput,
+  ShowButton,
+  SimpleForm,
+  TextField,
+  TextInput,
+  Toolbar,
   required,
   useRedirect,
-  SaveButton,
-  FormDataConsumer,
 } from 'react-admin';
-import Tooltip from '@mui/material/Tooltip';
-import SelectOperatingSystem from '../ui/SelectOperatingSystem';
-import DeviceServicesButton from '../ui/DeviceServicesButton';
-import DeviceConnectButton from '../ui/DeviceConnectButton';
-import DeleteDeviceButton from '../ui/DeleteDeviceButton';
-import SemVerChip from '../ui/SemVerChip';
-import { useCreateDevice, useModifyDevice } from '../lib/device';
 import { v4 as uuidv4 } from 'uuid';
+import { useCreateDevice, useModifyDevice } from '../lib/device';
+import DeleteDeviceButton from '../ui/DeleteDeviceButton';
+import DeviceConnectButton from '../ui/DeviceConnectButton';
+import DeviceServicesButton from '../ui/DeviceServicesButton';
+import SelectOperatingSystem from '../ui/SelectOperatingSystem';
+import SemVerChip from '../ui/SemVerChip';
 
 const DeviceTitle = ({ record }) => {
   return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
@@ -58,6 +57,8 @@ const CustomBulkActionButtons = (props) => (
 );
 
 export const DeviceList = (props) => {
+  console.log('props', props);
+
   return (
     <List {...props} filters={deviceFilters}>
       <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>

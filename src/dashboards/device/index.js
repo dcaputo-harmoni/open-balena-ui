@@ -1,12 +1,10 @@
 import * as React from 'react';
-import { ShowView, TabbedShowLayout, Tab } from 'react-admin';
-import { ShowContextProvider } from 'ra-core';
-import Banner from './banner';
-import Summary from './summary';
-import DeviceLogs from '../../ui/DeviceLogs';
+import { Show, Tab, TabbedShowLayout } from 'react-admin';
 import DeviceConnect from '../../ui/DeviceConnect';
+import DeviceLogs from '../../ui/DeviceLogs';
+import Banner from './banner';
 import Control from './control';
-import { useCustomShowController } from './useCustomShowController';
+import Summary from './summary';
 
 /*
 const flexStyle = {
@@ -25,30 +23,29 @@ const useStyles = makeStyles({
 });
 */
 
-const DeviceDashboard = (props) => {
-  const controllerProps = useCustomShowController({ ...props });
+const DeviceDashboard = () => {
   return (
-    <ShowContextProvider value={controllerProps}>
-      <ShowView component='div' title='Device Dashboard' actions={false} {...props} {...controllerProps}>
-        <Banner {...props} {...controllerProps} />
-      </ShowView>
-      <ShowView actions={false} title='&nbsp;' {...props} {...controllerProps}>
-        <TabbedShowLayout style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
-          <Tab label='Summary' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
-            <Summary />
-          </Tab>
-          <Tab label='Logs' style={{ flex: '1' }}>
-            <DeviceLogs />
-          </Tab>
-          <Tab label='Connect' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
-            <DeviceConnect />
-          </Tab>
-          <Tab label='Control' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
-            <Control />
-          </Tab>
-        </TabbedShowLayout>
-      </ShowView>
-    </ShowContextProvider>
+    <Show component='div' title='Device Dashboard' actions={false}>
+      <Banner />
+
+      <TabbedShowLayout style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+        <Tab label='Summary' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <Summary />
+        </Tab>
+
+        <Tab label='Logs' style={{ flex: '1' }}>
+          <DeviceLogs />
+        </Tab>
+
+        <Tab label='Connect' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <DeviceConnect />
+        </Tab>
+
+        <Tab label='Control' style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>
+          <Control />
+        </Tab>
+      </TabbedShowLayout>
+    </Show>
   );
 };
 

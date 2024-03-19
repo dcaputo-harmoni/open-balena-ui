@@ -1,8 +1,7 @@
-import React from 'react';
-import { SelectInput, useDataProvider, useAuthProvider } from 'react-admin';
-import { Button } from '@mui/material';
 import ConnectIcon from '@mui/icons-material/Sensors';
-import { Form } from 'react-final-form';
+import { Button } from '@mui/material';
+import React from 'react';
+import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
 import utf8decode from '../lib/utf8decode';
 
 export class Iframe extends React.Component {
@@ -28,7 +27,8 @@ export class Iframe extends React.Component {
   }
 }
 
-export const DeviceLogs = (props) => {
+export const DeviceLogs = () => {
+  const record = useRecordContext();
   const [loaded, setLoaded] = React.useState(false);
   const [containers, setContainers] = React.useState([]);
   const [content, setContent] = React.useState('');
@@ -36,9 +36,9 @@ export const DeviceLogs = (props) => {
   const authProvider = useAuthProvider();
   const session = authProvider.getSession();
 
-  const handleSubmit = (values) => {
+  const onSubmit = (values) => {
     let API_HOST = process.env.REACT_APP_OPEN_BALENA_API_URL;
-    return fetch(`${API_HOST}/device/v2/${props.record.uuid}/logs`, {
+    return fetch(`${API_HOST}/device/v2/${record.uuid}/logs`, {
       method: 'GET',
       headers: new Headers({
         'Content-Type': 'application/json',
@@ -69,7 +69,7 @@ export const DeviceLogs = (props) => {
         });
       })
       .catch(() => {
-        throw new Error(`Error: Could not get logs for device ${props.record.uuid}`);
+        throw new Error(`Error: Could not get logs for device ${record.uuid}`);
       });
   };
 
@@ -80,7 +80,7 @@ export const DeviceLogs = (props) => {
         .getList('image install', {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { device: props.record.id, status: 'Running' },
+          filter: { device: record.id, status: 'Running' },
         })
         .then((installs) => {
           Promise.all(
@@ -114,33 +114,28 @@ export const DeviceLogs = (props) => {
         });
       setLoaded(true);
     }
-  }, [props, authProvider, dataProvider, setContainers, setLoaded, loaded]);
+  }, [record, authProvider, dataProvider, setContainers, setLoaded, loaded]);
 
   return (
     <>
-      <Form
-        onSubmit={handleSubmit}
-        render={({ handleSubmit, form, submitting, pristine, values }) => (
-          <form onSubmit={handleSubmit}>
-            <SelectInput
-              source='container'
-              disabled={containers.length === 0}
-              choices={containers}
-              style={{ marginRight: '16px', marginTop: '8px' }}
-            />
-            <Button
-              variant='contained'
-              color='primary'
-              type='submit'
-              style={{ margin: '16px', minWidth: '160px' }}
-              startIcon={<ConnectIcon />}
-              disabled={submitting || pristine}
-            >
-              Connect
-            </Button>
-          </form>
-        )}
-      />
+      <Form onSubmit={onSubmit}>
+        <SelectInput
+          source='container'
+          disabled={containers.length === 0}
+          choices={containers}
+          style={{ marginRight: '16px', marginTop: '8px' }}
+        />
+        <Button
+          variant='contained'
+          color='primary'
+          type='submit'
+          style={{ margin: '16px', minWidth: '160px' }}
+          startIcon={<ConnectIcon />}
+        >
+          Connect
+        </Button>
+      </Form>
+
       <Iframe content={content} width='100%' />
     </>
   );

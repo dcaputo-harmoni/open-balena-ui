@@ -1,9 +1,9 @@
+import { Table, TableBody, TableCell, TableRow } from '@mui/material';
+import dateFormat from 'dateformat';
 import * as React from 'react';
-import { TextField, FunctionField, ReferenceField } from 'react-admin';
-import { Table, TableBody, TableRow, TableCell } from '@mui/material';
+import { FunctionField, ReferenceField, TextField, useRecordContext } from 'react-admin';
 import DeviceServices from '../../ui/DeviceServices';
 import SemVerTextField from '../../ui/SemVerTextField';
-import dateFormat from 'dateformat';
 
 const styles = {
   outerTable: {
@@ -54,7 +54,9 @@ const toTitleCase = (str) => {
     .join(' ');
 };
 
-const Summary = (props) => {
+const Summary = () => {
+  const record = useRecordContext();
+
   return (
     <Table sx={styles.outerTable}>
       <TableBody>
@@ -86,7 +88,7 @@ const Summary = (props) => {
                   </TableCell>
                   <TableCell sx={styles.labelCell}>Target Revision</TableCell>
                   <TableCell sx={styles.valueCell}>
-                    {props.record['should be running-release'] ? (
+                    {record['should be running-release'] ? (
                       <ReferenceField source='should be running-release' reference='release' target='id'>
                         <SemVerTextField />
                       </ReferenceField>
@@ -209,7 +211,7 @@ const Summary = (props) => {
                 </TableRow>
                 <TableRow>
                   <TableCell colSpan={4}>
-                    <DeviceServices {...props} />
+                    <DeviceServices />
                   </TableCell>
                 </TableRow>
               </TableBody>

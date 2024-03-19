@@ -1,25 +1,27 @@
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import StopIcon from '@mui/icons-material/Stop';
+import { Button } from '@mui/material';
+import dateFormat from 'dateformat';
 import React from 'react';
 import {
+  ChipField,
+  Datagrid,
+  FunctionField,
   ReferenceField,
   ReferenceManyField,
-  Datagrid,
   TextField,
-  FunctionField,
-  ChipField,
+  Toolbar,
   useAuthProvider,
   useNotify,
-  Toolbar,
+  useRecordContext,
 } from 'react-admin';
-import { Button } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
-import dateFormat from 'dateformat';
 import utf8decode from '../lib/utf8decode';
 
 export const DeviceServices = (props) => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
+  const record = useRecordContext();
 
   const invokeSupervisor = (device, imageInstall, command) => {
     const session = authProvider.getSession();
@@ -57,9 +59,7 @@ export const DeviceServices = (props) => {
       source='id'
       reference='image install'
       target='device'
-      filter={
-        props.record['is running-release'] ? { 'is provided by-release': props.record['is running-release'] } : {}
-      }
+      filter={record['is running-release'] ? { 'is provided by-release': record['is running-release'] } : {}}
     >
       <Datagrid>
         <ReferenceField label='Image' source='installs-image' reference='image' target='id' link={false}>
@@ -82,21 +82,21 @@ export const DeviceServices = (props) => {
           render={(record) => (
             <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'start')}
+                onClick={() => invokeSupervisor(record, record, 'start')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <PlayArrowIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'stop')}
+                onClick={() => invokeSupervisor(record, record, 'stop')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <StopIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'restart')}
+                onClick={() => invokeSupervisor(record, record, 'restart')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >

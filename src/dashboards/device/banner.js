@@ -1,10 +1,11 @@
-import * as React from 'react';
-import { Card, Box, CardActions, Button, Typography, LinearProgress } from '@mui/material';
 import LightModeIcon from '@mui/icons-material/LightMode';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
-import { TextField, ReferenceField, useAuthProvider, useNotify } from 'react-admin';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import { Box, Button, Card, CardActions, LinearProgress, Typography } from '@mui/material';
+import * as React from 'react';
+import { ReferenceField, TextField, useAuthProvider, useNotify } from 'react-admin';
 import utf8decode from '../../lib/utf8decode';
+import { useCustomShowController } from './useCustomShowController';
 
 const styles = {
   bannerCard: {
@@ -39,9 +40,10 @@ const LinearProgressWithLabel = (props) => {
   );
 };
 
-const Banner = (props) => {
+const Banner = () => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
+  const props = useCustomShowController();
 
   const invokeSupervisor = (device, command) => {
     const session = authProvider.getSession();
@@ -71,7 +73,7 @@ const Banner = (props) => {
       });
   };
 
-  if (props.isLoading) return null;
+  if (!props.record) return null;
 
   return (
     <Card sx={styles.bannerCard}>
