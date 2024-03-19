@@ -4,15 +4,14 @@
  * But, updated to @mui/system
  * ... until ra-components updates to not use @mui/styled
  */
-import React, { useState } from 'react';
-import { styled } from '@mui/material/styles';
 import LabelIcon from '@mui/icons-material/Label';
-import { createTheme, ThemeProvider } from '@mui/material/styles';
-import { MenuItemLink, useResourceDefinitions, useTranslate, DashboardMenuItem, useSidebarState } from 'react-admin';
-import PropTypes from 'prop-types';
-import classnames from 'classnames';
 import DefaultIcon from '@mui/icons-material/ViewList';
-import CustomMenuItem from './CustomMenuItem.js';
+import { styled } from '@mui/material/styles';
+import classnames from 'classnames';
+import PropTypes from 'prop-types';
+import React, { useState } from 'react';
+import { DashboardMenuItem, MenuItemLink, useResourceDefinitions, useSidebarState, useTranslate } from 'react-admin';
+import CustomMenuItem from './CustomMenuItem';
 
 const PREFIX = 'RaTreeMenu';
 
@@ -22,7 +21,7 @@ const classes = {
   closed: `${PREFIX}-closed`,
 };
 
-const StyledThemeProvider = styled(ThemeProvider)(({ theme }) => ({
+const StyledTreeMenu = styled('div')(({ theme }) => ({
   [`& .${classes.main}`]: {
     display: 'flex',
     flexDirection: 'column',
@@ -49,9 +48,7 @@ const StyledThemeProvider = styled(ThemeProvider)(({ theme }) => ({
   },
 }));
 
-const theme = createTheme();
-
-export const TreeMenu = (props) => {
+const TreeMenu = (props) => {
   const { className, dense, hasDashboard, onMenuClick, logout, dashboardlabel, setMenuColors, ...rest } = props;
 
   const translate = useTranslate();
@@ -165,7 +162,7 @@ export const TreeMenu = (props) => {
     });
 
   return (
-    <StyledThemeProvider theme={theme}>
+    <StyledTreeMenu>
       <div
         className={classnames(classes.main, className, {
           [classes.open]: open,
@@ -184,7 +181,7 @@ export const TreeMenu = (props) => {
         )}
         {resRenderGroup}
       </div>
-    </StyledThemeProvider>
+    </StyledTreeMenu>
   );
 };
 
@@ -204,3 +201,5 @@ TreeMenu.defaultProps = {
   dashboardlabel: 'Dashboard',
   setMenuColors: true,
 };
+
+export default TreeMenu;

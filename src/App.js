@@ -1,8 +1,7 @@
-import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
-import { Admin, Layout, Resource, fetchUtils, nanoLightTheme, nanoDarkTheme } from 'react-admin';
-import { useParams, Route, Navigate } from 'react-router-dom';
-import postgrestDataProvider from './dataProvider/postgrestDataProvider';
+import * as React from 'react';
+import { Admin, Layout, Resource, fetchUtils, nanoDarkTheme, nanoLightTheme } from 'react-admin';
+import { Navigate, Route, useParams } from 'react-router-dom';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';
 import config from './components/config';
@@ -17,8 +16,8 @@ import deviceTag from './components/deviceTag';
 import deviceType from './components/deviceType';
 import deviceTypeAlias from './components/deviceTypeAlias';
 import fleet from './components/fleet';
-import fleetEnvVar from './components/fleetEnvVar';
 import fleetConfigVar from './components/fleetConfigVar';
+import fleetEnvVar from './components/fleetEnvVar';
 import fleetTag from './components/fleetTag';
 import fleetType from './components/fleetType';
 import image from './components/image';
@@ -34,10 +33,11 @@ import serviceEnvVar from './components/serviceEnvVar';
 import serviceLabel from './components/serviceLabel';
 import user from './components/user';
 import userKey from './components/userKey';
-import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
-import versions from './versions';
+import MainDashboard from './dashboards/main';
+import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import TreeMenu from './ui/TreeMenu';
+import versions from './versions';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
