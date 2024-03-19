@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDataProvider, SelectInput } from 'react-admin';
 
-export const SelectOperatingSystem = ({ basepath, ...props }) => {
+export const SelectOperatingSystem = (props) => {
   const [loaded, setLoaded] = React.useState(null);
   const [availableOperatingSystems, setAvailableOperatingSystems] = React.useState([]);
   const dataProvider = useDataProvider();

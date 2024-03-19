@@ -30,7 +30,7 @@ const DeviceDashboard = (props) => {
   return (
     <ShowContextProvider value={controllerProps}>
       <ShowView component='div' title='Device Dashboard' actions={false} {...props} {...controllerProps}>
-        <Banner />
+        <Banner {...props} {...controllerProps} />
       </ShowView>
       <ShowView actions={false} title='&nbsp;' {...props} {...controllerProps}>
         <TabbedShowLayout style={{ width: '100%', display: 'flex', flexDirection: 'column', flex: '1' }}>

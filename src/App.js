@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { createTheme } from '@mui/material/styles';
 import { Admin, Layout, Resource, fetchUtils, nanoLightTheme, nanoDarkTheme } from 'react-admin';
-import { Route, Navigate } from 'react-router-dom';
+import { useParams, Route, Navigate } from 'react-router-dom';
 import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';

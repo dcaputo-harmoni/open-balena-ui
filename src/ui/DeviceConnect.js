@@ -22,7 +22,7 @@ export class Iframe extends React.Component {
   }
 }
 
-export const DeviceConnect = ({ basepath, ...props }) => {
+export const DeviceConnect = (props) => {
   const [loaded, setLoaded] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [containers, setContainers] = React.useState({ choices: [], services: [], links: [] });

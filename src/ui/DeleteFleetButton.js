@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
 import { useDeleteFleet, useDeleteFleetBulk } from '../lib/fleet';
 
-export const DeleteFleetButton = ({ basepath, ...props }) => {
+export const DeleteFleetButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -20,7 +20,7 @@ export const DeleteFleetButton = ({ basepath, ...props }) => {
     }
     setOpen(false);
     notify('Fleet(s) successfully deleted');
-    redirect(props.redirect, basepath);
+    redirect(props.redirect);
   };
 
   return (

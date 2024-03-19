@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
 import { useDeleteDevice, useDeleteDeviceBulk } from '../lib/device';
 
-export const DeleteDeviceButton = ({ basepath, ...props }) => {
+export const DeleteDeviceButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -20,7 +20,7 @@ export const DeleteDeviceButton = ({ basepath, ...props }) => {
     }
     setOpen(false);
     notify('Device(s) successfully deleted');
-    redirect(props.redirect, basepath);
+    redirect(props.redirect);
   };
 
   return (

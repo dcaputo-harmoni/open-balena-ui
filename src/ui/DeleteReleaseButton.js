@@ -5,7 +5,7 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
 import { useDeleteRelease, useDeleteReleaseBulk } from '../lib/release';
 
-export const DeleteReleaseButton = ({ basepath, selectedIds, record, context, ...props }) => {
+export const DeleteReleaseButton = ({ selectedIds, record, context, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -21,7 +21,7 @@ export const DeleteReleaseButton = ({ basepath, selectedIds, record, context, ..
     }
     setOpen(false);
     notify('Release(s) successfully deleted');
-    redirect(props.redirect, basepath);
+    redirect(props.redirect);
   };
 
   React.useEffect(() => {

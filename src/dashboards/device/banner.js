@@ -71,7 +71,7 @@ const Banner = (props) => {
       });
   };
 
-  if (props.loading) return null;
+  if (props.isLoading) return null;
 
   return (
     <Card sx={styles.bannerCard}>

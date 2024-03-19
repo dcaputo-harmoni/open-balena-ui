@@ -5,7 +5,7 @@ import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import { Form } from 'react-final-form';
 import { useDeleteApiKey, useDeleteApiKeyBulk } from '../lib/apiKey';
 
-export const DeleteApiKeyButton = ({ basepath, ...props }) => {
+export const DeleteApiKeyButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -20,7 +20,7 @@ export const DeleteApiKeyButton = ({ basepath, ...props }) => {
     }
     setOpen(false);
     notify('API Key(s) successfully deleted');
-    redirect(props.redirect, basepath);
+    redirect(props.redirect);
   };
 
   return (

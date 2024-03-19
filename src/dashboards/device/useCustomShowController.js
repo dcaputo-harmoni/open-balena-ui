@@ -1,42 +1,49 @@
-import { useCheckMinimumRequiredProps, useGetList, useTranslate } from 'react-admin';
+import { useResourceDefinition, useTranslate, useGetOne } from 'react-admin';
 import { useResourceContext, useGetResourceLabel } from 'ra-core';
+import { useParams } from 'react-router-dom';
 
 export const useCustomShowController = (props) => {
-  useCheckMinimumRequiredProps('Show', ['basepath', 'resource'], props);
-  const { basepath, hasCreate, hasEdit, hasList, hasShow, id } = props;
+  const { id: propId, location } = useParams();
+  const { hasCreate, hasEdit, hasList, hasShow } = useResourceDefinition();
+
   const resource = useResourceContext(props);
   const translate = useTranslate();
-  let searchParams = {};
-  if (id === '0') {
-    const queryParams = props.location.search.split('?')[1].split('=');
-    const uuidIdx = queryParams.indexOf('uuid') + 1;
-    if (uuidIdx > 0) {
-      searchParams.uuid = queryParams[uuidIdx];
+
+  let id = propId;
+  if (id === '0' && location && location.search) {
+    const searchParams = new URLSearchParams(location.search);
+    const uuid = searchParams.get('uuid');
+    if (uuid) {
+      id = uuid;
     }
-  } else {
-    searchParams.id = id;
   }
-  let {
-    data: record,
-    error,
-    loading,
-    loaded,
-    refetch,
-    ids,
-  } = useGetList(resource, { page: 1, perPage: 1000 }, { field: 'id', order: 'ASC' }, searchParams);
-  record = record[ids[0]];
+
+  const { data: record, error, isLoading, refetch } = useGetOne(resource, id);
 
   const getResourceLabel = useGetResourceLabel();
-  const defaultTitle = translate('ra.page.show', { name: getResourceLabel(resource, 1), id, record });
-  if (!record) return null;
+  const defaultTitle = translate('ra.page.show', {
+    name: getResourceLabel(resource, 1),
+    id,
+    record,
+  });
+
+  if (isLoading) {
+    return { isLoading };
+  }
+  if (error) {
+    return { error };
+  }
+
+  if (!record) {
+    return null;
+  }
+
   return {
+    record,
     error,
-    loading,
-    loaded,
+    isLoading,
     defaultTitle,
     resource,
-    basepath,
-    record,
     refetch,
     hasCreate,
     hasEdit,
