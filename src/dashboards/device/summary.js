@@ -129,7 +129,7 @@ const Summary = () => {
                   <TableCell sx={styles.labelCell}>VPN State</TableCell>
                   <TableCell sx={styles.valueCell}>
                     <FunctionField
-                      render={(record) => `${record['is connected to vpn'] === 1 ? 'Connected' : 'Disconnected'}`}
+                      render={(record) => `${record['is connected to vpn'] ? 'Connected' : 'Disconnected'}`}
                     />
                   </TableCell>
                   <TableCell sx={styles.labelCell}>As of</TableCell>

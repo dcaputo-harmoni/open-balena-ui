@@ -28,7 +28,7 @@ import DeleteDeviceButton from '../ui/DeleteDeviceButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
-import SemVerChip from '../ui/SemVerChip';
+import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
 const DeviceTitle = ({ record }) => {
   return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
@@ -143,7 +143,7 @@ export const DeviceCreate = (props) => {
                 filter={{ 'belongs to-application': formData['belongs to-application'] }}
                 allowEmpty
               >
-                <SelectInput optionText='revision' optionValue='id' />
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
               </ReferenceInput>
             )
           }
@@ -218,7 +218,7 @@ export const DeviceEdit = (props) => {
                 filter={{ 'belongs to-application': formData['belongs to-application'] }}
                 allowEmpty
               >
-                <SelectInput optionText='revision' optionValue='id' />
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
               </ReferenceInput>
             )
           }

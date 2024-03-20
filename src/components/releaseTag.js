@@ -17,7 +17,7 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
-import SemVerChip from '../ui/SemVerChip';
+import SemVerChip, { getSemver } from '../ui/SemVerChip';
 import { TrimField } from '../ui/TrimField';
 
 const ReleaseTagTitle = ({ record }) => {
@@ -84,7 +84,7 @@ export const ReleaseTagCreate = (props) => {
                 perPage={1000}
                 sort={{ field: 'revision', order: 'ASC' }}
               >
-                <SelectInput optionText='revision' optionValue='id' validate={required()} />
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
               </ReferenceInput>
             )
           }
@@ -121,7 +121,7 @@ export const ReleaseTagEdit = (props) => (
               perPage={1000}
               sort={{ field: 'revision', order: 'ASC' }}
             >
-              <SelectInput optionText='revision' optionValue='id' validate={required()} />
+              <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
             </ReferenceInput>
           )
         }
