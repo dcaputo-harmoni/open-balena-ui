@@ -22,17 +22,35 @@ const classes = {
 };
 
 const StyledMenu = styled('div')(({ theme }) => ({
+  'background': theme.palette.primary.main,
+
+  'li, a': {
+    'color': 'white',
+    'paddingTop': '12px',
+    'paddingBottom': '12px',
+
+    '&.RaMenuItemLink-active': {
+      'fontWeight': 'bold',
+      'color': 'white',
+
+      '.MuiListItemIcon-root': {
+        color: 'white',
+      },
+    },
+
+    '&:hover': {
+      background: theme.palette.primary.dark,
+    },
+  },
+
+  '.MuiListItemIcon-root': {
+    color: 'rgba(255,255,255,0.7)',
+  },
+
   [`& .${classes.main}`]: {
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    marginTop: '0.5em',
-    [theme.breakpoints.only('xs')]: {
-      marginTop: 0,
-    },
-    [theme.breakpoints.up('md')]: {
-      marginTop: '1.5em',
-    },
     transition: theme.transitions.create('width', {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -40,11 +58,11 @@ const StyledMenu = styled('div')(({ theme }) => ({
   },
 
   [`& .${classes.open}`]: {
-    width: 200,
+    width: 230,
   },
 
   [`& .${classes.closed}`]: {
-    width: 55,
+    width: 52,
   },
 }));
 
@@ -109,7 +127,6 @@ const TreeMenu = (props) => {
       onClick={onMenuClick}
       dense={dense}
       sidebarIsOpen={open}
-      sx={setMenuColors ? { color: 'secondary.main' } : {}}
     />
   );
 
@@ -123,7 +140,7 @@ const TreeMenu = (props) => {
         name={getPrimaryTextForResource(parentResource)}
         icon={parentResource.icon ? <parentResource.icon /> : <LabelIcon />}
         dense={dense}
-        setMenuColors={setMenuColors}
+        setMenuColors={false}
       >
         {
           // eslint-disable-next-line
@@ -173,15 +190,7 @@ const TreeMenu = (props) => {
         })}
         {...rest}
       >
-        {hasDashboard && (
-          <DashboardMenuItem
-            onClick={onMenuClick}
-            dense={dense}
-            sidebarIsOpen={open}
-            primaryText={dashboardlabel}
-            sx={setMenuColors ? { color: 'primary.main' } : {}}
-          />
-        )}
+        <DashboardMenuItem onClick={onMenuClick} dense={dense} sidebarIsOpen={open} primaryText={dashboardlabel} />
         {resRenderGroup}
       </div>
     </StyledMenu>

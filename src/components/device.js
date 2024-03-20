@@ -1,7 +1,5 @@
 import * as React from 'react';
 import {
-  BooleanField,
-  ChipField,
   Create,
   Datagrid,
   Edit,
@@ -14,7 +12,6 @@ import {
   SaveButton,
   SearchInput,
   SelectInput,
-  ShowButton,
   SimpleForm,
   TextField,
   TextInput,
@@ -38,9 +35,15 @@ const OnlineField = (props) => {
   return (
     <FunctionField
       {...props}
-      render={(record, source) => (
-        <BooleanField source='enabled' record={{ ...record, enabled: record[source] === 'online' }} />
-      )}
+      render={(record, source) => {
+        const isOnline = record[source] === 'online';
+
+        if (isOnline) {
+          return <strong style={{ color: 'green' }}>Online</strong>;
+        }
+
+        return <strong style={{ color: 'red' }}>Offline</strong>;
+      }}
     />
   );
 };
@@ -60,30 +63,46 @@ export const DeviceList = (props) => {
   return (
     <List {...props} filters={deviceFilters}>
       <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
-        <TextField source='id' />
-        <FunctionField label='UUID' render={(record) => record['uuid'].substring(0, 7)} />
-        <TextField label='Name' source='device name' />
+        <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
+          <TextField source='device name' />
+        </ReferenceField>
+
         <OnlineField label='Online' source='api heartbeat state' />
-        <TextField label='Status' source='status' />
+
+        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
+          <SemVerChip />
+        </ReferenceField>
+
+        <ReferenceField label='Device Type' source='is of-device type' reference='device type' target='id' link={false}>
+          <TextField source='slug' />
+        </ReferenceField>
+
+        <ReferenceField label='Fleet' source='belongs to-application' reference='application' target='id'>
+          <TextField source='app name' />
+        </ReferenceField>
+
         <FunctionField
           label='OS'
           render={(record) =>
             record['os version'] && record['os variant'] ? `${record['os version']}-${record['os variant']}` : ''
           }
         />
-        <ReferenceField label='Device Type' source='is of-device type' reference='device type' target='id'>
-          <ChipField source='slug' />
-        </ReferenceField>
-        <ReferenceField label='Fleet' source='belongs to-application' reference='application' target='id'>
-          <ChipField source='app name' />
-        </ReferenceField>
-        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
-          <SemVerChip />
-        </ReferenceField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
+
+        <FunctionField label='UUID' render={(record) => record['uuid'].substring(0, 7)} />
+
+        <Toolbar
+          style={{
+            minHeight: 0,
+            minWidth: 0,
+            padding: 0,
+            margin: 0,
+            background: 'none',
+            display: 'flex',
+            justifyContent: 'flex-end',
+          }}
+        >
           <DeviceServicesButton label='' />
           <DeviceConnectButton label='' />
-          <ShowButton label='' />
           <EditButton label='' />
           <DeleteDeviceButton variant='text' size='small' />
         </Toolbar>

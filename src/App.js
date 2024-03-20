@@ -1,3 +1,4 @@
+import { CssBaseline } from '@mui/material';
 import * as React from 'react';
 import { Admin, Layout, Resource, fetchUtils } from 'react-admin';
 import { Navigate, Route, useParams } from 'react-router-dom';
@@ -36,6 +37,7 @@ import DeviceDashboard from './dashboards/device';
 import MainDashboard from './dashboards/main';
 import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import TreeMenu from './ui/TreeMenu';
+import customTheme from './ui/customTheme';
 import versions from './versions';
 
 const httpClient = (url, options = {}) => {
@@ -61,7 +63,12 @@ const customRoutes = [
   <Route key='custom-route-device-summary' path='/devices/:uuid/summary' element={<NavigateToDevice />} />,
 ];
 
-const treeLayout = (props) => <Layout {...props} menu={TreeMenu} />;
+const treeLayout = (props) => (
+  <>
+    <Layout {...props} sidebar={TreeMenu} />
+    <CssBaseline />
+  </>
+);
 
 const OpenBalenaAdmin = () => (
   <Admin
@@ -73,6 +80,7 @@ const OpenBalenaAdmin = () => (
     dashboard={MainDashboard}
     customRoutes={customRoutes}
     layout={treeLayout}
+    theme={customTheme}
   >
     <Resource name='menu-access' options={{ label: 'Access', isMenuParent: true }} />
     <Resource name='organization' options={{ label: 'Orgs', menuParent: 'menu-access' }} {...organization} />
