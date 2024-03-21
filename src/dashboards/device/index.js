@@ -12,7 +12,7 @@ const DeviceDashboard = () => {
 
       <TabbedShowLayout
         sx={{
-          'marginTop': '-3px',
+          'marginTop': '-10px',
           '.MuiDivider-root': {
             display: 'none',
           },
@@ -21,8 +21,8 @@ const DeviceDashboard = () => {
             boxShadow: 'rgba(0, 0, 0, 0.1) 0px 8px 8px 0px',
             border: '1px solid rgba(0, 0, 0, 0.12)',
             borderTopWidth: 0,
-            borderBottomLeftRadius: '3px',
-            borderBottomRightRadius: '3px',
+            borderBottomLeftRadius: '10px',
+            borderBottomRightRadius: '10px',
             overflow: 'hidden',
           },
           '.MuiTab-root': {

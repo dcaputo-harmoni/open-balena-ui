@@ -13,7 +13,7 @@ const buttonBase = {
     root: {
       textTransform: 'none',
       fontWeight: 'bold',
-      borderRadius: 2,
+      borderRadius: 5,
       transition: 'none',
       lineHeight: '1',
       paddingTop: '0',
@@ -127,7 +127,7 @@ const customTheme = createTheme({
 
         #main-content {
           background: #f8f9fd !important;
-          padding: 15px !important;
+          padding: 30px !important;
           margin-left: 230px;
         }
 
@@ -382,7 +382,7 @@ const customTheme = createTheme({
         },
 
         root: {
-          'borderRadius': 2,
+          'borderRadius': 5,
           'height': 48,
           'fontSize': 16,
           'lineHeight': 1,
@@ -443,9 +443,10 @@ const customTheme = createTheme({
       styleOverrides: {
         root: {
           background: theme.palette.background.default,
-          borderRadius: 2,
+          borderRadius: 10,
           boxShadow: 'rgba(0, 0, 0, 0.1) 0px 0px 6px 0px',
           border: `1px solid ${theme.palette.divider}`,
+          overflow: 'hidden',
         },
       },
     },

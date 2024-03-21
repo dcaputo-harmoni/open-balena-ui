@@ -2,10 +2,8 @@ import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import StopIcon from '@mui/icons-material/Stop';
 import { Button } from '@mui/material';
-import dateFormat from 'dateformat';
 import React from 'react';
 import {
-  ChipField,
   Datagrid,
   FunctionField,
   ReferenceField,
@@ -17,6 +15,7 @@ import {
   useRecordContext,
 } from 'react-admin';
 import utf8decode from '../lib/utf8decode';
+import SemVerChip from './SemVerChip';
 
 export const DeviceServices = (props) => {
   const authProvider = useAuthProvider();
@@ -70,14 +69,16 @@ export const DeviceServices = (props) => {
             target='id'
             link={(record, reference) => `/${reference}/${record['is a build of-service']}`}
           >
-            <ChipField source='service name' />
+            <TextField source='service name' />
           </ReferenceField>
         </ReferenceField>
+
         <TextField label='Status' source='status' />
-        <FunctionField
-          label='Install Date'
-          render={(record) => `${dateFormat(new Date(record['install date']), 'dd-mmm-yy h:MM:ss TT Z')}`}
-        />
+
+        <ReferenceField label='Release' source='is provided by-release' reference='release' target='id'>
+          <SemVerChip />
+        </ReferenceField>
+
         <FunctionField
           render={(record) => (
             <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>

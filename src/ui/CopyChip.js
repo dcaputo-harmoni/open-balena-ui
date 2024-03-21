@@ -3,11 +3,16 @@ import { Box } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import React from 'react';
 
-const CopyChip = ({ title, label }) => {
+const CopyChip = ({ style, title, label, placement = 'top' }) => {
   const [copied, setCopied] = React.useState(false);
+
+  if (!label) {
+    return null;
+  }
 
   return (
     <Box
+      style={style}
       sx={{
         'display': 'flex',
         'alignItems': 'center',
@@ -19,7 +24,7 @@ const CopyChip = ({ title, label }) => {
         },
       }}
     >
-      <Tooltip title={title} placement='top' arrow={true}>
+      <Tooltip title={title === label ? '' : title} placement={placement} arrow={true}>
         <Box
           sx={{
             padding: '2px 6px',

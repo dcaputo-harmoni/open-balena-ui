@@ -84,7 +84,7 @@ const Banner = () => {
           <Box maxWidth='40em'>
             <p style={{ marginBottom: '5px' }}>
               <b>Fleet: </b>
-              <ReferenceField source='belongs to-application' reference='application' target='id' link={false}>
+              <ReferenceField source='belongs to-application' reference='application' target='id'>
                 <TextField source='app name' style={{ fontSize: '12pt' }} />
               </ReferenceField>
             </p>

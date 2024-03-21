@@ -1,4 +1,5 @@
-import { useTheme } from '@mui/material';
+import { Tooltip, useTheme } from '@mui/material';
+import dateFormat from 'dateformat';
 import * as React from 'react';
 import {
   Create,
@@ -38,11 +39,17 @@ export const OnlineField = (props) => {
       render={(record, source) => {
         const isOnline = record[source] === 'online';
 
-        if (isOnline) {
-          return <strong style={{ color: theme.palette.success.main }}>Online</strong>;
-        }
-
-        return <strong style={{ color: theme.palette.error.main }}>Offline</strong>;
+        return (
+          <Tooltip
+            placement='top'
+            arrow={true}
+            title={'Since ' + dateFormat(new Date(record['last connectivity event']))}
+          >
+            <strong style={{ color: isOnline ? theme.palette.success.light : theme.palette.error.light }}>
+              {isOnline ? 'Online' : 'Offline'}
+            </strong>
+          </Tooltip>
+        );
       }}
     />
   );
