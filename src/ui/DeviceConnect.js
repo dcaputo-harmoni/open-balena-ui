@@ -1,5 +1,4 @@
-import ConnectIcon from '@mui/icons-material/Sensors';
-import { Button } from '@mui/material';
+import { Box } from '@mui/material';
 import React from 'react';
 import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
 var sshpk = require('sshpk-browser');
@@ -14,7 +13,13 @@ export class Iframe extends React.Component {
           src={this.props.src}
           height={this.props.height}
           width={this.props.width}
-          style={{ flex: '1', position: 'relative', minHeight: this.props.minHeight }}
+          frameBorder={0}
+          style={{
+            flex: '1',
+            position: 'relative',
+            minHeight: '400px',
+            background: 'rgb(52, 52, 52)',
+          }}
         />
       </div>
     );
@@ -26,7 +31,6 @@ export const DeviceConnect = () => {
   const [loaded, setLoaded] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [containers, setContainers] = React.useState({ choices: [], services: [], links: [] });
-  const [services, setServices] = React.useState({ choices: [] });
   const [iframeUrl, setIframeUrl] = React.useState('');
   const dataProvider = useDataProvider();
   const authProvider = useAuthProvider();
@@ -85,31 +89,30 @@ export const DeviceConnect = () => {
       });
   };
 
-  const handleSubmit = (values) => {
+  const handleSubmit = (container) => {
     genRsaKeys().then((rsaKeys) => {
       upsertUserPublicKey(rsaKeys.publicKeySsh).then((result) => {
-        let targetUrl = containers.links[values.container][values.service];
-        if (containers.services[values.container][values.service].name === 'SSH') {
-          targetUrl += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
-        }
+        let targetUrl = containers.links[container][0];
+
+        targetUrl += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
+
         setIframeUrl(targetUrl);
       });
     });
   };
 
-  const updateServices = (event) => {
-    let idx = event.target.value;
-    setServices({ choices: containers.services[idx] });
-  };
-
   React.useEffect(() => {
     if (!loaded) {
       let REMOTE_HOST = process.env.REACT_APP_OPEN_BALENA_REMOTE_URL;
+
       let session = authProvider.getSession();
+
       setUsername(session.object.username);
+
       let containerChoices = [{ id: 0, name: 'host' }];
       let containerServices = [[{ id: 0, name: 'SSH' }]];
       let containerLinks = [[`${REMOTE_HOST}?service=ssh&uuid=${record.uuid}&jwt=${session.jwt}`]];
+
       dataProvider
         .getList('image install', {
           pagination: { page: 1, perPage: 1000 },
@@ -204,30 +207,36 @@ export const DeviceConnect = () => {
   return (
     <>
       <Form onSubmit={handleSubmit}>
-        <SelectInput
-          source='container'
-          disabled={containers.choices.length === 0}
-          choices={containers.choices}
-          style={{ marginRight: '16px', marginTop: '8px' }}
-          onChange={(event) => updateServices(event)}
-        />
-        <SelectInput
-          source='service'
-          disabled={services.choices.length === 0}
-          choices={services.choices}
-          style={{ MarginRight: '16px', marginTop: '8px' }}
-        />
-        <Button
-          variant='contained'
-          color='primary'
-          type='submit'
-          style={{ margin: '16px', minWidth: '160px' }}
-          startIcon={<ConnectIcon />}
+        <Box
+          sx={{
+            'display': 'flex',
+            'padding': '5px 15px',
+            'alignItems': 'center',
+            '.MuiFormHelperText-root, .MuiFormLabel-root': {
+              display: 'none',
+            },
+            '.MuiOutlinedInput-root': {
+              height: '35px',
+            },
+            '.MuiSelect-select': {
+              padding: '9px 14px',
+            },
+          }}
         >
-          Connect
-        </Button>
+          <strong style={{ flex: 1 }}>Terminal</strong>
+
+          <SelectInput
+            source='container'
+            disabled={containers.choices.length === 0}
+            choices={containers.choices}
+            onChange={(event) => {
+              handleSubmit(event.target.value);
+            }}
+          />
+        </Box>
       </Form>
-      <Iframe src={iframeUrl} width='100%' />,
+
+      <Iframe src={iframeUrl} width='100%' height='100%' />
     </>
   );
 };

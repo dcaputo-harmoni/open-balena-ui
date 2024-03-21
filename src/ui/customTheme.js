@@ -122,12 +122,12 @@ const customTheme = createTheme({
         }
 
         .RaLayout-appFrame {
-          margin-top: 70px !important;
+          margin-top: 60px !important;
         }
 
         #main-content {
           background: #f8f9fd !important;
-          padding: 30px !important;
+          padding: 15px !important;
           margin-left: 230px;
         }
 
@@ -260,7 +260,7 @@ const customTheme = createTheme({
           'border': 'none',
           'borderRadius': '0',
           'boxShadow': 'none',
-          'height': '70px',
+          'height': '60px',
           'justifyContent': 'center',
 
           '.RaAppBar-menuButton': {

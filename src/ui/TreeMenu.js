@@ -178,7 +178,7 @@ const TreeMenu = (props) => {
 
   return (
     <StyledMenu>
-      <img src={require('../logo.svg')} className='logo' style={{ margin: '15px 12px 11px' }} />
+      <img src={require('../logo.svg')} className='logo' style={{ margin: '10px 12px 6px' }} />
 
       <div
         className={classnames(classes.main, className, {
