@@ -3,14 +3,15 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Box, Button, Card, CardActions, LinearProgress, Typography } from '@mui/material';
 import * as React from 'react';
-import { ReferenceField, TextField, useAuthProvider, useNotify, useRecordContext } from 'react-admin';
+import { FunctionField, ReferenceField, TextField, useAuthProvider, useNotify, useRecordContext } from 'react-admin';
+import { OnlineField } from '../../components/device';
 import utf8decode from '../../lib/utf8decode';
 
 const styles = {
   bannerCard: {
-    padding: '1.5em',
+    padding: '1em',
     marginTop: 0,
-    marginBottom: '1em',
+    paddingBottom: '2em',
   },
   actionCard: {
     'padding': 0,
@@ -18,7 +19,7 @@ const styles = {
     '& button': {
       marginTop: '2em',
       marginLeft: '0.25em !important',
-      marginRight: '2em',
+      marginRight: '1em',
     },
   },
 };
@@ -77,53 +78,74 @@ const Banner = () => {
       <Box display='flex'>
         <Box flex='1'>
           <Typography variant='h5' component='h2' gutterBottom>
-            Device "{record['device name']}"
+            {record['device name']}
           </Typography>
+
           <Box maxWidth='40em'>
-            <Typography variant='body1' component='p' gutterBottom>
-              <b>UUID:</b> {record.uuid}
-              <br />
-              <b>Fleet:</b>&nbsp;
+            <p style={{ marginBottom: '5px' }}>
+              <b>Fleet: </b>
               <ReferenceField source='belongs to-application' reference='application' target='id' link={false}>
                 <TextField source='app name' style={{ fontSize: '12pt' }} />
               </ReferenceField>
-            </Typography>
+            </p>
+
+            <p style={{ margin: 0 }}>
+              <b>Status: </b>
+              <OnlineField source='api heartbeat state' />
+            </p>
           </Box>
+
           <CardActions sx={styles.actionCard}>
-            <Button
-              variant='contained'
-              onClick={() => invokeSupervisor(record, 'blink')}
-              sx={{ minWidth: '140px' }}
-              startIcon={<LightModeIcon />}
-            >
-              Blink
-            </Button>
-            <Button
-              variant='contained'
-              onClick={() => invokeSupervisor(record, 'reboot')}
-              sx={{ minWidth: '140px' }}
-              startIcon={<RestartAltIcon />}
-            >
-              Reboot
-            </Button>
-            <Button
-              variant='contained'
-              onClick={() => invokeSupervisor(record, 'shutdown')}
-              sx={{ minWidth: '140px' }}
-              startIcon={<PowerSettingsNewIcon />}
-            >
-              Shutdown
-            </Button>
+            <FunctionField
+              render={(record) => {
+                const isOffline = record['api heartbeat state'] !== 'online';
+
+                return (
+                  <>
+                    <Button
+                      variant='outlined'
+                      size='medium'
+                      onClick={() => invokeSupervisor(record, 'blink')}
+                      startIcon={<LightModeIcon />}
+                      disabled={isOffline}
+                    >
+                      Blink
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      size='medium'
+                      onClick={() => invokeSupervisor(record, 'reboot')}
+                      startIcon={<RestartAltIcon />}
+                      disabled={isOffline}
+                    >
+                      Reboot
+                    </Button>
+                    <Button
+                      variant='outlined'
+                      size='medium'
+                      onClick={() => invokeSupervisor(record, 'shutdown')}
+                      startIcon={<PowerSettingsNewIcon />}
+                      disabled={isOffline}
+                    >
+                      Shutdown
+                    </Button>
+                  </>
+                );
+              }}
+            />
           </CardActions>
         </Box>
-        <Box display='block' height='9.5em' overflow='hidden'>
+
+        <Box display='block' height='10em' overflow='hidden'>
           <LinearProgressWithLabel label='CPU' value={isFinite(record['cpu usage']) ? record['cpu usage'] : 0} />
+
           <LinearProgressWithLabel
             label='Temp'
             value={isFinite(record['cpu temp']) ? (record['cpu temp'] / 90) * 100 : 0}
             displayValue={isFinite(record['cpu temp']) ? record['cpu temp'] : 0}
             displayUnits='&deg;C'
           />
+
           <LinearProgressWithLabel
             label='SD'
             value={
@@ -132,6 +154,7 @@ const Banner = () => {
                 : 0
             }
           />
+
           <LinearProgressWithLabel
             label='RAM'
             value={

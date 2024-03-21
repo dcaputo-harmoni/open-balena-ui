@@ -64,7 +64,6 @@ const customRoutes = [
 ];
 
 const treeLayout = (props) => {
-  console.log(props);
   return (
     <>
       <Layout {...props} sidebar={TreeMenu} />

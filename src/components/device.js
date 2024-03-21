@@ -21,6 +21,7 @@ import {
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
 import { useCreateDevice, useModifyDevice } from '../lib/device';
+import CopyChip from '../ui/CopyChip';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
@@ -28,7 +29,7 @@ import Row from '../ui/Row';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
-const OnlineField = (props) => {
+export const OnlineField = (props) => {
   const theme = useTheme();
 
   return (
@@ -86,7 +87,10 @@ export const DeviceList = (props) => {
           }
         />
 
-        <FunctionField label='UUID' render={(record) => record['uuid'].substring(0, 7)} />
+        <FunctionField
+          label='UUID'
+          render={(record) => <CopyChip title={record['uuid']} label={record['uuid'].substring(0, 7)} />}
+        />
 
         <Toolbar sx={{ background: 'none', padding: '0' }}>
           <DeviceServicesButton variant='outlined' size='small' />

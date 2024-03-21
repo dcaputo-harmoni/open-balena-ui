@@ -245,6 +245,11 @@ const customTheme = createTheme({
             }
           }
         }
+
+        .RaTabbedShowLayout-content {
+          padding: 0 !important;
+          margin-top: 30px !important;
+        }
       `.styles,
     },
 
@@ -510,7 +515,7 @@ const customTheme = createTheme({
             backgroundColor: '#f8f9fd',
           },
 
-          'tr:hover': {
+          'tr.MuiTableRow-hover:hover': {
             backgroundColor: 'rgba(51, 219, 238, 0.07)' + '!important',
           },
         },

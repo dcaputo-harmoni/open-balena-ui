@@ -38,7 +38,7 @@ const SemVerChip = ({ record, showBlankOnNull = false }) => {
   const commit = record['commit'] ?? 'unknown commit';
 
   return (
-    <Tooltip title={commit}>
+    <Tooltip title={commit} placement='top' arrow={true}>
       <Chip label={semver} size='small' />
     </Tooltip>
   );
