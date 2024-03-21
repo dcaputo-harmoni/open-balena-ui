@@ -84,25 +84,35 @@ const Fleets = (props) => {
                         </TableBody>
                       </Table>
                     </CardContent>
-                    <CardActions sx={{ paddingTop: '4px', paddingBottom: '4px', justifyContent: 'center' }}>
+                    <CardActions sx={{ paddingTop: '15px', paddingBottom: '4px' }}>
                       <Button
-                        variant='text'
-                        size='small'
                         href={`/#/device?filter={"belongs to-application": ${record['id']}}`}
-                        style={{ minWidth: '40px' }}
-                      >
-                        <DevicesIcon style={{ marginRight: '4px' }} />
-                      </Button>
-                      <Button
-                        variant='text'
                         size='small'
-                        href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}
-                        style={{ minWidth: '40px' }}
+                        variant='outlined'
+                        style={{ minWidth: '0' }}
                       >
-                        <AddIcon style={{ marginRight: '4px' }} />
+                        <DevicesIcon />
                       </Button>
-                      <EditButton record={record} label='' style={{ minWidth: '40px' }} />
-                      <EnvVarButton resource='application' record={record} label='' style={{ minWidth: '40px' }} />
+
+                      <Button
+                        href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}
+                        size='small'
+                        variant='outlined'
+                        style={{ minWidth: '0' }}
+                      >
+                        <AddIcon />
+                      </Button>
+
+                      <EditButton record={record} label='' size='small' variant='outlined' style={{ minWidth: '0' }} />
+
+                      <EnvVarButton
+                        resource='application'
+                        record={record}
+                        label=''
+                        size='small'
+                        variant='outlined'
+                        style={{ minWidth: '0' }}
+                      />
                     </CardActions>
                   </Card>
                 </Grid>

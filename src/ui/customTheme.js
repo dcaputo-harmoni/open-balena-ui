@@ -234,6 +234,17 @@ const customTheme = createTheme({
             }
           }
         }
+
+        .RaEditButton-root,
+        [class$='RaButton-root'] {
+          .MuiButton-icon {
+            margin: 0 !important;
+
+            svg {
+              top: 0 !important;
+            }
+          }
+        }
       `.styles,
     },
 

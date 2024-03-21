@@ -84,11 +84,25 @@ const Devices = (props) => {
                         </TableBody>
                       </Table>
                     </CardContent>
-                    <CardActions sx={{ paddingTop: '4px', paddingBottom: '4px', justifyContent: 'center' }}>
-                      <DeviceConnectButton record={record} label='' style={{ minWidth: '40px', marginRight: '7px' }} />
-                      <ShowButton record={record} label='' style={{ minWidth: '40px' }} />
-                      <EditButton record={record} label='' style={{ minWidth: '40px' }} />
-                      <EnvVarButton resource='device' record={record} label='' style={{ minWidth: '40px' }} />
+
+                    <CardActions sx={{ paddingTop: '15px', paddingBottom: '4px' }}>
+                      <DeviceConnectButton
+                        record={record}
+                        label=''
+                        size='small'
+                        variant='outlined'
+                        style={{ minWidth: '0' }}
+                      />
+                      <ShowButton record={record} label='' size='small' variant='outlined' style={{ minWidth: '0' }} />
+                      <EditButton record={record} label='' size='small' variant='outlined' style={{ minWidth: '0' }} />
+                      <EnvVarButton
+                        resource='device'
+                        record={record}
+                        label=''
+                        size='small'
+                        variant='outlined'
+                        style={{ minWidth: '0' }}
+                      />
                     </CardActions>
                   </Card>
                 </Grid>
