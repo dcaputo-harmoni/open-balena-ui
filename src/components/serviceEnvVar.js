@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   Datagrid,
   DeleteButton,
   Edit,
   EditButton,
   FormDataConsumer,
+  FunctionField,
   List,
   ReferenceField,
   ReferenceInput,
@@ -17,30 +17,38 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
-import { TrimField } from '../ui/TrimField';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 
-const ServiceEnvVarTitle = ({ record }) => {
-  return <span>Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const ServiceEnvVarList = (props) => {
+export const ServiceEnvVarList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <ReferenceField label='Fleet' source='service' reference='service' target='id'>
           <ReferenceField source='application' reference='application' target='id'>
-            <ChipField source='app name' />
+            <TextField source='app name' />
           </ReferenceField>
         </ReferenceField>
+
         <ReferenceField label='Service' source='service' reference='service' target='id'>
-          <ChipField source='service name' />
+          <TextField source='service name' />
         </ReferenceField>
+
         <TextField label='Name' source='name' />
-        <TrimField label='Value' source='value' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -54,74 +62,55 @@ export const ServiceEnvVarCreate = (props) => {
   };
 
   return (
-    <Create transform={processCreate} {...props}>
+    <Create title='Create Service Environment Var' transform={processCreate} {...props}>
       <SimpleForm redirect='list'>
-        <ReferenceInput
-          label='Fleet'
-          source='application'
-          reference='application'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'app name', order: 'ASC' }}
-        >
-          <SelectInput optionText='app name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['application'] && (
-              <ReferenceInput
-                label='Service'
-                source='service'
-                reference='service'
-                target='id'
-                filter={{ application: formData.application }}
-                perPage={1000}
-                sort={{ field: 'service name', order: 'ASC' }}
-              >
-                <SelectInput optionText='service name' optionValue='id' validate={required()} />
-              </ReferenceInput>
-            )
-          }
-        </FormDataConsumer>
-        <TextInput label='Name' source='name' validate={required()} />
-        <TextInput label='Value' source='value' validate={required()} />
+        <Row>
+          <ReferenceInput
+            label='Fleet'
+            source='application'
+            reference='application'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'app name', order: 'ASC' }}
+          >
+            <SelectInput optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+          </ReferenceInput>
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['application'] && (
+                <ReferenceInput
+                  label='Service'
+                  source='service'
+                  reference='service'
+                  target='id'
+                  filter={{ application: formData.application }}
+                  perPage={1000}
+                  sort={{ field: 'service name', order: 'ASC' }}
+                >
+                  <SelectInput optionText='service name' optionValue='id' validate={required()} />
+                </ReferenceInput>
+              )
+            }
+          </FormDataConsumer>
+        </Row>
+
+        <Row>
+          <TextInput label='Name' source='name' validate={required()} size='large' />
+          <TextInput label='Value' source='value' validate={required()} size='large' />
+        </Row>
       </SimpleForm>
     </Create>
   );
 };
 
-export const ServiceEnvVarEdit = (props) => (
-  <Edit title={<ServiceEnvVarTitle />} {...props}>
+export const ServiceEnvVarEdit = () => (
+  <Edit title='Edit Service Environment Var'>
     <SimpleForm>
-      <ReferenceInput
-        label='Fleet'
-        source='application'
-        reference='application'
-        target='id'
-        perPage={1000}
-        sort={{ field: 'app name', order: 'ASC' }}
-      >
-        <SelectInput optionText='app name' optionValue='id' validate={required()} />
-      </ReferenceInput>
-      <FormDataConsumer>
-        {({ formData, ...rest }) =>
-          formData['application'] && (
-            <ReferenceInput
-              label='Service'
-              source='service'
-              reference='service'
-              target='id'
-              filter={{ application: formData.application }}
-              perPage={1000}
-              sort={{ field: 'service name', order: 'ASC' }}
-            >
-              <SelectInput optionText='service name' optionValue='id' validate={required()} />
-            </ReferenceInput>
-          )
-        }
-      </FormDataConsumer>
-      <TextInput label='Name' source='name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+      <Row>
+        <TextInput label='Name' source='name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

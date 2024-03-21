@@ -17,7 +17,7 @@ export const SelectDevice = (props) => {
           filter: {},
         })
         .then((devices) => {
-          if (record['service install']) {
+          if (record?.['service install']) {
             dataProvider
               .getOne('service install', {
                 id: record['service install'],
@@ -33,7 +33,7 @@ export const SelectDevice = (props) => {
           }
         });
     }
-  }, [props, dataProvider, loaded, setLoaded, availableDevices, setAvailableDevices]);
+  }, [record, props, dataProvider, loaded, setLoaded, availableDevices, setAvailableDevices]);
 
   if (!loaded) return null;
 

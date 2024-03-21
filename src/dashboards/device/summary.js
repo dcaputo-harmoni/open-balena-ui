@@ -24,7 +24,6 @@ const Summary = () => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          marginTop: '15px',
         }}
       >
         <div style={{ width: '50%', marginRight: '7.5px' }}>

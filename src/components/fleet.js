@@ -2,7 +2,6 @@ import * as React from 'react';
 import {
   BooleanField,
   BooleanInput,
-  ChipField,
   Create,
   Datagrid,
   Edit,
@@ -13,7 +12,6 @@ import {
   ReferenceField,
   ReferenceInput,
   SaveButton,
-  SelectField,
   SelectInput,
   SimpleForm,
   TextField,
@@ -27,11 +25,8 @@ import { useParams } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
 import { useCreateFleet } from '../lib/fleet';
 import DeleteFleetButton from '../ui/DeleteFleetButton';
+import Row from '../ui/Row';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
-
-const FleetTitle = ({ record }) => {
-  return <span>Fleet {record ? `"${record['app name']}"` : ''}</span>;
-};
 
 const BooleanBinaryField = (props) => {
   return (
@@ -46,9 +41,8 @@ const BooleanBinaryField = (props) => {
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
-    <DeleteFleetButton variant='text' size='small' {...props}>
-      {' '}
-      Delete{' '}
+    <DeleteFleetButton size='small' {...props}>
+      Delete Selected Fleets
     </DeleteFleetButton>
   </React.Fragment>
 );
@@ -56,35 +50,45 @@ const CustomBulkActionButtons = (props) => (
 export const FleetList = () => {
   return (
     <List>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
-        <TextField source='id' />
+      <Datagrid
+        bulkActionButtons={<CustomBulkActionButtons />}
+        size='medium'
+        sx={{
+          '.column-is, .column-should.track.latest.release': {
+            textAlign: 'center',
+          },
+          '.column-is.for-device.type': {
+            textAlign: 'left',
+          },
+        }}
+      >
         <TextField label='Name' source='app name' />
+
         <ReferenceField label='Organization' source='organization' reference='organization' target='id'>
-          <ChipField source='name' />
+          <TextField source='name' />
         </ReferenceField>
+
         <TextField label='Slug' source='slug' />
+
         <ReferenceField label='Device Type' source='is for-device type' reference='device type' target='id'>
-          <ChipField source='slug' />
+          <TextField source='slug' />
         </ReferenceField>
-        <BooleanBinaryField label='Track Latest Rel.' source='should track latest release' />
+
         <ReferenceField label='Target Rel.' source='should be running-release' reference='release' target='id'>
           <SemVerChip />
         </ReferenceField>
-        <SelectField
-          label='Class'
-          source='is of-class'
-          choices={[
-            { id: 'fleet', name: 'Fleet' },
-            { id: 'app', name: 'App' },
-            { id: 'block', name: 'Block' },
-          ]}
-        />
+
         <BooleanBinaryField label='Host' source='is host' />
+
         <BooleanBinaryField label='Archived' source='is archived' />
+
         <BooleanBinaryField label='Public' source='is public' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteFleetButton variant='text' size='small' />
+
+        <BooleanBinaryField label='Track Latest Rel.' source='should track latest release' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteFleetButton size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -95,93 +99,116 @@ export const FleetCreate = (props) => {
   let createFleet = useCreateFleet();
 
   return (
-    <Create transform={createFleet} {...props}>
+    <Create title='Create Fleet' transform={createFleet} {...props}>
       <SimpleForm redirect='list'>
-        <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} />
-        <TextInput source='slug' validate={required()} />
+        <Row>
+          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
+
+          <TextInput source='slug' validate={required()} size='large' />
+        </Row>
+
         <TextInput
           source='uuid'
           initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
           validate={[required(), minLength(32), maxLength(32)]}
+          size='large'
+          fullWidth={true}
         />
-        <ReferenceInput
-          label='Device Type'
-          source='is for-device type'
-          reference='device type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'slug', order: 'ASC' }}
-        >
-          <SelectInput optionText='slug' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Organization'
-          source='organization'
-          reference='organization'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'name', order: 'ASC' }}
-        >
-          <SelectInput optionText='name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Fleet Type'
-          source='application type'
-          reference='application type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'name', order: 'ASC' }}
-          initialValue={1}
-        >
-          <SelectInput optionText='name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <BooleanInput
-          label='Track Latest Release'
-          source='should track latest release'
-          format={(v) => v !== 0}
-          parse={(v) => (v ? 1 : 0)}
-          initialValue={1}
-        />
-        <SelectInput
-          label='Class'
-          source='is of-class'
-          choices={[
-            { id: 'fleet', name: 'Fleet' },
-            { id: 'app', name: 'App' },
-            { id: 'block', name: 'Block' },
-          ]}
-          initialValue={'fleet'}
-        />
-        <BooleanInput
-          label='Host'
-          source='is host'
-          format={(v) => v !== 0}
-          parse={(v) => (v ? 1 : 0)}
-          initialValue={0}
-        />
-        <BooleanInput
-          label='Archived'
-          source='is archived'
-          format={(v) => v !== 0}
-          parse={(v) => (v ? 1 : 0)}
-          initialValue={0}
-        />
-        <BooleanInput
-          label='Public'
-          source='is public'
-          format={(v) => v !== 0}
-          parse={(v) => (v ? 1 : 0)}
-          initialValue={0}
-        />
-        <ReferenceInput
-          label='Depends on Fleet'
-          source='depends on-application'
-          reference='application'
-          target='id'
-          allowEmpty
-        >
-          <SelectInput optionText='app name' optionValue='id' />
-        </ReferenceInput>
+
+        <Row>
+          <SelectInput
+            label='Class'
+            source='is of-class'
+            choices={[
+              { id: 'fleet', name: 'Fleet' },
+              { id: 'app', name: 'App' },
+              { id: 'block', name: 'Block' },
+            ]}
+            initialValue={'fleet'}
+          />
+
+          <ReferenceInput
+            label='Depends on Fleet'
+            source='depends on-application'
+            reference='application'
+            target='id'
+            allowEmpty
+          >
+            <SelectInput optionText='app name' optionValue='id' />
+          </ReferenceInput>
+        </Row>
+
+        <Row>
+          <ReferenceInput
+            label='Device Type'
+            source='is for-device type'
+            reference='device type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+          >
+            <SelectInput optionText='slug' optionValue='id' validate={required()} />
+          </ReferenceInput>
+
+          <ReferenceInput
+            label='Organization'
+            source='organization'
+            reference='organization'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'name', order: 'ASC' }}
+          >
+            <SelectInput optionText='name' optionValue='id' validate={required()} />
+          </ReferenceInput>
+
+          <ReferenceInput
+            label='Fleet Type'
+            source='application type'
+            reference='application type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'name', order: 'ASC' }}
+            initialValue={1}
+          >
+            <SelectInput optionText='name' optionValue='id' validate={required()} />
+          </ReferenceInput>
+        </Row>
+
+        <br />
+
+        <Row>
+          <BooleanInput
+            label='Track Latest Release'
+            source='should track latest release'
+            format={(v) => v !== 0}
+            parse={(v) => (v ? 1 : 0)}
+            initialValue={1}
+          />
+
+          <BooleanInput
+            label='Host'
+            source='is host'
+            format={(v) => v !== 0}
+            parse={(v) => (v ? 1 : 0)}
+            initialValue={0}
+          />
+
+          <BooleanInput
+            label='Archived'
+            source='is archived'
+            format={(v) => v !== 0}
+            parse={(v) => (v ? 1 : 0)}
+            initialValue={0}
+          />
+
+          <BooleanInput
+            label='Public'
+            source='is public'
+            format={(v) => v !== 0}
+            parse={(v) => (v ? 1 : 0)}
+            initialValue={0}
+          />
+        </Row>
       </SimpleForm>
     </Create>
   );
@@ -189,13 +216,9 @@ export const FleetCreate = (props) => {
 
 const CustomToolbar = (props) => (
   <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton />
-    <DeleteFleetButton
-      variant='text'
-      sx={{ 'padding': '6px', 'color': '#f44336', '.hover': { backgroundColor: '#fff', color: '#3c52b2' } }}
-    >
-      {' '}
-      Delete{' '}
+    <SaveButton sx={{ flex: 1 }} />
+    <DeleteFleetButton size='large' sx={{ marginLeft: '40px' }}>
+      Delete
     </DeleteFleetButton>
   </Toolbar>
 );
@@ -204,86 +227,101 @@ export const FleetEdit = () => {
   const { id: fleetId } = useParams();
 
   return (
-    <Edit title={<FleetTitle />}>
+    <Edit title='Edit Fleet'>
       <SimpleForm toolbar={<CustomToolbar />}>
-        <TextInput disabled source='id' />
-        <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} />
-        <TextInput source='slug' validate={required()} />
-        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} />
-        <ReferenceInput
-          label='Device Type'
-          source='is for-device type'
-          reference='device type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'slug', order: 'ASC' }}
-        >
-          <SelectInput optionText='slug' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Organization'
-          source='organization'
-          reference='organization'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'name', order: 'ASC' }}
-        >
-          <SelectInput optionText='name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Fleet Type'
-          source='application type'
-          reference='application type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'name', order: 'ASC' }}
-        >
-          <SelectInput optionText='name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <BooleanInput
-          label='Track Latest Release'
-          source='should track latest release'
-          format={(v) => v !== 0}
-          parse={(v) => (v ? 1 : 0)}
-        />
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['should track latest release'] === 0 && (
-              <ReferenceInput
-                label='Target Release'
-                source='should be running-release'
-                reference='release'
-                target='id'
-                filter={{ 'belongs to-application': fleetId }}
-                allowEmpty
-              >
-                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
-              </ReferenceInput>
-            )
-          }
-        </FormDataConsumer>
-        <SelectInput
-          label='Class'
-          source='is of-class'
-          choices={[
-            { id: 'fleet', name: 'Fleet' },
-            { id: 'app', name: 'App' },
-            { id: 'block', name: 'Block' },
-          ]}
-          initialValue={'fleet'}
-        />
-        <BooleanInput label='Host' source='is host' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
-        <BooleanInput label='Archived' source='is archived' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
-        <BooleanInput label='Public' source='is public' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
-        <ReferenceInput
-          label='Depends on Fleet'
-          source='depends on-application'
-          reference='application'
-          target='id'
-          allowEmpty
-        >
-          <SelectInput optionText='app name' optionValue='id' />
-        </ReferenceInput>
+        <Row>
+          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
+          <TextInput source='slug' validate={required()} size='large' />
+        </Row>
+
+        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} />
+
+        <Row>
+          <SelectInput
+            label='Class'
+            source='is of-class'
+            choices={[
+              { id: 'fleet', name: 'Fleet' },
+              { id: 'app', name: 'App' },
+              { id: 'block', name: 'Block' },
+            ]}
+            initialValue={'fleet'}
+          />
+
+          <ReferenceInput
+            label='Depends on Fleet'
+            source='depends on-application'
+            reference='application'
+            target='id'
+            allowEmpty
+          >
+            <SelectInput optionText='app name' optionValue='id' />
+          </ReferenceInput>
+        </Row>
+
+        <Row>
+          <ReferenceInput
+            label='Device Type'
+            source='is for-device type'
+            reference='device type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+          >
+            <SelectInput optionText='slug' optionValue='id' validate={required()} />
+          </ReferenceInput>
+          <ReferenceInput
+            label='Organization'
+            source='organization'
+            reference='organization'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'name', order: 'ASC' }}
+          >
+            <SelectInput optionText='name' optionValue='id' validate={required()} />
+          </ReferenceInput>
+          <ReferenceInput
+            label='Fleet Type'
+            source='application type'
+            reference='application type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'name', order: 'ASC' }}
+          >
+            <SelectInput optionText='name' optionValue='id' validate={required()} />
+          </ReferenceInput>
+        </Row>
+
+        <br />
+
+        <Row>
+          <BooleanInput
+            label='Track Latest Release'
+            source='should track latest release'
+            format={(v) => v !== 0}
+            parse={(v) => (v ? 1 : 0)}
+          />
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['should track latest release'] === 0 && (
+                <ReferenceInput
+                  label='Target Release'
+                  source='should be running-release'
+                  reference='release'
+                  target='id'
+                  filter={{ 'belongs to-application': fleetId }}
+                  allowEmpty
+                >
+                  <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
+                </ReferenceInput>
+              )
+            }
+          </FormDataConsumer>
+
+          <BooleanInput label='Host' source='is host' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
+          <BooleanInput label='Archived' source='is archived' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
+          <BooleanInput label='Public' source='is public' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
+        </Row>
       </SimpleForm>
     </Edit>
   );

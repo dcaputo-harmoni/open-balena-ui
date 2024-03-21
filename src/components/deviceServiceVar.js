@@ -1,12 +1,12 @@
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   Datagrid,
   DeleteButton,
   Edit,
   EditButton,
   FormDataConsumer,
+  FunctionField,
   List,
   ReferenceField,
   SimpleForm,
@@ -16,24 +16,21 @@ import {
   required,
 } from 'react-admin';
 import { useCreateDeviceServiceVar, useModifyDeviceServiceVar } from '../lib/deviceServiceVar';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
-import { TrimField } from '../ui/TrimField';
 
-const DeviceServiceVarTitle = ({ record }) => {
-  return <span>Device Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const DeviceServiceVarList = (props) => {
+export const DeviceServiceVarList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Device Service Vars'>
+      <Datagrid size='medium'>
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
-            <ChipField source='uuid' />
+            <TextField source='device name' />
           </ReferenceField>
         </ReferenceField>
+
         <ReferenceField label='Service' source='service install' reference='service install' target='id' link={false}>
           <ReferenceField
             source='installs-service'
@@ -41,26 +38,25 @@ export const DeviceServiceVarList = (props) => {
             target='id'
             link={(record, reference) => `/${reference}/${record['installs-service']}`}
           >
-            <ChipField source='service name' />
+            <TextField source='service name' />
           </ReferenceField>
         </ReferenceField>
+
         <TextField label='Name' source='name' />
-        <TrimField label='Value' source='value' />
-        <ReferenceField label='Fleet' source='service install' reference='service install' target='id' link={false}>
-          <ReferenceField source='device' reference='device' target='id' link={false}>
-            <ReferenceField
-              source='belongs to-application'
-              reference='application'
-              target='id'
-              link={(record, reference) => `/${reference}/${record['belongs to-application']}`}
-            >
-              <ChipField source='app name' />
-            </ReferenceField>
-          </ReferenceField>
-        </ReferenceField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -71,39 +67,62 @@ export const DeviceServiceVarCreate = (props) => {
   const createDeviceServiceVar = useCreateDeviceServiceVar();
 
   return (
-    <Create transform={createDeviceServiceVar} {...props}>
+    <Create title='Create Device Service Var' transform={createDeviceServiceVar} {...props}>
       <SimpleForm redirect='list'>
-        <SelectDevice label='Device' source='device' />
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['device'] && (
-              <SelectDeviceService label='Service' source='service install' device={formData.device} />
-            )
-          }
-        </FormDataConsumer>
-        <TextInput label='Name' source='name' validate={required()} />
-        <TextInput label='Value' source='value' validate={required()} />
+        <Row>
+          <SelectDevice label='Device' source='device' />
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['device'] && (
+                <SelectDeviceService
+                  label='Service'
+                  source='service install'
+                  device={formData.device}
+                  fullWidth={true}
+                />
+              )
+            }
+          </FormDataConsumer>
+        </Row>
+
+        <Row>
+          <TextInput label='Name' source='name' validate={required()} size='large' />
+          <TextInput label='Value' source='value' validate={required()} size='large' />
+        </Row>
       </SimpleForm>
     </Create>
   );
 };
 
-export const DeviceServiceVarEdit = (props) => {
+export const DeviceServiceVarEdit = () => {
   const modifyDeviceServiceVar = useModifyDeviceServiceVar();
 
   return (
-    <Edit transform={modifyDeviceServiceVar} title={<DeviceServiceVarTitle />} {...props}>
+    <Edit transform={modifyDeviceServiceVar} title='Edit Device Service Var'>
       <SimpleForm>
-        <SelectDevice label='Device' source='device' />
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['device'] && (
-              <SelectDeviceService label='Service' source='service install' device={formData.device} />
-            )
-          }
-        </FormDataConsumer>
-        <TextInput label='Name' source='name' validate={required()} />
-        <TextInput label='Value' source='value' validate={required()} />
+        <Row>
+          <SelectDevice label='Device' source='device' />
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) => {
+              return (
+                (formData['device'] || formData['service install']) && (
+                  <SelectDeviceService
+                    label='Service'
+                    source='service install'
+                    device={formData.device || formData['service install']}
+                  />
+                )
+              );
+            }}
+          </FormDataConsumer>
+        </Row>
+
+        <Row>
+          <TextInput label='Name' source='name' validate={required()} size='large' />
+          <TextInput label='Value' source='value' validate={required()} size='large' />
+        </Row>
       </SimpleForm>
     </Edit>
   );
