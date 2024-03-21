@@ -128,6 +128,7 @@ const customTheme = createTheme({
         #main-content {
           background: #f8f9fd !important;
           padding: 15px !important;
+          margin-left: 230px;
         }
 
         .RaShow-main,
@@ -162,8 +163,20 @@ const customTheme = createTheme({
           height: 100vh;
         }
 
+        .RaBulkActionsToolbar-toolbar {
+          padding-left: 20px !important;
+          padding-right: 15px !important;
+          align-items: center !important;
+
+          .MuiToolbar-root {
+            min-height: 0 !important;
+            padding: 0 !important;
+          }
+        }
+
         .RaList-actions {
           align-items: center !important;
+          padding-left: 2px;
 
           .MuiToolbar-root {
             align-items: center !important;
@@ -238,15 +251,15 @@ const customTheme = createTheme({
             display: 'none',
           },
 
-          '.logo': {
-            width: '200px',
-            marginLeft: '5px',
-          },
-
           '#react-admin-title': {
             textAlign: 'center',
             fontWeight: 'bold',
-            marginLeft: '75px',
+            marginLeft: '230px',
+          },
+
+          '[class$="RaLoadingIndicator-root"]': {
+            position: 'relative',
+            right: '25px',
           },
         },
       },

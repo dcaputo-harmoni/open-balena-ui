@@ -23,7 +23,12 @@ const classes = {
 
 const StyledMenu = styled('div')(({ theme }) => ({
   'background': theme.palette.text.primary,
-  'boxShadow': 'rgba(0, 0, 0, 0.1) 0px 0px 6px 0px',
+  'position': 'fixed',
+  'left': 0,
+  'top': 0,
+  'bottom': 0,
+  'width': 230,
+  'zIndex': 1101,
 
   'li, a': {
     'color': 'white',
@@ -53,18 +58,6 @@ const StyledMenu = styled('div')(({ theme }) => ({
     display: 'flex',
     flexDirection: 'column',
     justifyContent: 'flex-start',
-    transition: theme.transitions.create('width', {
-      easing: theme.transitions.easing.sharp,
-      duration: theme.transitions.duration.leavingScreen,
-    }),
-  },
-
-  [`& .${classes.open}`]: {
-    width: 230,
-  },
-
-  [`& .${classes.closed}`]: {
-    width: 52,
   },
 }));
 
@@ -185,6 +178,8 @@ const TreeMenu = (props) => {
 
   return (
     <StyledMenu>
+      <img src={require('../logo.svg')} className='logo' style={{ margin: '15px 12px 11px' }} />
+
       <div
         className={classnames(classes.main, className, {
           [classes.open]: open,

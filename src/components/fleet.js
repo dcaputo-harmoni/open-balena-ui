@@ -53,10 +53,10 @@ const CustomBulkActionButtons = (props) => (
   </React.Fragment>
 );
 
-export const FleetList = (props) => {
+export const FleetList = () => {
   return (
-    <List {...props}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
+    <List>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <TextField source='id' />
         <TextField label='Name' source='app name' />
         <ReferenceField label='Organization' source='organization' reference='organization' target='id'>

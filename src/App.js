@@ -1,6 +1,6 @@
 import { CssBaseline } from '@mui/material';
 import * as React from 'react';
-import { Admin, AppBar, Layout, Resource, TitlePortal, fetchUtils } from 'react-admin';
+import { Admin, Layout, Resource, fetchUtils } from 'react-admin';
 import { Navigate, Route, useParams } from 'react-router-dom';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';
@@ -67,16 +67,7 @@ const treeLayout = (props) => {
   console.log(props);
   return (
     <>
-      <Layout
-        {...props}
-        sidebar={TreeMenu}
-        appBar={() => (
-          <AppBar>
-            <img className='logo' src={require('./logo.svg')} />
-            <TitlePortal />
-          </AppBar>
-        )}
-      />
+      <Layout {...props} sidebar={TreeMenu} />
       <CssBaseline />
     </>
   );

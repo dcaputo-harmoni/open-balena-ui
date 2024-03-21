@@ -1,3 +1,4 @@
+import { useTheme } from '@mui/material';
 import * as React from 'react';
 import {
   Create,
@@ -28,6 +29,8 @@ import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
 const OnlineField = (props) => {
+  const theme = useTheme();
+
   return (
     <FunctionField
       {...props}
@@ -35,10 +38,10 @@ const OnlineField = (props) => {
         const isOnline = record[source] === 'online';
 
         if (isOnline) {
-          return <strong style={{ color: 'green' }}>Online</strong>;
+          return <strong style={{ color: theme.palette.success.main }}>Online</strong>;
         }
 
-        return <strong style={{ color: 'red' }}>Offline</strong>;
+        return <strong style={{ color: theme.palette.error.main }}>Offline</strong>;
       }}
     />
   );
@@ -48,9 +51,8 @@ const deviceFilters = [<SearchInput source='#uuid,device name,status@ilike' alwa
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
-    <DeleteDeviceButton variant='text' size='small' {...props}>
-      {' '}
-      Delete{' '}
+    <DeleteDeviceButton size='small' {...props}>
+      Delete Selected Devices
     </DeleteDeviceButton>
   </React.Fragment>
 );
