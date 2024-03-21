@@ -8,8 +8,6 @@ import utf8decode from '../../lib/utf8decode';
 
 const styles = {
   bannerCard: {
-    background: '#2196f3',
-    color: '#ffffff',
     padding: '1.5em',
     marginTop: 0,
     marginBottom: '1em',

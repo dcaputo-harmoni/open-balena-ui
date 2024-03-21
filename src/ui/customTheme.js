@@ -1,44 +1,6 @@
 import { LinearProgress, createTheme, css } from '@mui/material';
 import React from 'react';
 
-const MappedColors = {
-  white: '#ffffff',
-  black: '#000000',
-
-  eletricBlue: {
-    main: '#4A3BCF',
-    a70: '#8076DD',
-    a50: '#A49DE7',
-    a20: '#DBD8F5',
-    a10: '#F6F5Fd',
-  },
-  blue: {
-    main: '#4D5F80',
-    a80: '#717F99',
-    a60: '#A0AEC0',
-    a40: '#B8BFCC',
-    a10: '#EDEFF2',
-  },
-  slate: {
-    main: '#191F2C',
-    a70: '#5E626B',
-    a50: '#8C8F95',
-    a20: '#D1D2D5',
-    a10: '#E8E9EA',
-    a05: '#f6f6f6',
-    a03: '#F9F9F9',
-  },
-  teal: {
-    main: '#51C0AC',
-  },
-  alert: {
-    main: '#F56565',
-  },
-  notice: {
-    main: '#F2C94C',
-  },
-};
-
 const buttonBase = {
   defaultProps: {
     disableElevation: true,
@@ -101,35 +63,21 @@ const buttonBase = {
 };
 
 const palette = {
-  divider: MappedColors.slate.a10,
-  background: {
-    default: MappedColors.white,
-    paper: MappedColors.slate.a03,
+  chip: {
+    background: '#c3efff',
+    color: '#006387',
   },
   text: {
-    ...MappedColors.slate,
-    primary: MappedColors.slate.main,
-    secondary: MappedColors.slate.a70,
-    disabled: MappedColors.slate.a50,
+    primary: '#23445e',
   },
   primary: {
-    ...MappedColors.eletricBlue,
-    light: MappedColors.eletricBlue.a70,
+    main: '#2a506f',
+    contrastText: '#fff',
   },
   secondary: {
-    ...MappedColors.eletricBlue,
+    main: '#1496e1',
     contrastText: '#fff',
   },
-  action: {
-    hover: MappedColors.slate.a05,
-  },
-  success: {
-    ...MappedColors.teal,
-    contrastText: '#fff',
-  },
-  error: MappedColors.alert,
-  warning: MappedColors.notice,
-  info: MappedColors.blue,
 };
 
 let theme = createTheme({ palette });
@@ -173,12 +121,38 @@ const customTheme = createTheme({
           background-color: white;
         }
 
+        .RaLayout-appFrame {
+          margin-top: 70px !important;
+        }
+
         #main-content {
+          background: #f8f9fd !important;
           padding: 15px !important;
         }
 
-        .RaShow-main.RaShow-noActions {
+        .RaShow-main,
+        .RaCreate-main,
+        .RaEdit-main {
           margin-top: 0 !important;
+        }
+
+        .edit-page,
+        .create-page {
+          height: 100%;
+        }
+
+        .RaCreate-main,
+        .RaEdit-main {
+          display: flex;
+          width: 100%;
+          align-items: center !important;
+          justify-content: center !important;
+          height: 100%;
+
+          > div {
+            padding: 30px;
+            max-width: 800px;
+          }
         }
 
         .RaList-noResults {
@@ -205,15 +179,103 @@ const customTheme = createTheme({
             }
           }
         }
+
+        .RaCreate-main,
+        .RaEdit-main {
+          .MuiToolbar-root {
+            min-height: 0 !important;
+            padding: 16px !important;
+            background: none !important;
+          }
+
+          .RaToolbar-defaultToolbar {
+            display: flex;
+            justify-content: flex-end !important;
+
+            button {
+              flex: 1;
+            }
+
+            .ra-delete-button {
+              display: none;
+            }
+          }
+        }
+
+        .RaDatagrid-tableWrapper {
+          td {
+            .MuiToolbar-root {
+              min-height: 0 !important;
+              padding: 0 !important;
+              justify-content: flex-end !important;
+
+              .MuiButtonBase-root {
+                min-width: 0 !important;
+                margin-left: 10px !important;
+              }
+
+              .MuiButton-icon,
+              button > svg {
+                margin: 0 !important;
+              }
+            }
+          }
+        }
       `.styles,
     },
 
     MuiAppBar: {
       styleOverrides: {
         root: {
-          border: 'none',
-          boxShadow: 'none',
-          borderRadius: '0',
+          'background': theme.palette.text.primary,
+          'border': 'none',
+          'borderRadius': '0',
+          'boxShadow': 'none',
+          'height': '70px',
+          'justifyContent': 'center',
+
+          '.RaAppBar-menuButton': {
+            display: 'none',
+          },
+
+          '.logo': {
+            width: '200px',
+            marginLeft: '5px',
+          },
+
+          '#react-admin-title': {
+            textAlign: 'center',
+            fontWeight: 'bold',
+            marginLeft: '75px',
+          },
+        },
+      },
+    },
+
+    MuiCardHeader: {
+      styleOverrides: {
+        root: {
+          backgroundColor: '#f2f4fa',
+        },
+      },
+    },
+
+    MuiChip: {
+      defaultProps: {
+        size: 'small',
+      },
+      styleOverrides: {
+        root: {
+          'background': theme.palette.chip.background,
+          'border': 'none',
+
+          '.MuiChip-label, .MuiChip-icon': {
+            'color': theme.palette.chip.color + '!important',
+
+            '&.MuiChip-labelSmall': {
+              padding: '0 12px',
+            },
+          },
         },
       },
     },
@@ -391,7 +453,7 @@ const customTheme = createTheme({
       styleOverrides: {
         root: {
           '&, *': {
-            color: theme.palette.primary.light + '!important',
+            color: theme.palette.secondary.main + '!important',
           },
 
           '&:hover': {
@@ -402,6 +464,9 @@ const customTheme = createTheme({
     },
 
     MuiTable: {
+      defaultProps: {
+        size: 'medium',
+      },
       styleOverrides: {
         root: {
           'borderColor': theme.palette.divider,
@@ -410,6 +475,7 @@ const customTheme = createTheme({
             textTransform: 'uppercase',
             fontSize: '12px',
             fontWeight: 'bold',
+            backgroundColor: '#f2f4fa !important',
           },
 
           'th, td': {
@@ -417,11 +483,11 @@ const customTheme = createTheme({
           },
 
           'tbody tr:nth-child(even)': {
-            backgroundColor: '#F9F9F9',
+            backgroundColor: '#f8f9fd',
           },
 
           'tr:hover': {
-            backgroundColor: 'rgba(74,59,207,0.05) !important',
+            backgroundColor: 'rgba(51, 219, 238, 0.07)' + '!important',
           },
         },
       },

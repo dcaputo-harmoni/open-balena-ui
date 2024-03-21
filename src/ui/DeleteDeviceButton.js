@@ -34,9 +34,10 @@ export const DeleteDeviceButton = (props) => {
           size={props.size}
           sx={props.sx}
         >
-          <DeleteIcon sx={{ mr: '4px' }} size={props.size} /> {props.children}
+          <DeleteIcon sx={{ mr: '4px' }} /> {props.children}
         </Button>
       </Tooltip>
+
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'> Delete Device(s) </DialogTitle>
         <DialogContent>

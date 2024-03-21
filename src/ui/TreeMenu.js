@@ -22,7 +22,8 @@ const classes = {
 };
 
 const StyledMenu = styled('div')(({ theme }) => ({
-  'background': theme.palette.primary.main,
+  'background': theme.palette.text.primary,
+  'boxShadow': 'rgba(0, 0, 0, 0.1) 0px 0px 6px 0px',
 
   'li, a': {
     'color': 'white',
@@ -32,6 +33,7 @@ const StyledMenu = styled('div')(({ theme }) => ({
     '&.RaMenuItemLink-active': {
       'fontWeight': 'bold',
       'color': 'white',
+      'background': 'rgba(0,0,0,0.2) !important',
 
       '.MuiListItemIcon-root': {
         color: 'white',
@@ -39,7 +41,7 @@ const StyledMenu = styled('div')(({ theme }) => ({
     },
 
     '&:hover': {
-      background: theme.palette.primary.dark,
+      background: 'rgba(0,0,0,0.05)',
     },
   },
 

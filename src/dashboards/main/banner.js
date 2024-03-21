@@ -8,10 +8,7 @@ import publishArticleImage from './banner_illustration.svg';
 
 const styles = {
   bannerCard: {
-    background: '#2196f3',
-    color: '#ffffff',
     padding: '1.5em',
-    marginTop: '1em',
     marginBottom: '1em',
   },
   mediaBox: {

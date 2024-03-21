@@ -1,7 +1,7 @@
-import React from 'react';
 import Chip from '@mui/material/Chip';
-import { useRecordContext } from 'react-admin';
 import Tooltip from '@mui/material/Tooltip';
+import React from 'react';
+import { useRecordContext } from 'react-admin';
 
 export function getSemver(record) {
   const major = record['semver major'] ?? '0';
@@ -39,7 +39,7 @@ const SemVerChip = ({ record, showBlankOnNull = false }) => {
 
   return (
     <Tooltip title={commit}>
-      <Chip label={semver} />
+      <Chip label={semver} size='small' />
     </Tooltip>
   );
 };

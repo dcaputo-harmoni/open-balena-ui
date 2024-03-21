@@ -9,7 +9,6 @@ import {
   List,
   ReferenceField,
   ReferenceInput,
-  SaveButton,
   SearchInput,
   SelectInput,
   SimpleForm,
@@ -24,12 +23,9 @@ import { useCreateDevice, useModifyDevice } from '../lib/device';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
 import DeviceServicesButton from '../ui/DeviceServicesButton';
+import Row from '../ui/Row';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
-
-const DeviceTitle = ({ record }) => {
-  return <span>Device {record ? `"${record['device name']}"` : ''}</span>;
-};
 
 const OnlineField = (props) => {
   return (
@@ -62,12 +58,12 @@ const CustomBulkActionButtons = (props) => (
 export const DeviceList = (props) => {
   return (
     <List {...props} filters={deviceFilters}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
+      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
           <TextField source='device name' />
         </ReferenceField>
 
-        <OnlineField label='Online' source='api heartbeat state' />
+        <OnlineField label='Status' source='api heartbeat state' />
 
         <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
           <SemVerChip />
@@ -90,21 +86,11 @@ export const DeviceList = (props) => {
 
         <FunctionField label='UUID' render={(record) => record['uuid'].substring(0, 7)} />
 
-        <Toolbar
-          style={{
-            minHeight: 0,
-            minWidth: 0,
-            padding: 0,
-            margin: 0,
-            background: 'none',
-            display: 'flex',
-            justifyContent: 'flex-end',
-          }}
-        >
-          <DeviceServicesButton label='' />
-          <DeviceConnectButton label='' />
-          <EditButton label='' />
-          <DeleteDeviceButton variant='text' size='small' />
+        <Toolbar sx={{ background: 'none', padding: '0' }}>
+          <DeviceServicesButton variant='outlined' size='small' />
+          <DeviceConnectButton variant='outlined' size='small' />
+          <EditButton variant='outlined' label='' size='small' />
+          <DeleteDeviceButton variant='outlined' size='small' style={{ marginRight: '0 !important' }} />
         </Toolbar>
       </Datagrid>
     </List>
@@ -120,138 +106,151 @@ export const DeviceCreate = (props) => {
   };
 
   return (
-    <Create transform={createDevice} onSuccess={processComplete} {...props}>
+    <Create title='Create Device' ttransform={createDevice} onSuccess={processComplete}>
       <SimpleForm redirect='list'>
-        <TextInput
-          label='UUID'
-          source='uuid'
-          initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
-          validate={required()}
-        />
-        <TextInput label='Device Name' source='device name' validate={required()} />
-        <TextInput label='Note' source='note' />
-        <ReferenceInput
-          label='Device Type'
-          source='is of-device type'
-          reference='device type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'slug', order: 'ASC' }}
-        >
-          <SelectInput optionText='slug' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Fleet'
-          source='belongs to-application'
-          reference='application'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'app name', order: 'ASC' }}
-          filter={{ 'is of-class': 'fleet' }}
-        >
-          <SelectInput optionText='app name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['belongs to-application'] && (
-              <ReferenceInput
-                label='Target Release'
-                source='should be running-release'
-                reference='release'
-                target='id'
-                filter={{ 'belongs to-application': formData['belongs to-application'] }}
-                allowEmpty
-              >
-                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
-              </ReferenceInput>
-            )
-          }
-        </FormDataConsumer>
+        <Row>
+          <TextInput
+            label='UUID'
+            source='uuid'
+            initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+            validate={required()}
+            size='large'
+          />
+
+          <TextInput label='Device Name' source='device name' validate={required()} size='large' />
+        </Row>
+
+        <TextInput label='Note' source='note' size='large' fullWidth={true} />
+
+        <Row>
+          <ReferenceInput
+            label='Device Type'
+            source='is of-device type'
+            reference='device type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+          >
+            <SelectInput optionText='slug' optionValue='id' validate={required()} size='large' />
+          </ReferenceInput>
+
+          <ReferenceInput
+            label='Managed by Device'
+            source='is managed by-device'
+            reference='device'
+            target='id'
+            allowEmpty
+          >
+            <SelectInput optionText='device name' optionValue='id' size='large' />
+          </ReferenceInput>
+        </Row>
+
+        <Row>
+          <ReferenceInput
+            label='Fleet'
+            source='belongs to-application'
+            reference='application'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'app name', order: 'ASC' }}
+            filter={{ 'is of-class': 'fleet' }}
+          >
+            <SelectInput optionText='app name' optionValue='id' validate={required()} size='large' />
+          </ReferenceInput>
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['belongs to-application'] && (
+                <ReferenceInput
+                  label='Target Release'
+                  source='should be running-release'
+                  reference='release'
+                  target='id'
+                  filter={{ 'belongs to-application': formData['belongs to-application'] }}
+                  allowEmpty
+                >
+                  <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
+                </ReferenceInput>
+              )
+            }
+          </FormDataConsumer>
+        </Row>
+
         <SelectOperatingSystem label='Target OS' source='should be operated by-release' />
-        <ReferenceInput
-          label='Managed by Device'
-          source='is managed by-device'
-          reference='device'
-          target='id'
-          allowEmpty
-        >
-          <SelectInput optionText='device name' optionValue='id' />
-        </ReferenceInput>
       </SimpleForm>
     </Create>
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton />
-    <DeleteDeviceButton
-      variant='text'
-      sx={{ 'padding': '6px', 'color': '#f44336', '.hover': { backgroundColor: '#fff', color: '#3c52b2' } }}
-    >
-      {' '}
-      Delete{' '}
-    </DeleteDeviceButton>
-  </Toolbar>
-);
-
-export const DeviceEdit = (props) => {
+export const DeviceEdit = () => {
   const modifyDevice = useModifyDevice();
 
   return (
-    <Edit title={<DeviceTitle />} transform={modifyDevice} toolbar={<CustomToolbar />} {...props}>
+    <Edit title='Edit Device' actions={null} transform={modifyDevice}>
       <SimpleForm>
-        <TextInput disabled source='id' />
-        <TextInput label='UUID' source='uuid' />
-        <TextInput label='Device Name' source='device name' />
-        <TextInput label='Note' source='note' />
-        <ReferenceInput
-          label='Device Type'
-          source='is of-device type'
-          reference='device type'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'slug', order: 'ASC' }}
-        >
-          <SelectInput optionText='slug' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <ReferenceInput
-          label='Fleet'
-          source='belongs to-application'
-          reference='application'
-          target='id'
-          perPage={1000}
-          sort={{ field: 'app name', order: 'ASC' }}
-          filter={{ 'is of-class': 'fleet' }}
-        >
-          <SelectInput optionText='app name' optionValue='id' validate={required()} />
-        </ReferenceInput>
-        <FormDataConsumer>
-          {({ formData, ...rest }) =>
-            formData['belongs to-application'] && (
-              <ReferenceInput
-                label='Target Release'
-                source='should be running-release'
-                reference='release'
-                target='id'
-                filter={{ 'belongs to-application': formData['belongs to-application'] }}
-                allowEmpty
-              >
-                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
-              </ReferenceInput>
-            )
-          }
-        </FormDataConsumer>
-        <SelectOperatingSystem label='Target OS' source='should be operated by-release' />
-        <ReferenceInput
-          label='Managed by Device'
-          source='is managed by-device'
-          reference='device'
-          target='id'
-          allowEmpty
-        >
-          <SelectInput optionText='device name' optionValue='id' />
-        </ReferenceInput>
+        <Row>
+          <TextInput label='UUID' source='uuid' size='large' />
+
+          <TextInput label='Device Name' source='device name' size='large' />
+        </Row>
+
+        <TextInput label='Note' source='note' size='large' fullWidth={true} />
+
+        <Row>
+          <ReferenceInput
+            label='Device Type'
+            source='is of-device type'
+            reference='device type'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+          >
+            <SelectInput optionText='slug' optionValue='id' validate={required()} />
+          </ReferenceInput>
+
+          <ReferenceInput
+            label='Managed by Device'
+            source='is managed by-device'
+            reference='device'
+            target='id'
+            allowEmpty
+          >
+            <SelectInput optionText='device name' optionValue='id' />
+          </ReferenceInput>
+        </Row>
+
+        <Row>
+          <ReferenceInput
+            label='Fleet'
+            source='belongs to-application'
+            reference='application'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'app name', order: 'ASC' }}
+            filter={{ 'is of-class': 'fleet' }}
+          >
+            <SelectInput optionText='app name' optionValue='id' validate={required()} />
+          </ReferenceInput>
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['belongs to-application'] && (
+                <ReferenceInput
+                  label='Target Release'
+                  source='should be running-release'
+                  reference='release'
+                  target='id'
+                  filter={{ 'belongs to-application': formData['belongs to-application'] }}
+                  allowEmpty
+                >
+                  <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
+                </ReferenceInput>
+              )
+            }
+          </FormDataConsumer>
+
+          <SelectOperatingSystem label='Target OS' source='should be operated by-release' />
+        </Row>
       </SimpleForm>
     </Edit>
   );

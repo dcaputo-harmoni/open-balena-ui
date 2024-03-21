@@ -1,6 +1,6 @@
 import { CssBaseline } from '@mui/material';
 import * as React from 'react';
-import { Admin, Layout, Resource, fetchUtils } from 'react-admin';
+import { Admin, AppBar, Layout, Resource, TitlePortal, fetchUtils } from 'react-admin';
 import { Navigate, Route, useParams } from 'react-router-dom';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';
@@ -63,12 +63,24 @@ const customRoutes = [
   <Route key='custom-route-device-summary' path='/devices/:uuid/summary' element={<NavigateToDevice />} />,
 ];
 
-const treeLayout = (props) => (
-  <>
-    <Layout {...props} sidebar={TreeMenu} />
-    <CssBaseline />
-  </>
-);
+const treeLayout = (props) => {
+  console.log(props);
+  return (
+    <>
+      <Layout
+        {...props}
+        sidebar={TreeMenu}
+        appBar={() => (
+          <AppBar>
+            <img className='logo' src={require('./logo.svg')} />
+            <TitlePortal />
+          </AppBar>
+        )}
+      />
+      <CssBaseline />
+    </>
+  );
+};
 
 const OpenBalenaAdmin = () => (
   <Admin
