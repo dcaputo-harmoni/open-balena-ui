@@ -210,7 +210,9 @@ const customTheme = createTheme({
             }
 
             .ra-delete-button {
-              display: none;
+              height: 48px;
+              flex: 0.3;
+              margin-left: 40px;
             }
           }
         }
@@ -218,6 +220,7 @@ const customTheme = createTheme({
         .RaDatagrid-tableWrapper {
           td {
             .MuiToolbar-root {
+              background: none !important;
               min-height: 0 !important;
               padding: 0 !important;
               justify-content: flex-end !important;
@@ -249,6 +252,19 @@ const customTheme = createTheme({
         .RaTabbedShowLayout-content {
           padding: 0 !important;
           margin-top: 30px !important;
+        }
+
+        .rdl-actions {
+          margin: 0 15px !important;
+
+          button {
+            padding: 5px!important
+            margin: 0 !important;
+            display: flex;
+            align-items: center;
+            margin-bottom: 1.5px !important;
+            outline: none !important;
+          }
         }
       `.styles,
     },

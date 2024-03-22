@@ -1,13 +1,13 @@
 import Chip from '@mui/material/Chip';
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   DataProviderContext,
   Datagrid,
   Edit,
   EditButton,
   FormDataConsumer,
+  FunctionField,
   List,
   ReferenceArrayInput,
   ReferenceField,
@@ -23,13 +23,11 @@ import {
   useRecordContext,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
+import CopyChip from '../ui/CopyChip';
 import DeleteApiKeyButton from '../ui/DeleteApiKeyButton';
 import ManagePermissions from '../ui/ManagePermissions';
 import ManageRoles from '../ui/ManageRoles';
-
-const ApiKeyTitle = ({ record }) => {
-  return <span>API Key {record ? (record.name ? `"${record.name}"` : `#${record.id}`) : ''}</span>;
-};
+import Row from '../ui/Row';
 
 class ActorField extends React.Component {
   static contextType = DataProviderContext;
@@ -93,9 +91,8 @@ const apiKeyFilters = [<SearchInput source='#key,name,description@ilike' alwaysO
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
-    <DeleteApiKeyButton variant='text' size='small' {...props}>
-      {' '}
-      Delete{' '}
+    <DeleteApiKeyButton variant='contained' size='small' {...props}>
+      Delete Selected API Keys
     </DeleteApiKeyButton>
   </React.Fragment>
 );
@@ -108,22 +105,26 @@ const ActorFieldWrapper = (props) => {
 export const ApiKeyList = () => {
   return (
     <List filters={apiKeyFilters}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />}>
-        <TextField source='id' />
-        <TextField label='API Key' source='key' />
+      <Datagrid size='medium' bulkActionButtons={<CustomBulkActionButtons />}>
+        <FunctionField
+          label='API Key'
+          render={(record) => <CopyChip title={record.key} label={record.key.slice(0, 10) + '...'} />}
+        />
+
         <TextField label='Name' source='name' />
-        <TextField label='Description' source='description' />
         <ActorFieldWrapper label='Assigned To' />
+
         <ReferenceManyField label='Roles' source='id' reference='api key-has-role' target='api key'>
           <SingleFieldList linkType={false}>
             <ReferenceField source='role' reference='role' target='id'>
-              <ChipField source='name' />
+              <TextField source='name' />
             </ReferenceField>
           </SingleFieldList>
         </ReferenceManyField>
+
         <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteApiKeyButton variant='text' size='small' />
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteApiKeyButton size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
@@ -137,67 +138,81 @@ export const ApiKeyCreate = (props) => {
   return (
     <Create {...props} transform={createApiKey}>
       <SimpleForm>
-        <TextInput source='key' initialValue={generateApiKey()} />
-        <TextInput source='name' />
-        <TextInput source='description' />
-        <FormDataConsumer>
-          {({ formData, ...rest }) => {
-            if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
-            return (
-              <ReferenceArrayInput source='userActor' reference='user' {...rest}>
-                <SelectInput optionText='username' optionValue='actor' resettable />
-              </ReferenceArrayInput>
-            );
-          }}
-        </FormDataConsumer>
-        <FormDataConsumer>
-          {({ formData, ...rest }) => {
-            if (formData.userActor || formData.fleetActor) rest.disabled = true;
-            return (
-              <ReferenceArrayInput source='deviceActor' reference='device' {...rest}>
-                <SelectInput optionText='device name' optionValue='actor' resettable />
-              </ReferenceArrayInput>
-            );
-          }}
-        </FormDataConsumer>
-        <FormDataConsumer>
-          {({ formData, ...rest }) => {
-            if (formData.userActor || formData.deviceActor) rest.disabled = true;
-            return (
-              <ReferenceArrayInput source='fleetActor' reference='application' {...rest}>
-                <SelectInput optionText='app name' optionValue='actor' resettable />
-              </ReferenceArrayInput>
-            );
-          }}
-        </FormDataConsumer>
+        <TextInput source='key' initialValue={generateApiKey()} size='large' fullWidth={true} />
+
+        <Row>
+          {' '}
+          <TextInput source='name' size='large' />
+          <TextInput source='description' size='large' />
+        </Row>
+
+        <Row>
+          <FormDataConsumer>
+            {({ formData, ...rest }) => {
+              if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
+              return (
+                <ReferenceArrayInput source='userActor' reference='user' {...rest}>
+                  <SelectInput optionText='username' optionValue='actor' resettable />
+                </ReferenceArrayInput>
+              );
+            }}
+          </FormDataConsumer>
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) => {
+              if (formData.userActor || formData.fleetActor) rest.disabled = true;
+              return (
+                <ReferenceArrayInput source='deviceActor' reference='device' {...rest}>
+                  <SelectInput optionText='device name' optionValue='actor' resettable />
+                </ReferenceArrayInput>
+              );
+            }}
+          </FormDataConsumer>
+
+          <FormDataConsumer>
+            {({ formData, ...rest }) => {
+              if (formData.userActor || formData.deviceActor) rest.disabled = true;
+              return (
+                <ReferenceArrayInput source='fleetActor' reference='application' {...rest}>
+                  <SelectInput optionText='app name' optionValue='actor' resettable />
+                </ReferenceArrayInput>
+              );
+            }}
+          </FormDataConsumer>
+        </Row>
       </SimpleForm>
     </Create>
   );
 };
 
 const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton />
-    <DeleteApiKeyButton
-      variant='text'
-      sx={{ 'padding': '6px', 'color': '#f44336', '.hover': { backgroundColor: '#fff', color: '#3c52b2' } }}
-    >
-      {' '}
-      Delete{' '}
-    </DeleteApiKeyButton>
+  <Toolbar {...props} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
+    <SaveButton sx={{ flex: 1 }} />
+    <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
   </Toolbar>
 );
 
-export const ApiKeyEdit = (props) => {
+export const ApiKeyEdit = () => {
   const modifyApiKey = useModifyApiKey();
 
   return (
-    <Edit title={<ApiKeyTitle />} transform={modifyApiKey} {...props}>
+    <Edit
+      title='Edit API Key'
+      transform={modifyApiKey}
+      sx={{
+        '> div > div': {
+          maxWidth: '900px !important',
+        },
+      }}
+    >
       <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
-        <TextInput disabled source='id' />
-        <TextInput source='key' />
-        <TextInput source='name' />
-        <TextInput source='description' />
+        <TextInput source='key' disabled={true} size='large' fullWidth={true} />
+
+        <Row>
+          <TextInput source='name' size='large' />
+          <TextInput source='description' size='large' />
+        </Row>
+
         <ManagePermissions source='permissionArray' reference='api key-has-permission' target='api key' />
         <ManageRoles source='roleArray' reference='api key-has-role' target='api key' />
       </SimpleForm>

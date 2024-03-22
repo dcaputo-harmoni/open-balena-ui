@@ -13,6 +13,7 @@ import {
   ReferenceInput,
   SearchInput,
   SelectInput,
+  ShowButton,
   SimpleForm,
   TextField,
   TextInput,
@@ -100,9 +101,10 @@ export const DeviceList = (props) => {
         />
 
         <Toolbar sx={{ background: 'none', padding: '0' }}>
+          <ShowButton variant='outlined' label='' size='small' />
+          <EditButton variant='outlined' label='' size='small' />
           <DeviceServicesButton variant='outlined' size='small' />
           <DeviceConnectButton variant='outlined' size='small' />
-          <EditButton variant='outlined' label='' size='small' />
           <DeleteDeviceButton variant='outlined' size='small' style={{ marginRight: '0 !important' }} />
         </Toolbar>
       </Datagrid>

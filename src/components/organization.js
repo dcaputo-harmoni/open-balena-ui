@@ -1,13 +1,11 @@
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   Datagrid,
   DeleteButton,
   Edit,
   EditButton,
   List,
-  ReferenceField,
   ReferenceManyField,
   SimpleForm,
   SingleFieldList,
@@ -17,53 +15,42 @@ import {
   required,
 } from 'react-admin';
 
-const OrganizationTitle = ({ record }) => {
-  return <span>Organization {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const OrganizationList = (props) => {
+export const OrganizationList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <TextField source='name' />
         <TextField source='handle' />
-        <ReferenceManyField label='Users' reference='organization membership' target='is member of-organization'>
-          <SingleFieldList linkType={false}>
-            <ReferenceField source='user' reference='user'>
-              <ChipField source='username' />
-            </ReferenceField>
-          </SingleFieldList>
-        </ReferenceManyField>
+
         <ReferenceManyField label='Fleets' source='id' reference='application' target='organization'>
           <SingleFieldList linkType={false}>
-            <ChipField source='app name' />
+            <TextField source='app name' />
           </SingleFieldList>
         </ReferenceManyField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const OrganizationCreate = (props) => (
-  <Create {...props}>
+export const OrganizationCreate = () => (
+  <Create title='Create Org'>
     <SimpleForm>
-      <TextInput source='name' validate={required()} />
-      <TextInput source='handle' validate={required()} />
+      <TextInput source='name' validate={required()} size='large' fullWidth={true} />
+      <TextInput source='handle' validate={required()} size='large' fullWidth={true} />
     </SimpleForm>
   </Create>
 );
 
-export const OrganizationEdit = (props) => (
-  <Edit title={<OrganizationTitle />} {...props}>
+export const OrganizationEdit = () => (
+  <Edit title='Edit Org'>
     <SimpleForm>
-      <TextInput disabled source='id' />
-      <TextInput source='name' validate={required()} />
-      <TextInput source='handle' validate={required()} />
+      <TextInput source='name' validate={required()} size='large' fullWidth={true} />
+      <TextInput source='handle' validate={required()} size='large' fullWidth={true} />
     </SimpleForm>
   </Edit>
 );

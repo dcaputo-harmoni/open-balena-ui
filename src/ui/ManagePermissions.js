@@ -2,21 +2,19 @@ import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
 import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
-import { Box, Typography } from '@mui/material';
+import { Box } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
-import 'react-dual-listbox/lib/react-dual-listbox.css';
 
 const StyledDualListBox = styled(DualListBox)({
-  'fontSize': '12pt',
-  'fontStyle': 'italic',
+  'fontSize': '12px',
   '& .rdl-move': {
     border: 'none',
   },
   '& .rdl-control': {
-    fontSize: '11pt',
+    fontSize: '12px',
   },
 });
 
@@ -115,17 +113,18 @@ export const ManagePermissions = (props) => {
 
   return (
     <Box sx={{ width: '800px' }}>
-      <Typography variant='subtitle1'>Permissions:</Typography>
+      <strong style={{ margin: '40px 0 10px', display: 'block' }}>Permissions</strong>
+
       <StyledDualListBox
         options={allPermissions}
         selected={selectedPermissions}
         onChange={setSelectedPermissions}
         showHeaderLabels='true'
         icons={{
-          moveLeft: <KeyboardArrowLeftIcon />,
-          moveAllLeft: <KeyboardDoubleArrowLeftIcon />,
-          moveRight: <KeyboardArrowRightIcon />,
-          moveAllRight: <KeyboardDoubleArrowRightIcon />,
+          moveToAvailable: <KeyboardArrowLeftIcon />,
+          moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
+          moveToSelected: <KeyboardArrowRightIcon />,
+          moveAllToSelected: <KeyboardDoubleArrowRightIcon />,
         }}
       />
       <TextInput

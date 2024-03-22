@@ -1,4 +1,4 @@
-import { ContentCopy } from '@mui/icons-material';
+import ContentCopy from '@mui/icons-material/ContentCopy';
 import { Box } from '@mui/material';
 import Tooltip from '@mui/material/Tooltip';
 import React from 'react';

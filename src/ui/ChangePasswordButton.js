@@ -37,27 +37,30 @@ export const ChangePasswordButton = (props) => {
     <>
       <Button
         onClick={() => setOpen(true)}
-        variant={props.variant || 'contained'}
         color='inherit'
+        variant='outlined'
         size={props.size}
         sx={{ ...props.sx, mb: '20px' }}
       >
         <LockIcon style={{ marginRight: '4px' }} /> Change Password
       </Button>
+
       <Dialog open={open} onClose={() => setOpen(false)} aria-labelledby='form-dialog-title'>
         <DialogTitle id='form-dialog-title'>Change Password</DialogTitle>
+
         <DialogContent>
           <Form
             onSubmit={handleSubmit}
             render={({ handleSubmit, form, submitting, pristine, values }) => (
               <form onSubmit={handleSubmit}>
-                <PasswordInput label='Password' variant='filled' name='password' />
+                <PasswordInput label='Password' variant='outlined' size='large' name='password' />
+
                 <Button
                   variant={props.variant || 'contained'}
                   color='inherit'
                   type='submit'
                   size={props.size}
-                  sx={{ ...props.sx, ml: '20px', mt: '15px' }}
+                  sx={{ ...props.sx, ml: '20px', mt: '19px' }}
                   disabled={submitting || pristine}
                 >
                   <SaveIcon sx={{ mr: '8px' }} /> Save
