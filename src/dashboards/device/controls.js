@@ -3,7 +3,15 @@ import PowerSettingsNewIcon from '@mui/icons-material/PowerSettingsNew';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import { Box, Button, CardActions, Typography } from '@mui/material';
 import * as React from 'react';
-import { FunctionField, ReferenceField, TextField, useAuthProvider, useNotify, useRecordContext } from 'react-admin';
+import {
+  EditButton,
+  FunctionField,
+  ReferenceField,
+  TextField,
+  useAuthProvider,
+  useNotify,
+  useRecordContext,
+} from 'react-admin';
 import { OnlineField } from '../../components/device';
 import utf8decode from '../../lib/utf8decode';
 
@@ -11,9 +19,13 @@ const styles = {
   actionCard: {
     'padding': 0,
     'flexWrap': 'wrap',
-    '& button': {
-      marginTop: '2em',
-      marginRight: '1em',
+    '& .MuiButton-root': {
+      'marginTop': '2em',
+      'marginRight': '1em',
+
+      '.MuiButton-icon': {
+        marginRight: '6px !important',
+      },
     },
   },
 };
@@ -80,6 +92,8 @@ const Controls = () => {
 
             return (
               <>
+                <EditButton label='Edit' size='medium' variant='outlined' color='secondary' />
+
                 <Button
                   variant='outlined'
                   size='medium'

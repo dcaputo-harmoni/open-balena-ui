@@ -1,5 +1,5 @@
 import React from 'react';
-import { useDataProvider, SelectInput } from 'react-admin';
+import { SelectInput, useDataProvider } from 'react-admin';
 
 export const SelectDeviceService = (props) => {
   const [loaded, setLoaded] = React.useState(null);
@@ -7,6 +7,10 @@ export const SelectDeviceService = (props) => {
   const dataProvider = useDataProvider();
 
   React.useEffect(() => {
+    if (!props.device) {
+      return;
+    }
+
     if (loaded === null) {
       setLoaded(false);
       dataProvider

@@ -1,11 +1,11 @@
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   Datagrid,
   DeleteButton,
   Edit,
   EditButton,
+  FunctionField,
   List,
   ReferenceField,
   ReferenceInput,
@@ -16,65 +16,57 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 import SemVerChip from '../ui/SemVerChip';
-import { TrimField } from '../ui/TrimField';
 
 const ImageLabelTitle = ({ record }) => {
   return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
 };
 
-export const ImageLabelList = (props) => {
+export const ImageLabelList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
-        <ReferenceField label='Fleet' source='release image' reference='image' target='id' link={false}>
-          <ReferenceField source='is a build of-service' reference='service' target='id' link={false}>
-            <ReferenceField
-              source='application'
-              reference='application'
-              target='id'
-              link={(record, reference) => `/${reference}/${record['application']}`}
-            >
-              <ChipField source='app name' />
-            </ReferenceField>
+    <List title='Image Labels'>
+      <Datagrid size='medium'>
+        <TextField label='Image' source='release image' />
+
+        <ReferenceField label='Service' source='release image' reference='image' target='id' link={false}>
+          <ReferenceField label='Service' source='is a build of-service' reference='service' target='id' link={false}>
+            <TextField source='service name' />
           </ReferenceField>
         </ReferenceField>
+
         <ReferenceField label='Release Rev.' source='release image' reference='image' target='id' link={false}>
           <ReferenceField source='id' reference='image-is part of-release' target='image' link={false}>
-            <ReferenceField
-              source='is part of-release'
-              reference='release'
-              link={(record, reference) => `/${reference}/${record['is part of-release']}`}
-            >
+            <ReferenceField source='is part of-release' reference='release' link={false}>
               <SemVerChip />
             </ReferenceField>
           </ReferenceField>
         </ReferenceField>
-        <ReferenceField label='Image' source='release image' reference='image' target='id' link={false}>
-          <ReferenceField
-            label='Service'
-            source='is a build of-service'
-            reference='service'
-            target='id'
-            link={(record, reference) => `/${reference}/${record['is a build of-service']}`}
-          >
-            <ChipField source='service name' />
-          </ReferenceField>
-        </ReferenceField>
+
         <TextField label='Name' source='label name' />
-        <TrimField label='Value' source='value' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const ImageLabelCreate = (props) => (
-  <Create {...props}>
+export const ImageLabelCreate = () => (
+  <Create title='Create Image Label'>
     <SimpleForm redirect='list'>
       <ReferenceInput
         source='release image'
@@ -83,16 +75,19 @@ export const ImageLabelCreate = (props) => (
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
       >
-        <SelectInput optionText='id' optionValue='id' validate={required()} />
+        <SelectInput optionText='id' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='label name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='label name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const ImageLabelEdit = (props) => (
-  <Edit title={<ImageLabelTitle />} {...props}>
+export const ImageLabelEdit = () => (
+  <Edit title='Edit Image Label'>
     <SimpleForm>
       <ReferenceInput
         source='release image'
@@ -101,10 +96,13 @@ export const ImageLabelEdit = (props) => (
         perPage={1000}
         sort={{ field: 'id', order: 'ASC' }}
       >
-        <SelectInput optionText='id' optionValue='id' validate={required()} />
+        <SelectInput optionText='id' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='label name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='label name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

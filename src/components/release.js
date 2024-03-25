@@ -1,17 +1,17 @@
 import * as React from 'react';
 import {
-  TextField,
+  BooleanField,
+  ChipField,
   Datagrid,
+  FunctionField,
+  List,
   ReferenceField,
   ReferenceManyCount,
   ReferenceManyField,
-  SingleFieldList,
-  ChipField,
-  List,
-  Toolbar,
   SearchInput,
-  FunctionField,
-  BooleanField,
+  SingleFieldList,
+  TextField,
+  Toolbar,
   useDataProvider,
 } from 'react-admin';
 import DeleteReleaseButton from '../ui/DeleteReleaseButton';
@@ -41,18 +41,17 @@ const TagChipField = (props) => {
   );
 };
 
-export const ReleaseList = (props) => {
+export const ReleaseList = () => {
   return (
-    <List {...props} filters={releaseFilters}>
+    <List filters={releaseFilters}>
       <Datagrid
+        size='medium'
         bulkActionButtons={
-          <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} {...props}>
-            {' '}
-            Delete{' '}
+          <DeleteReleaseButton size='small' color='' context={useDataProvider()} {...props}>
+            Delete
           </DeleteReleaseButton>
         }
       >
-        <TextField source='id' />
         <ReferenceField
           label='Fleet'
           source='belongs to-application'
@@ -60,7 +59,7 @@ export const ReleaseList = (props) => {
           target='id'
           sortable={false}
         >
-          <ChipField source='app name' />
+          <TextField source='app name' />
         </ReferenceField>
         <ReferenceField
           label='Host'
@@ -68,6 +67,7 @@ export const ReleaseList = (props) => {
           reference='application'
           target='id'
           sortable={false}
+          link={false}
         >
           <BooleanBinaryField source='is host' />
         </ReferenceField>
@@ -80,18 +80,9 @@ export const ReleaseList = (props) => {
           link={false}
           sortable={true}
         />
-        <ReferenceManyField
-          label='Fleets'
-          source='id'
-          reference='application'
-          target='should be running-release'
-          link={false}
-          sortable={false}
-        >
-          <SingleFieldList linkType={false}>
-            <ChipField source='slug' />
-          </SingleFieldList>
-        </ReferenceManyField>
+
+        <TextField label='Status' source='status' />
+
         <ReferenceManyField
           label='Tags'
           source='id'
@@ -104,9 +95,9 @@ export const ReleaseList = (props) => {
             <TagChipField />
           </SingleFieldList>
         </ReferenceManyField>
-        <TextField label='Status' source='status' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} />
+
+        <Toolbar>
+          <DeleteReleaseButton variant='outlined' size='small' context={useDataProvider()} />
         </Toolbar>
       </Datagrid>
     </List>
