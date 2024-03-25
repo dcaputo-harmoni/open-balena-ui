@@ -1,6 +1,5 @@
 import * as React from 'react';
 import {
-  ChipField,
   Create,
   Datagrid,
   DeleteButton,
@@ -16,59 +15,76 @@ import {
   Toolbar,
   required,
 } from 'react-admin';
+import Row from '../ui/Row';
 
-const DeviceTypeAliasTitle = ({ record }) => {
-  return <span>Device Type Alias {record ? `"${record['is referenced by-alias']}"` : ''}</span>;
-};
-
-export const DeviceTypeAliasList = (props) => {
+export const DeviceTypeAliasList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Device Type Aliases'>
+      <Datagrid size='medium'>
         <ReferenceField label='Device Type' source='device type' reference='device type' target='id'>
-          <ChipField source='slug' />
+          <TextField source='slug' />
         </ReferenceField>
+
         <TextField label='Alias' source='is referenced by-alias' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const DeviceTypeAliasCreate = (props) => (
-  <Create {...props}>
-    <SimpleForm redirect='list'>
-      <ReferenceInput
-        source='device type'
-        reference='device type'
-        target='id'
-        perPage={1000}
-        sort={{ field: 'slug', order: 'ASC' }}
-      >
-        <SelectInput optionText='slug' optionValue='id' validate={required()} />
-      </ReferenceInput>
-      <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
+export const DeviceTypeAliasCreate = () => (
+  <Create title='Create Device Type Alias'>
+    <SimpleForm
+      redirect='list'
+      sx={{
+        '.MuiFormControl-root': {
+          marginTop: '0 !important',
+        },
+      }}
+    >
+      <Row>
+        <ReferenceInput
+          source='device type'
+          reference='device type'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'slug', order: 'ASC' }}
+        >
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
+        </ReferenceInput>
+
+        <TextInput label='Alias' source='is referenced by-alias' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const DeviceTypeAliasEdit = (props) => (
-  <Edit title={<DeviceTypeAliasTitle />} {...props}>
-    <SimpleForm>
-      <ReferenceInput
-        source='device type'
-        reference='device type'
-        target='id'
-        perPage={1000}
-        sort={{ field: 'slug', order: 'ASC' }}
-      >
-        <SelectInput optionText='slug' optionValue='id' validate={required()} />
-      </ReferenceInput>
-      <TextInput label='Alias' source='is referenced by-alias' validate={required()} />
+export const DeviceTypeAliasEdit = () => (
+  <Edit title='Edit Device Type Alias'>
+    <SimpleForm
+      sx={{
+        '.MuiFormControl-root': {
+          marginTop: '0 !important',
+        },
+      }}
+    >
+      <Row>
+        <ReferenceInput
+          source='device type'
+          reference='device type'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'slug', order: 'ASC' }}
+        >
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
+        </ReferenceInput>
+
+        <TextInput label='Alias' source='is referenced by-alias' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

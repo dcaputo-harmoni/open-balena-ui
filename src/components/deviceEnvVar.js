@@ -19,10 +19,6 @@ import {
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
-const DeviceEnvVarTitle = ({ record }) => {
-  return <span>Device Environment Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
 export const DeviceEnvVarList = () => {
   return (
     <List title='Device Environment Vars'>

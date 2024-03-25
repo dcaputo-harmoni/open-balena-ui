@@ -28,10 +28,6 @@ import DeleteFleetButton from '../ui/DeleteFleetButton';
 import Row from '../ui/Row';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
-const FleetTitle = ({ record }) => {
-  return <span>Fleet {record ? `"${record['app name']}"` : ''}</span>;
-};
-
 const BooleanBinaryField = (props) => {
   return (
     <FunctionField

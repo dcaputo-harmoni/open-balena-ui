@@ -20,10 +20,6 @@ import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 import SemVerChip from '../ui/SemVerChip';
 
-const ImageLabelTitle = ({ record }) => {
-  return <span>Image Label {record ? `"${record.name}"` : ''}</span>;
-};
-
 export const ImageLabelList = () => {
   return (
     <List title='Image Labels'>

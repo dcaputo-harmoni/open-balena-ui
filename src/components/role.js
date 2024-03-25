@@ -15,42 +15,47 @@ import {
 import { useModifyRole } from '../lib/role';
 import ManagePermissions from '../ui/ManagePermissions';
 
-const RoleTitle = ({ record }) => {
-  return <span>Role {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const RoleList = (props) => {
+export const RoleList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <TextField source='name' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const RoleCreate = (props) => (
-  <Create {...props}>
+export const RoleCreate = () => (
+  <Create title='Create Role'>
     <SimpleForm>
-      <TextInput source='name' validate={required()} />
+      <TextInput source='name' validate={required()} size='large' fullWidth={true} />
     </SimpleForm>
   </Create>
 );
 
-export const RoleEdit = (props) => {
+export const RoleEdit = () => {
   const modifyRole = useModifyRole();
 
   return (
-    <Edit title={<RoleTitle />} transform={modifyRole} {...props}>
+    <Edit
+      title='Edit Role'
+      transform={modifyRole}
+      sx={{
+        '> div > div': {
+          maxWidth: '900px !important',
+        },
+      }}
+    >
       <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
-        <TextInput disabled source='id' />
-        <TextInput source='name' validate={required()} />
+        <TextInput source='name' validate={required()} size='large' fullWidth={true} />
+
         <ManagePermissions source='permissionArray' reference='role-has-permission' target='role' />
+
+        <br />
       </SimpleForm>
     </Edit>
   );

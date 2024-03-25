@@ -25,10 +25,6 @@ import ManagePermissions from '../ui/ManagePermissions';
 import ManageRoles from '../ui/ManageRoles';
 import Row from '../ui/Row';
 
-const UserTitle = ({ record }) => {
-  return <span>User {record ? `"${record.username}"` : ''}</span>;
-};
-
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
     <DeleteUserButton variant='contained' size='small' {...props}>

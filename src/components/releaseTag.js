@@ -21,10 +21,6 @@ import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
-const ReleaseTagTitle = ({ record }) => {
-  return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
-};
-
 export const ReleaseTagList = (props) => {
   return (
     <List title='Release Tags'>

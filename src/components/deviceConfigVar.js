@@ -19,10 +19,6 @@ import {
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
-const DeviceConfigVarTitle = ({ record }) => {
-  return <span>Device Config Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
 export const DeviceConfigVarList = () => {
   return (
     <List title='Device Config Vars'>

@@ -11,41 +11,41 @@ import {
   TextInput,
   Toolbar,
 } from 'react-admin';
+import Row from '../ui/Row';
 
-const DeviceManufacturerTitle = ({ record }) => {
-  return <span>Device Manufacturer {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const DeviceManufacturerList = (props) => {
+export const DeviceManufacturerList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Device Manufacturers'>
+      <Datagrid size='medium'>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' size='medium' />
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const DeviceManufacturerCreate = (props) => (
-  <Create {...props}>
+export const DeviceManufacturerCreate = () => (
+  <Create title='Create Device Manufacturer'>
     <SimpleForm redirect='list'>
-      <TextInput label='Slug' source='slug' />
-      <TextInput label='Name' source='name' />
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const DeviceManufacturerEdit = (props) => (
-  <Edit title={<DeviceManufacturerTitle />} {...props}>
+export const DeviceManufacturerEdit = () => (
+  <Edit title='Edit Device Manufacturer'>
     <SimpleForm>
-      <TextInput label='Slug' source='slug' />
-      <TextInput label='Name' source='name' />
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

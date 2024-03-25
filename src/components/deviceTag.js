@@ -19,10 +19,6 @@ import {
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
-const DeviceTagTitle = ({ record }) => {
-  return <span>Device Tag {record ? `"${record.name}"` : ''}</span>;
-};
-
 export const DeviceTagList = () => {
   return (
     <List title='Device Tags'>

@@ -19,10 +19,6 @@ import {
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
-const UserKeysTitle = ({ record }) => {
-  return <span>User Key {record ? `"${record.id}"` : ''}</span>;
-};
-
 export const UserKeysList = () => {
   return (
     <List>

@@ -20,10 +20,6 @@ import {
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
-const ServiceLabelTitle = ({ record }) => {
-  return <span>Service Label {record ? `"${record['label name']}"` : ''}</span>;
-};
-
 export const ServiceLabelList = () => {
   return (
     <List title='Service Labels'>

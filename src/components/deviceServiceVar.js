@@ -21,10 +21,6 @@ import Row from '../ui/Row';
 import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
 
-const DeviceServiceVarTitle = ({ record }) => {
-  return <span>Device Service Environment Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
 export const DeviceServiceVarList = () => {
   return (
     <List title='Device Service Vars'>
