@@ -1,31 +1,26 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
-  ReferenceField,
-  ChipField,
-  List,
-  SimpleForm,
+  DeleteButton,
+  Edit,
   EditButton,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
+import Row from '../ui/Row';
 
-const DeviceFamilyTitle = ({ record }) => {
-  return <span>Device Family {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const DeviceFamilyList = (props) => {
+export const DeviceFamilyList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Device Families'>
+      <Datagrid size='medium'>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
         <ReferenceField
@@ -35,41 +30,47 @@ export const DeviceFamilyList = (props) => {
           target='id'
           link={false}
         >
-          <ChipField source='name' />
+          <TextField source='name' />
         </ReferenceField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const DeviceFamilyCreate = (props) => (
-  <Create {...props}>
+export const DeviceFamilyCreate = () => (
+  <Create title='Create Device Family'>
     <SimpleForm redirect='list'>
-      <TextInput label='Slug' source='slug' />
-      <TextInput label='Name' source='name' />
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
+
       <ReferenceInput
         source='is manufactured by-device manufacturer'
         reference='device manufacturer'
         target='id'
         perPage={1000}
         sort={{ field: 'name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='name' optionValue='id' />
+        <SelectInput optionText='name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
     </SimpleForm>
   </Create>
 );
 
-export const DeviceFamilyEdit = (props) => (
-  <Edit title={<DeviceFamilyTitle />} {...props}>
+export const DeviceFamilyEdit = () => (
+  <Edit title='Edit Device Family'>
     <SimpleForm>
-      <TextInput label='Slug' source='slug' />
-      <TextInput label='Name' source='name' />
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
+
       <ReferenceInput
         label='Manufacturer'
         source='is manufactured by-device manufacturer'
@@ -77,9 +78,8 @@ export const DeviceFamilyEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='name' optionValue='id' />
+        <SelectInput optionText='name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
     </SimpleForm>
   </Edit>

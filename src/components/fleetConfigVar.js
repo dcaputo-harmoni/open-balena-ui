@@ -1,47 +1,55 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
-  ReferenceField,
-  ChipField,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FunctionField,
   List,
-  SimpleForm,
-  TextInput,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  EditButton,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 
-const FleetConfigVarTitle = ({ record }) => {
-  return <span>Fleet Config Variable {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const FleetConfigVarList = (props) => {
+export const FleetConfigVarList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Fleet Config Vars'>
+      <Datagrid size='medium'>
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
-          <ChipField source='app name' />
+          <TextField source='app name' />
         </ReferenceField>
+
         <TextField label='Name' source='name' />
-        <TextField label='Value' source='value' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const FleetConfigVarCreate = (props) => (
-  <Create {...props}>
+export const FleetConfigVarCreate = () => (
+  <Create title='Create Fleet Config Var'>
     <SimpleForm redirect='list'>
       <ReferenceInput
         source='application'
@@ -49,18 +57,20 @@ export const FleetConfigVarCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const FleetConfigVarEdit = (props) => (
-  <Edit title={<FleetConfigVarTitle />} {...props}>
+export const FleetConfigVarEdit = () => (
+  <Edit title='Edit Fleet Config Var'>
     <SimpleForm>
       <ReferenceInput
         source='application'
@@ -68,12 +78,14 @@ export const FleetConfigVarEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='app name' optionValue='id' />
+        <SelectInput optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

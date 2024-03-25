@@ -1,47 +1,56 @@
 import * as React from 'react';
 import {
-  Create,
-  Edit,
-  TextField,
-  Datagrid,
-  ReferenceField,
   ChipField,
-  List,
-  SimpleForm,
-  TextInput,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
   EditButton,
+  FunctionField,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
-  DeleteButton,
+  SimpleForm,
+  TextField,
+  TextInput,
   Toolbar,
   required,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 
-const ServiceLabelTitle = ({ record }) => {
-  return <span>Service Label {record ? `"${record['label name']}"` : ''}</span>;
-};
-
-export const ServiceLabelList = (props) => {
+export const ServiceLabelList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Service Labels'>
+      <Datagrid size='medium'>
         <ReferenceField label='Service' source='service' reference='service' target='id'>
           <ChipField source='service name' />
         </ReferenceField>
+
         <TextField label='Name' source='label name' />
-        <TextField label='Value' source='value' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const ServiceLabelCreate = (props) => (
-  <Create {...props}>
+export const ServiceLabelCreate = () => (
+  <Create title='Create Service Label'>
     <SimpleForm redirect='list'>
       <ReferenceInput
         source='service'
@@ -49,18 +58,20 @@ export const ServiceLabelCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='label name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='label name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const ServiceLabelEdit = (props) => (
-  <Edit title={<ServiceLabelTitle />} {...props}>
+export const ServiceLabelEdit = () => (
+  <Edit title='Edit Service Label'>
     <SimpleForm>
       <ReferenceInput
         source='service'
@@ -68,12 +79,14 @@ export const ServiceLabelEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'service name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='service name' optionValue='id' />
+        <SelectInput optionText='service name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='label name' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='label name' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

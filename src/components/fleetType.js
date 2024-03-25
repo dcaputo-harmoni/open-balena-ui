@@ -1,22 +1,19 @@
 import * as React from 'react';
 import {
+  BooleanField,
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FunctionField,
   List,
   SimpleForm,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
-  FunctionField,
-  BooleanField,
   Toolbar,
 } from 'react-admin';
-
-const FleetTypeTitle = ({ record }) => {
-  return <span>Fleet Type {record ? `"${record.name}"` : ''}</span>;
-};
+import Row from '../ui/Row';
 
 const BooleanBinaryField = (props) => {
   return (
@@ -29,45 +26,52 @@ const BooleanBinaryField = (props) => {
   );
 };
 
-export const FleetTypeList = (props) => {
+export const FleetTypeList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
-        <BooleanBinaryField label='Web URL' source='supports web url' />
-        <BooleanBinaryField label='Multicontainer' source='supports multicontainer' />
-        <BooleanBinaryField label='Gateway Mode' source='supports gateway mode' />
         <TextField label='OS Version Range' source='needs-os version range' />
+        <TextField label='Max Devices' source='maximum device count' />
+        <TextField label='Description' source='description' />
+
+        <BooleanBinaryField label='Web URL' source='supports web url' />
+
+        <BooleanBinaryField label='Gateway Mode' source='supports gateway mode' />
+
         <BooleanBinaryField label='Payment' source='requires payment' />
         <BooleanBinaryField label='Legacy' source='is legacy' />
-        <TextField label='Description' source='description' />
-        <TextField label='Max Devices' source='maximum device count' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <BooleanBinaryField label='Multi Container' source='supports multicontainer' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const FleetTypeCreate = (props) => (
-  <Create {...props}>
+export const FleetTypeCreate = () => (
+  <Create title='Create Fleet Type'>
     <SimpleForm>
-      <TextInput source='slug' />
-      <TextInput source='name' />
+      <Row>
+        <TextInput source='slug' size='large' />
+        <TextInput source='name' size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const FleetTypeEdit = (props) => (
-  <Edit title={<FleetTypeTitle />} {...props}>
+export const FleetTypeEdit = () => (
+  <Edit title='Edit Fleet Type'>
     <SimpleForm>
-      <TextInput disabled source='id' />
-      <TextInput source='slug' />
-      <TextInput source='name' />
+      <Row>
+        <TextInput source='slug' size='large' />
+        <TextInput source='name' size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

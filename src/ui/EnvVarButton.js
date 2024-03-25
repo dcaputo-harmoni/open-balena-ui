@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import CodeIcon from '@mui/icons-material/Code';
 
-export const EnvVarButton = ({ basePath, ...props }) => {
+export const EnvVarButton = (props) => {
   return (
     <Button
       href={`/#/${props.resource}%20environment%20variable?filter={"${props.resource}":${props.record['id']}}`}

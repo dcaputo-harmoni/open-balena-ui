@@ -1,10 +1,11 @@
 import React from 'react';
-import { useDataProvider, SelectInput } from 'react-admin';
+import { SelectInput, useDataProvider, useRecordContext } from 'react-admin';
 
-export const SelectDevice = ({ basePath, ...props }) => {
+export const SelectDevice = (props) => {
   const [loaded, setLoaded] = React.useState(null);
   const [availableDevices, setAvailableDevices] = React.useState([]);
   const dataProvider = useDataProvider();
+  const record = useRecordContext();
 
   React.useEffect(() => {
     if (loaded === null) {
@@ -16,13 +17,13 @@ export const SelectDevice = ({ basePath, ...props }) => {
           filter: {},
         })
         .then((devices) => {
-          if (props.record['service install']) {
+          if (record?.['service install']) {
             dataProvider
               .getOne('service install', {
-                id: props.record['service install'],
+                id: record['service install'],
               })
               .then((serviceInstall) => {
-                props.record.device = serviceInstall.data.device;
+                record.device = serviceInstall.data.device;
                 setAvailableDevices(devices.data);
                 setLoaded(true);
               });
@@ -32,7 +33,7 @@ export const SelectDevice = ({ basePath, ...props }) => {
           }
         });
     }
-  }, [props, dataProvider, loaded, setLoaded, availableDevices, setAvailableDevices]);
+  }, [record, props, dataProvider, loaded, setLoaded, availableDevices, setAvailableDevices]);
 
   if (!loaded) return null;
 

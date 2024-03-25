@@ -1,14 +1,14 @@
 import * as React from 'react';
-import { TextField, Datagrid, ReferenceField, ChipField, List } from 'react-admin';
+import { Datagrid, List, ReferenceField, TextField } from 'react-admin';
 
-export const ServiceList = (props) => {
+export const ServiceList = () => {
   return (
-    <List {...props}>
-      <Datagrid bulkActionButtons={false}>
+    <List>
+      <Datagrid size='medium' bulkActionButtons={false}>
         <TextField source='id' />
         <TextField label='Name' source='service name' />
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
-          <ChipField source='app name' />
+          <TextField source='app name' />
         </ReferenceField>
       </Datagrid>
     </List>

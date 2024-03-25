@@ -1,30 +1,29 @@
-import React from 'react';
-import { useDataProvider, TextInput } from 'react-admin';
-import DualListBox from 'react-dual-listbox';
-import 'react-dual-listbox/lib/react-dual-listbox.css';
-import { styled } from '@mui/material/styles';
-import { Box, Typography } from '@mui/material';
 import KeyboardArrowLeftIcon from '@mui/icons-material/KeyboardArrowLeft';
-import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardArrowRightIcon from '@mui/icons-material/KeyboardArrowRight';
+import KeyboardDoubleArrowLeftIcon from '@mui/icons-material/KeyboardDoubleArrowLeft';
 import KeyboardDoubleArrowRightIcon from '@mui/icons-material/KeyboardDoubleArrowRight';
+import { Box } from '@mui/material';
+import { styled } from '@mui/material/styles';
+import React from 'react';
+import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
+import DualListBox from 'react-dual-listbox';
 
 const StyledDualListBox = styled(DualListBox)({
-  'fontSize': '12pt',
-  'fontStyle': 'italic',
+  'fontSize': '12px',
   '& .rdl-move': {
     border: 'none',
   },
   '& .rdl-control': {
-    fontSize: '11pt',
+    fontSize: '12px',
   },
 });
 
-export const ManageRoles = ({ basePath, ...props }) => {
+export const ManageRoles = (props) => {
   const [loaded, setLoaded] = React.useState({ all: false, selected: false });
   const [allRoles, setAllRoles] = React.useState([]);
   const [selectedRoles, setSelectedRoles] = React.useState([]);
   const dataProvider = useDataProvider();
+  const record = useRecordContext();
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -41,12 +40,12 @@ export const ManageRoles = ({ basePath, ...props }) => {
       loaded.all = true;
       setLoaded(loaded);
     }
-    if (!loaded.selected && props.record) {
+    if (!loaded.selected && record) {
       dataProvider
         .getList(props.reference, {
           pagination: { page: 1, perPage: 1000 },
           sort: { field: 'id', order: 'ASC' },
-          filter: { [props.target]: props.record.id },
+          filter: { [props.target]: record.id },
         })
         .then((existingMappings) => {
           const selectedIds = existingMappings.data.map((x) => x.role);
@@ -61,23 +60,24 @@ export const ManageRoles = ({ basePath, ...props }) => {
 
   return (
     <Box sx={{ width: '800px' }}>
-      <Typography variant='subtitle1'>Roles:</Typography>
+      <strong style={{ margin: '40px 0 10px', display: 'block' }}>Roles</strong>
+
       <StyledDualListBox
         options={allRoles}
         selected={selectedRoles}
         onChange={setSelectedRoles}
         showHeaderLabels='true'
         icons={{
-          moveLeft: <KeyboardArrowLeftIcon />,
-          moveAllLeft: <KeyboardDoubleArrowLeftIcon />,
-          moveRight: <KeyboardArrowRightIcon />,
-          moveAllRight: <KeyboardDoubleArrowRightIcon />,
+          moveToAvailable: <KeyboardArrowLeftIcon />,
+          moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
+          moveToSelected: <KeyboardArrowRightIcon />,
+          moveAllToSelected: <KeyboardDoubleArrowRightIcon />,
         }}
       />
       <TextInput
         source={props.source}
         format={() => selectedRoles}
-        onChange={(props.record[props.source] = selectedRoles)}
+        onChange={(record[props.source] = selectedRoles)}
         style={{ display: 'none' }}
       />
     </Box>

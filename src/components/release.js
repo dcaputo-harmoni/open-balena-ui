@@ -1,19 +1,21 @@
 import * as React from 'react';
 import {
-  TextField,
-  Datagrid,
-  ReferenceField,
-  ReferenceManyField,
-  SingleFieldList,
-  ChipField,
-  List,
-  Toolbar,
-  SearchInput,
-  FunctionField,
   BooleanField,
+  ChipField,
+  Datagrid,
+  FunctionField,
+  List,
+  ReferenceField,
+  ReferenceManyCount,
+  ReferenceManyField,
+  SearchInput,
+  SingleFieldList,
+  TextField,
+  Toolbar,
   useDataProvider,
 } from 'react-admin';
 import DeleteReleaseButton from '../ui/DeleteReleaseButton';
+import SemVerTextField from '../ui/SemVerTextField';
 
 const releaseFilters = [<SearchInput source='status@ilike' alwaysOn />];
 
@@ -28,20 +30,28 @@ const BooleanBinaryField = (props) => {
   );
 };
 
-export const ReleaseList = (props) => {
+const TagChipField = (props) => {
   return (
-    <List
+    <FunctionField
       {...props}
-      filters={releaseFilters}
-      bulkActionButtons={
-        <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} {...props}>
-          {' '}
-          Delete{' '}
-        </DeleteReleaseButton>
-      }
-    >
-      <Datagrid>
-        <TextField source='id' />
+      render={(record) => (
+        <ChipField source='tag' record={{ ...record, tag: `${record['tag key']}: ${record['value']}` }} />
+      )}
+    />
+  );
+};
+
+export const ReleaseList = () => {
+  return (
+    <List filters={releaseFilters}>
+      <Datagrid
+        size='medium'
+        bulkActionButtons={
+          <DeleteReleaseButton size='small' color='' context={useDataProvider()} {...props}>
+            Delete
+          </DeleteReleaseButton>
+        }
+      >
         <ReferenceField
           label='Fleet'
           source='belongs to-application'
@@ -49,7 +59,7 @@ export const ReleaseList = (props) => {
           target='id'
           sortable={false}
         >
-          <ChipField source='app name' />
+          <TextField source='app name' />
         </ReferenceField>
         <ReferenceField
           label='Host'
@@ -57,34 +67,22 @@ export const ReleaseList = (props) => {
           reference='application'
           target='id'
           sortable={false}
+          link={false}
         >
           <BooleanBinaryField source='is host' />
         </ReferenceField>
-        <TextField label='Revision' source='revision' />
-        <ReferenceManyField
+        <SemVerTextField label='Version' />
+        <ReferenceManyCount
           label='Devices'
           source='id'
           reference='device'
           target='is running-release'
           link={false}
-          sortable={false}
-        >
-          <SingleFieldList linkType={false}>
-            <ChipField source='device name' />
-          </SingleFieldList>
-        </ReferenceManyField>
-        <ReferenceManyField
-          label='Fleets'
-          source='id'
-          reference='application'
-          target='should be running-release'
-          link={false}
-          sortable={false}
-        >
-          <SingleFieldList linkType={false}>
-            <ChipField source='slug' />
-          </SingleFieldList>
-        </ReferenceManyField>
+          sortable={true}
+        />
+
+        <TextField label='Status' source='status' />
+
         <ReferenceManyField
           label='Tags'
           source='id'
@@ -94,12 +92,12 @@ export const ReleaseList = (props) => {
           sortable={false}
         >
           <SingleFieldList linkType={false}>
-            <ChipField source='value' />
+            <TagChipField />
           </SingleFieldList>
         </ReferenceManyField>
-        <TextField label='Status' source='status' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <DeleteReleaseButton variant='text' size='small' context={useDataProvider()} />
+
+        <Toolbar>
+          <DeleteReleaseButton variant='outlined' size='small' context={useDataProvider()} />
         </Toolbar>
       </Datagrid>
     </List>

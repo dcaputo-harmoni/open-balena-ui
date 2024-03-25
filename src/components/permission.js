@@ -1,61 +1,45 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
-  ReferenceField,
-  ReferenceManyField,
-  SingleFieldList,
-  ChipField,
+  DeleteButton,
+  Edit,
+  EditButton,
   List,
   SimpleForm,
+  TextField,
   TextInput,
-  EditButton,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
 
-const RoleTitle = ({ record }) => {
-  return <span>Permission {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const PermissionList = (props) => {
+export const PermissionList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <TextField source='name' />
-        <ReferenceManyField label='Roles' source='id' reference='role-has-permission' target='permission'>
-          <SingleFieldList linkType={false}>
-            <ReferenceField source='role' reference='role' target='id'>
-              <ChipField source='name' />
-            </ReferenceField>
-          </SingleFieldList>
-        </ReferenceManyField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const PermissionCreate = (props) => (
-  <Create {...props}>
+export const PermissionCreate = () => (
+  <Create title='Create Permission'>
     <SimpleForm>
-      <TextInput source='name' validate={required()} />
+      <TextInput source='name' validate={required()} size='large' fullWidth={true} />
     </SimpleForm>
   </Create>
 );
 
-export const PermissionEdit = (props) => (
-  <Edit title={<RoleTitle />} {...props}>
+export const PermissionEdit = () => (
+  <Edit title='Edit Permission'>
     <SimpleForm>
-      <TextInput disabled source='id' />
-      <TextInput source='name' validate={required()} />
+      <TextInput source='name' validate={required()} size='large' fullWidth={true} />
     </SimpleForm>
   </Edit>
 );

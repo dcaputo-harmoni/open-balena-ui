@@ -1,11 +1,11 @@
+import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react';
 import { useNotify, useRedirect } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
 import { Form } from 'react-final-form';
 import { useDeleteRelease, useDeleteReleaseBulk } from '../lib/release';
 
-export const DeleteReleaseButton = ({ basePath, selectedIds, record, context, ...props }) => {
+export const DeleteReleaseButton = ({ selectedIds, record, context, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
@@ -21,7 +21,7 @@ export const DeleteReleaseButton = ({ basePath, selectedIds, record, context, ..
     }
     setOpen(false);
     notify('Release(s) successfully deleted');
-    redirect(props.redirect, basePath);
+    redirect(props.redirect);
   };
 
   React.useEffect(() => {
@@ -60,7 +60,7 @@ export const DeleteReleaseButton = ({ basePath, selectedIds, record, context, ..
       <Button
         onClick={() => setOpen(true)}
         variant={props.variant || 'contained'}
-        color='inherit'
+        color='error'
         size={props.size}
         sx={props.sx}
         disabled={disabled}

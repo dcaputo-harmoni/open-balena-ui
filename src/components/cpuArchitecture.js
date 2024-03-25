@@ -1,48 +1,50 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
   List,
   SimpleForm,
-  EditButton,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
 } from 'react-admin';
+import Row from '../ui/Row';
 
-const CpuArchitectureTitle = ({ record }) => {
-  return <span>CPU Architecture {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const CpuArchitectureList = (props) => {
+export const CpuArchitectureList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List>
+      <Datagrid size='medium'>
         <TextField label='Slug' source='slug' />
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const CpuArchitectureCreate = (props) => (
-  <Create {...props}>
+export const CpuArchitectureCreate = () => (
+  <Create title='Create CPU Architecture'>
     <SimpleForm redirect='list'>
-      <TextInput label='Slug' source='slug' />
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const CpuArchitectureEdit = (props) => (
-  <Edit title={<CpuArchitectureTitle />} {...props}>
+export const CpuArchitectureEdit = () => (
+  <Edit title='Edit CPU Architecture'>
     <SimpleForm>
-      <TextInput label='Slug' source='slug' />
+      <Row>
+        <TextInput label='ID' source='id' disabled={true} size='large' />
+        <TextInput label='Slug' source='slug' size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

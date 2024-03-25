@@ -1,8 +1,8 @@
-import { useDataProvider } from 'react-admin';
-import { pseudoRandomBytes } from 'crypto-browserify';
 import base32Encode from 'base32-encode';
 import * as bcrypt from 'bcryptjs';
-import { useGenerateApiKey, useDeleteApiKey } from './apiKey';
+import { pseudoRandomBytes } from 'crypto-browserify';
+import { useDataProvider } from 'react-admin';
+import { useDeleteApiKey, useGenerateApiKey } from './apiKey';
 import { deleteAllRelated } from './delete';
 
 const hashPassword = (password) => {

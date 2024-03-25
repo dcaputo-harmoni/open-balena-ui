@@ -1,57 +1,55 @@
 import * as React from 'react';
 import {
   Create,
-  Edit,
-  TextField,
   Datagrid,
-  ReferenceField,
-  ChipField,
-  List,
-  SimpleForm,
+  DeleteButton,
+  Edit,
   EditButton,
+  FunctionField,
+  List,
+  ReferenceField,
   ReferenceInput,
   SelectInput,
+  SimpleForm,
+  TextField,
   TextInput,
-  DeleteButton,
   Toolbar,
   required,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 
-const DeviceTagTitle = ({ record }) => {
-  return <span>Device Tag {record ? `"${record.name}"` : ''}</span>;
-};
-
-export const DeviceTagList = (props) => {
+export const DeviceTagList = () => {
   return (
-    <List {...props}>
-      <Datagrid>
-        <TextField source='id' />
+    <List title='Device Tags'>
+      <Datagrid size='medium'>
         <ReferenceField label='Device' source='device' reference='device' target='id'>
-          <ChipField source='uuid' />
+          <TextField source='device name' />
         </ReferenceField>
+
         <TextField label='Name' source='tag key' />
-        <TextField label='Value' source='value' />
-        <ReferenceField label='Fleet' source='device' reference='device' target='id' link={false}>
-          <ReferenceField
-            source='belongs to-application'
-            reference='application'
-            target='id'
-            link={(record, reference) => `/${reference}/${record['belongs to-application']}`}
-          >
-            <ChipField source='app name' />
-          </ReferenceField>
-        </ReferenceField>
-        <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
-          <EditButton label='' />
-          <DeleteButton label='' style={{ color: 'black' }} size='medium' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
         </Toolbar>
       </Datagrid>
     </List>
   );
 };
 
-export const DeviceTagCreate = (props) => (
-  <Create {...props}>
+export const DeviceTagCreate = () => (
+  <Create title='Create Device Tag'>
     <SimpleForm redirect='list'>
       <ReferenceInput
         source='device'
@@ -59,18 +57,20 @@ export const DeviceTagCreate = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='tag key' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='tag key' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Create>
 );
 
-export const DeviceTagEdit = (props) => (
-  <Edit title={<DeviceTagTitle />} {...props}>
+export const DeviceTagEdit = () => (
+  <Edit title='Edit Device Tag'>
     <SimpleForm>
       <ReferenceInput
         source='device'
@@ -78,12 +78,14 @@ export const DeviceTagEdit = (props) => (
         target='id'
         perPage={1000}
         sort={{ field: 'device name', order: 'ASC' }}
-        validate={required()}
       >
-        <SelectInput optionText='device name' optionValue='id' />
+        <SelectInput optionText='device name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
-      <TextInput label='Name' source='tag key' validate={required()} />
-      <TextInput label='Value' source='value' validate={required()} />
+
+      <Row>
+        <TextInput label='Name' source='tag key' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
     </SimpleForm>
   </Edit>
 );

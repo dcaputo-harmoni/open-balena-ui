@@ -1,25 +1,26 @@
+import PlayArrowIcon from '@mui/icons-material/PlayArrow';
+import RestartAltIcon from '@mui/icons-material/RestartAlt';
+import StopIcon from '@mui/icons-material/Stop';
+import { Button } from '@mui/material';
 import React from 'react';
 import {
+  Datagrid,
+  FunctionField,
   ReferenceField,
   ReferenceManyField,
-  Datagrid,
   TextField,
-  FunctionField,
-  ChipField,
+  Toolbar,
   useAuthProvider,
   useNotify,
-  Toolbar,
+  useRecordContext,
 } from 'react-admin';
-import { Button } from '@mui/material';
-import RestartAltIcon from '@mui/icons-material/RestartAlt';
-import PlayArrowIcon from '@mui/icons-material/PlayArrow';
-import StopIcon from '@mui/icons-material/Stop';
-import dateFormat from 'dateformat';
 import utf8decode from '../lib/utf8decode';
+import SemVerChip from './SemVerChip';
 
-export const DeviceServices = ({ basePath, ...props }) => {
+export const DeviceServices = (props) => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
+  const record = useRecordContext();
 
   const invokeSupervisor = (device, imageInstall, command) => {
     const session = authProvider.getSession();
@@ -57,9 +58,7 @@ export const DeviceServices = ({ basePath, ...props }) => {
       source='id'
       reference='image install'
       target='device'
-      filter={
-        props.record['is running-release'] ? { 'is provided by-release': props.record['is running-release'] } : {}
-      }
+      filter={record['is running-release'] ? { 'is provided by-release': record['is running-release'] } : {}}
     >
       <Datagrid>
         <ReferenceField label='Image' source='installs-image' reference='image' target='id' link={false}>
@@ -70,33 +69,35 @@ export const DeviceServices = ({ basePath, ...props }) => {
             target='id'
             link={(record, reference) => `/${reference}/${record['is a build of-service']}`}
           >
-            <ChipField source='service name' />
+            <TextField source='service name' />
           </ReferenceField>
         </ReferenceField>
+
         <TextField label='Status' source='status' />
-        <FunctionField
-          label='Install Date'
-          render={(record) => `${dateFormat(new Date(record['install date']), 'dd-mmm-yy h:MM:ss TT Z')}`}
-        />
+
+        <ReferenceField label='Release' source='is provided by-release' reference='release' target='id'>
+          <SemVerChip />
+        </ReferenceField>
+
         <FunctionField
           render={(record) => (
             <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'start')}
+                onClick={() => invokeSupervisor(record, record, 'start')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <PlayArrowIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'stop')}
+                onClick={() => invokeSupervisor(record, record, 'stop')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <StopIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(props.record, record, 'restart')}
+                onClick={() => invokeSupervisor(record, record, 'restart')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >

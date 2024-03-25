@@ -1,26 +1,27 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteUser, useDeleteUserBulk } from '../lib/user';
 
-export const DeleteUserButton = ({ basePath, ...props }) => {
+export const DeleteUserButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
   const deleteUser = useDeleteUser();
   const deleteUserBulk = useDeleteUserBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteUserBulk(props.selectedIds);
     } else {
-      await deleteUser(props.record);
+      await deleteUser(record);
     }
     setOpen(false);
     notify('User(s) successfully deleted');
-    redirect(props.redirect, basePath);
+    redirect(props.redirect);
   };
 
   return (
@@ -28,7 +29,7 @@ export const DeleteUserButton = ({ basePath, ...props }) => {
       <Button
         onClick={() => setOpen(true)}
         variant={props.variant || 'contained'}
-        color='inherit'
+        color='error'
         size={props.size}
         sx={props.sx}
       >

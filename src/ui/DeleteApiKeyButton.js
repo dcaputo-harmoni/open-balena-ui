@@ -1,26 +1,27 @@
-import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { Button, Dialog, DialogTitle, DialogContent } from '@mui/material';
+import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
+import React from 'react';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteApiKey, useDeleteApiKeyBulk } from '../lib/apiKey';
 
-export const DeleteApiKeyButton = ({ basePath, ...props }) => {
+export const DeleteApiKeyButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
   const deleteApiKey = useDeleteApiKey();
   const deleteApiKeyBulk = useDeleteApiKeyBulk();
+  const record = useRecordContext();
 
   const handleSubmit = async (values) => {
     if (props.selectedIds) {
       await deleteApiKeyBulk(props.selectedIds);
     } else {
-      await deleteApiKey(props.record);
+      await deleteApiKey(record);
     }
     setOpen(false);
     notify('API Key(s) successfully deleted');
-    redirect(props.redirect, basePath);
+    redirect(props.redirect);
   };
 
   return (
@@ -28,7 +29,7 @@ export const DeleteApiKeyButton = ({ basePath, ...props }) => {
       <Button
         onClick={() => setOpen(true)}
         variant={props.variant || 'contained'}
-        color='inherit'
+        color='error'
         size={props.size}
         sx={props.sx}
       >

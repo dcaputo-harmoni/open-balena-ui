@@ -1,12 +1,16 @@
 import React from 'react';
-import { useDataProvider, SelectInput } from 'react-admin';
+import { SelectInput, useDataProvider } from 'react-admin';
 
-export const SelectDeviceService = ({ basePath, ...props }) => {
+export const SelectDeviceService = (props) => {
   const [loaded, setLoaded] = React.useState(null);
   const [availableServices, setAvailableServices] = React.useState([]);
   const dataProvider = useDataProvider();
 
   React.useEffect(() => {
+    if (!props.device) {
+      return;
+    }
+
     if (loaded === null) {
       setLoaded(false);
       dataProvider

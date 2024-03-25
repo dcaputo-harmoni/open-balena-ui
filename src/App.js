@@ -1,8 +1,7 @@
+import { CssBaseline } from '@mui/material';
 import * as React from 'react';
-import { createTheme } from '@mui/material/styles';
-import { Admin, Resource, fetchUtils, nanoLightTheme, nanoDarkTheme } from 'react-admin';
-import { Route, Navigate } from 'react-router-dom';
-import postgrestDataProvider from './dataProvider/postgrestDataProvider';
+import { Admin, Layout, Resource, fetchUtils } from 'react-admin';
+import { Navigate, Route, useParams } from 'react-router-dom';
 import openbalenaAuthProvider from './authProvider/openbalenaAuthProvider';
 import apiKey from './components/apiKey';
 import config from './components/config';
@@ -17,8 +16,8 @@ import deviceTag from './components/deviceTag';
 import deviceType from './components/deviceType';
 import deviceTypeAlias from './components/deviceTypeAlias';
 import fleet from './components/fleet';
-import fleetEnvVar from './components/fleetEnvVar';
 import fleetConfigVar from './components/fleetConfigVar';
+import fleetEnvVar from './components/fleetEnvVar';
 import fleetTag from './components/fleetTag';
 import fleetType from './components/fleetType';
 import image from './components/image';
@@ -34,8 +33,11 @@ import serviceEnvVar from './components/serviceEnvVar';
 import serviceLabel from './components/serviceLabel';
 import user from './components/user';
 import userKey from './components/userKey';
-import MainDashboard from './dashboards/main';
 import DeviceDashboard from './dashboards/device';
+import MainDashboard from './dashboards/main';
+import postgrestDataProvider from './dataProvider/postgrestDataProvider';
+import TreeMenu from './ui/TreeMenu';
+import customTheme from './ui/customTheme';
 import versions from './versions';
 
 const httpClient = (url, options = {}) => {
@@ -45,42 +47,6 @@ const httpClient = (url, options = {}) => {
   options.headers.set('Authorization', `Bearer ${localStorage.getItem('auth')}`);
   return fetchUtils.fetchJson(url, options);
 };
-
-//
-// Customize the nano themes
-//
-const normalFont = '"Source Sans Pro", Helvetica, sans-serif';
-const monoFont = '"Ubuntu Mono", "Courier New", monospace';
-
-const theme = createTheme(nanoLightTheme, {
-  typography: {
-    fontFamily: normalFont,
-  },
-  components: {
-    MuiCode: {
-      styleOverrides: {
-        root: {
-          fontFamily: monoFont,
-        },
-      },
-    },
-  },
-});
-
-const darkTheme = createTheme(nanoDarkTheme, {
-  typography: {
-    fontFamily: normalFont,
-  },
-  components: {
-    MuiCode: {
-      styleOverrides: {
-        root: {
-          fontFamily: monoFont,
-        },
-      },
-    },
-  },
-});
 
 const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
@@ -97,16 +63,26 @@ const customRoutes = [
   <Route key='custom-route-device-summary' path='/devices/:uuid/summary' element={<NavigateToDevice />} />,
 ];
 
+const treeLayout = (props) => {
+  return (
+    <>
+      <Layout {...props} sidebar={TreeMenu} />
+      <CssBaseline />
+    </>
+  );
+};
+
 const OpenBalenaAdmin = () => (
   <Admin
     requireAuth
     title='Open Balena Admin'
+    disableTelemetry={true}
     dataProvider={dataProvider}
     authProvider={openbalenaAuthProvider}
     dashboard={MainDashboard}
     customRoutes={customRoutes}
-    theme={theme}
-    darkTheme={darkTheme}
+    layout={treeLayout}
+    theme={customTheme}
   >
     <Resource name='menu-access' options={{ label: 'Access', isMenuParent: true }} />
     <Resource name='organization' options={{ label: 'Orgs', menuParent: 'menu-access' }} {...organization} />
