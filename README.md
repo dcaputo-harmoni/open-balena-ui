@@ -88,6 +88,11 @@ locally, you can access `open-balena-ui` via your web browser at `http://localho
 environment variables are appropriately pointed to live `open-balena-api` and `open-balena-postgrest` instances, you
 should be up and running.
 
+## Development
+
+For local development, be sure to set `NODE_ENV` to `development` and use `npm run devserver` to start the server with
+hot module replacement / reloading.
+
 ## Credits
 
 - The [ra-data-postgrest](https://github.com/raphiniert-com/ra-data-postgrest) project was instrumental in establishing
