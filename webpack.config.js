@@ -1,37 +1,55 @@
 const path = require('path');
-const webpack = require('webpack');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
+const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
+const webpack = require('webpack');
 require('dotenv').config();
 
+const isDevelopment = process.env.NODE_ENV === 'development';
+
+console.log(`isDevelopment: ${isDevelopment}`);
+
 module.exports = {
-  mode: 'development',
-  entry: [
-    require.resolve('react-app-polyfill/ie11'),
-    'webpack-hot-middleware/client?reload=true',
-    path.join(process.cwd(), 'src/index.js'),
-  ],
+  mode: isDevelopment ? 'development' : 'production',
+  entry: {
+    main: [path.join(process.cwd(), 'src/index.js')],
+  },
   output: {
     path: path.resolve(process.cwd(), 'build'),
     publicPath: '/',
-    filename: '[name].js',
-    chunkFilename: '[name].chunk.js',
+    filename: '[name].[contenthash].js',
+    chunkFilename: '[name].[contenthash].chunk.js',
+    clean: true, // Automatically clean the output directory before each build
   },
   optimization: {
+    moduleIds: 'deterministic', // Enable consistent hashing for long term caching
+    runtimeChunk: 'single', // Create a runtime file to be shared for all generated chunks
     splitChunks: {
       chunks: 'all',
+      maxInitialRequests: Infinity,
+      minSize: 0,
+      cacheGroups: {
+        vendor: {
+          test: /[\\/]node_modules[\\/]/,
+          name(module) {
+            const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
+            return `npm.${packageName.replace('@', '')}`;
+          },
+        },
+      },
     },
   },
   module: {
     rules: [
       {
-        test: /\.?js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: {
-          loader: "babel-loader",
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env', '@babel/preset-react']
-          }
-        }
+            presets: ['@babel/preset-env', '@babel/preset-react'],
+            plugins: [require.resolve('react-refresh/babel')].filter(Boolean),
+          },
+        },
       },
       {
         test: /\.css$/,
@@ -39,60 +57,66 @@ module.exports = {
       },
       {
         test: /\.svg$/,
-        use: [
-          {
-            loader: 'svg-url-loader',
+        type: 'asset', // Use asset module type for SVG
+        parser: {
+          dataUrlCondition: {
+            maxSize: 8 * 1024, // 8kb
           },
-        ],
+        },
       },
       {
         test: /\.(jpg|png|gif)$/,
-        use: [
-          {
-            loader: 'url-loader',
-          },
-        ],
+        type: 'asset/resource', // Use asset module type for images
       },
       {
         test: /\.html$/,
         use: 'html-loader',
       },
-    ]
+    ],
   },
   plugins: [
-    new webpack.HotModuleReplacementPlugin(),
+    isDevelopment && new webpack.HotModuleReplacementPlugin(),
     new HtmlWebpackPlugin({
       inject: true,
       template: 'src/index.html',
       favicon: 'src/favicon.ico',
       manifest: 'src/manifest.json',
     }),
+    isDevelopment && new ReactRefreshWebpackPlugin(),
     new webpack.ProvidePlugin({
       process: 'process/browser',
-    }),
-    new webpack.ProvidePlugin({
       Buffer: ['buffer', 'Buffer'],
     }),
-    new webpack.EnvironmentPlugin({
-      REACT_APP_OPEN_BALENA_UI_URL: process.env.REACT_APP_OPEN_BALENA_UI_URL,
-      REACT_APP_OPEN_BALENA_POSTGREST_URL: process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL,
-      REACT_APP_OPEN_BALENA_REMOTE_URL: process.env.REACT_APP_OPEN_BALENA_REMOTE_URL,
-      REACT_APP_OPEN_BALENA_API_URL: process.env.REACT_APP_OPEN_BALENA_API_URL,
-      REACT_APP_OPEN_BALENA_API_VERSION: process.env.REACT_APP_OPEN_BALENA_API_VERSION,
-    }),
-  ],
+    new webpack.EnvironmentPlugin([
+      'REACT_APP_OPEN_BALENA_UI_URL',
+      'REACT_APP_OPEN_BALENA_POSTGREST_URL',
+      'REACT_APP_OPEN_BALENA_REMOTE_URL',
+      'REACT_APP_OPEN_BALENA_API_URL',
+      'REACT_APP_OPEN_BALENA_API_VERSION',
+    ]),
+  ].filter(Boolean),
   resolve: {
     modules: ['node_modules', 'src'],
     extensions: ['.js', '.jsx', '.react.js'],
-    mainFields: ['browser', 'jsnext:main', 'main'],
+    mainFields: ['browser', 'module', 'main'],
     fallback: {
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
     },
   },
-  devtool: 'eval-source-map',
-  target: 'web', 
+  devtool: 'eval-cheap-module-source-map',
+  target: ['web', 'es5'],
   performance: {
     hints: false,
   },
-}
+  devServer: {
+    static: {
+      directory: path.join(__dirname, 'src'), // Path to serve static files from
+    },
+    compress: false, // Enable gzip compression
+    historyApiFallback: true, // Fallback to /index.html for Single Page Applications
+    open: true, // Open the browser after server has been started
+    hot: true, // Enable Hot Module Replacement
+    port: 3000,
+  },
+};

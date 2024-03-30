@@ -1,101 +1,161 @@
-import * as React from "react";
+import * as React from 'react';
 import {
-    Create,
-    Edit,
-    TextField,
-    Datagrid,
-    ReferenceField,
-    ChipField,
-    List,
-    SimpleForm,
-    EditButton,
-    DeleteButton,
-    ReferenceInput,
-    SelectInput,
-    TextInput,
-    Toolbar,
-    required,
-    FormDataConsumer,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FormDataConsumer,
+  FunctionField,
+  List,
+  ReferenceField,
+  ReferenceInput,
+  SelectInput,
+  SimpleForm,
+  TextField,
+  TextInput,
+  Toolbar,
+  required,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
+import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
-const ReleaseTagTitle = ({ record }) => {
-    return <span>Release Tag {record ? `"${record['tag key']}"` : ''}</span>;
+export const ReleaseTagList = (props) => {
+  return (
+    <List title='Release Tags'>
+      <Datagrid size='medium'>
+        <ReferenceField label='Fleet' source='release' reference='release' target='id' link={false}>
+          <ReferenceField
+            source='belongs to-application'
+            reference='application'
+            target='id'
+            link={(record, reference) => `/${reference}/${record.id}`}
+          >
+            <TextField source='app name' />
+          </ReferenceField>
+        </ReferenceField>
+
+        <ReferenceField label='Release Rev.' source='release' reference='release' target='id'>
+          <SemVerChip />
+        </ReferenceField>
+
+        <TextField label='Name' source='tag key' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
+        </Toolbar>
+      </Datagrid>
+    </List>
+  );
 };
 
-export const ReleaseTagList = props => {
-    return (
-        <List {...props}>
-            <Datagrid>
-                <TextField source="id"/>
-                <ReferenceField label="Fleet" source="release" reference="release" target="id" link={false}>
-                    <ReferenceField source="belongs to-application" reference="application" target="id" link={(record, reference) => `/${reference}/${record.id}`}>
-                        <ChipField source="app name"/>
-                    </ReferenceField>
-                </ReferenceField>
-                <ReferenceField label="Release Rev." source="release" reference="release" target="id">
-                    <ChipField source="revision"/>
-                </ReferenceField>
-                <TextField label="Name" source="tag key"/>
-                <TextField label="Value" source="value"/>
-                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
-                </Toolbar>
-            </Datagrid>
-        </List>
-    )
-};
+export const ReleaseTagCreate = () => {
+  const processCreate = async (data) => {
+    delete data.application;
+    return data;
+  };
 
-export const ReleaseTagCreate = props => {
+  return (
+    <Create title='Create Release Tag' transform={processCreate}>
+      <SimpleForm redirect='list'>
+        <Row>
+          <ReferenceInput
+            label='Fleet'
+            source='application'
+            reference='application'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'app name', order: 'ASC' }}
+          >
+            <SelectInput optionText='app name' optionValue='id' validate={required()} />
+          </ReferenceInput>
 
-    const processCreate = async (data) => {
-        delete data.application;
-        return data;
-    };
+          <FormDataConsumer>
+            {({ formData, ...rest }) =>
+              formData['application'] && (
+                <ReferenceInput
+                  label='Release'
+                  source='release'
+                  reference='release'
+                  target='id'
+                  filter={{ 'belongs to-application': formData.application }}
+                  perPage={1000}
+                  sort={{ field: 'revision', order: 'ASC' }}
+                >
+                  <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
+                </ReferenceInput>
+              )
+            }
+          </FormDataConsumer>
+        </Row>
 
-    return (
-    <Create transform={processCreate} {...props}>
-        <SimpleForm redirect="list">
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
-                <SelectInput optionText="app name" optionValue="id"/>
-            </ReferenceInput>
-            <FormDataConsumer>
-                {({ formData, ...rest }) => formData['application'] &&
-                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} perPage={1000} sort={{field: "revision", order: "ASC"}} validate={required()}>
-                        <SelectInput optionText="revision" optionValue="id"/>
-                    </ReferenceInput>
-                }
-            </FormDataConsumer>
-            <TextInput label="Name" source="tag key" validate={required()}/>
-            <TextInput label="Value" source="value" validate={required()}/>
-        </SimpleForm>
+        <Row>
+          <TextInput label='Name' source='tag key' validate={required()} size='large' />
+          <TextInput label='Value' source='value' validate={required()} size='large' />
+        </Row>
+      </SimpleForm>
     </Create>
-    )
-}
+  );
+};
 
-export const ReleaseTagEdit = props => (
-    <Edit title={<ReleaseTagTitle/>} {...props}>
-        <SimpleForm>
-            <ReferenceInput label="Fleet" source="application" reference="application" target="id" perPage={1000} sort={{field: "app name", order: "ASC"}} validate={required()}>
-                <SelectInput optionText="app name" optionValue="id"/>
-            </ReferenceInput>
-            <FormDataConsumer>
-                {({ formData, ...rest }) => formData['application'] &&
-                    <ReferenceInput label="Release" source="release" reference="release" target="id" filter={{'belongs to-application': formData.application}} perPage={1000} sort={{field: "revision", order: "ASC"}} validate={required()}>
-                        <SelectInput optionText="revision" optionValue="id"/>
-                    </ReferenceInput>
-                }
-            </FormDataConsumer>
-            <TextInput label="Name" source="tag key" validate={required()}/>
-            <TextInput label="Value" source="value" validate={required()}/>
-        </SimpleForm>
-    </Edit>
+export const ReleaseTagEdit = () => (
+  <Edit title='Edit Release Tag'>
+    <SimpleForm>
+      <Row>
+        <ReferenceInput
+          label='Fleet'
+          source='application'
+          reference='application'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'app name', order: 'ASC' }}
+        >
+          <SelectInput optionText='app name' optionValue='id' validate={required()} />
+        </ReferenceInput>
+
+        <FormDataConsumer>
+          {({ formData, ...rest }) =>
+            formData['application'] && (
+              <ReferenceInput
+                label='Release'
+                source='release'
+                reference='release'
+                target='id'
+                filter={{ 'belongs to-application': formData.application }}
+                perPage={1000}
+                sort={{ field: 'revision', order: 'ASC' }}
+              >
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' validate={required()} />
+              </ReferenceInput>
+            )
+          }
+        </FormDataConsumer>
+      </Row>
+
+      <Row>
+        <TextInput label='Name' source='tag key' validate={required()} size='large' />
+        <TextInput label='Value' source='value' validate={required()} size='large' />
+      </Row>
+    </SimpleForm>
+  </Edit>
 );
 
 const releaseTag = {
-    list: ReleaseTagList,
-    create: ReleaseTagCreate,
-    edit: ReleaseTagEdit
-}
+  list: ReleaseTagList,
+  create: ReleaseTagCreate,
+  edit: ReleaseTagEdit,
+};
 
 export default releaseTag;

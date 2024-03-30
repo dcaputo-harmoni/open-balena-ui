@@ -1,102 +1,147 @@
-import * as React from "react";
+import * as React from 'react';
 import {
-    Create,
-    Edit,
-    TextField,
-    Datagrid,
-    ReferenceField,
-    ChipField,
-    List,
-    SimpleForm,
-    TextInput,
-    EditButton,
-    DeleteButton,
-    Toolbar,
-    ReferenceInput,
-    SelectInput,
-    required,
-    ReferenceManyField,
-    SingleFieldList,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  List,
+  ReferenceField,
+  ReferenceInput,
+  ReferenceManyField,
+  SelectInput,
+  SimpleForm,
+  SingleFieldList,
+  TextField,
+  TextInput,
+  Toolbar,
+  required,
 } from 'react-admin';
-import versions from '../versions'
-import { useCreateDeviceType } from '../lib/deviceType'
+import { useCreateDeviceType } from '../lib/deviceType';
+import Row from '../ui/Row';
+import versions from '../versions';
 
-const DeviceTypeTitle = ({ record }) => {
-    return <span>Device Type {record ? `"${record.name}"` : ''}</span>;
+const deviceTypeAlias = versions.resource('deviceTypeAlias', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+
+export const DeviceTypeList = () => {
+  return (
+    <List>
+      <Datagrid size='medium'>
+        <TextField label='Slug' source='slug' />
+        <TextField label='Name' source='name' />
+
+        <ReferenceField
+          label='CPU Architecture'
+          source='is of-cpu architecture'
+          reference='cpu architecture'
+          target='id'
+        >
+          <TextField source='slug' />
+        </ReferenceField>
+
+        {deviceTypeAlias ? (
+          <ReferenceManyField label='Alias' source='id' reference={deviceTypeAlias} target='device type'>
+            <SingleFieldList>
+              <TextField source='is referenced by-alias' />
+            </SingleFieldList>
+          </ReferenceManyField>
+        ) : (
+          <></>
+        )}
+
+        <ReferenceField label='Device Family' source='belongs to-device family' reference='device family' target='id'>
+          <TextField source='slug' />
+        </ReferenceField>
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
+        </Toolbar>
+      </Datagrid>
+    </List>
+  );
 };
 
-const deviceTypeAlias = versions.resource("deviceTypeAlias", process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+export const DeviceTypeCreate = () => {
+  const createDeviceType = useCreateDeviceType();
 
-export const DeviceTypeList = props => {
-    return (
-        <List {...props}>
-            <Datagrid>
-                <TextField source="id"/>
-                <TextField label="Slug" source="slug"/>
-                <TextField label="Name" source="name"/>
-                <ReferenceField label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" style={{color: "black"}}>
-                    <ChipField source="slug"/>
-                </ReferenceField>
-                {deviceTypeAlias ? 
-                <ReferenceManyField label="Alias" source="id" reference={deviceTypeAlias} target="device type">
-                    <SingleFieldList>
-                        <ChipField source="is referenced by-alias"/>
-                    </SingleFieldList>
-                </ReferenceManyField>
-                : <></>
-                }
-                <ReferenceField label="Device Family" source="belongs to-device family" reference="device family" target="id" style={{color: "black"}}>
-                    <ChipField source="slug"/>
-                </ReferenceField>
-                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
-                </Toolbar>
-            </Datagrid>
-        </List>
-    )
+  return (
+    <Create title='Create Device Type' transform={createDeviceType}>
+      <SimpleForm redirect='list'>
+        <Row>
+          <TextInput source='slug' size='large' />
+          <TextInput source='name' size='large' />
+        </Row>
+
+        <Row>
+          <ReferenceInput
+            label='CPU Architecture'
+            source='is of-cpu architecture'
+            reference='cpu architecture'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+          >
+            <SelectInput optionText='slug' optionValue='id' validate={required()} />
+          </ReferenceInput>
+
+          <ReferenceInput
+            label='Device Family'
+            source='belongs to-device family'
+            reference='device family'
+            target='id'
+            perPage={1000}
+            sort={{ field: 'slug', order: 'ASC' }}
+            allowEmpty
+          >
+            <SelectInput optionText='slug' optionValue='id' />
+          </ReferenceInput>
+        </Row>
+      </SimpleForm>
+    </Create>
+  );
 };
 
-export const DeviceTypeCreate = props => {
+export const DeviceTypeEdit = () => (
+  <Edit title='Edit Device Type'>
+    <SimpleForm>
+      <Row>
+        <TextInput source='slug' size='large' />
+        <TextInput source='name' size='large' />
+      </Row>
 
-    const createDeviceType = useCreateDeviceType();
+      <Row>
+        <ReferenceInput
+          label='CPU Architecture'
+          source='is of-cpu architecture'
+          reference='cpu architecture'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'slug', order: 'ASC' }}
+        >
+          <SelectInput optionText='slug' optionValue='id' validate={required()} />
+        </ReferenceInput>
 
-    return (
-        <Create transform={createDeviceType} {...props}>
-            <SimpleForm redirect="list">
-                <TextInput source="slug"/>
-                <TextInput source="name"/>
-                <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
-                    <SelectInput optionText="slug" optionValue="id"/>
-                </ReferenceInput>
-                <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
-                    <SelectInput optionText="slug" optionValue="id"/>
-                </ReferenceInput>
-            </SimpleForm>
-        </Create>
-    );
-}
-
-export const DeviceTypeEdit = props => (
-    <Edit title={<DeviceTypeTitle />} {...props}>
-        <SimpleForm>
-            <TextInput disabled source="id"/>
-            <TextInput source="slug"/>
-            <TextInput source="name"/>
-            <ReferenceInput label="CPU Architecture" source="is of-cpu architecture" reference="cpu architecture" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} validate={required()}>
-                <SelectInput optionText="slug" optionValue="id"/>
-            </ReferenceInput>
-            <ReferenceInput label="Device Family" source="belongs to-device family" reference="device family" target="id" perPage={1000} sort={{field: "slug", order: "ASC"}} allowEmpty>
-                <SelectInput optionText="slug" optionValue="id"/>
-            </ReferenceInput>
-        </SimpleForm>
-    </Edit>
+        <ReferenceInput
+          label='Device Family'
+          source='belongs to-device family'
+          reference='device family'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'slug', order: 'ASC' }}
+          allowEmpty
+        >
+          <SelectInput optionText='slug' optionValue='id' />
+        </ReferenceInput>
+      </Row>
+    </SimpleForm>
+  </Edit>
 );
 
 const deviceType = {
-    list: DeviceTypeList,
-    create: DeviceTypeCreate,
-    edit: DeviceTypeEdit
-}
+  list: DeviceTypeList,
+  create: DeviceTypeCreate,
+  edit: DeviceTypeEdit,
+};
 
 export default deviceType;

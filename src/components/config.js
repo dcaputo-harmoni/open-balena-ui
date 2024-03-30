@@ -1,65 +1,84 @@
-import * as React from "react";
+import * as React from 'react';
 import {
-    Create,
-    Edit,
-    TextField,
-    Datagrid,
-    List,
-    SimpleForm,
-    EditButton,
-    TextInput,
-    DeleteButton,
-    Toolbar,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  FunctionField,
+  List,
+  SimpleForm,
+  TextField,
+  TextInput,
+  Toolbar,
 } from 'react-admin';
+import CopyChip from '../ui/CopyChip';
+import Row from '../ui/Row';
 
-const ConfigTitle = ({ record }) => {
-    return <span>Config {record ? `"${record.name}"` : ''}</span>;
+export const ConfigList = () => {
+  return (
+    <List>
+      <Datagrid size='medium'>
+        <TextField label='Key' source='key' />
+
+        <FunctionField
+          label='Value'
+          render={(record) => (
+            <CopyChip
+              title={record.value}
+              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+            />
+          )}
+        />
+
+        <TextField label='Scope' source='scope' />
+        <TextField label='Description' source='description' />
+
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
+        </Toolbar>
+      </Datagrid>
+    </List>
+  );
 };
 
-export const ConfigList = props => {
-    return (
-        <List {...props}>
-            <Datagrid>
-                <TextField source="id"/>
-                <TextField label="Key" source="key"/>
-                <TextField label="Value" source="value"/>
-                <TextField label="Scope" source="scope"/>
-                <TextField label="Description" source="description"/>
-                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
-                </Toolbar>
-            </Datagrid>
-        </List>
-    )
-};
+export const ConfigCreate = () => (
+  <Create title='Create Config'>
+    <SimpleForm redirect='list'>
+      <Row>
+        <TextInput label='Key' source='key' size='large' />
+        <TextInput label='Value' source='value' size='large' />
+      </Row>
 
-export const ConfigCreate = props => (
-    <Create {...props}>
-        <SimpleForm redirect="list">
-            <TextInput label="Key" source="key"/>
-            <TextInput label="Value" source="value"/>
-            <TextInput label="Scope" source="scope"/>
-            <TextInput label="Description" source="description"/>
-        </SimpleForm>
-    </Create>
+      <Row>
+        <TextInput label='Scope' source='scope' size='large' />
+        <TextInput label='Description' source='description' size='large' />
+      </Row>
+    </SimpleForm>
+  </Create>
 );
 
-export const ConfigEdit = props => (
-    <Edit title={<ConfigTitle />} {...props}>
-        <SimpleForm>
-            <TextInput label="Key" source="key"/>
-            <TextInput label="Value" source="value"/>
-            <TextInput label="Scope" source="scope"/>
-            <TextInput label="Description" source="description"/>
-        </SimpleForm>
-    </Edit>
+export const ConfigEdit = () => (
+  <Edit title='Edit Config'>
+    <SimpleForm>
+      <Row>
+        <TextInput label='Key' source='key' size='large' />
+        <TextInput label='Value' source='value' size='large' />
+      </Row>
+
+      <Row>
+        <TextInput label='Scope' source='scope' size='large' />
+        <TextInput label='Description' source='description' size='large' />
+      </Row>
+    </SimpleForm>
+  </Edit>
 );
 
 const config = {
-    list: ConfigList,
-    create: ConfigCreate,
-    edit: ConfigEdit
-}
+  list: ConfigList,
+  create: ConfigCreate,
+  edit: ConfigEdit,
+};
 
 export default config;

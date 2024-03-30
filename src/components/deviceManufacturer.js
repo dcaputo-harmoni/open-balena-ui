@@ -1,59 +1,59 @@
-import * as React from "react";
+import * as React from 'react';
 import {
-    Create,
-    Edit,
-    TextField,
-    Datagrid,
-    List,
-    SimpleForm,
-    EditButton,
-    TextInput,
-    DeleteButton,
-    Toolbar,
+  Create,
+  Datagrid,
+  DeleteButton,
+  Edit,
+  EditButton,
+  List,
+  SimpleForm,
+  TextField,
+  TextInput,
+  Toolbar,
 } from 'react-admin';
+import Row from '../ui/Row';
 
-const DeviceManufacturerTitle = ({ record }) => {
-    return <span>Device Manufacturer {record ? `"${record.name}"` : ''}</span>;
+export const DeviceManufacturerList = () => {
+  return (
+    <List title='Device Manufacturers'>
+      <Datagrid size='medium'>
+        <TextField label='Slug' source='slug' />
+        <TextField label='Name' source='name' />
+        <Toolbar>
+          <EditButton label='' size='small' variant='outlined' />
+          <DeleteButton label='' size='small' variant='outlined' />
+        </Toolbar>
+      </Datagrid>
+    </List>
+  );
 };
 
-export const DeviceManufacturerList = props => {
-    return (
-        <List {...props}>
-            <Datagrid>
-                <TextField source="id"/>
-                <TextField label="Slug" source="slug"/>
-                <TextField label="Name" source="name"/>
-                <Toolbar style={{minHeight: 0, minWidth: 0, padding:0, margin:0, background: 0, textAlign: "center"}}>
-                    <EditButton label="" color="default"/>
-                    <DeleteButton label="" style={{color: "black"}} size="medium"/>
-                </Toolbar>
-            </Datagrid>
-        </List>
-    )
-};
-
-export const DeviceManufacturerCreate = props => (
-    <Create {...props}>
-        <SimpleForm redirect="list">
-            <TextInput label="Slug" source="slug"/>
-            <TextInput label="Name" source="name"/>
-        </SimpleForm>
-    </Create>
+export const DeviceManufacturerCreate = () => (
+  <Create title='Create Device Manufacturer'>
+    <SimpleForm redirect='list'>
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
+    </SimpleForm>
+  </Create>
 );
 
-export const DeviceManufacturerEdit = props => (
-    <Edit title={<DeviceManufacturerTitle />} {...props}>
-        <SimpleForm>
-            <TextInput label="Slug" source="slug"/>
-            <TextInput label="Name" source="name"/>
-        </SimpleForm>
-    </Edit>
+export const DeviceManufacturerEdit = () => (
+  <Edit title='Edit Device Manufacturer'>
+    <SimpleForm>
+      <Row>
+        <TextInput label='Slug' source='slug' size='large' />
+        <TextInput label='Name' source='name' size='large' />
+      </Row>
+    </SimpleForm>
+  </Edit>
 );
 
 const deviceManufacturer = {
-    list: DeviceManufacturerList,
-    create: DeviceManufacturerCreate,
-    edit: DeviceManufacturerEdit
-}
+  list: DeviceManufacturerList,
+  create: DeviceManufacturerCreate,
+  edit: DeviceManufacturerEdit,
+};
 
 export default deviceManufacturer;
