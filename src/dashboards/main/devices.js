@@ -34,7 +34,13 @@ const Devices = (props) => {
                     <CardHeader
                       title={record['device name']}
                       sx={{ fontWeight: 'bold' }}
-                      titleTypographyProps={{ variant: 'inherit' }}
+                      titleTypographyProps={{
+                        variant: 'inherit',
+                        whiteSpace: 'nowrap',
+                        overflow: 'hidden',
+                        textOverflow: 'ellipsis',
+                        maxWidth: 165,
+                      }}
                     />
                     <CardContent sx={{ paddingTop: '4px', paddingBottom: '4px' }}>
                       <Table
@@ -77,7 +83,16 @@ const Devices = (props) => {
                           </TableRow>
                           <TableRow>
                             <TableCell sx={{ fontWeight: 'bold' }}>OS</TableCell>
-                            <TableCell align='right'>
+                            <TableCell
+                              align='right'
+                              sx={{
+                                variant: 'inherit',
+                                whiteSpace: 'nowrap',
+                                overflow: 'hidden',
+                                textOverflow: 'ellipsis',
+                                maxWidth: 125,
+                              }}
+                            >
                               {record['os version'] ? record['os version'].split(' ')[1] : 'n/a'}
                             </TableCell>
                           </TableRow>

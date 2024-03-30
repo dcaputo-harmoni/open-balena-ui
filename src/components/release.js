@@ -41,7 +41,7 @@ const TagChipField = (props) => {
   );
 };
 
-export const ReleaseList = () => {
+export const ReleaseList = (props) => {
   return (
     <List filters={releaseFilters}>
       <Datagrid
