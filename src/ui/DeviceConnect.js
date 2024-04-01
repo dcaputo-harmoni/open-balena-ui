@@ -26,8 +26,9 @@ export class Iframe extends React.Component {
   }
 }
 
-export const DeviceConnect = () => {
-  const record = useRecordContext();
+export const DeviceConnect = (props) => {
+  // record is passed via props when accessed from dashboards
+  const record = useRecordContext() || props.record;
   const [loaded, setLoaded] = React.useState(false);
   const [username, setUsername] = React.useState('');
   const [containers, setContainers] = React.useState({ choices: [], services: [], links: [] });
