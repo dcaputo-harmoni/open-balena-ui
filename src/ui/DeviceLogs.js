@@ -36,47 +36,49 @@ export const DeviceLogs = () => {
   const session = authProvider.getSession();
 
   const onSubmit = (container) => {
-    let API_HOST = process.env.REACT_APP_OPEN_BALENA_API_URL;
+    if (container !== 'default') {
+      let API_HOST = process.env.REACT_APP_OPEN_BALENA_API_URL;
 
-    return fetch(`${API_HOST}/device/v2/${record.uuid}/logs`, {
-      method: 'GET',
-      headers: new Headers({
-        'Content-Type': 'application/json',
-        'Authorization': `Bearer ${session.jwt}`,
-      }),
-      insecureHTTPParser: true,
-    })
-      .then((response) => {
-        if (response.status < 200 || response.status >= 300) {
-          throw new Error(response.statusText);
-        }
-
-        let result = [];
-        const reader = response.body.getReader();
-
-        return reader.read().then(function processText({ done, value }) {
-          if (done) {
-            const logs = JSON.parse(utf8decode(result));
-
-            const containerLogs = logs.filter((x) =>
-              container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
-            );
-
-            const formattedLogs = containerLogs
-              .map((x) => `[${new Date(x.timestamp).toISOString()}] ${x.message}`)
-              .join('<br/>');
-
-            setContent(`<html style='font-family: consolas; color: #ffffff'>${formattedLogs}</html>`);
-            return;
+      return fetch(`${API_HOST}/device/v2/${record.uuid}/logs`, {
+        method: 'GET',
+        headers: new Headers({
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${session.jwt}`,
+        }),
+        insecureHTTPParser: true,
+      })
+        .then((response) => {
+          if (response.status < 200 || response.status >= 300) {
+            throw new Error(response.statusText);
           }
 
-          result.push(...value);
-          return reader.read().then(processText);
+          let result = [];
+          const reader = response.body.getReader();
+
+          return reader.read().then(function processText({ done, value }) {
+            if (done) {
+              const logs = JSON.parse(result.join(''));
+
+              const containerLogs = logs.filter((x) =>
+                container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
+              );
+
+              const formattedLogs = containerLogs
+                .map((x) => `[${new Date(x.timestamp).toISOString()}] ${x.message}`)
+                .join('<br/>');
+
+              setContent(`<html style='font-family: consolas; color: #ffffff'>${formattedLogs}</html>`);
+              return;
+            }
+
+            result.push(utf8decode(value));
+            return reader.read().then(processText);
+          });
+        })
+        .catch(() => {
+          throw new Error(`Error: Could not get logs for device ${record.uuid}`);
         });
-      })
-      .catch(() => {
-        throw new Error(`Error: Could not get logs for device ${record.uuid}`);
-      });
+    }
   };
 
   React.useEffect(() => {
@@ -147,6 +149,9 @@ export const DeviceLogs = () => {
             source='container'
             disabled={containers.length === 0}
             choices={containers}
+            defaultValue='default'
+            emptyText='Select Container'
+            emptyValue='default'
             size='small'
             label=''
             onChange={(event) => onSubmit(event.target.value)}
