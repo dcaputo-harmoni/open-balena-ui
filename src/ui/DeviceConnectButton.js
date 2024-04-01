@@ -58,7 +58,7 @@ export const DeviceConnectButton = (props) => {
       <Dialog open={open} onClose={handleClose} sx={styles.dialog}>
         <DialogTitle id='form-dialog-title'>
           <Grid container sx={{ justifyContent: 'space-between' }}>
-            Connect
+            {props.record['device name']} ({props.record['uuid'].substring(0, 8)})
             <IconButton onClick={() => setOpen(false)} size='large'>
               <CloseIcon />
             </IconButton>

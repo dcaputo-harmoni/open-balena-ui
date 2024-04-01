@@ -90,16 +90,15 @@ export const DeviceConnect = (props) => {
       });
   };
 
-  const handleSubmit = (container) => {
-    genRsaKeys().then((rsaKeys) => {
-      upsertUserPublicKey(rsaKeys.publicKeySsh).then((result) => {
-        let targetUrl = containers.links[container][0];
-
-        targetUrl += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
-
-        setIframeUrl(targetUrl);
+  const handleSubmit = (url) => {
+    if (url !== '' && url !== 'default') {
+      genRsaKeys().then((rsaKeys) => {
+        upsertUserPublicKey(rsaKeys.publicKeySsh).then(() => {
+          url += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
+          setIframeUrl(url);
+        });
       });
-    });
+    }
   };
 
   React.useEffect(() => {
@@ -224,15 +223,29 @@ export const DeviceConnect = (props) => {
             },
           }}
         >
-          <strong style={{ flex: 1 }}>Terminal</strong>
+          <strong style={{ flex: 1 }}>Connect</strong>
 
           <SelectInput
             source='container'
             disabled={containers.choices.length === 0}
-            choices={containers.choices}
-            onChange={(event) => {
-              handleSubmit(event.target.value);
-            }}
+            choices={containers.choices
+              .map((container, containerIdx) => {
+                // get services for container, which are an array, and flatten them
+                let services = containers.services[containerIdx];
+                return services.map((service, serviceIdx) => {
+                  return {
+                    label: `${container.name} - ${service.name}`,
+                    value: containers.links[containerIdx][serviceIdx],
+                  };
+                });
+              })
+              .flat()}
+            defaultValue='default'
+            emptyText='Select Service'
+            emptyValue='default'
+            optionText='label'
+            optionValue='value'
+            onChange={(event) => handleSubmit(event.target.value)}
           />
         </Box>
       </Form>
