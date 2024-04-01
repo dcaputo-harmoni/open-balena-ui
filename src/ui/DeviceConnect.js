@@ -90,14 +90,11 @@ export const DeviceConnect = (props) => {
       });
   };
 
-  const handleSubmit = (container) => {
+  const handleSubmit = (url) => {
     genRsaKeys().then((rsaKeys) => {
-      upsertUserPublicKey(rsaKeys.publicKeySsh).then((result) => {
-        let targetUrl = containers.links[container][0];
-
-        targetUrl += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
-
-        setIframeUrl(targetUrl);
+      upsertUserPublicKey(rsaKeys.publicKeySsh).then(() => {
+        url += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
+        setIframeUrl(url);
       });
     });
   };
@@ -229,8 +226,19 @@ export const DeviceConnect = (props) => {
           <SelectInput
             source='container'
             disabled={containers.choices.length === 0}
-            choices={containers.choices}
+            choices={containers.choices
+              .map((container, containerIdx) => {
+                // get services for container, which are an array, and flatten them
+                let services = containers.services[containerIdx];
+                return services.map((service, serviceIdx) => {
+                  return { id: `${container.name} - ${service.name}`, url: containers.links[containerIdx][serviceIdx] };
+                });
+              })
+              .flat()}
+            optionText='id'
+            optionValue='url'
             onChange={(event) => {
+              console.log(event.target.value);
               handleSubmit(event.target.value);
             }}
           />
