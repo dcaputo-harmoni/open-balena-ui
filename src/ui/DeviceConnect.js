@@ -91,12 +91,14 @@ export const DeviceConnect = (props) => {
   };
 
   const handleSubmit = (url) => {
-    genRsaKeys().then((rsaKeys) => {
-      upsertUserPublicKey(rsaKeys.publicKeySsh).then(() => {
-        url += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
-        setIframeUrl(url);
+    if (url !== '' && url !== 'default') {
+      genRsaKeys().then((rsaKeys) => {
+        upsertUserPublicKey(rsaKeys.publicKeySsh).then(() => {
+          url += `&username=${username}&privateKey=${encodeURIComponent(rsaKeys.privateKeySsh)}`;
+          setIframeUrl(url);
+        });
       });
-    });
+    }
   };
 
   React.useEffect(() => {
@@ -221,7 +223,7 @@ export const DeviceConnect = (props) => {
             },
           }}
         >
-          <strong style={{ flex: 1 }}>Terminal</strong>
+          <strong style={{ flex: 1 }}>Connect</strong>
 
           <SelectInput
             source='container'
@@ -231,16 +233,19 @@ export const DeviceConnect = (props) => {
                 // get services for container, which are an array, and flatten them
                 let services = containers.services[containerIdx];
                 return services.map((service, serviceIdx) => {
-                  return { id: `${container.name} - ${service.name}`, url: containers.links[containerIdx][serviceIdx] };
+                  return {
+                    label: `${container.name} - ${service.name}`,
+                    value: containers.links[containerIdx][serviceIdx],
+                  };
                 });
               })
               .flat()}
-            optionText='id'
-            optionValue='url'
-            onChange={(event) => {
-              console.log(event.target.value);
-              handleSubmit(event.target.value);
-            }}
+            defaultValue='default'
+            emptyText='Select Service'
+            emptyValue='default'
+            optionText='label'
+            optionValue='value'
+            onChange={(event) => handleSubmit(event.target.value)}
           />
         </Box>
       </Form>
