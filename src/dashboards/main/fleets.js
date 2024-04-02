@@ -1,3 +1,14 @@
+import React from 'react';
+import {
+  ChipField,
+  FunctionField,
+  List,
+  ReferenceField,
+  ReferenceManyCount,
+  ResourceContextProvider,
+  SearchInput,
+  WithListContext,
+} from 'react-admin';
 import AddIcon from '@mui/icons-material/Add';
 import CorporateFareIcon from '@mui/icons-material/CorporateFare';
 import DeveloperBoardIcon from '@mui/icons-material/DeveloperBoard';
@@ -8,121 +19,183 @@ import {
   CardActions,
   CardContent,
   CardHeader,
-  Chip,
   Grid,
   Table,
   TableBody,
   TableCell,
   TableRow,
+  Tooltip,
 } from '@mui/material';
 import { tableCellClasses } from '@mui/material/TableCell';
-import * as React from 'react';
-import { EditButton, ResourceContextProvider } from 'react-admin';
+import { EditButton } from 'react-admin';
 import EnvVarButton from '../../ui/EnvVarButton';
+import { getSemver } from '../../ui/SemVerChip';
 
-const Fleets = (props) => {
-  let { value } = props;
+const fleetCardFilters = [<SearchInput source='#app name,is of-class@ilike' alwaysOn />];
 
-  return (
-    <ResourceContextProvider value='application'>
-      <Card sx={{ flex: '1', dispay: 'flex', flexDirection: 'column' }}>
-        <CardHeader title='Fleets' />
-        <CardContent sx={{ minHeight: 225, overflow: 'auto', flex: '1', display: 'flex', flexDirection: 'column' }}>
-          <Grid container spacing={3} sx={{ flex: '1' }}>
-            {value.map((record, index) => {
-              return (
-                <Grid item key={index} xs='auto'>
-                  <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 225, maxHeight: 225 }}>
-                    <CardHeader
-                      title={record['app name']}
-                      sx={{
-                        fontWeight: 'bold',
-                      }}
-                      titleTypographyProps={{ variant: 'inherit' }}
-                    />
-                    <CardContent sx={{ paddingTop: '4px', paddingBottom: '4px' }}>
-                      <Table
-                        sx={{
-                          [`& .${tableCellClasses.root}`]: {
-                            borderBottom: 'none',
-                            paddingLeft: '0px',
-                            paddingRight: '0px',
-                            paddingTop: '2px',
-                            paddingBottom: '2px',
-                          },
+export const FleetCards = () => (
+  <ResourceContextProvider value='application'>
+    <List emptyWhileLoading disableSyncWithLocation filters={fleetCardFilters} title=' '>
+      <WithListContext
+        render={({ data }) => (
+          <Card sx={{ flex: '1', dispay: 'flex', flexDirection: 'column' }}>
+            <CardHeader title='Fleets' />
+            <CardContent sx={{ minHeight: 225, overflow: 'auto', flex: '1', display: 'flex', flexDirection: 'column' }}>
+              <Grid container spacing={3} sx={{ flex: '1' }}>
+                {data?.map((record, index) => (
+                  <Grid item key={index} xs='auto'>
+                    <Card sx={{ minWidth: 200, maxWidth: 200, minHeight: 220, maxHeight: 220 }}>
+                      <CardHeader
+                        title={<Tooltip title={record['app name']}>{record['app name']}</Tooltip>}
+                        sx={{ fontWeight: 'bold', height: '45px' }}
+                        titleTypographyProps={{
+                          variant: 'inherit',
+                          whiteSpace: 'nowrap',
+                          overflow: 'hidden',
+                          textOverflow: 'ellipsis',
+                          maxWidth: 165,
                         }}
-                      >
-                        <TableBody>
-                          <TableRow>
-                            <TableCell colSpan={2}>
-                              <Chip
-                                icon={<CorporateFareIcon />}
-                                label={record['organizationName']}
-                                variant='outlined'
-                                style={{ width: '100%', justifyContent: 'space-between', paddingLeft: '5px' }}
-                              />
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell colSpan={2}>
-                              <Chip
-                                icon={<DeveloperBoardIcon />}
-                                label={record['deviceTypeName']}
-                                variant='outlined'
-                                style={{ width: '100%', justifyContent: 'space-between', paddingLeft: '5px' }}
-                              />
-                            </TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Class</TableCell>
-                            <TableCell align='right'>{record['is of-class']}</TableCell>
-                          </TableRow>
-                          <TableRow>
-                            <TableCell sx={{ fontWeight: 'bold' }}>Online</TableCell>
-                            <TableCell align='right'>{`${record['numOnlineDevices']} / ${record['numDevices']}`}</TableCell>
-                          </TableRow>
-                        </TableBody>
-                      </Table>
-                    </CardContent>
-                    <CardActions sx={{ paddingTop: '15px', paddingBottom: '4px' }}>
-                      <Button
-                        href={`/#/device?filter={"belongs to-application": ${record['id']}}`}
-                        size='small'
-                        variant='outlined'
-                        style={{ minWidth: '0' }}
-                      >
-                        <DevicesIcon />
-                      </Button>
-
-                      <Button
-                        href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}
-                        size='small'
-                        variant='outlined'
-                        style={{ minWidth: '0' }}
-                      >
-                        <AddIcon />
-                      </Button>
-
-                      <EditButton record={record} label='' size='small' variant='outlined' style={{ minWidth: '0' }} />
-
-                      <EnvVarButton
-                        resource='application'
-                        record={record}
-                        label=''
-                        size='small'
-                        variant='outlined'
-                        style={{ minWidth: '0' }}
                       />
-                    </CardActions>
-                  </Card>
-                </Grid>
-              );
-            })}
-          </Grid>
-        </CardContent>
-      </Card>
-    </ResourceContextProvider>
-  );
-};
+                      <CardContent sx={{ paddingTop: '4px', paddingBottom: '4px' }}>
+                        <Table
+                          sx={{
+                            [`& .${tableCellClasses.root}`]: {
+                              borderBottom: 'none',
+                              paddingLeft: '0px',
+                              paddingRight: '0px',
+                              paddingTop: '2px',
+                              paddingBottom: '2px',
+                            },
+                          }}
+                        >
+                          <TableBody>
+                            <TableRow>
+                              <TableCell colSpan={2}>
+                                <ReferenceField
+                                  record={record}
+                                  source='organization'
+                                  reference='organization'
+                                  target='id'
+                                >
+                                  <ChipField
+                                    icon={<CorporateFareIcon />}
+                                    source='name'
+                                    variant='outlined'
+                                    style={{ width: '100%', justifyContent: 'space-between', paddingLeft: '5px' }}
+                                  />
+                                </ReferenceField>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell colSpan={2}>
+                                <ReferenceField
+                                  record={record}
+                                  source='is for-device type'
+                                  reference='device type'
+                                  target='id'
+                                >
+                                  <ChipField
+                                    icon={<DeveloperBoardIcon />}
+                                    source='name'
+                                    variant='outlined'
+                                    style={{ width: '100%', justifyContent: 'space-between', paddingLeft: '5px' }}
+                                  />
+                                </ReferenceField>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell sx={{ fontWeight: 'bold' }}>Class</TableCell>
+                              <TableCell align='right'>{record['is of-class']}</TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell sx={{ fontWeight: 'bold' }}>Rel.</TableCell>
+                              <TableCell
+                                align='right'
+                                sx={{
+                                  variant: 'inherit',
+                                  whiteSpace: 'nowrap',
+                                  overflow: 'hidden',
+                                  textOverflow: 'ellipsis',
+                                  maxWidth: 126,
+                                }}
+                              >
+                                <ReferenceField
+                                  record={record}
+                                  label='Target Rel.'
+                                  source='should be running-release'
+                                  reference='release'
+                                  target='id'
+                                >
+                                  <FunctionField label='API Key' render={(record) => getSemver(record)} />
+                                </ReferenceField>
+                              </TableCell>
+                            </TableRow>
+                            <TableRow>
+                              <TableCell sx={{ fontWeight: 'bold' }}>Online</TableCell>
+                              <TableCell align='right'>
+                                <ReferenceManyCount
+                                  record={record}
+                                  source='id'
+                                  reference='device'
+                                  target='belongs to-application'
+                                  filter={{ 'api heartbeat state': 'online' }}
+                                />{' '}
+                                /{' '}
+                                <ReferenceManyCount
+                                  record={record}
+                                  source='id'
+                                  reference='device'
+                                  target='belongs to-application'
+                                />
+                              </TableCell>
+                            </TableRow>
+                          </TableBody>
+                        </Table>
+                      </CardContent>
+                      <CardActions sx={{ paddingTop: '0px', paddingBottom: '4px' }}>
+                        <Button
+                          href={`/#/device?filter={"belongs to-application": ${record['id']}}`}
+                          size='small'
+                          variant='outlined'
+                          style={{ minWidth: '0' }}
+                        >
+                          <DevicesIcon />
+                        </Button>
 
-export default Fleets;
+                        <Button
+                          href={`/#/device/create?source={"belongs to-application": ${record['id']}}`}
+                          size='small'
+                          variant='outlined'
+                          style={{ minWidth: '0' }}
+                        >
+                          <AddIcon />
+                        </Button>
+
+                        <EditButton
+                          record={record}
+                          label=''
+                          size='small'
+                          variant='outlined'
+                          style={{ minWidth: '0' }}
+                        />
+
+                        <EnvVarButton
+                          resource='application'
+                          record={record}
+                          label=''
+                          size='small'
+                          variant='outlined'
+                          style={{ minWidth: '0' }}
+                        />
+                      </CardActions>
+                    </Card>
+                  </Grid>
+                ))}
+              </Grid>
+            </CardContent>
+          </Card>
+        )}
+      />
+    </List>
+  </ResourceContextProvider>
+);

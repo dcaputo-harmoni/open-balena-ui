@@ -93,6 +93,7 @@ module.exports = {
       'REACT_APP_OPEN_BALENA_REMOTE_URL',
       'REACT_APP_OPEN_BALENA_API_URL',
       'REACT_APP_OPEN_BALENA_API_VERSION',
+      'REACT_APP_BANNER_IMAGE',
     ]),
   ].filter(Boolean),
   resolve: {
