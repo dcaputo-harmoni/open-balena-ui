@@ -5,6 +5,7 @@ import ConnectIcon from '@mui/icons-material/Sensors';
 import CloseIcon from '@mui/icons-material/Close';
 import Tooltip from '@mui/material/Tooltip';
 import DeviceConnect from './DeviceConnect';
+import { useRecordContext } from 'react-admin';
 
 const styles = {
   dialog: {
@@ -42,6 +43,9 @@ export class Iframe extends React.Component {
 
 export const DeviceConnectButton = (props) => {
   const [open, setOpen] = React.useState(false);
+  const record = useRecordContext() || props.record;
+  const connectIcon = props.connectIcon || <ConnectIcon />;
+  const connectIconTooltip = props.connectIconTooltip || 'Connect';
 
   const handleClose = () => {
     setOpen(false);
@@ -49,16 +53,16 @@ export const DeviceConnectButton = (props) => {
 
   return (
     <>
-      <Tooltip title='Connect'>
+      <Tooltip title={connectIconTooltip}>
         <Button aria-label='connect' onClick={() => setOpen(true)} {...props}>
-          <ConnectIcon />
+          {connectIcon}
           {props.label ? <span sx={{ pl: '4px' }}>{props.label}</span> : ''}
         </Button>
       </Tooltip>
       <Dialog open={open} onClose={handleClose} sx={styles.dialog}>
         <DialogTitle id='form-dialog-title'>
           <Grid container sx={{ justifyContent: 'space-between' }}>
-            {props.record?.['device name']} ({props.record?.['uuid'].substring(0, 8)})
+            {record['device name']} ({record['uuid'].substring(0, 8)})
             <IconButton onClick={() => setOpen(false)} size='large'>
               <CloseIcon />
             </IconButton>
