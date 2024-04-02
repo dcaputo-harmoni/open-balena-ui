@@ -9,6 +9,8 @@ import DeviceServices from '../../ui/DeviceServices';
 import SemVerChip from '../../ui/SemVerChip';
 import Controls from './controls';
 import Usage from './usage';
+import DeviceConnectButton from '../../ui/DeviceConnectButton';
+import { OpenInFull } from '@mui/icons-material';
 
 const Summary = () => {
   const record = useRecordContext();
@@ -178,6 +180,17 @@ const Summary = () => {
           </Card>
 
           <Card sx={{ padding: 0, marginTop: '15px' }}>
+            <DeviceConnectButton
+              style={{
+                float: 'right',
+                color: theme.palette.text.primary,
+                backgroundColor: 'white',
+                marginTop: '8px',
+                marginLeft: '-15px',
+              }}
+              connectIcon={<OpenInFull />}
+              connectIconTooltip='Open Fullscreen View'
+            />
             <DeviceConnect />
           </Card>
         </div>
