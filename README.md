@@ -28,6 +28,8 @@ There are a number of environment variables used to configure the ui:
 - `REACT_APP_OPEN_BALENA_API_VERSION` The version of `open-balena-api` that the above instance is running, i.e.
   `v0.139.0`
 
+- `REACT_APP_BANNER_IMAGE` The URL of a custom banner image to use on the main dashboard.
+
 ## Exposing Device Connection Endpoints
 
 Each device has a "Connect" button which uses balena image labels to discover available services on that device. To make

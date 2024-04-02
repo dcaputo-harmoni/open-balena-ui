@@ -14,9 +14,8 @@ export function getSemver(record) {
   let versionLabel = [major, minor, patch].join('.');
   if (prerelease) {
     versionLabel += '-' + prerelease;
-    if (build) {
-      versionLabel += '.' + build;
-    }
+  } else if (build) {
+    versionLabel += '+' + build;
   }
   if (revision !== '0') {
     versionLabel += `+rev${revision}`;

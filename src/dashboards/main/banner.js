@@ -4,7 +4,7 @@ import PersonIcon from '@mui/icons-material/Person';
 import { Box, Button, Card, CardActions, Typography } from '@mui/material';
 import * as React from 'react';
 
-import publishArticleImage from './banner_illustration.svg';
+import defaultImage from './banner_illustration.svg';
 
 const styles = {
   bannerCard: {
@@ -12,8 +12,10 @@ const styles = {
     marginBottom: '1em',
   },
   mediaBox: {
-    background: `url(${publishArticleImage}) top right / cover`,
+    // Size image to fixed width with no crop
+    background: `url(${process.env.REACT_APP_BANNER_IMAGE ?? defaultImage}) no-repeat center / contain`,
     marginLeft: 'auto',
+    width: '300px', // Set the width you want here
   },
   actionCard: {
     'padding': 0,
