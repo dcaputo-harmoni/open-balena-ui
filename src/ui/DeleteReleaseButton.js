@@ -1,19 +1,20 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import React from 'react';
-import { useNotify, useRedirect } from 'react-admin';
+import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteRelease, useDeleteReleaseBulk } from '../lib/release';
 
-export const DeleteReleaseButton = ({ selectedIds, record, context, ...props }) => {
+export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
   const redirect = useRedirect();
   const deleteRelease = useDeleteRelease();
   const deleteReleaseBulk = useDeleteReleaseBulk();
   const [disabled, setDisabled] = React.useState(true);
+  const record = useRecordContext();
 
-  const handleSubmit = async (values) => {
+  const handleSubmit = async () => {
     if (selectedIds) {
       await deleteReleaseBulk(selectedIds);
     } else {
@@ -50,10 +51,10 @@ export const DeleteReleaseButton = ({ selectedIds, record, context, ...props }) 
       Promise.all(selectedIds.map((id) => canDeleteRelease(id))).then((canDeleteResults) =>
         setDisabled(!canDeleteResults.every((canDelete) => canDelete)),
       );
-    } else if (record) {
+    } else {
       canDeleteRelease(record.id).then((canDelete) => setDisabled(!canDelete));
     }
-  }, [selectedIds, record, context]);
+  }, [selectedIds, context]);
 
   return (
     <>
