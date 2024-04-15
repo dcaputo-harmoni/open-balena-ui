@@ -166,7 +166,7 @@ const Summary = () => {
           </Card>
 
           <Card sx={{ padding: '15px', marginTop: '15px' }}>
-            <DeviceServices />
+            <DeviceServices device={record} />
           </Card>
         </div>
 

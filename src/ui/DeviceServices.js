@@ -22,8 +22,9 @@ export const DeviceServices = (props) => {
   const notify = useNotify();
   const record = useRecordContext();
 
-  const invokeSupervisor = (device, imageInstall, command) => {
+  const invokeSupervisor = (imageInstall, command) => {
     const session = authProvider.getSession();
+    const { device } = props;
     return fetch(
       `${process.env.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v2/applications/${device['belongs to-application']}/${command}-service`,
       {
@@ -83,21 +84,21 @@ export const DeviceServices = (props) => {
           render={(record) => (
             <Toolbar style={{ minHeight: 0, minWidth: 0, padding: 0, margin: 0, background: 0, textAlign: 'center' }}>
               <Button
-                onClick={() => invokeSupervisor(record, record, 'start')}
+                onClick={() => invokeSupervisor(record, 'start')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <PlayArrowIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(record, record, 'stop')}
+                onClick={() => invokeSupervisor(record, 'stop')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
                 <StopIcon />
               </Button>
               <Button
-                onClick={() => invokeSupervisor(record, record, 'restart')}
+                onClick={() => invokeSupervisor(record, 'restart')}
                 variant={'text'}
                 sx={{ p: '4px', m: '4px', minWidth: 0 }}
               >
