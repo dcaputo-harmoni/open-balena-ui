@@ -145,16 +145,16 @@ export const ApiKeyCreate = (props) => {
       <SimpleForm>
         <TextInput
           source='key'
-          defaultValue={generateApiKey}
+          defaultValue={generateApiKey()}
           size='large'
           fullWidth={true}
-          validate={[required()]}
+          validate={required()}
           readOnly={true}
         />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 
