@@ -68,7 +68,7 @@ export const ManageOrganizations = (props) => {
         options={allOrganizations}
         selected={selectedOrganizations}
         onChange={setSelectedOrganizations}
-        showHeaderLabels='true'
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,

@@ -119,7 +119,7 @@ export const ManagePermissions = (props) => {
         options={allPermissions}
         selected={selectedPermissions}
         onChange={setSelectedPermissions}
-        showHeaderLabels='true'
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,

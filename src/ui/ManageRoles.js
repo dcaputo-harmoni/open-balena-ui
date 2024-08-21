@@ -66,7 +66,7 @@ export const ManageRoles = (props) => {
         options={allRoles}
         selected={selectedRoles}
         onChange={setSelectedRoles}
-        showHeaderLabels='true'
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
