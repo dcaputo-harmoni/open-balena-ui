@@ -72,6 +72,13 @@ module.exports = {
         test: /\.html$/,
         use: 'html-loader',
       },
+      {
+        test: /\.m?js/,
+        resolve: {
+          fullySpecified: false
+        }
+      }
+
     ],
   },
   plugins: [
@@ -103,6 +110,7 @@ module.exports = {
     fallback: {
       crypto: require.resolve('crypto-browserify'),
       stream: require.resolve('stream-browserify'),
+      vm : false
     },
   },
   devtool: 'eval-cheap-module-source-map',
