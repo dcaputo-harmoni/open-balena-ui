@@ -22,7 +22,7 @@ import Row from '../ui/Row';
 export const FleetEnvVarList = () => {
   return (
     <List title='Fleet Environment Variables'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
           <TextField source='app name' />
         </ReferenceField>

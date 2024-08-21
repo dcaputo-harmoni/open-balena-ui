@@ -22,7 +22,7 @@ import Row from '../ui/Row';
 export const DeviceConfigVarList = () => {
   return (
     <List title='Device Config Vars'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='device' reference='device' target='id'>
           <TextField source='device name' />
         </ReferenceField>

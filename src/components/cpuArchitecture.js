@@ -16,7 +16,7 @@ import Row from '../ui/Row';
 export const CpuArchitectureList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField label='Slug' source='slug' />
 
         <Toolbar>

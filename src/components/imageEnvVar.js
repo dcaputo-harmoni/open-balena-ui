@@ -23,7 +23,7 @@ import SemVerChip from '../ui/SemVerChip';
 export const ImageEnvVarList = () => {
   return (
     <List title='Image Environment Vars'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField label='Image' source='release image' />
 
         <ReferenceField label='Service' source='release image' reference='image' target='id' link={false}>

@@ -24,7 +24,7 @@ import SelectDeviceService from '../ui/SelectDeviceService';
 export const DeviceServiceVarList = () => {
   return (
     <List title='Device Service Vars'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
             <TextField source='device name' />
