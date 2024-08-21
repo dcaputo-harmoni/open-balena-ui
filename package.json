@@ -37,12 +37,14 @@
     "react-final-form": "^6.5.9",
     "react-hook-form": "^7.52.2",
     "react-password-checklist": "^1.8.0",
+    "react-router": "^6.26.1",
     "recharts": "^2.12.7",
     "redux-form": "^8.3.10",
     "semver": "^7.6.3",
     "sshpk-browser": "^1.17.0",
     "stream-browserify": "^3.0.0",
-    "util": "^0.12.5"
+    "util": "^0.12.5",
+    "uuid": "^10.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
