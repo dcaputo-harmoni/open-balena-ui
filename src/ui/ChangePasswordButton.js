@@ -3,9 +3,9 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import * as bcrypt from 'bcryptjs';
 import React from 'react';
-import { PasswordInput, useDataProvider, useNotify, useRecordContext } from 'react-admin';
-import { Form } from 'react-final-form';
-import { useForm } from 'react-hook-form';
+import { PasswordInput, useDataProvider, useNotify, useRecordContext, SimpleForm} from 'react-admin';
+import PasswordChecklist from "react-password-checklist"
+import Row from '../ui/Row';
 
 const hashPassword = (password) => {
   const saltRounds = 10;
@@ -14,13 +14,14 @@ const hashPassword = (password) => {
 
 export const ChangePasswordButton = (props) => {
   const [open, setOpen] = React.useState(false);
+  const [new_password, setPassword] = React.useState("")
+  const [password_valid, setPasswordValid] = React.useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
-  const form = useForm();
   const record = useRecordContext();
 
   const handleSubmit = async (values) => {
-    const hashedPassword = hashPassword(values.password);
+    const hashedPassword = hashPassword(values.new_password);
     dataProvider
       .update('user', {
         id: record.id,
@@ -29,7 +30,6 @@ export const ChangePasswordButton = (props) => {
       .then((data) => {
         setOpen(false);
         notify('Password successfully changed');
-        form.change('password', hashedPassword);
       });
   };
 
@@ -49,25 +49,20 @@ export const ChangePasswordButton = (props) => {
         <DialogTitle id='form-dialog-title'>Change Password</DialogTitle>
 
         <DialogContent>
-          <Form
-            onSubmit={handleSubmit}
-            render={({ handleSubmit, form, submitting, pristine, values }) => (
-              <form onSubmit={handleSubmit}>
-                <PasswordInput label='Password' variant='outlined' size='large' name='password' />
-
-                <Button
-                  variant={props.variant || 'contained'}
-                  color='inherit'
-                  type='submit'
-                  size={props.size}
-                  sx={{ ...props.sx, ml: '20px', mt: '19px' }}
-                  disabled={submitting || pristine}
-                >
-                  <SaveIcon sx={{ mr: '8px' }} /> Save
-                </Button>
-              </form>
-            )}
-          />
+          <SimpleForm onSubmit={handleSubmit} toolbar={false} mode="onBlur" reValidateMode="onBlur" >
+            <Row>
+              <PasswordInput variant='outlined' size='large' name='new_password' source='new_password'  onChange={e => setPassword(e.target.value)} inputProps={{ autoComplete: 'current-password' }} />
+              <Button variant='contained' color='inherit' type='submit' sx={{ ml: '20px', mt: '19px' }} disabled={!password_valid} >
+                <SaveIcon sx={{ mr: '8px' }} /> Save
+              </Button>
+            </Row>
+            <PasswordChecklist
+              rules={["minLength","specialChar","number","capitalAndLowercase"]}
+              minLength={8}
+              value={new_password}
+              onChange={(isValid) => {setPasswordValid(isValid)}}
+            />
+          </SimpleForm>
         </DialogContent>
       </Dialog>
     </>
