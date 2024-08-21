@@ -116,13 +116,9 @@ export const DeviceCreate = (props) => {
   const createDevice = useCreateDevice();
   const redirect = useRedirect();
 
-  const processComplete = ({ data }) => {
-    redirect('list', data.id, data);
-  };
-
   return (
-    <Create title='Create Device' transform={createDevice} onSuccess={processComplete}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device' transform={createDevice} redirect='list'>
+      <SimpleForm>
         <Row>
           <TextInput
             label='UUID'
