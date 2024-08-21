@@ -148,13 +148,13 @@ export const ApiKeyCreate = (props) => {
           defaultValue={generateApiKey()}
           size='large'
           fullWidth={true}
-          validate={[required()]}
+          validate={required()}
           readOnly={true}
         />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 
