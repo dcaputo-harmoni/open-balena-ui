@@ -99,14 +99,17 @@ export const UserCreate = (props) => {
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton alwaysEnable={!!props.alwaysEnableSaveButton} sx={{ flex: 1 }} />
-    <DeleteUserButton variant='contained' size='large' sx={{ flex: 0.3, marginLeft: '40px' }}>
-      Delete
-    </DeleteUserButton>
-  </Toolbar>
-);
+const CustomToolbar = (props) => {
+  const { alwaysEnableSaveButton = false, ...rest } = props;
+  return (
+    <Toolbar {...rest} style={{ justifyContent: 'space-between' }}>
+      <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
+      <DeleteUserButton variant='contained' size='large' sx={{ flex: 0.3, marginLeft: '40px' }}>
+        Delete
+      </DeleteUserButton>
+    </Toolbar>
+  );
+}
 
 export const UserEdit = (props) => {
   const modifyUser = useModifyUser();

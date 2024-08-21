@@ -127,9 +127,10 @@ export const DeviceCreate = (props) => {
           <TextInput
             label='UUID'
             source='uuid'
-            initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+            defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
             validate={required()}
             size='large'
+            readOnly={true}
           />
 
           <TextInput label='Device Name' source='device name' validate={required()} size='large' />
