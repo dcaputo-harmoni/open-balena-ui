@@ -49,8 +49,8 @@ export const FleetEnvVarList = () => {
 };
 
 export const FleetEnvVarCreate = () => (
-  <Create title='Create Fleet Environment Variable'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Fleet Environment Variable' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='application'
         reference='application'
