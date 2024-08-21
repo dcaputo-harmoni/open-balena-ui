@@ -205,7 +205,7 @@ export const DeviceEdit = () => {
     <Edit title='Edit Device' actions={null} transform={modifyDevice}>
       <SimpleForm>
         <Row>
-          <TextInput label='UUID' source='uuid' size='large' />
+          <TextInput label='UUID' source='uuid' size='large' readOnly={true} />
 
           <TextInput label='Device Name' source='device name' size='large' />
         </Row>
