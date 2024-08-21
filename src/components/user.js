@@ -101,7 +101,7 @@ export const UserCreate = (props) => {
 
 const CustomToolbar = (props) => (
   <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton sx={{ flex: 1 }} />
+    <SaveButton alwaysEnable={!!props.alwaysEnableSaveButton} sx={{ flex: 1 }} />
     <DeleteUserButton variant='contained' size='large' sx={{ flex: 0.3, marginLeft: '40px' }}>
       Delete
     </DeleteUserButton>
