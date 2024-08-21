@@ -102,7 +102,7 @@ export const FleetCreate = (props) => {
           validate={[required(), minLength(32), maxLength(32)]}
           size='large'
           fullWidth={true}
-          readOnly
+          readOnly={true}
         />
 
         <Row>
@@ -216,7 +216,7 @@ export const FleetEdit = () => {
           <TextInput source='slug' validate={required()} size='large' />
         </Row>
 
-        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly />
+        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly={true} />
 
         <Row>
           <SelectInput
