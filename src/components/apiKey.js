@@ -9,7 +9,7 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
-  ReferenceArrayInput,
+  ReferenceInput,
   ReferenceField,
   ReferenceManyField,
   SaveButton,
@@ -163,9 +163,9 @@ export const ApiKeyCreate = (props) => {
             {({ formData, ...rest }) => {
               if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
               return (
-                <ReferenceArrayInput source='userActor' reference='user' {...rest}>
+                <ReferenceInput source='userActor' reference='user' {...rest}>
                   <SelectInput optionText='username' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
@@ -174,9 +174,9 @@ export const ApiKeyCreate = (props) => {
             {({ formData, ...rest }) => {
               if (formData.userActor || formData.fleetActor) rest.disabled = true;
               return (
-                <ReferenceArrayInput source='deviceActor' reference='device' {...rest}>
+                <ReferenceInput source='deviceActor' reference='device' {...rest}>
                   <SelectInput optionText='device name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
@@ -185,9 +185,9 @@ export const ApiKeyCreate = (props) => {
             {({ formData, ...rest }) => {
               if (formData.userActor || formData.deviceActor) rest.disabled = true;
               return (
-                <ReferenceArrayInput source='fleetActor' reference='application' {...rest}>
+                <ReferenceInput source='fleetActor' reference='application' {...rest}>
                   <SelectInput optionText='app name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
