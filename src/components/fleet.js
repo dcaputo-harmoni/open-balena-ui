@@ -89,7 +89,7 @@ export const FleetCreate = (props) => {
 
   return (
     <Create title='Create Fleet' transform={createFleet} {...props}>
-      <SimpleForm redirect='list'>
+      <SimpleForm>
         <Row>
           <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
 
@@ -102,7 +102,7 @@ export const FleetCreate = (props) => {
           validate={[required(), minLength(32), maxLength(32)]}
           size='large'
           fullWidth={true}
-          readOnly
+          readOnly={true}
         />
 
         <Row>
@@ -216,7 +216,7 @@ export const FleetEdit = () => {
           <TextInput source='slug' validate={required()} size='large' />
         </Row>
 
-        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly />
+        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly={true} />
 
         <Row>
           <SelectInput
@@ -298,7 +298,7 @@ export const FleetEdit = () => {
             </ReferenceInput>
           )
         }
-      </FormDataConsumer>
+        </FormDataConsumer>
       </SimpleForm>
     </Edit>
   );
