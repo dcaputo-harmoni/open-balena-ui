@@ -49,8 +49,8 @@ export const FleetConfigVarList = () => {
 };
 
 export const FleetConfigVarCreate = () => (
-  <Create title='Create Fleet Config Var'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Fleet Config Var' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='application'
         reference='application'
