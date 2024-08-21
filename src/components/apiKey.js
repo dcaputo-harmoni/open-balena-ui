@@ -21,6 +21,7 @@ import {
   TextInput,
   Toolbar,
   useRecordContext,
+  useListContext,
   required,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
@@ -90,13 +91,16 @@ class ActorField extends React.Component {
 
 const apiKeyFilters = [<SearchInput source='#key,name,description@ilike' alwaysOn />];
 
-const CustomBulkActionButtons = (props) => (
-  <React.Fragment>
-    <DeleteApiKeyButton variant='contained' size='small' {...props}>
-      Delete Selected API Keys
-    </DeleteApiKeyButton>
-  </React.Fragment>
-);
+const CustomBulkActionButtons = (props) => {
+  const { selectedIds } = useListContext();
+  return (
+    <React.Fragment>
+      <DeleteApiKeyButton variant='contained' size='small' selectedIds={selectedIds} {...props}>
+        Delete Selected API Keys
+      </DeleteApiKeyButton>
+    </React.Fragment>
+  );
+}
 
 const ActorFieldWrapper = (props) => {
   const record = useRecordContext();
@@ -139,11 +143,18 @@ export const ApiKeyCreate = (props) => {
   return (
     <Create {...props} transform={createApiKey}>
       <SimpleForm>
-        <TextInput source='key' defaultValue={generateApiKey} size='large' fullWidth={true} validate={[required()]} readOnly />
+        <TextInput
+          source='key'
+          defaultValue={generateApiKey}
+          size='large'
+          fullWidth={true}
+          validate={[required()]}
+          readOnly={true}
+        />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' validate={required()} />
+          <TextInput source='name' size='large' />
           <TextInput source='description' size='large' />
         </Row>
 
@@ -186,12 +197,15 @@ export const ApiKeyCreate = (props) => {
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
-    <SaveButton alwaysEnable={!!props.alwaysEnableSaveButton} sx={{ flex: 1 }} />
-    <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
-  </Toolbar>
-);
+const CustomToolbar = (props) => {
+  const {alwaysEnableSaveButton = false, ...rest} = props;
+  return (
+    <Toolbar {...rest} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
+      <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
+      <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
+    </Toolbar>
+  );
+}
 
 export const ApiKeyEdit = () => {
   const modifyApiKey = useModifyApiKey();
@@ -207,7 +221,7 @@ export const ApiKeyEdit = () => {
       }}
     >
       <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
-        <TextInput source='key' size='large' fullWidth={true} validate={required()}  readOnly/>
+        <TextInput source='key' size='large' fullWidth={true} validate={required()} readOnly={true}/>
 
         <Row>
           <TextInput source='name' size='large' validate={required()} />
