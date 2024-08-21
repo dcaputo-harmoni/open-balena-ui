@@ -121,7 +121,7 @@ export const DeviceCreate = (props) => {
   };
 
   return (
-    <Create title='Create Device' ttransform={createDevice} onSuccess={processComplete}>
+    <Create title='Create Device' transform={createDevice} onSuccess={processComplete}>
       <SimpleForm redirect='list'>
         <Row>
           <TextInput
