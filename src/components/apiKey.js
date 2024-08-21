@@ -9,8 +9,8 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
-  ReferenceArrayInput,
   ReferenceField,
+  ReferenceInput,
   ReferenceManyField,
   SaveButton,
   SearchInput,
@@ -163,33 +163,33 @@ export const ApiKeyCreate = (props) => {
         <Row>
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
+              const disable = formData.deviceActor || formData.fleetActor;
               return (
-                <ReferenceArrayInput source='userActor' reference='user' {...rest}>
-                  <SelectInput optionText='username' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='userActor' reference='user' {...rest}>
+                  <SelectInput optionText='username' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
 
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.userActor || formData.fleetActor) rest.disabled = true;
+              const disable = formData.userActor || formData.fleetActor
               return (
-                <ReferenceArrayInput source='deviceActor' reference='device' {...rest}>
-                  <SelectInput optionText='device name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='deviceActor' reference='device' {...rest}>
+                  <SelectInput optionText='device name' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
 
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.userActor || formData.deviceActor) rest.disabled = true;
+              const disable = formData.userActor || formData.deviceActor
               return (
-                <ReferenceArrayInput source='fleetActor' reference='application' {...rest}>
-                  <SelectInput optionText='app name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='fleetActor' reference='application' {...rest}>
+                  <SelectInput optionText='app name' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
