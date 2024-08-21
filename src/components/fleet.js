@@ -109,10 +109,11 @@ export const FleetCreate = (props) => {
 
         <TextInput
           source='uuid'
-          initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+          defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
           validate={[required(), minLength(32), maxLength(32)]}
           size='large'
           fullWidth={true}
+          readOnly={true}
         />
 
         <Row>
