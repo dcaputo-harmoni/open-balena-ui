@@ -22,6 +22,7 @@ import {
   Toolbar,
   useRecordContext,
   useListContext,
+  useUnique,
   required,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
@@ -139,6 +140,7 @@ export const ApiKeyList = () => {
 export const ApiKeyCreate = (props) => {
   const generateApiKey = useGenerateApiKey();
   const createApiKey = useCreateApiKey();
+  const unique = useUnique();
 
   return (
     <Create {...props} transform={createApiKey}>
@@ -148,13 +150,13 @@ export const ApiKeyCreate = (props) => {
           defaultValue={generateApiKey()}
           size='large'
           fullWidth={true}
-          validate={required()}
+          validate={[required(), unique()]}
           readOnly={true}
         />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' validate={required()} />
+          <TextInput source='name' size='large' validate={[required(), unique()]} />
           <TextInput source='description' size='large' />
         </Row>
 
