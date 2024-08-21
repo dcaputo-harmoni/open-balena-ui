@@ -21,6 +21,7 @@ import {
   TextInput,
   Toolbar,
   useRecordContext,
+  required,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
 import CopyChip from '../ui/CopyChip';
@@ -138,11 +139,11 @@ export const ApiKeyCreate = (props) => {
   return (
     <Create {...props} transform={createApiKey}>
       <SimpleForm>
-        <TextInput source='key' initialValue={generateApiKey()} size='large' fullWidth={true} />
+        <TextInput source='key' defaultValue={generateApiKey} size='large' fullWidth={true} validate={[required()]} readOnly />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 
@@ -206,10 +207,10 @@ export const ApiKeyEdit = () => {
       }}
     >
       <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
-        <TextInput source='key' disabled={true} size='large' fullWidth={true} />
+        <TextInput source='key' size='large' fullWidth={true} validate={required()}  readOnly/>
 
         <Row>
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 
