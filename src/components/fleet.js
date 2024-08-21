@@ -28,17 +28,6 @@ import DeleteFleetButton from '../ui/DeleteFleetButton';
 import Row from '../ui/Row';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 
-const BooleanBinaryField = (props) => {
-  return (
-    <FunctionField
-      {...props}
-      render={(record, source) => (
-        <BooleanField source='enabled' record={{ ...record, enabled: record[source] === 1 }} />
-      )}
-    />
-  );
-};
-
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
     <DeleteFleetButton size='small' {...props}>
@@ -78,13 +67,13 @@ export const FleetList = () => {
           <SemVerChip />
         </ReferenceField>
 
-        <BooleanBinaryField label='Host' source='is host' />
+        <BooleanField label='Host' source='is host' />
 
-        <BooleanBinaryField label='Archived' source='is archived' />
+        <BooleanField label='Archived' source='is archived' />
 
-        <BooleanBinaryField label='Public' source='is public' />
+        <BooleanField label='Public' source='is public' />
 
-        <BooleanBinaryField label='Track Latest Rel.' source='should track latest release' />
+        <BooleanField label='Track Latest Rel.' source='should track latest release' />
 
         <Toolbar>
           <EditButton label='' size='small' variant='outlined' />
@@ -113,6 +102,7 @@ export const FleetCreate = (props) => {
           validate={[required(), minLength(32), maxLength(32)]}
           size='large'
           fullWidth={true}
+          readOnly
         />
 
         <Row>
@@ -180,32 +170,24 @@ export const FleetCreate = (props) => {
           <BooleanInput
             label='Track Latest Release'
             source='should track latest release'
-            format={(v) => v !== 0}
-            parse={(v) => (v ? 1 : 0)}
             initialValue={1}
           />
 
           <BooleanInput
             label='Host'
             source='is host'
-            format={(v) => v !== 0}
-            parse={(v) => (v ? 1 : 0)}
             initialValue={0}
           />
 
           <BooleanInput
             label='Archived'
             source='is archived'
-            format={(v) => v !== 0}
-            parse={(v) => (v ? 1 : 0)}
             initialValue={0}
           />
 
           <BooleanInput
             label='Public'
             source='is public'
-            format={(v) => v !== 0}
-            parse={(v) => (v ? 1 : 0)}
             initialValue={0}
           />
         </Row>
@@ -234,7 +216,7 @@ export const FleetEdit = () => {
           <TextInput source='slug' validate={required()} size='large' />
         </Row>
 
-        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} />
+        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly />
 
         <Row>
           <SelectInput
@@ -295,33 +277,28 @@ export const FleetEdit = () => {
         <br />
 
         <Row>
-          <BooleanInput
-            label='Track Latest Release'
-            source='should track latest release'
-            format={(v) => v !== 0}
-            parse={(v) => (v ? 1 : 0)}
-          />
-          <FormDataConsumer>
-            {({ formData, ...rest }) =>
-              formData['should track latest release'] === 0 && (
-                <ReferenceInput
-                  label='Target Release'
-                  source='should be running-release'
-                  reference='release'
-                  target='id'
-                  filter={{ 'belongs to-application': fleetId }}
-                  allowEmpty
-                >
-                  <SelectInput optionText={(o) => getSemver(o)} optionValue='id' />
-                </ReferenceInput>
-              )
-            }
-          </FormDataConsumer>
-
-          <BooleanInput label='Host' source='is host' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
-          <BooleanInput label='Archived' source='is archived' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
-          <BooleanInput label='Public' source='is public' format={(v) => v !== 0} parse={(v) => (v ? 1 : 0)} />
+          <BooleanInput label='Track Latest Release' source='should track latest release' />
+          <BooleanInput label="Host" source="is host" />
+          <BooleanInput label="Archived" source="is archived" />
+          <BooleanInput label="Public" source="is public" />
         </Row>
+
+        <FormDataConsumer>
+        {({ formData, ...rest }) =>
+          !formData['should track latest release'] && (
+            <ReferenceInput
+              label='Target Release'
+              source='should be running-release'
+              reference='release'
+              target='id'
+              filter={{ 'belongs to-application': fleetId }}
+              allowEmpty
+            >
+              <SelectInput optionText={(o) => getSemver(o)} optionValue='id' fullWidth={true} />
+            </ReferenceInput>
+          )
+        }
+      </FormDataConsumer>
       </SimpleForm>
     </Edit>
   );
