@@ -145,7 +145,7 @@ export const ApiKeyCreate = (props) => {
       <SimpleForm>
         <TextInput
           source='key'
-          defaultValue={generateApiKey}
+          defaultValue={generateApiKey()}
           size='large'
           fullWidth={true}
           validate={[required()]}
