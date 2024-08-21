@@ -49,8 +49,8 @@ export const FleetTagList = () => {
 };
 
 export const FleetTagCreate = () => (
-  <Create title='Create Fleet Tag'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Fleet Tag' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         label='Fleet'
         source='application'
