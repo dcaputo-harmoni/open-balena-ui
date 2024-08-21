@@ -69,7 +69,7 @@ const CustomBulkActionButtons = (props) => (
 export const DeviceList = (props) => {
   return (
     <List {...props} filters={deviceFilters}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
+      <Datagrid rowClick={false}  bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
           <TextField source='device name' />
         </ReferenceField>

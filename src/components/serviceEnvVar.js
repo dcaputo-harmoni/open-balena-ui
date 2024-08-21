@@ -23,7 +23,7 @@ import Row from '../ui/Row';
 export const ServiceEnvVarList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Fleet' source='service' reference='service' target='id'>
           <ReferenceField source='application' reference='application' target='id'>
             <TextField source='app name' />

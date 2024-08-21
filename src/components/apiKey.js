@@ -111,7 +111,7 @@ const ActorFieldWrapper = (props) => {
 export const ApiKeyList = () => {
   return (
     <List filters={apiKeyFilters}>
-      <Datagrid size='medium' bulkActionButtons={<CustomBulkActionButtons />}>
+      <Datagrid size='medium' rowClick={false} bulkActionButtons={<CustomBulkActionButtons />}>
         <FunctionField
           label='API Key'
           render={(record) => <CopyChip title={record.key} label={record.key.slice(0, 10) + '...'} />}
