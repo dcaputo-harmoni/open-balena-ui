@@ -187,7 +187,7 @@ export const ApiKeyCreate = (props) => {
 
 const CustomToolbar = (props) => (
   <Toolbar {...props} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
-    <SaveButton sx={{ flex: 1 }} />
+    <SaveButton alwaysEnable={!!props.alwaysEnableSaveButton} sx={{ flex: 1 }} />
     <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
   </Toolbar>
 );
