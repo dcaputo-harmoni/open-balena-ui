@@ -56,8 +56,6 @@ export const ChangePasswordButton = (props) => {
         <DialogContent>
           <SimpleForm onSubmit={handleSubmit} toolbar={false} mode="onBlur" reValidateMode="onBlur" >
             <Row>
-              <PasswordInput variant='outlined' size='large' name='new_password' source='new_password'  onChange={e => setPassword(e.target.value)} inputProps={{ autoComplete: 'current-password' }} />
-              <Button variant='contained' color='inherit' type='submit' sx={{ ml: '20px', mt: '19px' }} disabled={!password_valid} >
               <PasswordInput
                 variant='outlined'
                 size='large'
@@ -68,6 +66,7 @@ export const ChangePasswordButton = (props) => {
               />
               <Button
                 variant='contained'
+                color='primary'
                 type='submit'
                 sx={{ ml: '20px', mt: '19px' }}
                 disabled={!password_valid}
