@@ -51,7 +51,7 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
       Promise.all(selectedIds.map((id) => canDeleteRelease(id))).then((canDeleteResults) =>
         setDisabled(!canDeleteResults.every((canDelete) => canDelete)),
       );
-    } else {
+    } else if (record && record.id) {
       canDeleteRelease(record.id).then((canDelete) => setDisabled(!canDelete));
     }
   }, [selectedIds, context]);
