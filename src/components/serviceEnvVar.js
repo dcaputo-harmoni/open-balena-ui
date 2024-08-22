@@ -62,8 +62,8 @@ export const ServiceEnvVarCreate = (props) => {
   };
 
   return (
-    <Create title='Create Service Environment Var' transform={processCreate} {...props}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Service Environment Var' redirect='list' transform={processCreate} {...props}>
+      <SimpleForm>
         <Row>
           <ReferenceInput
             label='Fleet'

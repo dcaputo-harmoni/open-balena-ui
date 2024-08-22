@@ -62,8 +62,8 @@ export const ImageEnvVarList = () => {
 };
 
 export const ImageEnvVarCreate = () => (
-  <Create title='Create Image Environment Var'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Image Environment Var' redirect='list'>
+    <SimpleForm>
       <ReferenceInput source='release image' reference='image' target='id'>
         <SelectInput optionText='id' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>

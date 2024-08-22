@@ -29,8 +29,8 @@ export const CpuArchitectureList = () => {
 };
 
 export const CpuArchitectureCreate = () => (
-  <Create title='Create CPU Architecture'>
-    <SimpleForm redirect='list'>
+  <Create title='Create CPU Architecture' redirect='list'>
+    <SimpleForm>
       <Row>
         <TextInput label='Slug' source='slug' size='large' />
       </Row>

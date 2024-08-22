@@ -29,8 +29,8 @@ export const DeviceManufacturerList = () => {
 };
 
 export const DeviceManufacturerCreate = () => (
-  <Create title='Create Device Manufacturer'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Device Manufacturer' redirect='list'>
+    <SimpleForm>
       <Row>
         <TextInput label='Slug' source='slug' size='large' />
         <TextInput label='Name' source='name' size='large' />

@@ -62,8 +62,8 @@ export const ImageLabelList = () => {
 };
 
 export const ImageLabelCreate = () => (
-  <Create title='Create Image Label'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Image Label' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='release image'
         reference='image'
