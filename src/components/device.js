@@ -1,4 +1,5 @@
 import { Tooltip, useTheme } from '@mui/material';
+import { Done, Warning, WarningAmber } from '@mui/icons-material';
 import dateFormat from 'dateformat';
 import * as React from 'react';
 import {
@@ -56,11 +57,48 @@ export const OnlineField = (props) => {
   );
 };
 
-const deviceFilters = [<SearchInput source='#uuid,device name,status@ilike' alwaysOn />];
+export const ReleaseField = (props) => {
+  const theme = useTheme();
+
+  return (
+    <FunctionField
+      {...props}
+      render={(record, source) => {
+        const currentRelease = record[source];
+        const targetRelease =  record['should be running-release'];
+        const isUpToDate = !!(currentRelease && currentRelease === targetRelease);
+        const isOnline = record['api heartbeat state'] === 'online';
+        return (
+          <>
+            <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
+              <SemVerChip />
+            </ReferenceField>
+
+            <Tooltip
+              placement='top'
+              arrow={true}
+              title={'Target Release: ' + (targetRelease || 'n/a')}
+            >
+              <span style={{ color: (!isUpToDate && isOnline) ? theme.palette.error.light : theme.palette.text.primary }}>
+                {
+                  isUpToDate ? <Done /> :
+                  isOnline ? <Warning /> :
+                  <WarningAmber />
+                }
+              </span>
+            </Tooltip>
+          </>
+        );
+      }}
+    />
+  );
+};
+
+const deviceFilters = [<SearchInput source="#uuid,device name,status@ilike" alwaysOn />];
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
-    <DeleteDeviceButton size='small' {...props}>
+    <DeleteDeviceButton size="small" {...props}>
       Delete Selected Devices
     </DeleteDeviceButton>
   </React.Fragment>
@@ -76,9 +114,7 @@ export const DeviceList = (props) => {
 
         <OnlineField label='Status' source='api heartbeat state' />
 
-        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
-          <SemVerChip />
-        </ReferenceField>
+        <ReleaseField label='Current Release' source='is running-release' />
 
         <ReferenceField label='Device Type' source='is of-device type' reference='device type' target='id' link={false}>
           <TextField source='slug' />
