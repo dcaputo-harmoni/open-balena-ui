@@ -67,8 +67,8 @@ export const DeviceServiceVarCreate = (props) => {
   const createDeviceServiceVar = useCreateDeviceServiceVar();
 
   return (
-    <Create title='Create Device Service Var' transform={createDeviceServiceVar} {...props}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device Service Var' redirect='list' transform={createDeviceServiceVar} {...props}>
+      <SimpleForm>
         <Row>
           <SelectDevice label='Device' source='device' />
 

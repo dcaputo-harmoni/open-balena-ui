@@ -49,8 +49,8 @@ export const DeviceEnvVarList = () => {
 };
 
 export const DeviceEnvVarCreate = () => (
-  <Create title='Create Device Environment Var'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Device Environment Var' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='device'
         reference='device'

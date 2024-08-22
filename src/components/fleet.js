@@ -89,7 +89,7 @@ export const FleetCreate = (props) => {
   let createFleet = useCreateFleet();
 
   return (
-    <Create title='Create Fleet' transform={createFleet} {...props}>
+    <Create title='Create Fleet' redirect='list' transform={createFleet} {...props}>
       <SimpleForm>
         <Row>
           <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
