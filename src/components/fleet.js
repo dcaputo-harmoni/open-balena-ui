@@ -20,6 +20,7 @@ import {
   maxLength,
   minLength,
   required,
+  useUnique,
 } from 'react-admin';
 import { useParams } from 'react-router';
 import { v4 as uuidv4 } from 'uuid';
@@ -87,14 +88,14 @@ export const FleetList = () => {
 
 export const FleetCreate = (props) => {
   let createFleet = useCreateFleet();
+  const unique = useUnique();
 
   return (
     <Create title='Create Fleet' redirect='list' transform={createFleet} {...props}>
       <SimpleForm>
         <Row>
-          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
-
-          <TextInput source='slug' validate={required()} size='large' />
+          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100), unique()]} size='large' />
+          <TextInput source='slug' validate={[required(), unique()]} size='large' />
         </Row>
 
         <TextInput
@@ -208,13 +209,14 @@ const CustomToolbar = (props) => (
 
 export const FleetEdit = () => {
   const { id: fleetId } = useParams();
+  const unique = useUnique();
 
   return (
     <Edit title='Edit Fleet'>
       <SimpleForm toolbar={<CustomToolbar />}>
         <Row>
-          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100)]} size='large' />
-          <TextInput source='slug' validate={required()} size='large' />
+          <TextInput source='app name' validate={[required(), minLength(4), maxLength(100), unique()]} size='large' />
+          <TextInput source='slug' validate={[required(), unique()]} size='large' />
         </Row>
 
         <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly={true} />
