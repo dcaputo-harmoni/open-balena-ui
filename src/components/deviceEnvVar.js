@@ -15,13 +15,27 @@ import {
   TextInput,
   Toolbar,
   required,
+  useShowContext,
 } from 'react-admin';
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
 export const DeviceEnvVarList = () => {
+
+  let listProps = {
+    title: 'Device Environment Vars'
+  }
+
+  try {
+    const showContext = useShowContext();
+    listProps = {
+      resource: 'device environment variable',
+      filter: {'device' : showContext.record.id}
+    }
+  } catch (e) {}
+
   return (
-    <List title='Device Environment Vars'>
+    <List {...listProps}>
       <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='device' reference='device' target='id'>
           <TextField source='device name' />

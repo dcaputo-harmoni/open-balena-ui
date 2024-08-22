@@ -15,13 +15,27 @@ import {
   TextInput,
   Toolbar,
   required,
+  useShowContext,
 } from 'react-admin';
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
 export const DeviceConfigVarList = () => {
+
+  let listProps = {
+    title: 'Device Config Vars'
+  }
+
+  try {
+    const showContext = useShowContext();
+    listProps = {
+      resource: 'device config variable',
+      filter: {'device' : showContext.record.id}
+    }
+  } catch (e) {}
+
   return (
-    <List title='Device Config Vars'>
+    <List {...listProps}>
       <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='device' reference='device' target='id'>
           <TextField source='device name' />
@@ -34,7 +48,7 @@ export const DeviceConfigVarList = () => {
           render={(record) => (
             <CopyChip
               title={record.value}
-              label={record.value.slice(0, 40) + (record.value.length > 40 ? '...' : '')}
+              label={record.value?.slice(0, 40) + (record.value?.length > 40 ? '...' : '')}
             />
           )}
         />
