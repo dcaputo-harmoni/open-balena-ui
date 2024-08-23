@@ -1,12 +1,13 @@
 const path = require('path');
 const HtmlWebpackPlugin = require('html-webpack-plugin');
-const ReactRefreshWebpackPlugin = require('@pmmmwh/react-refresh-webpack-plugin');
 const webpack = require('webpack');
 require('dotenv').config();
 
 const isDevelopment = process.env.NODE_ENV === 'development';
 
 console.log(`isDevelopment: ${isDevelopment}`);
+
+const ReactRefreshWebpackPlugin = isDevelopment ? require('@pmmmwh/react-refresh-webpack-plugin') : null;
 
 module.exports = {
   mode: isDevelopment ? 'development' : 'production',
