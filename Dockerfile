@@ -1,16 +1,10 @@
-FROM debian:bullseye
+FROM node:22-alpine
 
 ARG DEBIAN_FRONTEND=noninteractive
 
-# Update nodejs version to 17.x
-RUN apt-get update && apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_17.x | bash -
-
-RUN apt-get update && apt-get install -y \
-    nodejs \
-    node-typescript \
-    jq \
-    && rm -rf /var/lib/apt/lists/*
+### set default NODE_ENV but allow overwrite with build-arg
+ARG build_node_env=production
+ENV NODE_ENV=$build_node_env
 
 WORKDIR /usr/src/app
 
