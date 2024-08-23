@@ -17,6 +17,7 @@
     "crypto-browserify": "^3.12.0",
     "dateformat": "^5.0.3",
     "dotenv": "^16.4.5",
+    "express": "^4.18.2",
     "final-form": "^4.20.10",
     "jwt-decode": "^4.0.0",
     "memfs": "^4.11.1",
@@ -44,7 +45,9 @@
     "sshpk-browser": "^1.17.0",
     "stream-browserify": "^3.0.0",
     "util": "^0.12.5",
-    "uuid": "^10.0.0"
+    "uuid": "^10.0.0",
+    "webpack": "^5.94.0",
+    "webpack-dev-middleware": "^7.4.2"
   },
   "devDependencies": {
     "@babel/core": "^7.25.2",
@@ -59,9 +62,7 @@
     "prettier": "^3.3.3",
     "react-refresh": "^0.14.2",
     "style-loader": "^4.0.0",
-    "webpack": "^5.94.0",
     "webpack-cli": "^5.1.4",
-    "webpack-dev-middleware": "^7.4.2",
     "webpack-dev-server": "^5.0.4"
   },
   "scripts": {
