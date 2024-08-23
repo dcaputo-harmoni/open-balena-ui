@@ -84,7 +84,7 @@ export const DeviceServiceVarCreate = (props) => {
     <Create title='Create Device Service Var' redirect='list' transform={createDeviceServiceVar} {...props}>
       <SimpleForm>
         <Row>
-          <SelectDevice label='Device' source='device' />
+          <SelectDevice label='Device' source='device' validate={required()} />
 
           <FormDataConsumer>
             {({ formData, ...rest }) =>
@@ -94,6 +94,7 @@ export const DeviceServiceVarCreate = (props) => {
                   source='service install'
                   device={formData.device}
                   fullWidth={true}
+                  validate={required()}
                 />
               )
             }
