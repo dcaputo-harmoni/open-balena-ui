@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
+import { useFormContext } from 'react-hook-form';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -61,6 +62,12 @@ export const ManagePermissions = (props) => {
   const [selectedPermissions, setSelectedPermissions] = React.useState([]);
   const dataProvider = useDataProvider();
   const record = useRecordContext();
+  const { setValue } = useFormContext();
+
+  const onChangeHandler = arrayOfSelected => {
+    setSelectedPermissions(arrayOfSelected);
+    setValue(props.source, arrayOfSelected);
+  };
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -118,8 +125,8 @@ export const ManagePermissions = (props) => {
       <StyledDualListBox
         options={allPermissions}
         selected={selectedPermissions}
-        onChange={setSelectedPermissions}
-        showHeaderLabels='true'
+        onChange={onChangeHandler}
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
@@ -129,8 +136,6 @@ export const ManagePermissions = (props) => {
       />
       <TextInput
         source={props.source}
-        format={() => selectedPermissions}
-        onChange={(record[props.source] = selectedPermissions)}
         style={{ display: 'none' }}
       />
     </Box>

@@ -33,7 +33,7 @@ export function useModifyApiKey() {
       filter: { [sourceField]: data.id },
     });
     let existingData = existingMappings.data.map((x) => x[destField]);
-    let createData = data[field].filter((value) => !existingData.includes(value));
+    let createData = (data[field] || []).filter((value) => !existingData.includes(value));
     let deleteIds = existingMappings.data.filter((value) => !data[field].includes(value[destField])).map((x) => x.id);
     await Promise.all(
       createData.map((newData) =>

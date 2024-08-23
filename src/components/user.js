@@ -4,6 +4,7 @@ import {
   Datagrid,
   Edit,
   EditButton,
+  email,
   EmailField,
   List,
   PasswordInput,
@@ -24,6 +25,7 @@ import ManageOrganizations from '../ui/ManageOrganizations';
 import ManagePermissions from '../ui/ManagePermissions';
 import ManageRoles from '../ui/ManageRoles';
 import Row from '../ui/Row';
+import PasswordChecklist from 'react-password-checklist';
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
@@ -36,7 +38,7 @@ const CustomBulkActionButtons = (props) => (
 export const UserList = () => {
   return (
     <List>
-      <Datagrid size='medium' bulkActionButtons={<CustomBulkActionButtons />}>
+      <Datagrid size='medium' rowClick={false} bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='username' />
         <EmailField source='email' />
 
@@ -65,31 +67,49 @@ export const UserList = () => {
   );
 };
 
+const CustomCreateToolbar = (props) => (
+  <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
+    <SaveButton sx={{ flex: 1 }} disabled={ props.saveDisabled } />
+  </Toolbar>
+)
+
 export const UserCreate = (props) => {
   const createUser = useCreateUser();
+  const [password, setPassword] = React.useState("");
+  const [password_valid, setPasswordValid] = React.useState(false);
 
   return (
     <Create title='Create User' transform={createUser} {...props}>
-      <SimpleForm>
-        <TextInput source='email' size='large' fullWidth={true} />
+      <SimpleForm toolbar={<CustomCreateToolbar saveDisabled={!password_valid} />}>
+        <TextInput name='email' source='email' size='large' fullWidth={true} type='email' validate={[required(), email()]} />
 
         <Row>
-          <TextInput source='username' validate={required()} size='large' fullWidth={true} />
-          <PasswordInput source='password' validate={required()} size='large' fullWidth={true} />
+          <TextInput name='username' source='username' validate={required()} size='large' fullWidth={true} />
+          <PasswordInput name='password' source='password' validate={required()} size='large' fullWidth={true} onChange={e => setPassword(e.target.value)} />
         </Row>
+
+        <PasswordChecklist
+          rules={["minLength","specialChar","number","capitalAndLowercase"]}
+          minLength={8}
+          value={password}
+          onChange={(isValid) => {setPasswordValid(isValid)}}
+        />
       </SimpleForm>
     </Create>
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton sx={{ flex: 1 }} />
-    <DeleteUserButton variant='contained' size='large' sx={{ flex: 0.3, marginLeft: '40px' }}>
-      Delete
-    </DeleteUserButton>
-  </Toolbar>
-);
+const CustomToolbar = (props) => {
+  const { alwaysEnableSaveButton = false, ...rest } = props;
+  return (
+    <Toolbar {...rest} style={{ justifyContent: 'space-between' }}>
+      <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
+      <DeleteUserButton variant='contained' size='large' sx={{ flex: 0.3, marginLeft: '40px' }}>
+        Delete
+      </DeleteUserButton>
+    </Toolbar>
+  );
+}
 
 export const UserEdit = (props) => {
   const modifyUser = useModifyUser();
@@ -107,10 +127,10 @@ export const UserEdit = (props) => {
     >
       <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
         <Row>
-          <TextInput source='email' size='large' />
-          <TextInput source='username' validate={required()} size='large' />
+          <TextInput name='email' source='email' size='large' type='email' validate={[required(), email()]} />
+          <TextInput name='username' source='username' size='large' validate={required()} readOnly={true} />
         </Row>
-        <TextInput disabled source='jwt secret' size='large' fullWidth={true} />
+        <TextInput disabled name='jwt secret' source='jwt secret' size='large' fullWidth={true} />
         <ChangePasswordButton />
 
         <br />

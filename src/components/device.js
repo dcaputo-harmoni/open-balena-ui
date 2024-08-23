@@ -1,4 +1,5 @@
 import { Tooltip, useTheme } from '@mui/material';
+import { Done, Warning, WarningAmber } from '@mui/icons-material';
 import dateFormat from 'dateformat';
 import * as React from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
+  Pagination,
   ReferenceField,
   ReferenceInput,
   SearchInput,
@@ -56,29 +58,70 @@ export const OnlineField = (props) => {
   );
 };
 
-const deviceFilters = [<SearchInput source='#uuid,device name,status@ilike' alwaysOn />];
+export const ReleaseField = (props) => {
+  const theme = useTheme();
+
+  return (
+    <FunctionField
+      {...props}
+      render={(record, source) => {
+        const currentRelease = record[source];
+        const targetRelease =  record['should be running-release'];
+        const isUpToDate = !!(currentRelease && currentRelease === targetRelease);
+        const isOnline = record['api heartbeat state'] === 'online';
+        return (
+          <>
+            <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
+              <SemVerChip />
+            </ReferenceField>
+
+            <Tooltip
+              placement='top'
+              arrow={true}
+              title={'Target Release: ' + (targetRelease || 'n/a')}
+            >
+              <span style={{ color: (!isUpToDate && isOnline) ? theme.palette.error.light : theme.palette.text.primary }}>
+                {
+                  isUpToDate ? <Done /> :
+                  isOnline ? <Warning /> :
+                  <WarningAmber />
+                }
+              </span>
+            </Tooltip>
+          </>
+        );
+      }}
+    />
+  );
+};
+
+const deviceFilters = [<SearchInput source="#uuid,device name,status@ilike" alwaysOn />];
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
-    <DeleteDeviceButton size='small' {...props}>
+    <DeleteDeviceButton size="small" {...props}>
       Delete Selected Devices
     </DeleteDeviceButton>
   </React.Fragment>
 );
 
+const ExtendedPagination = (
+  { rowsPerPageOptions = [5, 10, 25, 50, 100, 250], ...rest }
+) => (
+  <Pagination rowsPerPageOptions={rowsPerPageOptions} {...rest} />
+);
+
 export const DeviceList = (props) => {
   return (
-    <List {...props} filters={deviceFilters}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
+    <List {...props} filters={deviceFilters} pagination={<ExtendedPagination />}>
+      <Datagrid rowClick={false} bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
           <TextField source='device name' />
         </ReferenceField>
 
         <OnlineField label='Status' source='api heartbeat state' />
 
-        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
-          <SemVerChip />
-        </ReferenceField>
+        <ReleaseField label='Current Release' source='is running-release' />
 
         <ReferenceField label='Device Type' source='is of-device type' reference='device type' target='id' link={false}>
           <TextField source='slug' />
@@ -116,20 +159,17 @@ export const DeviceCreate = (props) => {
   const createDevice = useCreateDevice();
   const redirect = useRedirect();
 
-  const processComplete = ({ data }) => {
-    redirect('list', data.id, data);
-  };
-
   return (
-    <Create title='Create Device' ttransform={createDevice} onSuccess={processComplete}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device' transform={createDevice} redirect='list'>
+      <SimpleForm>
         <Row>
           <TextInput
             label='UUID'
             source='uuid'
-            initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+            defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
             validate={required()}
             size='large'
+            readOnly={true}
           />
 
           <TextInput label='Device Name' source='device name' validate={required()} size='large' />
@@ -204,7 +244,7 @@ export const DeviceEdit = () => {
     <Edit title='Edit Device' actions={null} transform={modifyDevice}>
       <SimpleForm>
         <Row>
-          <TextInput label='UUID' source='uuid' size='large' />
+          <TextInput label='UUID' source='uuid' size='large' readOnly={true} />
 
           <TextInput label='Device Name' source='device name' size='large' />
         </Row>

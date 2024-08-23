@@ -26,7 +26,7 @@ const deviceTypeAlias = versions.resource('deviceTypeAlias', process.env.REACT_A
 export const DeviceTypeList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
 
@@ -66,8 +66,8 @@ export const DeviceTypeCreate = () => {
   const createDeviceType = useCreateDeviceType();
 
   return (
-    <Create title='Create Device Type' transform={createDeviceType}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device Type' redirect='list' transform={createDeviceType}>
+      <SimpleForm>
         <Row>
           <TextInput source='slug' size='large' />
           <TextInput source='name' size='large' />

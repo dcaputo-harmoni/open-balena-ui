@@ -24,7 +24,7 @@ import SemVerChip, { getSemver } from '../ui/SemVerChip';
 export const ReleaseTagList = (props) => {
   return (
     <List title='Release Tags'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Fleet' source='release' reference='release' target='id' link={false}>
           <ReferenceField
             source='belongs to-application'
@@ -68,8 +68,8 @@ export const ReleaseTagCreate = () => {
   };
 
   return (
-    <Create title='Create Release Tag' transform={processCreate}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Release Tag' redirect='list' transform={processCreate}>
+      <SimpleForm>
         <Row>
           <ReferenceInput
             label='Fleet'

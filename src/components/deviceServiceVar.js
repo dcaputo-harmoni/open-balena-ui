@@ -14,6 +14,7 @@ import {
   TextInput,
   Toolbar,
   required,
+  useShowContext,
 } from 'react-admin';
 import { useCreateDeviceServiceVar, useModifyDeviceServiceVar } from '../lib/deviceServiceVar';
 import CopyChip from '../ui/CopyChip';
@@ -22,9 +23,22 @@ import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
 
 export const DeviceServiceVarList = () => {
+
+  let listProps = {
+    title: 'Device Service Vars'
+  }
+
+  try {
+    const showContext = useShowContext();
+    listProps = {
+      resource: 'device service environment variable',
+      filter: {'device' : showContext.record.id}
+    }
+  } catch (e) {}
+
   return (
-    <List title='Device Service Vars'>
-      <Datagrid size='medium'>
+    <List {...listProps}>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
             <TextField source='device name' />
@@ -67,8 +81,8 @@ export const DeviceServiceVarCreate = (props) => {
   const createDeviceServiceVar = useCreateDeviceServiceVar();
 
   return (
-    <Create title='Create Device Service Var' transform={createDeviceServiceVar} {...props}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device Service Var' redirect='list' transform={createDeviceServiceVar} {...props}>
+      <SimpleForm>
         <Row>
           <SelectDevice label='Device' source='device' />
 

@@ -23,7 +23,7 @@ import Row from '../ui/Row';
 export const ServiceLabelList = () => {
   return (
     <List title='Service Labels'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Service' source='service' reference='service' target='id'>
           <ChipField source='service name' />
         </ReferenceField>
@@ -50,8 +50,8 @@ export const ServiceLabelList = () => {
 };
 
 export const ServiceLabelCreate = () => (
-  <Create title='Create Service Label'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Service Label' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='service'
         reference='service'

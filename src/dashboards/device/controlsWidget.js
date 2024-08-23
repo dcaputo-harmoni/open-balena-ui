@@ -30,7 +30,7 @@ const styles = {
   },
 };
 
-const Controls = () => {
+const ControlsWidget = () => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
   const record = useRecordContext();
@@ -130,4 +130,4 @@ const Controls = () => {
   );
 };
 
-export default Controls;
+export default ControlsWidget;

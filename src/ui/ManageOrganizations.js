@@ -8,6 +8,7 @@ import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
+import { useFormContext } from "react-hook-form"
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -26,6 +27,12 @@ export const ManageOrganizations = (props) => {
   const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);
   const dataProvider = useDataProvider();
   const record = useRecordContext();
+  const { setValue } = useFormContext();
+
+  const onChangeHandler = arrayOfSelected => {
+    setSelectedOrganizations(arrayOfSelected);
+    setValue(props.source, arrayOfSelected);
+  };
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -67,8 +74,8 @@ export const ManageOrganizations = (props) => {
       <StyledDualListBox
         options={allOrganizations}
         selected={selectedOrganizations}
-        onChange={setSelectedOrganizations}
-        showHeaderLabels='true'
+        onChange={onChangeHandler}
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
@@ -79,8 +86,6 @@ export const ManageOrganizations = (props) => {
 
       <TextInput
         source={props.source}
-        format={() => selectedOrganizations}
-        onChange={(record[props.source] = selectedOrganizations)}
         style={{ display: 'none' }}
       />
     </Box>

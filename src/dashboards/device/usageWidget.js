@@ -19,7 +19,7 @@ const LinearProgressWithLabel = (props) => {
   );
 };
 
-const Usage = () => {
+const UsageWidget = () => {
   const record = useRecordContext();
 
   if (!record) return null;
@@ -64,4 +64,4 @@ const Usage = () => {
   );
 };
 
-export default Usage;
+export default UsageWidget;
