@@ -127,6 +127,6 @@ module.exports = {
     historyApiFallback: true, // Fallback to /index.html for Single Page Applications
     open: true, // Open the browser after server has been started
     hot: true, // Enable Hot Module Replacement
-    port: 3000,
+    port: process.env.PORT || 3000,
   },
 };
