@@ -73,7 +73,8 @@
     "start": "node server",
     "devserver": "webpack-dev-server",
     "build": "webpack",
-    "prettier": "prettier --write ."
+    "prettier": "prettier --write .",
+    "release": "semantic-release"
   },
   "eslintConfig": {
     "extends": [
@@ -91,6 +92,30 @@
       "last 1 chrome version",
       "last 1 firefox version",
       "last 1 safari version"
+    ]
+  },
+  "release": {
+    "branches": [
+      "main",
+      "development"
+    ],
+    "dryRun": false,
+    "ci": true,
+    "debug": true,
+    "plugins": [
+      "@semantic-release/commit-analyzer",
+      "@semantic-release/release-notes-generator",
+      "@semantic-release/github",
+      "@semantic-release/npm",
+      [
+        "@semantic-release/git",
+        {
+          "assets": [
+            "package.json"
+          ],
+          "message": "chore(release): ${nextRelease.version} [skip ci]\n\n${nextRelease.notes}"
+        }
+      ]
     ]
   }
 }
