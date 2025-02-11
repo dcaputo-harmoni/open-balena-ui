@@ -122,7 +122,7 @@ export const FleetCards = () => (
                                 <ReferenceField
                                   record={record}
                                   label='Target Rel.'
-                                  source='should be running-release'
+                                  source='is pinned on-release'
                                   reference='release'
                                   target='id'
                                 >

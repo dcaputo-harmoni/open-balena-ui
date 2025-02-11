@@ -116,7 +116,7 @@ const Summary = () => {
 
                   <td>
                     <Label>Target Release</Label>
-                    <ReferenceField source='should be running-release' reference='release' target='id'>
+                    <ReferenceField source='is pinned on-release' reference='release' target='id'>
                       <SemVerChip />
                     </ReferenceField>
                   </td>

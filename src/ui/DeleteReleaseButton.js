@@ -28,8 +28,8 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
   React.useEffect(() => {
     const canDeleteRelease = async (releaseId) => {
       let releaseLookups = [
-        { resource: 'device', field: '#is running-release,should be running-release,should be operated by-release@eq' },
-        { resource: 'application', field: 'should be running-release' },
+        { resource: 'device', field: '#is running-release,is pinned on-release,should be operated by-release@eq' },
+        { resource: 'application', field: 'is pinned on-release' },
       ];
       let count = 0;
       await Promise.all(

@@ -178,7 +178,7 @@ export const DeviceCreate = (props) => {
               formData['belongs to-application'] && (
                 <ReferenceInput
                   label='Target Release'
-                  source='should be running-release'
+                  source='is pinned on-release'
                   reference='release'
                   target='id'
                   filter={{ 'belongs to-application': formData['belongs to-application'] }}
@@ -252,7 +252,7 @@ export const DeviceEdit = () => {
               formData['belongs to-application'] && (
                 <ReferenceInput
                   label='Target Release'
-                  source='should be running-release'
+                  source='is pinned on-release'
                   reference='release'
                   target='id'
                   filter={{ 'belongs to-application': formData['belongs to-application'] }}

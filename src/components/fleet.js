@@ -74,7 +74,7 @@ export const FleetList = () => {
           <TextField source='slug' />
         </ReferenceField>
 
-        <ReferenceField label='Target Rel.' source='should be running-release' reference='release' target='id'>
+        <ReferenceField label='Target Rel.' source='is pinned on-release' reference='release' target='id'>
           <SemVerChip />
         </ReferenceField>
 
@@ -306,7 +306,7 @@ export const FleetEdit = () => {
               formData['should track latest release'] === 0 && (
                 <ReferenceInput
                   label='Target Release'
-                  source='should be running-release'
+                  source='is pinned on-release'
                   reference='release'
                   target='id'
                   filter={{ 'belongs to-application': fleetId }}
@@ -334,3 +334,4 @@ const fleet = {
 };
 
 export default fleet;
+d
