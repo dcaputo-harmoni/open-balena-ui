@@ -2,7 +2,9 @@ import * as semver from 'semver';
 
 const versions = {
   '0.139.0': {
-    resources: {},
+    resources: {
+      isPinnedOnRelease: 'should be running-release',
+    },
     translations: {},
   },
 };
@@ -68,6 +70,16 @@ versions['0.185.0'] = {
   },
   fields: {
     ...versions['0.171.0'].fields,
+  },
+};
+
+versions['25.2.8'] = {
+  resources: {
+    ...versions['0.185.0'].resources,
+    isPinnedOnRelease: 'is pinned on-release',
+  },
+  fields: {
+    ...versions['0.185.0'].fields,
   },
 };
 

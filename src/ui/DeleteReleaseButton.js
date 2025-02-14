@@ -4,6 +4,9 @@ import React from 'react';
 import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteRelease, useDeleteReleaseBulk } from '../lib/release';
+import versions from '../versions';
+
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
 
 export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
   const [open, setOpen] = React.useState(false);
@@ -28,7 +31,7 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
   React.useEffect(() => {
     const canDeleteRelease = async (releaseId) => {
       let releaseLookups = [
-        { resource: 'device', field: '#is running-release,should be running-release,should be operated by-release@eq' },
+        { resource: 'device', field: `#is running-release,${isPinnedOnRelease},should be operated by-release@eq` },
         { resource: 'application', field: 'should be running-release' },
       ];
       let count = 0;

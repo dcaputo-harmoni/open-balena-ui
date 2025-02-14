@@ -30,6 +30,9 @@ import DeviceServicesButton from '../ui/DeviceServicesButton';
 import Row from '../ui/Row';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
+import versions from '../versions';
+
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
 
 export const OnlineField = (props) => {
   const theme = useTheme();
@@ -178,7 +181,7 @@ export const DeviceCreate = (props) => {
               formData['belongs to-application'] && (
                 <ReferenceInput
                   label='Target Release'
-                  source='should be running-release'
+                  source={isPinnedOnRelease}
                   reference='release'
                   target='id'
                   filter={{ 'belongs to-application': formData['belongs to-application'] }}
@@ -252,7 +255,7 @@ export const DeviceEdit = () => {
               formData['belongs to-application'] && (
                 <ReferenceInput
                   label='Target Release'
-                  source='should be running-release'
+                  source={isPinnedOnRelease}
                   reference='release'
                   target='id'
                   filter={{ 'belongs to-application': formData['belongs to-application'] }}
