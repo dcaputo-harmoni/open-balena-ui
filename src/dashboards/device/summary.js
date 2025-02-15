@@ -11,6 +11,9 @@ import Controls from './controls';
 import Usage from './usage';
 import DeviceConnectButton from '../../ui/DeviceConnectButton';
 import { OpenInFull } from '@mui/icons-material';
+import versions from '../../versions';
+
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
 
 const Summary = () => {
   const record = useRecordContext();
@@ -116,7 +119,7 @@ const Summary = () => {
 
                   <td>
                     <Label>Target Release</Label>
-                    <ReferenceField source='should be running-release' reference='release' target='id'>
+                    <ReferenceField source={isPinnedOnRelease} reference='release' target='id'>
                       <SemVerChip />
                     </ReferenceField>
                   </td>
