@@ -31,8 +31,9 @@ import Row from '../ui/Row';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
 import versions from '../versions';
+import environment from '../lib/reactAppEnv';
 
-const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', environment.REACT_APP_OPEN_BALENA_API_VERSION);
 
 export const OnlineField = (props) => {
   const theme = useTheme();

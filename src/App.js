@@ -39,6 +39,7 @@ import postgrestDataProvider from './dataProvider/postgrestDataProvider';
 import TreeMenu from './ui/TreeMenu';
 import customTheme from './ui/customTheme';
 import versions from './versions';
+import environment from './lib/reactAppEnv';
 
 const httpClient = (url, options = {}) => {
   if (!options.headers) {
@@ -48,9 +49,9 @@ const httpClient = (url, options = {}) => {
   return fetchUtils.fetchJson(url, options);
 };
 
-const dataProvider = postgrestDataProvider(process.env.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
+const dataProvider = postgrestDataProvider(environment.REACT_APP_OPEN_BALENA_POSTGREST_URL, httpClient);
 
-const deviceTypeAliasVer = versions.resource('deviceTypeAlias', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+const deviceTypeAliasVer = versions.resource('deviceTypeAlias', environment.REACT_APP_OPEN_BALENA_API_VERSION);
 
 const App = () => <OpenBalenaAdmin />;
 

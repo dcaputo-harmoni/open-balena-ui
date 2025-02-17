@@ -1,9 +1,10 @@
 import { jwtDecode } from 'jwt-decode';
+import environment from '../lib/reactAppEnv';
 
 const authProvider = {
   login: ({ username, password }) => {
-    console.log(`Attempting to fetch ${process.env.REACT_APP_OPEN_BALENA_API_URL}/login_`);
-    return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/login_`, {
+    console.log(`Attempting to fetch ${environment.REACT_APP_OPEN_BALENA_API_URL}/login_`);
+    return fetch(`${environment.REACT_APP_OPEN_BALENA_API_URL}/login_`, {
       method: 'POST',
       body: JSON.stringify({ username: username, password: password }),
       headers: new Headers({ 'Content-Type': 'application/json' }),
