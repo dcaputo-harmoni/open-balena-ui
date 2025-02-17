@@ -1,12 +1,12 @@
 const express = require('express');
 const router = express.Router();
 const bodyParser = require('body-parser');
-const { authorize } = require('../middleware');
+const { authorize, dosProtect } = require('../middleware');
 const { deleteRegistryImage, deleteOrphanedRegistryImages } = require('../controller/registryImage');
 
 router.use(bodyParser.json());
 
-router.post('/deleteRegistryImage', authorize, (req, res) => {
+router.post('/deleteRegistryImage', ...dosProtect, authorize, (req, res) => {
 
   const { imageLocationHash } = req.body;
 
@@ -25,7 +25,7 @@ router.post('/deleteRegistryImage', authorize, (req, res) => {
 
 });
 
-router.post('/deleteOrphanedRegistryImages', authorize, (req, res) => {
+router.post('/deleteOrphanedRegistryImages', ...dosProtect, authorize, (req, res) => {
 
   const { databaseImages } = req.body;
 
