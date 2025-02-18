@@ -12,8 +12,9 @@ import Usage from './usage';
 import DeviceConnectButton from '../../ui/DeviceConnectButton';
 import { OpenInFull } from '@mui/icons-material';
 import versions from '../../versions';
+import environment from '../../lib/reactAppEnv';
 
-const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', environment.REACT_APP_OPEN_BALENA_API_VERSION);
 
 const Summary = () => {
   const record = useRecordContext();

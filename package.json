@@ -21,6 +21,9 @@
     "crypto-browserify": "^3.12.0",
     "dateformat": "^5.0.3",
     "dotenv": "^16.4.5",
+    "express": "^4.19.2",
+    "express-rate-limit": "^7.4.1",
+    "express-slow-down": "^2.0.3",
     "final-form": "^4.20.10",
     "jwt-decode": "^4.0.0",
     "memfs": "^4.7.7",
@@ -58,12 +61,14 @@
     "webpack": "^5.90.3",
     "webpack-cli": "^5.1.4",
     "webpack-dev-middleware": "^7.0.0",
-    "webpack-dev-server": "^4.15.1"
+    "webpack-dev-server": "^4.15.1",
+    "webpack-merge": "^6.0.1"
   },
   "scripts": {
-    "start": "node server",
-    "devserver": "webpack-dev-server",
-    "build": "webpack",
+    "start": "npm run build && npm run serve",
+    "serve": "node server",
+    "devserver": "webpack-dev-server --config webpack.dev.js",
+    "build": "webpack --config webpack.prod.js",
     "prettier": "prettier --write ."
   },
   "eslintConfig": {

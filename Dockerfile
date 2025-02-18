@@ -1,27 +1,27 @@
-FROM debian:bookworm
+FROM node:22-alpine AS base
 
-ARG DEBIAN_FRONTEND=noninteractive
-
-# Update nodejs version to 20.x
-RUN apt-get update && apt-get install -y curl && \
-    curl -sL https://deb.nodesource.com/setup_20.x | bash -
-
-RUN apt-get update && apt-get install -y \
-    nodejs \
-    node-typescript \
-    jq \
-    && rm -rf /var/lib/apt/lists/*
+ENV NODE_ENV=production
 
 WORKDIR /usr/src/app
-
-COPY ./server ./server
-COPY ./src ./src
-COPY ./webpack.config.js ./
 COPY ./package.json ./
 COPY ./package-lock.json ./
 
-RUN npm ci --no-fund --no-update-notifier
+RUN npm install --no-fund --no-update-notifier --no-audit \
+    && npm cache clean --force
 
-COPY start.sh ./
+FROM base AS builder
 
-CMD ["bash", "start.sh"]
+COPY ./server ./server
+COPY ./src ./src
+COPY ./webpack.*.js ./
+
+RUN NODE_ENV=development npm install --no-fund --no-update-notifier --no-audit \
+    && npm cache clean --force \
+    && BABEL_ENV=node npm run build
+
+FROM base AS production-image
+
+COPY --from=builder /usr/src/app/server/ /usr/src/app/server/
+COPY --from=builder /usr/src/app/dist/ /usr/src/app/dist/
+
+CMD ["npm", "run", "serve"]

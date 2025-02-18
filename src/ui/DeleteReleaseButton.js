@@ -5,8 +5,9 @@ import { useNotify, useRecordContext, useRedirect } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteRelease, useDeleteReleaseBulk } from '../lib/release';
 import versions from '../versions';
+import environment from '../lib/reactAppEnv';
 
-const isPinnedOnRelease = versions.resource('isPinnedOnRelease', process.env.REACT_APP_OPEN_BALENA_API_VERSION);
+const isPinnedOnRelease = versions.resource('isPinnedOnRelease', environment.REACT_APP_OPEN_BALENA_API_VERSION);
 
 export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
   const [open, setOpen] = React.useState(false);
