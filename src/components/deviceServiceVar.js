@@ -55,7 +55,7 @@ export const DeviceServiceVarList = () => {
 
   return (
     <List {...listProps}>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
             <TextField source='device name' />

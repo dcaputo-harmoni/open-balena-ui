@@ -46,6 +46,7 @@ export const ReleaseList = (props) => {
     <List filters={releaseFilters}>
       <Datagrid
         size='medium'
+        rowClick={false}
         bulkActionButtons={
           <DeleteReleaseButton size='small' color='' context={useDataProvider()} {...props}>
             Delete

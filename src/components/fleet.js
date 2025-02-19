@@ -56,6 +56,7 @@ export const FleetList = () => {
     <List>
       <Datagrid
         bulkActionButtons={<CustomBulkActionButtons />}
+        rowClick={false}
         size='medium'
         sx={{
           '.column-is, .column-should.track.latest.release': {

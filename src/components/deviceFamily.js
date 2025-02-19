@@ -20,7 +20,7 @@ import Row from '../ui/Row';
 export const DeviceFamilyList = () => {
   return (
     <List title='Device Families'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
         <ReferenceField

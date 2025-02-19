@@ -16,7 +16,7 @@ import {
 export const PermissionList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField source='name' />
 
         <Toolbar>

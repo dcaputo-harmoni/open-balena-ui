@@ -18,7 +18,7 @@ import ManagePermissions from '../ui/ManagePermissions';
 export const RoleList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <TextField source='name' />
         <Toolbar>
           <EditButton label='' size='small' variant='outlined' />

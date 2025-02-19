@@ -36,7 +36,7 @@ const CustomBulkActionButtons = (props) => (
 export const UserList = () => {
   return (
     <List>
-      <Datagrid size='medium' bulkActionButtons={<CustomBulkActionButtons />}>
+      <Datagrid size='medium' rowClick={false} bulkActionButtons={<CustomBulkActionButtons />}>
         <TextField source='username' />
         <EmailField source='email' />
 

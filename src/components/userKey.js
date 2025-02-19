@@ -22,7 +22,7 @@ import Row from '../ui/Row';
 export const UserKeysList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false} >
         <ReferenceField label='User' source='user' reference='user' target='id'>
           <TextField source='username' />
         </ReferenceField>
