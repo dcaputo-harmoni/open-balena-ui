@@ -22,6 +22,8 @@ import {
   Toolbar,
   useRecordContext,
   useListContext,
+  useUnique,
+  required,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
 import CopyChip from '../ui/CopyChip';
@@ -138,15 +140,23 @@ export const ApiKeyList = () => {
 export const ApiKeyCreate = (props) => {
   const generateApiKey = useGenerateApiKey();
   const createApiKey = useCreateApiKey();
+  const unique = useUnique();
 
   return (
     <Create {...props} transform={createApiKey}>
       <SimpleForm>
-        <TextInput source='key' initialValue={generateApiKey()} size='large' fullWidth={true} />
+        <TextInput
+          source='key'
+          defaultValue={generateApiKey()}
+          size='large'
+          fullWidth={true}
+          validate={[required(), unique()]}
+          readOnly={true}
+        />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={[required(), unique()]} />
           <TextInput source='description' size='large' />
         </Row>
 
@@ -213,10 +223,10 @@ export const ApiKeyEdit = () => {
       }}
     >
       <SimpleForm toolbar={<CustomToolbar />}>
-        <TextInput source='key' disabled={true} size='large' fullWidth={true} />
+        <TextInput source='key' size='large' fullWidth={true} validate={required()} readOnly={true}/>
 
         <Row>
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 
