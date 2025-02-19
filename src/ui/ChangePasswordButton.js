@@ -29,7 +29,7 @@ export const ChangePasswordButton = (props) => {
       })
       .then((data) => {
         setOpen(false);
-        notify('Password successfully changed');
+        notify('Password successfully changed', {type: 'success'});
       });
   };
 

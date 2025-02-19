@@ -20,7 +20,7 @@ export const DeleteUserButton = (props) => {
       await deleteUser(record);
     }
     setOpen(false);
-    notify('User(s) successfully deleted');
+    notify('User(s) successfully deleted', {type: 'success'});
     redirect(props.redirect);
   };
 

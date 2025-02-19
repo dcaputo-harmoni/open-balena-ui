@@ -27,7 +27,7 @@ export const DeleteDeviceButton = (props) => {
       notify('Failed to delete device(s): ' + e.message, {type: 'error'});
     }
     setOpen(false);
-    notify('Device(s) successfully deleted');
+    notify('Device(s) successfully deleted', {type: 'success'});
     refresh();
   };
 

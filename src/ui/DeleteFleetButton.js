@@ -20,7 +20,7 @@ export const DeleteFleetButton = (props) => {
       await deleteFleet(record);
     }
     setOpen(false);
-    notify('Fleet(s) successfully deleted');
+    notify('Fleet(s) successfully deleted', {type: 'success'});
     redirect(props.redirect);
   };
 

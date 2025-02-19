@@ -25,7 +25,7 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
       await deleteRelease(record);
     }
     setOpen(false);
-    notify('Release(s) successfully deleted');
+    notify('Release(s) successfully deleted', {type: 'success'});
     redirect(props.redirect);
   };
 
