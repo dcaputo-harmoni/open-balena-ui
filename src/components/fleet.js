@@ -113,7 +113,7 @@ export const FleetCreate = (props) => {
 
         <TextInput
           source='uuid'
-          initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+          defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
           validate={[required(), minLength(32), maxLength(32)]}
           size='large'
           fullWidth={true}
@@ -128,7 +128,7 @@ export const FleetCreate = (props) => {
               { id: 'app', name: 'App' },
               { id: 'block', name: 'Block' },
             ]}
-            initialValue={'fleet'}
+            defaultValue={'fleet'}
           />
 
           <ReferenceInput
@@ -172,7 +172,7 @@ export const FleetCreate = (props) => {
             target='id'
             perPage={1000}
             sort={{ field: 'name', order: 'ASC' }}
-            initialValue={1}
+            defaultValue={1}
           >
             <SelectInput optionText='name' optionValue='id' validate={required()} />
           </ReferenceInput>
@@ -186,7 +186,7 @@ export const FleetCreate = (props) => {
             source='should track latest release'
             format={(v) => v !== 0}
             parse={(v) => (v ? 1 : 0)}
-            initialValue={1}
+            defaultValue={1}
           />
 
           <BooleanInput
@@ -194,7 +194,7 @@ export const FleetCreate = (props) => {
             source='is host'
             format={(v) => v !== 0}
             parse={(v) => (v ? 1 : 0)}
-            initialValue={0}
+            defaultValue={0}
           />
 
           <BooleanInput
@@ -202,7 +202,7 @@ export const FleetCreate = (props) => {
             source='is archived'
             format={(v) => v !== 0}
             parse={(v) => (v ? 1 : 0)}
-            initialValue={0}
+            defaultValue={0}
           />
 
           <BooleanInput
@@ -210,7 +210,7 @@ export const FleetCreate = (props) => {
             source='is public'
             format={(v) => v !== 0}
             parse={(v) => (v ? 1 : 0)}
-            initialValue={0}
+            defaultValue={0}
           />
         </Row>
       </SimpleForm>
@@ -249,7 +249,7 @@ export const FleetEdit = () => {
               { id: 'app', name: 'App' },
               { id: 'block', name: 'Block' },
             ]}
-            initialValue={'fleet'}
+            defaultValue={'fleet'}
           />
 
           <ReferenceInput
