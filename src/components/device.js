@@ -23,6 +23,7 @@ import {
   required,
   useRedirect,
   useListContext,
+  WithRecord,
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
 import { useCreateDevice, useModifyDevice, useSetServicesForNewDevice } from '../lib/device';
@@ -163,8 +164,12 @@ export const DeviceList = (props) => {
         <Toolbar sx={{ background: 'none', padding: '0' }}>
           <ShowButton variant='outlined' label='' size='small' />
           <EditButton variant='outlined' label='' size='small' />
-          <DeviceServicesButton variant='outlined' size='small' />
-          <DeviceConnectButton variant='outlined' size='small' />
+          <WithRecord render={device =>
+            <>
+              <DeviceServicesButton variant='outlined' size='small' device={device} />
+              <DeviceConnectButton variant='outlined' size='small' record={device} />
+            </>
+          } />
           <DeleteDeviceButton variant='outlined' size='small' style={{ marginRight: '0 !important' }} />
         </Toolbar>
       </Datagrid>
