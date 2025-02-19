@@ -21,6 +21,7 @@ import {
   TextInput,
   Toolbar,
   useRecordContext,
+  useListContext,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
 import CopyChip from '../ui/CopyChip';
@@ -89,13 +90,16 @@ class ActorField extends React.Component {
 
 const apiKeyFilters = [<SearchInput source='#key,name,description@ilike' alwaysOn />];
 
-const CustomBulkActionButtons = (props) => (
-  <React.Fragment>
-    <DeleteApiKeyButton variant='contained' size='small' {...props}>
-      Delete Selected API Keys
-    </DeleteApiKeyButton>
-  </React.Fragment>
-);
+const CustomBulkActionButtons = (props) => {
+  const { selectedIds } = useListContext();
+  return (
+    <React.Fragment>
+      <DeleteApiKeyButton variant='contained' size='small' selectedIds={selectedIds} {...props}>
+        Delete Selected API Keys
+      </DeleteApiKeyButton>
+    </React.Fragment>
+  );
+}
 
 const ActorFieldWrapper = (props) => {
   const record = useRecordContext();
@@ -185,12 +189,15 @@ export const ApiKeyCreate = (props) => {
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
-    <SaveButton sx={{ flex: 1 }} />
-    <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
-  </Toolbar>
-);
+const CustomToolbar = (props) => {
+  const {alwaysEnableSaveButton = false, ...rest} = props;
+  return (
+    <Toolbar {...rest} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
+      <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
+      <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
+    </Toolbar>
+  );
+}
 
 export const ApiKeyEdit = () => {
   const modifyApiKey = useModifyApiKey();
