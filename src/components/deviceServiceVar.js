@@ -143,7 +143,7 @@ export const DeviceServiceVarEdit = () => {
                   <SelectDeviceService
                     label='Service'
                     source='service install'
-                    device={formData.device || formData['service install']}
+                    device={formData.device || -1}
                     validate={required()}
                   />
                 )
