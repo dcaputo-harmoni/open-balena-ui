@@ -50,7 +50,7 @@ export const RoleEdit = () => {
         },
       }}
     >
-      <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
+      <SimpleForm toolbar={<Toolbar />}>
         <TextInput source='name' validate={required()} size='large' fullWidth={true} />
 
         <ManagePermissions source='permissionArray' reference='role-has-permission' target='role' />

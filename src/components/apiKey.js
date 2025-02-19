@@ -205,7 +205,7 @@ export const ApiKeyEdit = () => {
         },
       }}
     >
-      <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
+      <SimpleForm toolbar={<CustomToolbar />}>
         <TextInput source='key' disabled={true} size='large' fullWidth={true} />
 
         <Row>
