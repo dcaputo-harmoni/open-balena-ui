@@ -28,3 +28,6 @@ yarn-error.log*
 start-harmoni.sh
 
 yarn.lock
+
+# WebStrom IDE
+.idea/*
