@@ -5,6 +5,7 @@ import {
   DeleteButton,
   Edit,
   EditButton,
+  FormDataConsumer,
   FunctionField,
   List,
   ReferenceField,
@@ -15,9 +16,12 @@ import {
   TextInput,
   Toolbar,
   required,
+  useUnique,
 } from 'react-admin';
 import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
+
+const uniqueIssueMessage = 'This ConfigVar is already present for this Fleet';
 
 export const FleetConfigVarList = () => {
   return (
@@ -48,26 +52,43 @@ export const FleetConfigVarList = () => {
   );
 };
 
-export const FleetConfigVarCreate = () => (
-  <Create title='Create Fleet Config Var'>
-    <SimpleForm redirect='list'>
-      <ReferenceInput
-        source='application'
-        reference='application'
-        target='id'
-        perPage={1000}
-        sort={{ field: 'app name', order: 'ASC' }}
-      >
-        <SelectInput optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
-      </ReferenceInput>
+export const FleetConfigVarCreate = () => {
+  const unique = useUnique();
+  return (
+    <Create title='Create Fleet Config Var' redirect='list'>
+      <SimpleForm>
+        <ReferenceInput
+          source='application'
+          reference='application'
+          target='id'
+          perPage={1000}
+          sort={{ field: 'app name', order: 'ASC' }}
+        >
+          <SelectInput label='Fleet name' optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+        </ReferenceInput>
 
-      <Row>
-        <TextInput label='Name' source='name' validate={required()} size='large' />
-        <TextInput label='Value' source='value' validate={required()} size='large' />
-      </Row>
-    </SimpleForm>
-  </Create>
-);
+        <Row>
+          <FormDataConsumer>
+            {({formData}) => (
+              <TextInput
+                label='Name'
+                source='name'
+                validate={[required(), unique({
+                  filter: {
+                    application: formData.application,
+                  },
+                  message: uniqueIssueMessage
+                })]}
+                size='large' />
+            )}
+
+          </FormDataConsumer>
+          <TextInput label='Value' source='value' validate={required()} size='large' />
+        </Row>
+      </SimpleForm>
+    </Create>
+  );
+}
 
 export const FleetConfigVarEdit = () => (
   <Edit title='Edit Fleet Config Var'>
@@ -79,7 +100,7 @@ export const FleetConfigVarEdit = () => (
         perPage={1000}
         sort={{ field: 'app name', order: 'ASC' }}
       >
-        <SelectInput optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+        <SelectInput label='Fleet name' optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
       </ReferenceInput>
 
       <Row>
