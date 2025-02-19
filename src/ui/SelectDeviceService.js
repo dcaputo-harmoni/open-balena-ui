@@ -52,9 +52,14 @@ export const SelectDeviceService = (props) => {
     }
   }, [props, dataProvider, loaded, setLoaded, availableServices, setAvailableServices]);
 
-  if (!loaded || availableServices.length === 0) return null;
+  if (!loaded) return null;
+
+  if (availableServices.length === 0) {
+    availableServices.push({id: 0, name: '(No services installed)', disabled: true});
+  }
 
   return <SelectInput choices={availableServices} {...props} />;
+
 };
 
 export default SelectDeviceService;
