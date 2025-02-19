@@ -10,6 +10,7 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
+  Pagination,
   ReferenceField,
   ReferenceInput,
   SearchInput,
@@ -120,11 +121,16 @@ const CustomBulkActionButtons = (props) => {
     </React.Fragment>
   );
 };
+
+const ExtendedPagination = (
+  { rowsPerPageOptions = [5, 10, 25, 50, 100, 250], ...rest }
+) => (
+  <Pagination rowsPerPageOptions={rowsPerPageOptions} {...rest} />
 );
 
 export const DeviceList = (props) => {
   return (
-    <List {...props} filters={deviceFilters}>
+    <List {...props} filters={deviceFilters} pagination={<ExtendedPagination />}>
       <Datagrid rowClick={false} bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
           <TextField source='device name' />
