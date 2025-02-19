@@ -14,6 +14,8 @@ import {
   TextInput,
   Toolbar,
   required,
+  useShowContext,
+  useGetManyReference,
 } from 'react-admin';
 import { useCreateDeviceServiceVar, useModifyDeviceServiceVar } from '../lib/deviceServiceVar';
 import CopyChip from '../ui/CopyChip';
@@ -22,8 +24,37 @@ import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
 
 export const DeviceServiceVarList = () => {
+
+  let listProps = {
+    title: 'Device Service Vars'
+  }
+
+  try {
+    const showContext = useShowContext();
+
+    const { data, isLoading, isError } = useGetManyReference (
+      'service install',
+      {
+        target: 'device',
+        id: showContext.record.id
+      }
+    )
+
+    const serviceInstallIds = data?.map(x => x.id) || [];
+
+    listProps = {
+      resource: 'device service environment variable',
+      queryOptions: !isLoading && {
+        select: (res) => {
+          res.data = res.data.filter(x => serviceInstallIds.includes(x['service install']));
+          return res;
+        }
+      }
+    }
+  } catch (e) {}
+
   return (
-    <List title='Device Service Vars'>
+    <List {...listProps}>
       <Datagrid size='medium'>
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>

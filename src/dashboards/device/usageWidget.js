@@ -5,29 +5,29 @@ import { useRecordContext } from 'react-admin';
 const LinearProgressWithLabel = (props) => {
   return (
     <Box
-      sx={{ minWidth: '20em', maxWidth: '20em', mb: 2.75, display: 'flex', alignItems: 'center' }}
+      sx={{mb: 2.75, mx: '10px', display: 'flex', alignItems: 'center' }}
       style={props.style}
     >
-      <Box sx={{ minWidth: '3em', maxWidth: '3em' }}>{props.label}</Box>
-      <Box sx={{ minWidth: '12em', maxWidth: '12em', mr: 1, ml: 2 }}>
+      <Box sx={{ flex: 1, minWidth: '3em' }}>{props.label}</Box>
+      <Box sx={{ flex: 10, minWidth: '12em', mr: 1, ml: 2 }}>
         <LinearProgress variant='determinate' color='secondary' {...props} />
       </Box>
-      <Box sx={{ minWidth: '3em', maxWidth: '3em' }}>
+      <Box sx={{ flex: 1, minWidth: '3em' }}>
         {props.displayValue ? props.displayValue + props.displayUnits : Math.round(props.value) + '%'}
       </Box>
     </Box>
   );
 };
 
-const Usage = () => {
+const UsageWidget = () => {
   const record = useRecordContext();
 
   if (!record) return null;
 
   return (
     <>
-      <Box style={{ display: 'flex' }}>
-        <div>
+      <Box style={{ display: 'flex', flexWrap: 'wrap' }}>
+        <div style={{flex: 1, margin: '10px 0'}}>
           <LinearProgressWithLabel label='CPU' value={isFinite(record['cpu usage']) ? record['cpu usage'] : 0} />
 
           <LinearProgressWithLabel
@@ -35,11 +35,11 @@ const Usage = () => {
             label='Temp'
             value={isFinite(record['cpu temp']) ? (record['cpu temp'] / 90) * 100 : 0}
             displayValue={isFinite(record['cpu temp']) ? record['cpu temp'] : 0}
-            displayUnits='&deg;C'
+            displayUnits='&#x2103;'
           />
         </div>
 
-        <div>
+        <div style={{flex: 1, margin: '10px 0'}}>
           <LinearProgressWithLabel
             label='SD'
             value={
@@ -64,4 +64,4 @@ const Usage = () => {
   );
 };
 
-export default Usage;
+export default UsageWidget;

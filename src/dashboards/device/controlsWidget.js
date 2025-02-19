@@ -14,6 +14,7 @@ import {
 } from 'react-admin';
 import { OnlineField } from '../../components/device';
 import utf8decode from '../../lib/utf8decode';
+import environment from '../../lib/reactAppEnv';
 
 const styles = {
   actionCard: {
@@ -30,14 +31,14 @@ const styles = {
   },
 };
 
-const Controls = () => {
+const ControlsWidget = () => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
   const record = useRecordContext();
 
   const invokeSupervisor = (device, command) => {
     const session = authProvider.getSession();
-    return fetch(`${process.env.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v1/${command}`, {
+    return fetch(`${environment.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v1/${command}`, {
       method: 'POST',
       body: JSON.stringify({ uuid: device.uuid }),
       headers: new Headers({
@@ -55,11 +56,11 @@ const Controls = () => {
           .read()
           .then((streamData) => {
             const result = utf8decode(streamData.value);
-            if (result === 'OK') notify(`Successfully executed command ${command} on device ${device['device name']}`);
+            if (result === 'OK') notify(`Successfully executed command ${command} on device ${device['device name']}`, {type: 'success'});
           });
       })
       .catch(() => {
-        notify(`Error: Could not execute command ${command} on device ${device['device name']}`);
+        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, {type: 'error'});
       });
   };
 
@@ -130,4 +131,4 @@ const Controls = () => {
   );
 };
 
-export default Controls;
+export default ControlsWidget;
