@@ -62,7 +62,16 @@ const StyledMenu = styled('div')(({ theme }) => ({
 }));
 
 const TreeMenu = (props) => {
-  const { className, dense, hasDashboard, onMenuClick, logout, dashboardlabel, setMenuColors, ...rest } = props;
+  const {
+    className,
+    dense,
+    hasDashboard,
+    onMenuClick = () => null,
+    logout,
+    dashboardlabel = 'Dashboard',
+    setMenuColors = true,
+    ...rest
+  } = props;
 
   const translate = useTranslate();
   const [open] = useSidebarState();
@@ -203,12 +212,6 @@ TreeMenu.propTypes = {
   onMenuClick: PropTypes.func,
   dashboardlabel: PropTypes.string,
   setMenuColors: PropTypes.bool,
-};
-
-TreeMenu.defaultProps = {
-  onMenuClick: () => null,
-  dashboardlabel: 'Dashboard',
-  setMenuColors: true,
 };
 
 export default TreeMenu;
