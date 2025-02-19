@@ -91,7 +91,7 @@ const TreeMenu = (props) => {
 
   const isChildOfParent = (resource, parentResource) => resource?.options?.menuParent == parentResource?.name;
 
-  const geResourceName = (slug) => {
+  const getResourceName = (slug) => {
     if (!slug) {
       return '';
     }
@@ -115,7 +115,7 @@ const TreeMenu = (props) => {
       resourcename = translate(`resources.${resource.name}.name`);
 
       if (resourcename.startsWith('resources.')) {
-        resourcename = geResourceName(resource.name);
+        resourcename = getResourceName(resource.name);
       }
     }
 
