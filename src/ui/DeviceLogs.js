@@ -2,8 +2,8 @@ import { Box } from '@mui/material';
 import IconButton from '@mui/material/IconButton';
 import RefreshIcon from '@mui/icons-material/Refresh';
 import React from 'react';
-import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
-import utf8decode from '../lib/utf8decode';
+import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext, useNotify } from 'react-admin';
+import environment from '../lib/reactAppEnv';
 
 export class Iframe extends React.Component {
   render() {
@@ -36,35 +36,38 @@ export const DeviceLogs = () => {
   const [content, setContent] = React.useState('');
   const dataProvider = useDataProvider();
   const authProvider = useAuthProvider();
+  const notify = useNotify();
   const session = authProvider.getSession();
 
-  const onSubmit = (container) => {
-    if (container !== 'default') {
-      let API_HOST = process.env.REACT_APP_OPEN_BALENA_API_URL;
+  const fetchLogs = () => {
+    let API_HOST = environment.REACT_APP_OPEN_BALENA_API_URL;
 
-      return fetch(`${API_HOST}/device/v2/${record.uuid}/logs`, {
-        method: 'GET',
-        headers: new Headers({
-          'Content-Type': 'application/json',
-          'Authorization': `Bearer ${session.jwt}`,
-        }),
-        insecureHTTPParser: true,
-      })
-        .then((response) => {
-          if (response.status < 200 || response.status >= 300) {
-            throw new Error(response.statusText);
-          }
+    return fetch(`${API_HOST}/device/v2/${record.uuid}/logs`, {
+      method: 'GET',
+      headers: new Headers({
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${session.jwt}`,
+      }),
+      insecureHTTPParser: true,
+    })
+    .then((response) => {
+      if (response.status < 200 || response.status >= 300) {
+        throw new Error(response.statusText);
+      }
+      return response.json()
+    })
+    .catch(e => {
+      console.error(e.message);
+    })
+  }
 
-          let result = [];
-          const reader = response.body.getReader();
-
-          return reader.read().then(function processText({ done, value }) {
-            if (done) {
-              const logs = JSON.parse(result.join(''));
-
-              const containerLogs = logs.filter((x) =>
-                container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
-              );
+  const updateLogs = () => {
+    fetchLogs()
+    .then (logs => {
+      if (logs && logs.length > 0) {
+        const containerLogs = logs.filter((x) =>
+          container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
+        );
 
         const formattedLogs = containerLogs
         .map((x) => {
@@ -77,19 +80,27 @@ export const DeviceLogs = () => {
         })
         .join('<br/>');
 
-              setContent(`<html style='font-family: consolas; color: #ffffff'>${formattedLogs}</html>`);
-              return;
-            }
+        setContent(
+          `<html>
+            <body style='font-family: consolas; color: #eeeeee'>
+              <div>${formattedLogs}</div>
+              <script>window.scrollTo(0, document.body.scrollHeight);</script>
+            </body>
+          </html>`
+        );
+      }
+    })
+    .catch(e => {
+      console.error(e.message);
+      notify (`Error: Could not get logs for device ${record.uuid}`, {type: 'error'});
+    })
+  }
 
-            result.push(utf8decode(value));
-            return reader.read().then(processText);
-          });
-        })
-        .catch(() => {
-          throw new Error(`Error: Could not get logs for device ${record.uuid}`);
-        });
+  React.useEffect(() => {
+    if (container !== 'default') {
+      updateLogs();
     }
-  };
+  }, [container])
 
   React.useEffect(() => {
     if (!loaded) {
@@ -136,7 +147,7 @@ export const DeviceLogs = () => {
 
   return (
     <>
-      <Form onSubmit={onSubmit}>
+      <Form>
         <Box
           sx={{
             'display': 'flex',
