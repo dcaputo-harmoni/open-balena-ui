@@ -5,6 +5,7 @@ import { Box, Button, Card, CardActions, Typography } from '@mui/material';
 import * as React from 'react';
 
 import defaultImage from './banner_illustration.svg';
+import environment from '../../lib/reactAppEnv';
 
 const styles = {
   bannerCard: {
@@ -13,7 +14,7 @@ const styles = {
   },
   mediaBox: {
     // Size image to fixed width with no crop
-    background: `url(${process.env.REACT_APP_BANNER_IMAGE ?? defaultImage}) no-repeat center / contain`,
+    background: `url(${environment.REACT_APP_BANNER_IMAGE ?? defaultImage}) no-repeat center / contain`,
     marginLeft: 'auto',
     width: '300px', // Set the width you want here
   },
