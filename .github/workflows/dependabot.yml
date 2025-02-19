@@ -1,0 +1,42 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    # Workflow files stored in the default location of `.github/workflows`. (You don't need to specify `/.github/workflows` for `directory`. You can use `directory: "/"`.)
+    directory: "/"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+
+  # Maintain dependencies for Docker
+  - package-ecosystem: "docker"
+    directories:
+      - "/"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
+
+  # Maintain dependencies for node
+  - package-ecosystem: "npm"
+    directory: "/"
+    commit-message:
+      prefix: "chore(deps): "
+    labels:
+      - dependencies
+    schedule:
+      interval: "weekly"
+      day: "monday"
+      time: "06:00"
+      timezone: "America/New_York"
