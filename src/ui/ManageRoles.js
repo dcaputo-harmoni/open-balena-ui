@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
+import { useFormContext } from 'react-hook-form';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -24,6 +25,12 @@ export const ManageRoles = (props) => {
   const [selectedRoles, setSelectedRoles] = React.useState([]);
   const dataProvider = useDataProvider();
   const record = useRecordContext();
+  const { setValue } = useFormContext();
+
+  const onChangeHandler = arrayOfSelected => {
+    setSelectedRoles(arrayOfSelected);
+    setValue(props.source, arrayOfSelected, { shouldDirty: true });
+  };
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -65,8 +72,8 @@ export const ManageRoles = (props) => {
       <StyledDualListBox
         options={allRoles}
         selected={selectedRoles}
-        onChange={setSelectedRoles}
-        showHeaderLabels='true'
+        onChange={onChangeHandler}
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
@@ -76,8 +83,6 @@ export const ManageRoles = (props) => {
       />
       <TextInput
         source={props.source}
-        format={() => selectedRoles}
-        onChange={(record[props.source] = selectedRoles)}
         style={{ display: 'none' }}
       />
     </Box>
