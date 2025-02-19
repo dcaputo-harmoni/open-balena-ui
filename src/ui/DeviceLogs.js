@@ -1,4 +1,6 @@
 import { Box } from '@mui/material';
+import IconButton from '@mui/material/IconButton';
+import RefreshIcon from '@mui/icons-material/Refresh';
 import React from 'react';
 import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
 import utf8decode from '../lib/utf8decode';
@@ -164,6 +166,15 @@ export const DeviceLogs = () => {
             label=''
             onChange={(event) => setContainer(event.target.value)}
           />
+
+          <IconButton
+            disabled={container === 'default'}
+            size='small'
+            sx={{ml: '10px'}}
+            onClick={updateLogs}
+          >
+            <RefreshIcon />
+          </IconButton>
         </Box>
       </Form>
 
