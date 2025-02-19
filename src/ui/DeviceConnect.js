@@ -2,6 +2,7 @@ import { Box } from '@mui/material';
 import React from 'react';
 import { Form, SelectInput, useAuthProvider, useDataProvider, useRecordContext } from 'react-admin';
 var sshpk = require('sshpk-browser');
+import environment from '../lib/reactAppEnv';
 
 export class Iframe extends React.Component {
   render() {
@@ -103,7 +104,7 @@ export const DeviceConnect = (props) => {
 
   React.useEffect(() => {
     if (!loaded) {
-      let REMOTE_HOST = process.env.REACT_APP_OPEN_BALENA_REMOTE_URL;
+      let REMOTE_HOST = environment.REACT_APP_OPEN_BALENA_REMOTE_URL;
 
       let session = authProvider.getSession();
 
