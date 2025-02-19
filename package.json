@@ -39,6 +39,7 @@
     "react-dual-listbox": "^6.0.3",
     "react-final-form": "^6.5.9",
     "react-hook-form": "^7.53.0",
+    "react-password-checklist": "^1.8.0",
     "recharts": "^2.12.7",
     "redux-form": "^8.3.10",
     "semver": "^7.6.3",
