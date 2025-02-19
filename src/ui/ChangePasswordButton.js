@@ -36,7 +36,12 @@ export const ChangePasswordButton = (props) => {
   return (
     <>
       <Button
-        onClick={() => setOpen(true)}
+        onClick={
+          () => {
+            setPassword('');
+            setOpen(true);
+          }
+        }
         color='inherit'
         variant='outlined'
         size={props.size}
