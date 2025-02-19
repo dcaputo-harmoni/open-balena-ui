@@ -19,14 +19,12 @@ export const DeleteApiKeyButton = (props) => {
       if (props.selectedIds) {
         await deleteApiKeyBulk(props.selectedIds);
         unselectAll();
-      }
-      else {
+      } else {
         await deleteApiKey(record);
       }
-      notify('API Key(s) successfully deleted', {type: 'success'});
-    }
-    catch (e) {
-      notify('Failed to delete API Key(s): ' + e.message, {type: 'error'});
+      notify('API Key(s) successfully deleted', { type: 'success' });
+    } catch (e) {
+      notify('Failed to delete API Key(s): ' + e.message, { type: 'error' });
     }
     setOpen(false);
     refresh();

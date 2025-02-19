@@ -11,7 +11,7 @@ const app = express();
 
 app.use('/', registryImageRoutes);
 app.get('/environment.js', getReactAppEnv);
-app.get('*', express.static('dist'))
+app.get('*', express.static('dist'));
 
 app.listen(PORT, HOST);
 console.log(`Running open-balena-ui on http://${HOST}:${PORT}`);

@@ -258,7 +258,7 @@ const customTheme = createTheme({
           margin: 0 15px !important;
 
           button {
-            padding: 5px!important;
+            padding: 5px !important;
             margin: 0 !important;
             display: flex;
             align-items: center;

@@ -24,10 +24,9 @@ import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
 
 export const DeviceServiceVarList = () => {
-
   let listProps = {
-    title: 'Device Service Vars'
-  }
+    title: 'Device Service Vars',
+  };
 
   try {
     const showContext = useShowContext();
@@ -40,22 +39,22 @@ export const DeviceServiceVarList = () => {
       }
     )
 
-    const serviceInstallIds = data?.map(x => x.id) || [];
+    const serviceInstallIds = data?.map((x) => x.id) || [];
 
     listProps = {
       resource: 'device service environment variable',
       queryOptions: !isLoading && {
         select: (res) => {
-          res.data = res.data.filter(x => serviceInstallIds.includes(x['service install']));
+          res.data = res.data.filter((x) => serviceInstallIds.includes(x['service install']));
           return res;
-        }
-      }
-    }
+        },
+      },
+    };
   } catch (e) {}
 
   return (
     <List {...listProps}>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
             <TextField source='device name' />

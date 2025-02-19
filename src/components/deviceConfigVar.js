@@ -21,22 +21,21 @@ import CopyChip from '../ui/CopyChip';
 import Row from '../ui/Row';
 
 export const DeviceConfigVarList = () => {
-
   let listProps = {
-    title: 'Device Config Vars'
-  }
+    title: 'Device Config Vars',
+  };
 
   try {
     const showContext = useShowContext();
     listProps = {
       resource: 'device config variable',
-      filter: {'device' : showContext.record.id}
-    }
+      filter: { device: showContext.record.id },
+    };
   } catch (e) {}
 
   return (
     <List {...listProps}>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Device' source='device' reference='device' target='id'>
           <TextField source='device name' />
         </ReferenceField>

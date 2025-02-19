@@ -77,13 +77,13 @@ export const ReleaseField = (props) => {
         if (error) { return <p>ERROR</p>; }
 
         const currentRelease = record[source];
-        const targetRelease =  record['{isPinnedOnRelease}'] || fleet['{isPinnedOnRelease}']
+        const targetRelease = record['{isPinnedOnRelease}'] || fleet['{isPinnedOnRelease}'];
         const isUpToDate = !!(currentRelease && currentRelease === targetRelease);
         const isOnline = record['api heartbeat state'] === 'online';
         return (
           <>
             <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
-              <SemVerChip sx={{position: 'relative', top: '-5px'}} />
+              <SemVerChip sx={{ position: 'relative', top: '-5px' }} />
             </ReferenceField>
 
             <Tooltip
@@ -111,13 +111,13 @@ export const ReleaseField = (props) => {
   );
 };
 
-const deviceFilters = [<SearchInput source="#uuid,device name,status@ilike" alwaysOn />];
+const deviceFilters = [<SearchInput source='#uuid,device name,status@ilike' alwaysOn />];
 
 const CustomBulkActionButtons = (props) => {
   const { selectedIds } = useListContext();
   return (
     <React.Fragment>
-      <DeleteDeviceButton size="small" selectedIds={selectedIds} {...props}>
+      <DeleteDeviceButton size='small' selectedIds={selectedIds} {...props}>
         Delete Selected Devices
       </DeleteDeviceButton>
     </React.Fragment>
@@ -186,7 +186,7 @@ export const DeviceCreate = (props) => {
   const onSuccess = async (data) => {
     await setServicesForNewDevice(data);
     redirect('list', 'device', data.id);
-  }
+  };
 
   return (
     <Create title='Create Device' transform={createDevice} mutationOptions={{ onSuccess }}>

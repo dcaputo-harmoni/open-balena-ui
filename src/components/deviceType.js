@@ -27,7 +27,7 @@ const deviceTypeAlias = versions.resource('deviceTypeAlias', environment.REACT_A
 export const DeviceTypeList = () => {
   return (
     <List>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
 

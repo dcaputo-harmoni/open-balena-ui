@@ -26,7 +26,7 @@ const uniqueIssueMessage = 'This Tag is already present for this Fleet';
 export const FleetTagList = () => {
   return (
     <List title='Fleet Tags'>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
           <TextField source='app name' />
         </ReferenceField>
@@ -54,7 +54,7 @@ export const FleetTagList = () => {
 
 export const FleetTagCreate = () => {
   const unique = useUnique();
-  return(
+  return (
     <Create title='Create Fleet Tag' redirect='list'>
       <SimpleForm>
         <ReferenceInput
@@ -65,12 +65,18 @@ export const FleetTagCreate = () => {
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
         >
-          <SelectInput label='Fleet name' optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+          <SelectInput
+            label='Fleet name'
+            optionText='app name'
+            optionValue='id'
+            validate={required()}
+            fullWidth={true}
+          />
         </ReferenceInput>
 
         <Row>
           <FormDataConsumer>
-            {({formData}) => (
+            {({ formData }) => (
               <TextInput
                 label='Name'
                 source='tag key'
@@ -82,14 +88,13 @@ export const FleetTagCreate = () => {
                 })]}
                 size='large' />
             )}
-
           </FormDataConsumer>
           <TextInput label='Value' source='value' validate={required()} size='large' />
         </Row>
       </SimpleForm>
     </Create>
   );
-}
+};
 
 export const FleetTagEdit = () => (
   <Edit title='Edit Fleet Tag'>

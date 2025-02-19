@@ -3,8 +3,8 @@ import SaveIcon from '@mui/icons-material/Save';
 import { Button, Dialog, DialogContent, DialogTitle } from '@mui/material';
 import * as bcrypt from 'bcryptjs';
 import React from 'react';
-import { PasswordInput, useDataProvider, useNotify, useRecordContext, SimpleForm} from 'react-admin';
-import PasswordChecklist from "react-password-checklist"
+import { PasswordInput, useDataProvider, useNotify, useRecordContext, SimpleForm } from 'react-admin';
+import PasswordChecklist from 'react-password-checklist';
 import Row from '../ui/Row';
 
 const hashPassword = (password) => {
@@ -14,7 +14,7 @@ const hashPassword = (password) => {
 
 export const ChangePasswordButton = (props) => {
   const [open, setOpen] = React.useState(false);
-  const [new_password, setPassword] = React.useState("")
+  const [new_password, setPassword] = React.useState('');
   const [password_valid, setPasswordValid] = React.useState(false);
   const dataProvider = useDataProvider();
   const notify = useNotify();
@@ -29,19 +29,17 @@ export const ChangePasswordButton = (props) => {
       })
       .then((data) => {
         setOpen(false);
-        notify('Password successfully changed', {type: 'success'});
+        notify('Password successfully changed', { type: 'success' });
       });
   };
 
   return (
     <>
       <Button
-        onClick={
-          () => {
-            setPassword('');
-            setOpen(true);
-          }
-        }
+        onClick={() => {
+          setPassword('');
+          setOpen(true);
+        }}
         color='inherit'
         variant='outlined'
         size={props.size}
@@ -54,7 +52,7 @@ export const ChangePasswordButton = (props) => {
         <DialogTitle id='form-dialog-title'>Change Password</DialogTitle>
 
         <DialogContent>
-          <SimpleForm onSubmit={handleSubmit} toolbar={false} mode="onBlur" reValidateMode="onBlur" >
+          <SimpleForm onSubmit={handleSubmit} toolbar={false} mode='onBlur' reValidateMode='onBlur'>
             <Row>
               <PasswordInput
                 variant='outlined'
@@ -62,7 +60,7 @@ export const ChangePasswordButton = (props) => {
                 name='new_password'
                 source='new_password'
                 placeholder='Enter new password'
-                onChange={e => setPassword(e.target.value)}
+                onChange={(e) => setPassword(e.target.value)}
               />
               <Button
                 variant='contained'
@@ -75,7 +73,7 @@ export const ChangePasswordButton = (props) => {
               </Button>
             </Row>
             <PasswordChecklist
-              rules={["minLength","specialChar","number","capitalAndLowercase"]}
+              rules={['minLength', 'specialChar', 'number', 'capitalAndLowercase']}
               minLength={8}
               value={new_password}
               onChange={setPasswordValid}

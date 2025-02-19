@@ -19,15 +19,14 @@ export const DeleteDeviceButton = (props) => {
       if (props.selectedIds) {
         await deleteDeviceBulk(props.selectedIds);
         unselectAll();
-      }
-      else {
+      } else {
         await deleteDevice(record);
       }
     } catch (e) {
-      notify('Failed to delete device(s): ' + e.message, {type: 'error'});
+      notify('Failed to delete device(s): ' + e.message, { type: 'error' });
     }
     setOpen(false);
-    notify('Device(s) successfully deleted', {type: 'success'});
+    notify('Device(s) successfully deleted', { type: 'success' });
     refresh();
   };
 

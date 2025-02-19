@@ -26,7 +26,7 @@ const uniqueIssueMessage = 'This EnvironmentVar is already present for this Flee
 export const FleetEnvVarList = () => {
   return (
     <List title='Fleet Environment Variables'>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
           <TextField source='app name' />
         </ReferenceField>
@@ -54,7 +54,7 @@ export const FleetEnvVarList = () => {
 
 export const FleetEnvVarCreate = () => {
   const unique = useUnique();
-  return(
+  return (
     <Create title='Create Fleet Environment Variable' redirect='list'>
       <SimpleForm>
         <ReferenceInput
@@ -64,12 +64,18 @@ export const FleetEnvVarCreate = () => {
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
         >
-          <SelectInput label='Fleet name' optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+          <SelectInput
+            label='Fleet name'
+            optionText='app name'
+            optionValue='id'
+            validate={required()}
+            fullWidth={true}
+          />
         </ReferenceInput>
 
         <Row>
           <FormDataConsumer>
-            {({formData}) => (
+            {({ formData }) => (
               <TextInput
                 label='Name'
                 source='name'
@@ -81,14 +87,13 @@ export const FleetEnvVarCreate = () => {
                 })]}
                 size='large' />
             )}
-
           </FormDataConsumer>
           <TextInput label='Value' source='value' validate={required()} size='large' />
         </Row>
       </SimpleForm>
     </Create>
   );
-}
+};
 
 export const FleetEnvVarEdit = () => (
   <Edit title='Edit Fleet Environment Variable'>

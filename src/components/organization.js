@@ -18,7 +18,7 @@ import {
 export const OrganizationList = () => {
   return (
     <List>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <TextField source='name' />
         <TextField source='handle' />
 

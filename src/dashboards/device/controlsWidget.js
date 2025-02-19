@@ -56,11 +56,14 @@ const ControlsWidget = () => {
           .read()
           .then((streamData) => {
             const result = utf8decode(streamData.value);
-            if (result === 'OK') notify(`Successfully executed command ${command} on device ${device['device name']}`, {type: 'success'});
+            if (result === 'OK')
+              notify(`Successfully executed command ${command} on device ${device['device name']}`, {
+                type: 'success',
+              });
           });
       })
       .catch(() => {
-        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, {type: 'error'});
+        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, { type: 'error' });
       });
   };
 

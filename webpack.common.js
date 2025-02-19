@@ -43,10 +43,10 @@ module.exports = {
           loader: 'html-loader',
           options: {
             sources: {
-              urlFilter: (attribute, value) => !(/environment.js$/.test(value))
-            }
-          }
-        }
+              urlFilter: (attribute, value) => !/environment.js$/.test(value),
+            },
+          },
+        },
       },
       {
         test: /\.m?js/,
@@ -73,7 +73,7 @@ module.exports = {
       cacheGroups: {
         vendor: {
           test: /[\\/]node_modules[\\/]/,
-          name (module) {
+          name(module) {
             const packageName = module.context.match(/[\\/]node_modules[\\/](.*?)([\\/]|$)/)[1];
             return `npm.${packageName.replace('@', '')}`;
           },

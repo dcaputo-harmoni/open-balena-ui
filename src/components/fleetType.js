@@ -29,7 +29,7 @@ const BooleanBinaryField = (props) => {
 export const FleetTypeList = () => {
   return (
     <List>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
         <TextField label='OS Version Range' source='needs-os version range' />

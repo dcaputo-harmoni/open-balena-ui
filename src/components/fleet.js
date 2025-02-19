@@ -222,7 +222,13 @@ export const FleetEdit = () => {
           <TextInput source='slug' validate={required()} size='large' />
         </Row>
 
-        <TextInput source='uuid' validate={[required(), minLength(32), maxLength(32)]} size='large' fullWidth={true} readOnly={true} />
+        <TextInput
+          source='uuid'
+          validate={[required(), minLength(32), maxLength(32)]}
+          size='large'
+          fullWidth={true}
+          readOnly={true}
+        />
 
         <Row>
           <SelectInput
@@ -284,26 +290,26 @@ export const FleetEdit = () => {
 
         <Row>
           <BooleanInput label='Track Latest Release' source='should track latest release' />
-          <BooleanInput label="Host" source="is host" />
-          <BooleanInput label="Archived" source="is archived" />
-          <BooleanInput label="Public" source="is public" />
+          <BooleanInput label='Host' source='is host' />
+          <BooleanInput label='Archived' source='is archived' />
+          <BooleanInput label='Public' source='is public' />
         </Row>
 
         <FormDataConsumer>
-        {({ formData, ...rest }) =>
-          !formData['should track latest release'] && (
-            <ReferenceInput
-              label='Target Release'
-              source={isPinnedOnRelease}
-              reference='release'
-              target='id'
-              filter={{ 'belongs to-application': fleetId }}
-              allowEmpty
-            >
-              <SelectInput optionText={(o) => getSemver(o)} optionValue='id' fullWidth={true} />
-            </ReferenceInput>
-          )
-        }
+          {({ formData, ...rest }) =>
+            !formData['should track latest release'] && (
+              <ReferenceInput
+                label='Target Release'
+                source={isPinnedOnRelease}
+                reference='release'
+                target='id'
+                filter={{ 'belongs to-application': fleetId }}
+                allowEmpty
+              >
+                <SelectInput optionText={(o) => getSemver(o)} optionValue='id' fullWidth={true} />
+              </ReferenceInput>
+            )
+          }
         </FormDataConsumer>
       </SimpleForm>
     </Edit>

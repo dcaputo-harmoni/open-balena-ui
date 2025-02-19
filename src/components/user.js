@@ -69,30 +69,46 @@ export const UserList = () => {
 
 const CustomCreateToolbar = (props) => (
   <Toolbar {...props} style={{ justifyContent: 'space-between' }}>
-    <SaveButton sx={{ flex: 1 }} disabled={ props.saveDisabled } />
+    <SaveButton sx={{ flex: 1 }} disabled={props.saveDisabled} />
   </Toolbar>
-)
+);
 
 export const UserCreate = (props) => {
   const createUser = useCreateUser();
-  const [password, setPassword] = React.useState("");
+  const [password, setPassword] = React.useState('');
   const [password_valid, setPasswordValid] = React.useState(false);
 
   return (
     <Create title='Create User' transform={createUser} {...props}>
       <SimpleForm toolbar={<CustomCreateToolbar saveDisabled={!password_valid} />}>
-        <TextInput name='email' source='email' size='large' fullWidth={true} type='email' validate={[required(), email()]} />
+        <TextInput
+          name='email'
+          source='email'
+          size='large'
+          fullWidth={true}
+          type='email'
+          validate={[required(), email()]}
+        />
 
         <Row>
           <TextInput name='username' source='username' validate={required()} size='large' fullWidth={true} />
-          <PasswordInput name='password' source='password' validate={required()} size='large' fullWidth={true} onChange={e => setPassword(e.target.value)} />
+          <PasswordInput
+            name='password'
+            source='password'
+            validate={required()}
+            size='large'
+            fullWidth={true}
+            onChange={(e) => setPassword(e.target.value)}
+          />
         </Row>
 
         <PasswordChecklist
-          rules={["minLength","specialChar","number","capitalAndLowercase"]}
+          rules={['minLength', 'specialChar', 'number', 'capitalAndLowercase']}
           minLength={8}
           value={password}
-          onChange={(isValid) => {setPasswordValid(isValid)}}
+          onChange={(isValid) => {
+            setPasswordValid(isValid);
+          }}
         />
       </SimpleForm>
     </Create>
@@ -109,7 +125,7 @@ const CustomToolbar = (props) => {
       </DeleteUserButton>
     </Toolbar>
   );
-}
+};
 
 export const UserEdit = (props) => {
   const modifyUser = useModifyUser();

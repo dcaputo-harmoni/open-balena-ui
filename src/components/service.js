@@ -4,7 +4,7 @@ import { Datagrid, List, ReferenceField, TextField } from 'react-admin';
 export const ServiceList = () => {
   return (
     <List>
-      <Datagrid size='medium' bulkActionButtons={false} rowClick={false} >
+      <Datagrid size='medium' bulkActionButtons={false} rowClick={false}>
         <TextField source='id' />
         <TextField label='Name' source='service name' />
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>

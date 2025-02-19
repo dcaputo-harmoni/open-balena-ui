@@ -14,7 +14,6 @@ import DeviceConnectButton from '../../ui/DeviceConnectButton';
 import { OpenInFull } from '@mui/icons-material';
 import SummaryWidget from './summaryWidget';
 
-
 const DashboardLayout = () => {
   const record = useRecordContext();
   const theme = useTheme();
@@ -29,30 +28,30 @@ const DashboardLayout = () => {
         sx={{
           display: 'flex',
           justifyContent: 'space-between',
-          flexWrap: 'wrap'
+          flexWrap: 'wrap',
         }}
       >
-        <div style={{ flex: 2, margin: '7.5px', minWidth: '600px'}}>
+        <div style={{ flex: 2, margin: '7.5px', minWidth: '600px' }}>
           <Card style={{ padding: '15px' }}>
             <ControlsWidget />
           </Card>
 
           <Card sx={{ padding: '15px', marginTop: '15px' }}>
-            <Title title="/" />
+            <Title title='/' />
             <TabbedShowLayout>
-              <TabbedShowLayout.Tab label="Summary">
+              <TabbedShowLayout.Tab label='Summary'>
                 <SummaryWidget />
               </TabbedShowLayout.Tab>
-              <TabbedShowLayout.Tab label="Config Vars">
+              <TabbedShowLayout.Tab label='Config Vars'>
                 <ConfigVarsWidget />
               </TabbedShowLayout.Tab>
-              <TabbedShowLayout.Tab label="Env Vars">
+              <TabbedShowLayout.Tab label='Env Vars'>
                 <EnvVarsWidget />
               </TabbedShowLayout.Tab>
-              <TabbedShowLayout.Tab label="Service Vars">
+              <TabbedShowLayout.Tab label='Service Vars'>
                 <ServiceVarsWidget />
               </TabbedShowLayout.Tab>
-              <TabbedShowLayout.Tab label="Tags">
+              <TabbedShowLayout.Tab label='Tags'>
                 <TagsWidget />
               </TabbedShowLayout.Tab>
             </TabbedShowLayout>

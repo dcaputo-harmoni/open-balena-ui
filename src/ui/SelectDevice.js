@@ -42,7 +42,7 @@ export const SelectDevice = (props) => {
       choices={availableDevices}
       optionText='device name'
       optionValue='id'
-      sx={{mt: '8px', mb: '4px'}}
+      sx={{ mt: '8px', mb: '4px' }}
       {...props}
     />
   );

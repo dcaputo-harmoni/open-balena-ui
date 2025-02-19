@@ -64,7 +64,7 @@ export const ManagePermissions = (props) => {
   const record = useRecordContext();
   const { setValue } = useFormContext();
 
-  const onChangeHandler = arrayOfSelected => {
+  const onChangeHandler = (arrayOfSelected) => {
     setSelectedPermissions(arrayOfSelected);
     setValue(props.source, arrayOfSelected, { shouldDirty: true });
   };

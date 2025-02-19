@@ -27,7 +27,7 @@ export const ManageRoles = (props) => {
   const record = useRecordContext();
   const { setValue } = useFormContext();
 
-  const onChangeHandler = arrayOfSelected => {
+  const onChangeHandler = (arrayOfSelected) => {
     setSelectedRoles(arrayOfSelected);
     setValue(props.source, arrayOfSelected, { shouldDirty: true });
   };

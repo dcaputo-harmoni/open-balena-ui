@@ -54,7 +54,7 @@ export const DeviceServices = (props) => {
           });
       })
       .catch(() => {
-        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, {type: 'error'});
+        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, { type: 'error' });
       });
   };
 
@@ -72,7 +72,7 @@ export const DeviceServices = (props) => {
             service.status === 'Error' ? theme.palette.error.light :
               theme.palette.warning.light;
 
-          return <TripOriginIcon sx={{color}}/>
+          return <TripOriginIcon sx={{ color }} />;
         }}/>
 
         <ReferenceField label='Image' source='installs-image' reference='image' target='id' link={false}>

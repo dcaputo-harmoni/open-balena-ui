@@ -8,7 +8,7 @@ import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
-import { useFormContext } from "react-hook-form"
+import { useFormContext } from 'react-hook-form';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -29,7 +29,7 @@ export const ManageOrganizations = (props) => {
   const record = useRecordContext();
   const { setValue } = useFormContext();
 
-  const onChangeHandler = arrayOfSelected => {
+  const onChangeHandler = (arrayOfSelected) => {
     setSelectedOrganizations(arrayOfSelected);
     setValue(props.source, arrayOfSelected, { shouldDirty: true });
   };

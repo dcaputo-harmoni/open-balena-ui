@@ -4,10 +4,7 @@ import { useRecordContext } from 'react-admin';
 
 const LinearProgressWithLabel = (props) => {
   return (
-    <Box
-      sx={{mb: 2.75, mx: '10px', display: 'flex', alignItems: 'center' }}
-      style={props.style}
-    >
+    <Box sx={{ mb: 2.75, mx: '10px', display: 'flex', alignItems: 'center' }} style={props.style}>
       <Box sx={{ flex: 1, minWidth: '3em' }}>{props.label}</Box>
       <Box sx={{ flex: 10, minWidth: '12em', mr: 1, ml: 2 }}>
         <LinearProgress variant='determinate' color='secondary' {...props} />
@@ -27,7 +24,7 @@ const UsageWidget = () => {
   return (
     <>
       <Box style={{ display: 'flex', flexWrap: 'wrap' }}>
-        <div style={{flex: 1, margin: '10px 0'}}>
+        <div style={{ flex: 1, margin: '10px 0' }}>
           <LinearProgressWithLabel label='CPU' value={isFinite(record['cpu usage']) ? record['cpu usage'] : 0} />
 
           <LinearProgressWithLabel
@@ -39,7 +36,7 @@ const UsageWidget = () => {
           />
         </div>
 
-        <div style={{flex: 1, margin: '10px 0'}}>
+        <div style={{ flex: 1, margin: '10px 0' }}>
           <LinearProgressWithLabel
             label='SD'
             value={

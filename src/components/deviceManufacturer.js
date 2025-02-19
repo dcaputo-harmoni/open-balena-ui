@@ -16,7 +16,7 @@ import Row from '../ui/Row';
 export const DeviceManufacturerList = () => {
   return (
     <List title='Device Manufacturers'>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Slug' source='slug' />
         <TextField label='Name' source='name' />
         <Toolbar>

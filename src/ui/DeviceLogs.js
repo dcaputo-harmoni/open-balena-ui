@@ -50,57 +50,58 @@ export const DeviceLogs = () => {
       }),
       insecureHTTPParser: true,
     })
-    .then((response) => {
-      if (response.status < 200 || response.status >= 300) {
-        throw new Error(response.statusText);
-      }
-      return response.json()
-    })
-    .catch(e => {
-      console.error(e.message);
-    })
-  }
+      .then((response) => {
+        if (response.status < 200 || response.status >= 300) {
+          throw new Error(response.statusText);
+        }
+        return response.json();
+      })
+      .catch((e) => {
+        console.error(e.message);
+      });
+  };
 
   const updateLogs = () => {
     fetchLogs()
-    .then (logs => {
-      if (logs && logs.length > 0) {
-        const containerLogs = logs.filter((x) =>
-          container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
-        );
+      .then((logs) => {
+        if (logs && logs.length > 0) {
+          const containerLogs = logs.filter((x) =>
+            container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
+          );
 
-        const formattedLogs = containerLogs
-        .map((x) => {
-          const time = new Date(x.timestamp).toISOString();
-          const msg =
-            (x.isStdErr) ? `<span style="color: #ee6666; ">${x.message}</span>` :
-            (x.isSystem) ? `<span style="color: #ffee66; ">${x.message}</span>` :
-            x.message;
-          return `[${time}] ${msg}`
-        })
-        .join('<br/>');
+          const formattedLogs = containerLogs
+            .map((x) => {
+              const time = new Date(x.timestamp).toISOString();
+              const msg = x.isStdErr
+                ? `<span style="color: #ee6666; ">${x.message}</span>`
+                : x.isSystem
+                  ? `<span style="color: #ffee66; ">${x.message}</span>`
+                  : x.message;
+              return `[${time}] ${msg}`;
+            })
+            .join('<br/>');
 
-        setContent(
-          `<html>
+          setContent(
+            `<html>
             <body style='font-family: consolas; color: #eeeeee'>
               <div>${formattedLogs}</div>
               <script>window.scrollTo(0, document.body.scrollHeight);</script>
             </body>
-          </html>`
-        );
-      }
-    })
-    .catch(e => {
-      console.error(e.message);
-      notify (`Error: Could not get logs for device ${record.uuid}`, {type: 'error'});
-    })
-  }
+          </html>`,
+          );
+        }
+      })
+      .catch((e) => {
+        console.error(e.message);
+        notify(`Error: Could not get logs for device ${record.uuid}`, { type: 'error' });
+      });
+  };
 
   React.useEffect(() => {
     if (container !== 'default') {
       updateLogs();
     }
-  }, [container])
+  }, [container]);
 
   React.useEffect(() => {
     if (!loaded) {

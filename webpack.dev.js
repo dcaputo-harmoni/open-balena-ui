@@ -17,7 +17,7 @@ const devConfigOverwrite = {
           loader: 'babel-loader',
           options: {
             presets: ['@babel/preset-env', '@babel/preset-react'],
-            plugins: ['react-refresh/babel']
+            plugins: ['react-refresh/babel'],
           },
         },
       },
@@ -51,10 +51,10 @@ const devConfigOverwrite = {
 const devConfig = mergeWithRules({
   module: {
     rules: {
-      test: "match",
+      test: 'match',
       use: {
-        loader: "match",
-        options: "replace",
+        loader: 'match',
+        options: 'replace',
       },
     },
   },

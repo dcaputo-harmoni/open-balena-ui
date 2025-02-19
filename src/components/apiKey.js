@@ -101,7 +101,7 @@ const CustomBulkActionButtons = (props) => {
       </DeleteApiKeyButton>
     </React.Fragment>
   );
-}
+};
 
 const ActorFieldWrapper = (props) => {
   const record = useRecordContext();
@@ -200,14 +200,14 @@ export const ApiKeyCreate = (props) => {
 };
 
 const CustomToolbar = (props) => {
-  const {alwaysEnableSaveButton = false, ...rest} = props;
+  const { alwaysEnableSaveButton = false, ...rest } = props;
   return (
     <Toolbar {...rest} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
       <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
       <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
     </Toolbar>
   );
-}
+};
 
 export const ApiKeyEdit = () => {
   const modifyApiKey = useModifyApiKey();
@@ -223,7 +223,7 @@ export const ApiKeyEdit = () => {
       }}
     >
       <SimpleForm toolbar={<CustomToolbar />}>
-        <TextInput source='key' size='large' fullWidth={true} validate={required()} readOnly={true}/>
+        <TextInput source='key' size='large' fullWidth={true} validate={required()} readOnly={true} />
 
         <Row>
           <TextInput source='name' size='large' validate={required()} />

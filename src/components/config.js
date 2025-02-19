@@ -18,7 +18,7 @@ import Row from '../ui/Row';
 export const ConfigList = () => {
   return (
     <List>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Key' source='key' />
 
         <FunctionField

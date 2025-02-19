@@ -26,7 +26,7 @@ const uniqueIssueMessage = 'This ConfigVar is already present for this Fleet';
 export const FleetConfigVarList = () => {
   return (
     <List title='Fleet Config Vars'>
-      <Datagrid size='medium' rowClick={false} >
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Fleet' source='application' reference='application' target='id'>
           <TextField source='app name' />
         </ReferenceField>
@@ -64,12 +64,18 @@ export const FleetConfigVarCreate = () => {
           perPage={1000}
           sort={{ field: 'app name', order: 'ASC' }}
         >
-          <SelectInput label='Fleet name' optionText='app name' optionValue='id' validate={required()} fullWidth={true} />
+          <SelectInput
+            label='Fleet name'
+            optionText='app name'
+            optionValue='id'
+            validate={required()}
+            fullWidth={true}
+          />
         </ReferenceInput>
 
         <Row>
           <FormDataConsumer>
-            {({formData}) => (
+            {({ formData }) => (
               <TextInput
                 label='Name'
                 source='name'
@@ -81,14 +87,13 @@ export const FleetConfigVarCreate = () => {
                 })]}
                 size='large' />
             )}
-
           </FormDataConsumer>
           <TextInput label='Value' source='value' validate={required()} size='large' />
         </Row>
       </SimpleForm>
     </Create>
   );
-}
+};
 
 export const FleetConfigVarEdit = () => (
   <Edit title='Edit Fleet Config Var'>

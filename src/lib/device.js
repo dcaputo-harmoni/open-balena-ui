@@ -31,7 +31,7 @@ export function useSetServicesForNewDevice() {
   const dataProvider = useDataProvider();
 
   return async (data) => {
-    console.log (data);
+    console.log(data);
     // create service installs
     const deviceServices = await dataProvider.getList('service', {
       pagination: { page: 1, perPage: 1000 },
@@ -43,7 +43,7 @@ export function useSetServicesForNewDevice() {
         dataProvider.create('service install', { data: { 'device': data.id, 'installs-service': service.id } }),
       ),
     );
-  }
+  };
 }
 
 export function useModifyDevice() {

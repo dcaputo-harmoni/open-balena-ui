@@ -6,7 +6,7 @@ import SemVerChip from '../ui/SemVerChip';
 export const ImageList = () => {
   return (
     <List>
-      <Datagrid bulkActionButtons={false} rowClick={false}  size='medium'>
+      <Datagrid bulkActionButtons={false} rowClick={false} size='medium'>
         <TextField label='ID' source='id' />
 
         <ReferenceField label='Service' source='is a build of-service' reference='service' target='id'>
