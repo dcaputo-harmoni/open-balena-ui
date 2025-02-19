@@ -44,8 +44,8 @@ export const ConfigList = () => {
 };
 
 export const ConfigCreate = () => (
-  <Create title='Create Config'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Config' redirect='list'>
+    <SimpleForm>
       <Row>
         <TextInput label='Key' source='key' size='large' />
         <TextInput label='Value' source='value' size='large' />

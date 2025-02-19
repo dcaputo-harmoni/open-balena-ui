@@ -68,8 +68,8 @@ export const ReleaseTagCreate = () => {
   };
 
   return (
-    <Create title='Create Release Tag' transform={processCreate}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Release Tag' redirect='list' transform={processCreate}>
+      <SimpleForm>
         <Row>
           <ReferenceInput
             label='Fleet'

@@ -50,8 +50,8 @@ export const ServiceLabelList = () => {
 };
 
 export const ServiceLabelCreate = () => (
-  <Create title='Create Service Label'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Service Label' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='service'
         reference='service'

@@ -63,8 +63,8 @@ export const DeviceTagList = () => {
 };
 
 export const DeviceTagCreate = () => (
-  <Create title='Create Device Tag'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Device Tag' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='device'
         reference='device'

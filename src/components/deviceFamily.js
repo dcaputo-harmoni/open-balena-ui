@@ -43,8 +43,8 @@ export const DeviceFamilyList = () => {
 };
 
 export const DeviceFamilyCreate = () => (
-  <Create title='Create Device Family'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Device Family' redirect='list'>
+    <SimpleForm>
       <Row>
         <TextInput label='Slug' source='slug' size='large' />
         <TextInput label='Name' source='name' size='large' />

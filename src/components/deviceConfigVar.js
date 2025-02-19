@@ -63,8 +63,8 @@ export const DeviceConfigVarList = () => {
 };
 
 export const DeviceConfigVarCreate = () => (
-  <Create title='Create Device Config Var'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Device Config Var' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='device'
         reference='device'
