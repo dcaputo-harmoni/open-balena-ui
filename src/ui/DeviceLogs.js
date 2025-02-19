@@ -63,9 +63,16 @@ export const DeviceLogs = () => {
                 container === 0 ? !x.hasOwnProperty('serviceId') : x.serviceId === container,
               );
 
-              const formattedLogs = containerLogs
-                .map((x) => `[${new Date(x.timestamp).toISOString()}] ${x.message}`)
-                .join('<br/>');
+        const formattedLogs = containerLogs
+        .map((x) => {
+          const time = new Date(x.timestamp).toISOString();
+          const msg =
+            (x.isStdErr) ? `<span style="color: #ee6666; ">${x.message}</span>` :
+            (x.isSystem) ? `<span style="color: #ffee66; ">${x.message}</span>` :
+            x.message;
+          return `[${time}] ${msg}`
+        })
+        .join('<br/>');
 
               setContent(`<html style='font-family: consolas; color: #ffffff'>${formattedLogs}</html>`);
               return;
