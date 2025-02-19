@@ -1,5 +1,5 @@
 import React from 'react';
-import { SelectInput, useDataProvider, useRecordContext } from 'react-admin';
+import { AutocompleteInput, useDataProvider, useRecordContext } from 'react-admin';
 
 export const SelectDevice = (props) => {
   const [loaded, setLoaded] = React.useState(null);
@@ -37,7 +37,15 @@ export const SelectDevice = (props) => {
 
   if (!loaded) return null;
 
-  return <SelectInput choices={availableDevices} optionText='device name' optionValue='id' {...props} />;
+  return (
+    <AutocompleteInput
+      choices={availableDevices}
+      optionText='device name'
+      optionValue='id'
+      sx={{mt: '8px', mb: '4px'}}
+      {...props}
+    />
+  );
 };
 
 export default SelectDevice;
