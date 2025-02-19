@@ -138,9 +138,10 @@ export const DeviceCreate = (props) => {
           <TextInput
             label='UUID'
             source='uuid'
-            initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+            defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
             validate={required()}
             size='large'
+            readOnly={true}
           />
 
           <TextInput label='Device Name' source='device name' validate={required()} size='large' />
@@ -215,7 +216,7 @@ export const DeviceEdit = () => {
     <Edit title='Edit Device' actions={null} transform={modifyDevice}>
       <SimpleForm>
         <Row>
-          <TextInput label='UUID' source='uuid' size='large' />
+          <TextInput label='UUID' source='uuid' size='large' readOnly={true} />
 
           <TextInput label='Device Name' source='device name' size='large' />
         </Row>
