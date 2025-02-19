@@ -1,7 +1,8 @@
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import StopIcon from '@mui/icons-material/Stop';
-import { Button } from '@mui/material';
+import TripOriginIcon from '@mui/icons-material/TripOrigin';
+import { Button, useTheme } from '@mui/material';
 import React from 'react';
 import {
   Datagrid,
@@ -10,6 +11,7 @@ import {
   ReferenceManyField,
   TextField,
   Toolbar,
+  WithRecord,
   useAuthProvider,
   useNotify,
   useRecordContext,
@@ -22,6 +24,7 @@ export const DeviceServices = (props) => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
   const record = useRecordContext();
+  const theme = useTheme();
 
   const invokeSupervisor = (imageInstall, command) => {
     const session = authProvider.getSession();
@@ -62,7 +65,16 @@ export const DeviceServices = (props) => {
       target='device'
       filter={record['is running-release'] ? { 'is provided by-release': record['is running-release'] } : {}}
     >
-      <Datagrid>
+      <Datagrid bulkActionButtons={false}>
+        <WithRecord render={(service) => {
+          const color =
+            service.status === 'Running' ? theme.palette.success.light :
+            service.status === 'Error' ? theme.palette.error.light :
+              theme.palette.warning.light;
+
+          return <TripOriginIcon sx={{color}}/>
+        }}/>
+
         <ReferenceField label='Image' source='installs-image' reference='image' target='id' link={false}>
           <ReferenceField
             label='Image'
