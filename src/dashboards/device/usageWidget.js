@@ -32,7 +32,7 @@ const UsageWidget = () => {
             label='Temp'
             value={isFinite(record['cpu temp']) ? (record['cpu temp'] / 90) * 100 : 0}
             displayValue={isFinite(record['cpu temp']) ? record['cpu temp'] : 0}
-            displayUnits='&#x2103;'
+            displayUnits='&deg;C'
           />
         </div>
 
