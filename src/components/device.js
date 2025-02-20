@@ -35,6 +35,7 @@ import DeviceServicesButton from '../ui/DeviceServicesButton';
 import Row from '../ui/Row';
 import SelectOperatingSystem from '../ui/SelectOperatingSystem';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
+import SemVerTextField from '../ui/SemVerTextField';
 import versions from '../versions';
 import environment from '../lib/reactAppEnv';
 
@@ -76,34 +77,45 @@ export const ReleaseField = (props) => {
         if (isPending) { return <p>Loading</p>; }
         if (error) { return <p>ERROR</p>; }
 
-        const currentRelease = record[source];
-        const targetRelease = record['{isPinnedOnRelease}'] || fleet['{isPinnedOnRelease}'];
-        const isUpToDate = !!(currentRelease && currentRelease === targetRelease);
+        record['should be running-release'] = record['{isPinnedOnRelease}'] || fleet['should be running-release'];
+
+        const isUpToDate = !!(record[source] && record[source] === record['should be running-release']);
         const isOnline = record['api heartbeat state'] === 'online';
+
         return (
           <>
             <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
               <SemVerChip sx={{ position: 'relative', top: '-5px' }} />
             </ReferenceField>
 
-            <Tooltip
-              placement='top'
-              arrow={true}
-              title={'Target Release: ' + (targetRelease || 'n/a')}
-            >
-              <span style={{
-                position: 'relative',
-                top: '3px',
-                left: '3px',
-                color: (!isUpToDate && isOnline) ? theme.palette.error.light : theme.palette.text.primary
-              }}>
-                {
-                  isUpToDate ? <Done /> :
-                  isOnline ? <Warning /> :
-                  <WarningAmber />
+            {
+              record[source] &&
+              <Tooltip
+                placement='top'
+                arrow={true}
+                title={
+                  <>
+                    Target Release:
+                    <ReferenceField reference='release' target='id' source='should be running-release'>
+                      <SemVerTextField style={{marginLeft: '3px', fontSize: '0.7rem'}} />
+                    </ReferenceField>
+                  </>
                 }
-              </span>
-            </Tooltip>
+              >
+                <span style={{
+                  position: 'relative',
+                  top: '3px',
+                  left: '3px',
+                  color: (!isUpToDate && isOnline) ? theme.palette.error.light : theme.palette.text.primary
+                }}>
+                  {
+                    isUpToDate ? <Done /> :
+                    isOnline ? <Warning /> :
+                    <WarningAmber />
+                  }
+                </span>
+              </Tooltip>
+            }
           </>
         );
       }}
