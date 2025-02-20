@@ -1,3 +1,3 @@
 module.exports = {
-  getReactAppEnv: require('./getReactAppEnv')
-}
+  getReactAppEnv: require('./getReactAppEnv'),
+};

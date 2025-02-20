@@ -9,8 +9,8 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
-  ReferenceArrayInput,
   ReferenceField,
+  ReferenceInput,
   ReferenceManyField,
   SaveButton,
   SearchInput,
@@ -21,6 +21,9 @@ import {
   TextInput,
   Toolbar,
   useRecordContext,
+  useListContext,
+  useUnique,
+  required,
 } from 'react-admin';
 import { useCreateApiKey, useGenerateApiKey, useModifyApiKey } from '../lib/apiKey';
 import CopyChip from '../ui/CopyChip';
@@ -89,13 +92,16 @@ class ActorField extends React.Component {
 
 const apiKeyFilters = [<SearchInput source='#key,name,description@ilike' alwaysOn />];
 
-const CustomBulkActionButtons = (props) => (
-  <React.Fragment>
-    <DeleteApiKeyButton variant='contained' size='small' {...props}>
-      Delete Selected API Keys
-    </DeleteApiKeyButton>
-  </React.Fragment>
-);
+const CustomBulkActionButtons = (props) => {
+  const { selectedIds } = useListContext();
+  return (
+    <React.Fragment>
+      <DeleteApiKeyButton variant='contained' size='small' selectedIds={selectedIds} {...props}>
+        Delete Selected API Keys
+      </DeleteApiKeyButton>
+    </React.Fragment>
+  );
+};
 
 const ActorFieldWrapper = (props) => {
   const record = useRecordContext();
@@ -105,7 +111,7 @@ const ActorFieldWrapper = (props) => {
 export const ApiKeyList = () => {
   return (
     <List filters={apiKeyFilters}>
-      <Datagrid size='medium' bulkActionButtons={<CustomBulkActionButtons />}>
+      <Datagrid size='medium' rowClick={false} bulkActionButtons={<CustomBulkActionButtons />}>
         <FunctionField
           label='API Key'
           render={(record) => <CopyChip title={record.key} label={record.key.slice(0, 10) + '...'} />}
@@ -134,48 +140,56 @@ export const ApiKeyList = () => {
 export const ApiKeyCreate = (props) => {
   const generateApiKey = useGenerateApiKey();
   const createApiKey = useCreateApiKey();
+  const unique = useUnique();
 
   return (
     <Create {...props} transform={createApiKey}>
       <SimpleForm>
-        <TextInput source='key' initialValue={generateApiKey()} size='large' fullWidth={true} />
+        <TextInput
+          source='key'
+          defaultValue={generateApiKey()}
+          size='large'
+          fullWidth={true}
+          validate={[required(), unique()]}
+          readOnly={true}
+        />
 
         <Row>
           {' '}
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={[required(), unique()]} />
           <TextInput source='description' size='large' />
         </Row>
 
         <Row>
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.deviceActor || formData.fleetActor) rest.disabled = true;
+              const disable = !!(formData.deviceActor || formData.fleetActor);
               return (
-                <ReferenceArrayInput source='userActor' reference='user' {...rest}>
-                  <SelectInput optionText='username' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='userActor' reference='user' {...rest}>
+                  <SelectInput optionText='username' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
 
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.userActor || formData.fleetActor) rest.disabled = true;
+              const disable = !!(formData.userActor || formData.fleetActor);
               return (
-                <ReferenceArrayInput source='deviceActor' reference='device' {...rest}>
-                  <SelectInput optionText='device name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='deviceActor' reference='device' {...rest}>
+                  <SelectInput optionText='device name' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
 
           <FormDataConsumer>
             {({ formData, ...rest }) => {
-              if (formData.userActor || formData.deviceActor) rest.disabled = true;
+              const disable = !!(formData.userActor || formData.deviceActor);
               return (
-                <ReferenceArrayInput source='fleetActor' reference='application' {...rest}>
-                  <SelectInput optionText='app name' optionValue='actor' resettable />
-                </ReferenceArrayInput>
+                <ReferenceInput source='fleetActor' reference='application' {...rest}>
+                  <SelectInput optionText='app name' optionValue='actor' resettable disabled={disable} />
+                </ReferenceInput>
               );
             }}
           </FormDataConsumer>
@@ -185,12 +199,15 @@ export const ApiKeyCreate = (props) => {
   );
 };
 
-const CustomToolbar = (props) => (
-  <Toolbar {...props} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
-    <SaveButton sx={{ flex: 1 }} />
-    <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
-  </Toolbar>
-);
+const CustomToolbar = (props) => {
+  const { alwaysEnableSaveButton = false, ...rest } = props;
+  return (
+    <Toolbar {...rest} style={{ justifyContent: 'space-between', marginTop: '40px' }}>
+      <SaveButton alwaysEnable={alwaysEnableSaveButton} sx={{ flex: 1 }} />
+      <DeleteApiKeyButton sx={{ flex: 0.3, marginLeft: '40px' }}> Delete </DeleteApiKeyButton>
+    </Toolbar>
+  );
+};
 
 export const ApiKeyEdit = () => {
   const modifyApiKey = useModifyApiKey();
@@ -205,11 +222,11 @@ export const ApiKeyEdit = () => {
         },
       }}
     >
-      <SimpleForm toolbar={<CustomToolbar alwaysEnableSaveButton />}>
-        <TextInput source='key' disabled={true} size='large' fullWidth={true} />
+      <SimpleForm toolbar={<CustomToolbar />}>
+        <TextInput source='key' size='large' fullWidth={true} validate={required()} readOnly={true} />
 
         <Row>
-          <TextInput source='name' size='large' />
+          <TextInput source='name' size='large' validate={required()} />
           <TextInput source='description' size='large' />
         </Row>
 

@@ -258,7 +258,7 @@ const customTheme = createTheme({
           margin: 0 15px !important;
 
           button {
-            padding: 5px!important
+            padding: 5px !important;
             margin: 0 !important;
             display: flex;
             align-items: center;
@@ -528,7 +528,7 @@ const customTheme = createTheme({
             border: 'none',
           },
 
-          'tbody tr:nth-child(even)': {
+          'tbody tr:nth-of-type(even)': {
             backgroundColor: '#f8f9fd',
           },
 

@@ -16,7 +16,7 @@ import Row from '../ui/Row';
 export const CpuArchitectureList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Slug' source='slug' />
 
         <Toolbar>
@@ -29,8 +29,8 @@ export const CpuArchitectureList = () => {
 };
 
 export const CpuArchitectureCreate = () => (
-  <Create title='Create CPU Architecture'>
-    <SimpleForm redirect='list'>
+  <Create title='Create CPU Architecture' redirect='list'>
+    <SimpleForm>
       <Row>
         <TextInput label='Slug' source='slug' size='large' />
       </Row>

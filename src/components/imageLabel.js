@@ -23,7 +23,7 @@ import SemVerChip from '../ui/SemVerChip';
 export const ImageLabelList = () => {
   return (
     <List title='Image Labels'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false}>
         <TextField label='Image' source='release image' />
 
         <ReferenceField label='Service' source='release image' reference='image' target='id' link={false}>
@@ -62,8 +62,8 @@ export const ImageLabelList = () => {
 };
 
 export const ImageLabelCreate = () => (
-  <Create title='Create Image Label'>
-    <SimpleForm redirect='list'>
+  <Create title='Create Image Label' redirect='list'>
+    <SimpleForm>
       <ReferenceInput
         source='release image'
         reference='image'

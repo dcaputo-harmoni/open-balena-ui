@@ -24,7 +24,7 @@ export function getSemver(record) {
   return versionLabel;
 }
 
-const SemVerChip = ({ record, showBlankOnNull = false }) => {
+const SemVerChip = ({ record, showBlankOnNull = false, ...rest }) => {
   if (!record) {
     record = useRecordContext();
   }
@@ -38,7 +38,7 @@ const SemVerChip = ({ record, showBlankOnNull = false }) => {
 
   return (
     <Tooltip title={commit} placement='top' arrow={true}>
-      <Chip label={semver} size='small' />
+      <Chip label={semver} size='small' {...rest} />
     </Tooltip>
   );
 };

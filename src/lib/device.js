@@ -20,6 +20,18 @@ export function useCreateDevice() {
       data: { 'key': generateApiKey(), 'is of-actor': deviceActor.data.id },
     });
     await dataProvider.create('api key-has-role', { data: { 'api key': deviceApiKey.data.id, 'role': deviceRole.id } });
+
+    // delete unused field
+    delete data['operated by-application'];
+    return data;
+  };
+}
+
+export function useSetServicesForNewDevice() {
+  const dataProvider = useDataProvider();
+
+  return async (data) => {
+    console.log(data);
     // create service installs
     const deviceServices = await dataProvider.getList('service', {
       pagination: { page: 1, perPage: 1000 },
@@ -31,9 +43,6 @@ export function useCreateDevice() {
         dataProvider.create('service install', { data: { 'device': data.id, 'installs-service': service.id } }),
       ),
     );
-    // delete unused field
-    delete data['operated by-application'];
-    return data;
   };
 }
 

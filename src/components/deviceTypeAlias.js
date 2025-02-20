@@ -20,7 +20,7 @@ import Row from '../ui/Row';
 export const DeviceTypeAliasList = () => {
   return (
     <List title='Device Type Aliases'>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Device Type' source='device type' reference='device type' target='id'>
           <TextField source='slug' />
         </ReferenceField>

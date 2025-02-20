@@ -14,6 +14,8 @@ import {
   TextInput,
   Toolbar,
   required,
+  useShowContext,
+  useGetManyReference,
 } from 'react-admin';
 import { useCreateDeviceServiceVar, useModifyDeviceServiceVar } from '../lib/deviceServiceVar';
 import CopyChip from '../ui/CopyChip';
@@ -22,9 +24,37 @@ import SelectDevice from '../ui/SelectDevice';
 import SelectDeviceService from '../ui/SelectDeviceService';
 
 export const DeviceServiceVarList = () => {
+  let listProps = {
+    title: 'Device Service Vars',
+  };
+
+  try {
+    const showContext = useShowContext();
+
+    const { data, isLoading, isError } = useGetManyReference (
+      'service install',
+      {
+        target: 'device',
+        id: showContext.record.id
+      }
+    )
+
+    const serviceInstallIds = data?.map((x) => x.id) || [];
+
+    listProps = {
+      resource: 'device service environment variable',
+      queryOptions: !isLoading && {
+        select: (res) => {
+          res.data = res.data.filter((x) => serviceInstallIds.includes(x['service install']));
+          return res;
+        },
+      },
+    };
+  } catch (e) {}
+
   return (
-    <List title='Device Service Vars'>
-      <Datagrid size='medium'>
+    <List {...listProps}>
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Device' source='service install' reference='service install' target='id'>
           <ReferenceField source='device' reference='device' target='id'>
             <TextField source='device name' />
@@ -67,10 +97,10 @@ export const DeviceServiceVarCreate = (props) => {
   const createDeviceServiceVar = useCreateDeviceServiceVar();
 
   return (
-    <Create title='Create Device Service Var' transform={createDeviceServiceVar} {...props}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device Service Var' redirect='list' transform={createDeviceServiceVar} {...props}>
+      <SimpleForm>
         <Row>
-          <SelectDevice label='Device' source='device' />
+          <SelectDevice label='Device' source='device' validate={required()} />
 
           <FormDataConsumer>
             {({ formData, ...rest }) =>
@@ -80,6 +110,7 @@ export const DeviceServiceVarCreate = (props) => {
                   source='service install'
                   device={formData.device}
                   fullWidth={true}
+                  validate={required()}
                 />
               )
             }
@@ -102,7 +133,7 @@ export const DeviceServiceVarEdit = () => {
     <Edit transform={modifyDeviceServiceVar} title='Edit Device Service Var'>
       <SimpleForm>
         <Row>
-          <SelectDevice label='Device' source='device' />
+          <SelectDevice label='Device' source='device' validate={required()} />
 
           <FormDataConsumer>
             {({ formData, ...rest }) => {
@@ -111,7 +142,8 @@ export const DeviceServiceVarEdit = () => {
                   <SelectDeviceService
                     label='Service'
                     source='service install'
-                    device={formData.device || formData['service install']}
+                    device={formData.device || -1}
+                    validate={required()}
                   />
                 )
               );

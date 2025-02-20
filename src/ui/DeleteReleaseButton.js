@@ -25,7 +25,7 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
       await deleteRelease(record);
     }
     setOpen(false);
-    notify('Release(s) successfully deleted');
+    notify('Release(s) successfully deleted', { type: 'success' });
     redirect(props.redirect);
   };
 
@@ -55,7 +55,7 @@ export const DeleteReleaseButton = ({ selectedIds, context, ...props }) => {
       Promise.all(selectedIds.map((id) => canDeleteRelease(id))).then((canDeleteResults) =>
         setDisabled(!canDeleteResults.every((canDelete) => canDelete)),
       );
-    } else {
+    } else if (record && record.id) {
       canDeleteRelease(record.id).then((canDelete) => setDisabled(!canDelete));
     }
   }, [selectedIds, context]);

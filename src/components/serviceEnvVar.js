@@ -23,7 +23,7 @@ import Row from '../ui/Row';
 export const ServiceEnvVarList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false}>
         <ReferenceField label='Fleet' source='service' reference='service' target='id'>
           <ReferenceField source='application' reference='application' target='id'>
             <TextField source='app name' />
@@ -62,8 +62,8 @@ export const ServiceEnvVarCreate = (props) => {
   };
 
   return (
-    <Create title='Create Service Environment Var' transform={processCreate} {...props}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Service Environment Var' redirect='list' transform={processCreate} {...props}>
+      <SimpleForm>
         <Row>
           <ReferenceInput
             label='Fleet'

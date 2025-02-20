@@ -1,4 +1,5 @@
 import { Tooltip, useTheme } from '@mui/material';
+import { Done, Warning, WarningAmber } from '@mui/icons-material';
 import dateFormat from 'dateformat';
 import * as React from 'react';
 import {
@@ -9,6 +10,7 @@ import {
   FormDataConsumer,
   FunctionField,
   List,
+  Pagination,
   ReferenceField,
   ReferenceInput,
   SearchInput,
@@ -19,10 +21,13 @@ import {
   TextInput,
   Toolbar,
   required,
+  useGetOne,
   useRedirect,
+  useListContext,
+  WithRecord,
 } from 'react-admin';
 import { v4 as uuidv4 } from 'uuid';
-import { useCreateDevice, useModifyDevice } from '../lib/device';
+import { useCreateDevice, useModifyDevice, useSetServicesForNewDevice } from '../lib/device';
 import CopyChip from '../ui/CopyChip';
 import DeleteDeviceButton from '../ui/DeleteDeviceButton';
 import DeviceConnectButton from '../ui/DeviceConnectButton';
@@ -60,29 +65,82 @@ export const OnlineField = (props) => {
   );
 };
 
+export const ReleaseField = (props) => {
+  const theme = useTheme();
+
+  return (
+    <FunctionField
+      {...props}
+      render={(record, source) => {
+        const { data: fleet, isPending, error } = useGetOne('application', { id: record['belongs to-application'] });
+        if (isPending) { return <p>Loading</p>; }
+        if (error) { return <p>ERROR</p>; }
+
+        const currentRelease = record[source];
+        const targetRelease = record['{isPinnedOnRelease}'] || fleet['{isPinnedOnRelease}'];
+        const isUpToDate = !!(currentRelease && currentRelease === targetRelease);
+        const isOnline = record['api heartbeat state'] === 'online';
+        return (
+          <>
+            <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
+              <SemVerChip sx={{ position: 'relative', top: '-5px' }} />
+            </ReferenceField>
+
+            <Tooltip
+              placement='top'
+              arrow={true}
+              title={'Target Release: ' + (targetRelease || 'n/a')}
+            >
+              <span style={{
+                position: 'relative',
+                top: '3px',
+                left: '3px',
+                color: (!isUpToDate && isOnline) ? theme.palette.error.light : theme.palette.text.primary
+              }}>
+                {
+                  isUpToDate ? <Done /> :
+                  isOnline ? <Warning /> :
+                  <WarningAmber />
+                }
+              </span>
+            </Tooltip>
+          </>
+        );
+      }}
+    />
+  );
+};
+
 const deviceFilters = [<SearchInput source='#uuid,device name,status@ilike' alwaysOn />];
 
-const CustomBulkActionButtons = (props) => (
-  <React.Fragment>
-    <DeleteDeviceButton size='small' {...props}>
-      Delete Selected Devices
-    </DeleteDeviceButton>
-  </React.Fragment>
+const CustomBulkActionButtons = (props) => {
+  const { selectedIds } = useListContext();
+  return (
+    <React.Fragment>
+      <DeleteDeviceButton size='small' selectedIds={selectedIds} {...props}>
+        Delete Selected Devices
+      </DeleteDeviceButton>
+    </React.Fragment>
+  );
+};
+
+const ExtendedPagination = (
+  { rowsPerPageOptions = [5, 10, 25, 50, 100, 250], ...rest }
+) => (
+  <Pagination rowsPerPageOptions={rowsPerPageOptions} {...rest} />
 );
 
 export const DeviceList = (props) => {
   return (
-    <List {...props} filters={deviceFilters}>
-      <Datagrid bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
+    <List {...props} filters={deviceFilters} pagination={<ExtendedPagination />}>
+      <Datagrid rowClick={false} bulkActionButtons={<CustomBulkActionButtons />} size='medium'>
         <ReferenceField label='Name' source='id' reference='device' target='id' link='show'>
           <TextField source='device name' />
         </ReferenceField>
 
         <OnlineField label='Status' source='api heartbeat state' />
 
-        <ReferenceField label='Current Release' source='is running-release' reference='release' target='id'>
-          <SemVerChip />
-        </ReferenceField>
+        <ReleaseField label='Current Release' source='is running-release' />
 
         <ReferenceField label='Device Type' source='is of-device type' reference='device type' target='id' link={false}>
           <TextField source='slug' />
@@ -107,8 +165,12 @@ export const DeviceList = (props) => {
         <Toolbar sx={{ background: 'none', padding: '0' }}>
           <ShowButton variant='outlined' label='' size='small' />
           <EditButton variant='outlined' label='' size='small' />
-          <DeviceServicesButton variant='outlined' size='small' />
-          <DeviceConnectButton variant='outlined' size='small' />
+          <WithRecord render={device =>
+            <>
+              <DeviceServicesButton variant='outlined' size='small' device={device} />
+              <DeviceConnectButton variant='outlined' size='small' record={device} />
+            </>
+          } />
           <DeleteDeviceButton variant='outlined' size='small' style={{ marginRight: '0 !important' }} />
         </Toolbar>
       </Datagrid>
@@ -118,22 +180,25 @@ export const DeviceList = (props) => {
 
 export const DeviceCreate = (props) => {
   const createDevice = useCreateDevice();
+  const setServicesForNewDevice = useSetServicesForNewDevice();
   const redirect = useRedirect();
 
-  const processComplete = ({ data }) => {
-    redirect('list', data.id, data);
+  const onSuccess = async (data) => {
+    await setServicesForNewDevice(data);
+    redirect('list', 'device', data.id);
   };
 
   return (
-    <Create title='Create Device' ttransform={createDevice} onSuccess={processComplete}>
-      <SimpleForm redirect='list'>
+    <Create title='Create Device' transform={createDevice} mutationOptions={{ onSuccess }}>
+      <SimpleForm>
         <Row>
           <TextInput
             label='UUID'
             source='uuid'
-            initialValue={uuidv4().replace(/-/g, '').toLowerCase()}
+            defaultValue={uuidv4().replace(/-/g, '').toLowerCase()}
             validate={required()}
             size='large'
+            readOnly={true}
           />
 
           <TextInput label='Device Name' source='device name' validate={required()} size='large' />
@@ -208,7 +273,7 @@ export const DeviceEdit = () => {
     <Edit title='Edit Device' actions={null} transform={modifyDevice}>
       <SimpleForm>
         <Row>
-          <TextInput label='UUID' source='uuid' size='large' />
+          <TextInput label='UUID' source='uuid' size='large' readOnly={true} />
 
           <TextInput label='Device Name' source='device name' size='large' />
         </Row>

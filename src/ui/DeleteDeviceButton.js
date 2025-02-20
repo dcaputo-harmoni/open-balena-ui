@@ -1,27 +1,33 @@
 import DeleteIcon from '@mui/icons-material/Delete';
 import { Button, Dialog, DialogContent, DialogTitle, Tooltip } from '@mui/material';
 import React from 'react';
-import { useNotify, useRecordContext, useRedirect } from 'react-admin';
+import { useNotify, useRecordContext, useUnselectAll, useRefresh } from 'react-admin';
 import { Form } from 'react-final-form';
 import { useDeleteDevice, useDeleteDeviceBulk } from '../lib/device';
 
 export const DeleteDeviceButton = (props) => {
   const [open, setOpen] = React.useState(false);
   const notify = useNotify();
-  const redirect = useRedirect();
+  const refresh = useRefresh();
+  const unselectAll = useUnselectAll('device');
   const deleteDevice = useDeleteDevice();
   const deleteDeviceBulk = useDeleteDeviceBulk();
   const record = useRecordContext();
 
   const handleSubmit = async (values) => {
-    if (props.selectedIds) {
-      await deleteDeviceBulk(props.selectedIds);
-    } else {
-      await deleteDevice(record);
+    try {
+      if (props.selectedIds) {
+        await deleteDeviceBulk(props.selectedIds);
+        unselectAll();
+      } else {
+        await deleteDevice(record);
+      }
+    } catch (e) {
+      notify('Failed to delete device(s): ' + e.message, { type: 'error' });
     }
     setOpen(false);
-    notify('Device(s) successfully deleted');
-    redirect(props.redirect);
+    notify('Device(s) successfully deleted', { type: 'success' });
+    refresh();
   };
 
   return (

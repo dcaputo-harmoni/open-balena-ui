@@ -1,5 +1,5 @@
-const rateLimit = require("express-rate-limit");
-const slowDown = require("express-slow-down");
+const rateLimit = require('express-rate-limit');
+const slowDown = require('express-slow-down');
 
 const rateLimiter = rateLimit({
   windowMs: 5 * 60 * 1000,

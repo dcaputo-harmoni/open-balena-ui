@@ -1,7 +1,8 @@
 import PlayArrowIcon from '@mui/icons-material/PlayArrow';
 import RestartAltIcon from '@mui/icons-material/RestartAlt';
 import StopIcon from '@mui/icons-material/Stop';
-import { Button } from '@mui/material';
+import TripOriginIcon from '@mui/icons-material/TripOrigin';
+import { Button, useTheme } from '@mui/material';
 import React from 'react';
 import {
   Datagrid,
@@ -10,23 +11,26 @@ import {
   ReferenceManyField,
   TextField,
   Toolbar,
+  WithRecord,
   useAuthProvider,
   useNotify,
   useRecordContext,
 } from 'react-admin';
 import utf8decode from '../lib/utf8decode';
 import SemVerChip from './SemVerChip';
+import environment from '../lib/reactAppEnv';
 
 export const DeviceServices = (props) => {
   const authProvider = useAuthProvider();
   const notify = useNotify();
   const record = useRecordContext();
+  const theme = useTheme();
 
   const invokeSupervisor = (imageInstall, command) => {
     const session = authProvider.getSession();
     const { device } = props;
     return fetch(
-      `${process.env.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v2/applications/${device['belongs to-application']}/${command}-service`,
+      `${environment.REACT_APP_OPEN_BALENA_API_URL}/supervisor/v2/applications/${device['belongs to-application']}/${command}-service`,
       {
         method: 'POST',
         body: JSON.stringify({ uuid: device.uuid, data: { imageId: imageInstall['installs-image'] } }),
@@ -46,11 +50,11 @@ export const DeviceServices = (props) => {
           .read()
           .then((streamData) => {
             const result = utf8decode(streamData.value);
-            if (result === 'OK') notify(`Successfully executed command ${command} on device ${device['device name']}`);
+            if (result === 'OK') notify(`Successfully executed command ${command} on device ${device['device name']}`, {type: 'success'});
           });
       })
       .catch(() => {
-        notify(`Error: Could not execute command ${command} on device ${device['device name']}`);
+        notify(`Error: Could not execute command ${command} on device ${device['device name']}`, { type: 'error' });
       });
   };
 
@@ -61,7 +65,16 @@ export const DeviceServices = (props) => {
       target='device'
       filter={record['is running-release'] ? { 'is provided by-release': record['is running-release'] } : {}}
     >
-      <Datagrid>
+      <Datagrid bulkActionButtons={false}>
+        <WithRecord render={(service) => {
+          const color =
+            service.status === 'Running' ? theme.palette.success.light :
+            service.status === 'Error' ? theme.palette.error.light :
+              theme.palette.warning.light;
+
+          return <TripOriginIcon sx={{ color }} />;
+        }}/>
+
         <ReferenceField label='Image' source='installs-image' reference='image' target='id' link={false}>
           <ReferenceField
             label='Image'

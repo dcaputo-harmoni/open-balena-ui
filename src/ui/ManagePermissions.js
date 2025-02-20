@@ -7,6 +7,7 @@ import { styled } from '@mui/material/styles';
 import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
+import { useFormContext } from 'react-hook-form';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -61,6 +62,12 @@ export const ManagePermissions = (props) => {
   const [selectedPermissions, setSelectedPermissions] = React.useState([]);
   const dataProvider = useDataProvider();
   const record = useRecordContext();
+  const { setValue } = useFormContext();
+
+  const onChangeHandler = (arrayOfSelected) => {
+    setSelectedPermissions(arrayOfSelected);
+    setValue(props.source, arrayOfSelected, { shouldDirty: true });
+  };
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -89,9 +96,9 @@ export const ManagePermissions = (props) => {
             }
           });
           setAllPermissions(permissionOpts);
+          loaded.all = true;
+          setLoaded(loaded);
         });
-      loaded.all = true;
-      setLoaded(loaded);
     }
     if (!loaded.selected && record) {
       dataProvider
@@ -103,13 +110,13 @@ export const ManagePermissions = (props) => {
         .then((existingMappings) => {
           const selectedIds = existingMappings.data.map((x) => x.permission);
           setSelectedPermissions(selectedIds);
+          loaded.selected = true;
+          setLoaded(loaded);
         });
-      loaded.selected = true;
-      setLoaded(loaded);
     }
   }, [props, dataProvider, setLoaded, loaded, setAllPermissions, setSelectedPermissions]);
 
-  if (!loaded) return null;
+  if (!(loaded.all && loaded.selected)) return null;
 
   return (
     <Box sx={{ width: '800px' }}>
@@ -118,8 +125,8 @@ export const ManagePermissions = (props) => {
       <StyledDualListBox
         options={allPermissions}
         selected={selectedPermissions}
-        onChange={setSelectedPermissions}
-        showHeaderLabels='true'
+        onChange={onChangeHandler}
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
@@ -129,8 +136,7 @@ export const ManagePermissions = (props) => {
       />
       <TextInput
         source={props.source}
-        format={() => selectedPermissions}
-        onChange={(record[props.source] = selectedPermissions)}
+        defaultValue={selectedPermissions}
         style={{ display: 'none' }}
       />
     </Box>

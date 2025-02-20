@@ -1,3 +1,3 @@
 module.exports = {
-  registryImage: require('./registryImage')
-}
+  registryImage: require('./registryImage'),
+};

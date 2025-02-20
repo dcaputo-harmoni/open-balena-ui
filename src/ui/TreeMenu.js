@@ -62,7 +62,16 @@ const StyledMenu = styled('div')(({ theme }) => ({
 }));
 
 const TreeMenu = (props) => {
-  const { className, dense, hasDashboard, onMenuClick, logout, dashboardlabel, setMenuColors, ...rest } = props;
+  const {
+    className,
+    dense,
+    hasDashboard,
+    onMenuClick = () => null,
+    logout,
+    dashboardlabel = 'Dashboard',
+    setMenuColors = true,
+    ...rest
+  } = props;
 
   const translate = useTranslate();
   const [open] = useSidebarState();
@@ -82,7 +91,7 @@ const TreeMenu = (props) => {
 
   const isChildOfParent = (resource, parentResource) => resource?.options?.menuParent == parentResource?.name;
 
-  const geResourceName = (slug) => {
+  const getResourceName = (slug) => {
     if (!slug) {
       return '';
     }
@@ -106,7 +115,7 @@ const TreeMenu = (props) => {
       resourcename = translate(`resources.${resource.name}.name`);
 
       if (resourcename.startsWith('resources.')) {
-        resourcename = geResourceName(resource.name);
+        resourcename = getResourceName(resource.name);
       }
     }
 
@@ -203,12 +212,6 @@ TreeMenu.propTypes = {
   onMenuClick: PropTypes.func,
   dashboardlabel: PropTypes.string,
   setMenuColors: PropTypes.bool,
-};
-
-TreeMenu.defaultProps = {
-  onMenuClick: () => null,
-  dashboardlabel: 'Dashboard',
-  setMenuColors: true,
 };
 
 export default TreeMenu;

@@ -8,6 +8,7 @@ import React from 'react';
 import { TextInput, useDataProvider, useRecordContext } from 'react-admin';
 import DualListBox from 'react-dual-listbox';
 import 'react-dual-listbox/lib/react-dual-listbox.css';
+import { useFormContext } from 'react-hook-form';
 
 const StyledDualListBox = styled(DualListBox)({
   'fontSize': '12px',
@@ -26,6 +27,12 @@ export const ManageOrganizations = (props) => {
   const [selectedOrganizations, setSelectedOrganizations] = React.useState([]);
   const dataProvider = useDataProvider();
   const record = useRecordContext();
+  const { setValue } = useFormContext();
+
+  const onChangeHandler = (arrayOfSelected) => {
+    setSelectedOrganizations(arrayOfSelected);
+    setValue(props.source, arrayOfSelected, { shouldDirty: true });
+  };
 
   React.useEffect(() => {
     if (!loaded.all) {
@@ -38,9 +45,9 @@ export const ManageOrganizations = (props) => {
         .then((organizations) => {
           const organizationOpts = organizations.data.map((x) => ({ label: x.name, value: x.id }));
           setAllOrganizations(organizationOpts);
+          loaded.all = true;
+          setLoaded(loaded);
         });
-      loaded.all = true;
-      setLoaded(loaded);
     }
     if (!loaded.selected && record) {
       dataProvider
@@ -52,13 +59,13 @@ export const ManageOrganizations = (props) => {
         .then((existingMappings) => {
           const selectedIds = existingMappings.data.map((x) => x['is member of-organization']);
           setSelectedOrganizations(selectedIds);
+          loaded.selected = true;
+          setLoaded(loaded);
         });
-      loaded.selected = true;
-      setLoaded(loaded);
     }
   }, [props, dataProvider, setLoaded, loaded, setAllOrganizations, setSelectedOrganizations]);
 
-  if (!loaded) return null;
+  if (!(loaded.all && loaded.selected)) return null;
 
   return (
     <Box sx={{ width: '800px' }}>
@@ -67,8 +74,8 @@ export const ManageOrganizations = (props) => {
       <StyledDualListBox
         options={allOrganizations}
         selected={selectedOrganizations}
-        onChange={setSelectedOrganizations}
-        showHeaderLabels='true'
+        onChange={onChangeHandler}
+        showHeaderLabels
         icons={{
           moveToAvailable: <KeyboardArrowLeftIcon />,
           moveAllToAvailable: <KeyboardDoubleArrowLeftIcon />,
@@ -79,8 +86,7 @@ export const ManageOrganizations = (props) => {
 
       <TextInput
         source={props.source}
-        format={() => selectedOrganizations}
-        onChange={(record[props.source] = selectedOrganizations)}
+        defaultValue={selectedOrganizations}
         style={{ display: 'none' }}
       />
     </Box>

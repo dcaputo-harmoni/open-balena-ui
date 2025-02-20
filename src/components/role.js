@@ -18,7 +18,7 @@ import ManagePermissions from '../ui/ManagePermissions';
 export const RoleList = () => {
   return (
     <List>
-      <Datagrid size='medium'>
+      <Datagrid size='medium' rowClick={false}>
         <TextField source='name' />
         <Toolbar>
           <EditButton label='' size='small' variant='outlined' />
@@ -50,7 +50,7 @@ export const RoleEdit = () => {
         },
       }}
     >
-      <SimpleForm toolbar={<Toolbar alwaysEnableSaveButton />}>
+      <SimpleForm toolbar={<Toolbar />}>
         <TextInput source='name' validate={required()} size='large' fullWidth={true} />
 
         <ManagePermissions source='permissionArray' reference='role-has-permission' target='role' />
