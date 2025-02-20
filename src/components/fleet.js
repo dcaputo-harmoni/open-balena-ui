@@ -28,10 +28,6 @@ import { useCreateFleet } from '../lib/fleet';
 import DeleteFleetButton from '../ui/DeleteFleetButton';
 import Row from '../ui/Row';
 import SemVerChip, { getSemver } from '../ui/SemVerChip';
-import versions from '../versions';
-import environment from '../lib/reactAppEnv';
-
-const isPinnedOnRelease = versions.resource('isPinnedOnRelease', environment.REACT_APP_OPEN_BALENA_API_VERSION);
 
 const CustomBulkActionButtons = (props) => (
   <React.Fragment>
@@ -300,7 +296,7 @@ export const FleetEdit = () => {
             !formData['should track latest release'] && (
               <ReferenceInput
                 label='Target Release'
-                source={isPinnedOnRelease}
+                source='should be running-release'
                 reference='release'
                 target='id'
                 filter={{ 'belongs to-application': fleetId }}
