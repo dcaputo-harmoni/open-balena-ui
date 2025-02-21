@@ -77,7 +77,7 @@ export const ReleaseField = (props) => {
         if (isPending) { return <p>Loading</p>; }
         if (error) { return <p>ERROR</p>; }
 
-        record['should be running-release'] = record['{isPinnedOnRelease}'] || fleet['should be running-release'];
+        record['should be running-release'] = record[isPinnedOnRelease] || fleet['should be running-release'];
 
         const isUpToDate = !!(record[source] && record[source] === record['should be running-release']);
         const isOnline = record['api heartbeat state'] === 'online';
